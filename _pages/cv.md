@@ -1,8 +1,8 @@
 ---
 layout: cv
-permalink: /cv/
+permalink: assets/pdf/kushner_cv.pdf
 title: CV
 nav: true
 nav_order: 4
-cv_pdf: example_pdf.pdf
+cv_pdf: resume.pdf
 ---
