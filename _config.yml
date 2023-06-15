@@ -4,7 +4,7 @@
 
 title: rtviii # the website title (if blank, full name will be used instead)
 first_name: Artem
-middle_name: R.
+middle_name: 
 last_name: Kushner
 email: rtkushner@gmail.com
 description: > # the ">" symbol means to ignore newlines until "footer_text:"
@@ -72,10 +72,10 @@ gitlab_username: # your GitLab user name
 twitter_username: rtkushner # your Twitter handle
 mastodon_username: # your mastodon instance+username in the format instance.tld/@username
 linkedin_username: # your LinkedIn user name
-telegram_username: rtviii # your Telegram user name
+telegram_username: 
 scholar_userid: # your Google Scholar ID
 semanticscholar_id: # your Semantic Scholar ID
-whatsapp_number: +16049105524 # your WhatsApp number (full phone number in international format. Omit any zeroes, brackets, or dashes when adding the phone number in international format.)
+whatsapp_number: 
 orcid_id: # your ORCID ID
 quora_username: # your Quora username
 publons_id: # your ID on Publons

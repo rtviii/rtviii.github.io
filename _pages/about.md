@@ -19,9 +19,11 @@ selected_papers: true # includes a list of papers marked as "selected={true}"
 social: true          # includes social icons at the bottom of the page
 ---
 
-My name is Artem Kushner, and I am a student in the Department of Mathematics at the University of British Columbia.
+My name is Artem Kushner, and I am a student in the Department of Mathematics at the University of British Columbia in [Khanh Dao Duc](https://kdaoduc.com/about/)'s lab.
 
-I'm interested in bayesian inference, type theory and their applications to compilers and structural biology.
+I'm interested in theory of types, bayesian inference, compilers, machine learning and structural biology(the ribosome in particular). I'm similarly interested in the engineering projects and applications involving areas above.
+
+Outside of academia, I worked as a software developer and database administrator for projects having to do with medical devices, computer vision, bioinformatics and fintech. Big fan of Unix and OSS. I enjoy running, hiking, music and history; before getting started in STEM I planted around 250,000 trees on the West Coast of Canada.
 
 <!-- Put your address / P.O. box / other info right below your picture. You can also disable any of these elements by editing `profile` property of the YAML header of your `_pages/about.md`. Edit `_bibliography/papers.bib` and Jekyll will render your [publications page](/al-folio/publications/) automatically. -->
 
