@@ -1,6 +1,6 @@
 ---
 layout: about
-title: '[rtviii]'
+title: 'Home'
 permalink: /
 subtitle: <a href='#'>rtkushner@gmail.com</a>
 
