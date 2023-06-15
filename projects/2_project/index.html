@@ -1,437 +1,261 @@
-<!DOCTYPE html>
-<html lang="en">
-
-  <!-- Head -->
-  <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">    <!-- Metadata, OpenGraph and Schema.org -->
-    
-
-    <!-- Standard metadata -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>project 2 | You R. Name</title>
-    <meta name="author" content="You R. Name">
-    <meta name="description" content="a project with a background image">
-    <meta name="keywords" content="jekyll, jekyll-theme, academic-website, portfolio-website">
-
-
-    <!-- Bootstrap & MDB -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-DF7Zhf293AJxJNTmh5zhoYYIMs2oXitRfBjY+9L//AY=" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/css/mdb.min.css" integrity="sha256-jpjYvU3G3N6nrrBwXJoVEYI/0zw8htfFnhT9ljN3JJw=" crossorigin="anonymous">
-
-    <!-- Bootstrap Table -->
-    <link defer rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.21.4/dist/bootstrap-table.min.css">
-
-    <!-- Fonts & Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.1/css/academicons.min.css" integrity="sha256-i1+4qU2G2860dGGIOJscdC30s9beBXjFfzjWLjBRsBg=" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons">
-
-    <!-- Code Syntax Highlighting -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jwarby/jekyll-pygments-themes@master/github.css" media="" id="highlight_theme_light">
-
-    
-
-    <!-- Styles -->
-    
-    <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22&gt;&lt;text%20y=%22.9em%22%20font-size=%2290%22&gt;%E2%9A%9B%EF%B8%8F&lt;/text&gt;&lt;/svg&gt;">
-    
-    <link rel="stylesheet" href="/al-folio/assets/css/main.css">
-    <link rel="canonical" href="https://alshedivat.github.io/al-folio/projects/2_project/">
-
-    <!-- Dark Mode -->
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jwarby/jekyll-pygments-themes@master/native.css" media="none" id="highlight_theme_dark">
-
-    <script src="/al-folio/assets/js/theme.js"></script>
-    <script src="/al-folio/assets/js/dark_mode.js"></script>
-    
-
-  </head>
-
-  <!-- Body -->
-  <body class="fixed-top-nav ">
-
-    <!-- Header -->
-    <header>
-
-      <!-- Nav Bar -->
-      <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top">
-        <div class="container">
-          <a class="navbar-brand title font-weight-lighter" href="/al-folio/"><span class="font-weight-bold">You </span>R. Name</a>
-          <!-- Navbar Toggle -->
-          <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar top-bar"></span>
-            <span class="icon-bar middle-bar"></span>
-            <span class="icon-bar bottom-bar"></span>
-          </button>
-
-          <div class="collapse navbar-collapse text-right" id="navbarNav">
-            <ul class="navbar-nav ml-auto flex-nowrap">
-
-              <!-- About -->
-              <li class="nav-item ">
-                <a class="nav-link" href="/al-folio/">about</a>
-              </li>
-              
-              <!-- Blog -->
-              <li class="nav-item ">
-                <a class="nav-link" href="/al-folio/blog/">blog</a>
-              </li>
-
-              <!-- Other pages -->
-              <li class="nav-item ">
-                <a class="nav-link" href="/al-folio/publications/">publications</a>
-              </li>
-              <li class="nav-item ">
-                <a class="nav-link" href="/al-folio/projects/">projects</a>
-              </li>
-              <li class="nav-item ">
-                <a class="nav-link" href="/al-folio/repositories/">repositories</a>
-              </li>
-              <li class="nav-item ">
-                <a class="nav-link" href="/al-folio/cv/">cv</a>
-              </li>
-              <li class="nav-item ">
-                <a class="nav-link" href="/al-folio/teaching/">teaching</a>
-              </li>
-              <li class="nav-item dropdown ">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">submenus</a>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                  <a class="dropdown-item" href="/al-folio/publications/">publications</a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="/al-folio/projects/">projects</a>
-                </div>
-              </li>
-
-              <!-- Toogle theme mode -->
-              <li class="toggle-container">
-                <button id="light-toggle" title="Change theme">
-                  <i class="fas fa-moon"></i>
-                  <i class="fas fa-sun"></i>
-                </button>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-
-      <!-- Scrolling Progress Bar -->
-      <progress id="progress" value="0">
-        <div class="progress-container">
-          <span class="progress-bar"></span>
-        </div>
-      </progress>
-    </header>
-
-
-    <!-- Content -->
-    <div class="container mt-5">
-      
-        <!-- page.html -->
-        <div class="post">
-
-          <header class="post-header">
-            <h1 class="post-title">project 2</h1>
-            <p class="post-description">a project with a background image</p>
-          </header>
-
-          <article>
-            <p>Every project has a beautiful feature showcase page.
-It’s easy to include images in a flexible 3-column grid format.
-Make your photos 1/3, 2/3, or full width.</p>
-
-<p>To give your project a background in the portfolio page, just add the img tag to the front matter like so:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>---
-layout: page
-title: project
-description: a project with a background image
-img: /assets/img/12.jpg
----
-</code></pre></div></div>
-
-<div class="row">
-    <div class="col-sm mt-3 mt-md-0">
-        <figure>
-
-  <picture>
-    
-    <source class="responsive-img-srcset" media="(max-width: 480px)" srcset="/al-folio/assets/img/1-480.webp"></source>
-    <source class="responsive-img-srcset" media="(max-width: 800px)" srcset="/al-folio/assets/img/1-800.webp"></source>
-    <source class="responsive-img-srcset" media="(max-width: 1400px)" srcset="/al-folio/assets/img/1-1400.webp"></source>
-    
-
-    <!-- Fallback to the original file -->
-    <img src="/al-folio/assets/img/1.jpg" class="img-fluid rounded z-depth-1" width="auto" height="auto" title="example image" onerror="this.onerror=null; $('.responsive-img-srcset').remove();">
-
-  </picture>
-
-</figure>
-
-    </div>
-    <div class="col-sm mt-3 mt-md-0">
-        <figure>
-
-  <picture>
-    
-    <source class="responsive-img-srcset" media="(max-width: 480px)" srcset="/al-folio/assets/img/3-480.webp"></source>
-    <source class="responsive-img-srcset" media="(max-width: 800px)" srcset="/al-folio/assets/img/3-800.webp"></source>
-    <source class="responsive-img-srcset" media="(max-width: 1400px)" srcset="/al-folio/assets/img/3-1400.webp"></source>
-    
-
-    <!-- Fallback to the original file -->
-    <img src="/al-folio/assets/img/3.jpg" class="img-fluid rounded z-depth-1" width="auto" height="auto" title="example image" onerror="this.onerror=null; $('.responsive-img-srcset').remove();">
-
-  </picture>
-
-</figure>
-
-    </div>
-    <div class="col-sm mt-3 mt-md-0">
-        <figure>
-
-  <picture>
-    
-    <source class="responsive-img-srcset" media="(max-width: 480px)" srcset="/al-folio/assets/img/5-480.webp"></source>
-    <source class="responsive-img-srcset" media="(max-width: 800px)" srcset="/al-folio/assets/img/5-800.webp"></source>
-    <source class="responsive-img-srcset" media="(max-width: 1400px)" srcset="/al-folio/assets/img/5-1400.webp"></source>
-    
-
-    <!-- Fallback to the original file -->
-    <img src="/al-folio/assets/img/5.jpg" class="img-fluid rounded z-depth-1" width="auto" height="auto" title="example image" onerror="this.onerror=null; $('.responsive-img-srcset').remove();">
-
-  </picture>
-
-</figure>
-
-    </div>
-</div>
-<div class="caption">
-    Caption photos easily. On the left, a road goes through a tunnel. Middle, leaves artistically fall in a hipster photoshoot. Right, in another hipster photoshoot, a lumberjack grasps a handful of pine needles.
-</div>
-<div class="row">
-    <div class="col-sm mt-3 mt-md-0">
-        <figure>
-
-  <picture>
-    
-    <source class="responsive-img-srcset" media="(max-width: 480px)" srcset="/al-folio/assets/img/5-480.webp"></source>
-    <source class="responsive-img-srcset" media="(max-width: 800px)" srcset="/al-folio/assets/img/5-800.webp"></source>
-    <source class="responsive-img-srcset" media="(max-width: 1400px)" srcset="/al-folio/assets/img/5-1400.webp"></source>
-    
-
-    <!-- Fallback to the original file -->
-    <img src="/al-folio/assets/img/5.jpg" class="img-fluid rounded z-depth-1" width="auto" height="auto" title="example image" onerror="this.onerror=null; $('.responsive-img-srcset').remove();">
-
-  </picture>
-
-</figure>
-
-    </div>
-</div>
-<div class="caption">
-    This image can also have a caption. It's like magic.
-</div>
-
-<p>You can also put regular text between your rows of images.
-Say you wanted to write a little bit about your project before you posted the rest of the images.
-You describe how you toiled, sweated, <em>bled</em> for your project, and then… you reveal its glory in the next row of images.</p>
-
-<div class="row justify-content-sm-center">
-    <div class="col-sm-8 mt-3 mt-md-0">
-        <figure>
-
-  <picture>
-    
-    <source class="responsive-img-srcset" media="(max-width: 480px)" srcset="/al-folio/assets/img/6-480.webp"></source>
-    <source class="responsive-img-srcset" media="(max-width: 800px)" srcset="/al-folio/assets/img/6-800.webp"></source>
-    <source class="responsive-img-srcset" media="(max-width: 1400px)" srcset="/al-folio/assets/img/6-1400.webp"></source>
-    
-
-    <!-- Fallback to the original file -->
-    <img src="/al-folio/assets/img/6.jpg" class="img-fluid rounded z-depth-1" width="auto" height="auto" title="example image" onerror="this.onerror=null; $('.responsive-img-srcset').remove();">
-
-  </picture>
-
-</figure>
-
-    </div>
-    <div class="col-sm-4 mt-3 mt-md-0">
-        <figure>
-
-  <picture>
-    
-    <source class="responsive-img-srcset" media="(max-width: 480px)" srcset="/al-folio/assets/img/11-480.webp"></source>
-    <source class="responsive-img-srcset" media="(max-width: 800px)" srcset="/al-folio/assets/img/11-800.webp"></source>
-    <source class="responsive-img-srcset" media="(max-width: 1400px)" srcset="/al-folio/assets/img/11-1400.webp"></source>
-    
-
-    <!-- Fallback to the original file -->
-    <img src="/al-folio/assets/img/11.jpg" class="img-fluid rounded z-depth-1" width="auto" height="auto" title="example image" onerror="this.onerror=null; $('.responsive-img-srcset').remove();">
-
-  </picture>
-
-</figure>
-
-    </div>
-</div>
-<div class="caption">
-    You can also have artistically styled 2/3 + 1/3 images, like these.
-</div>
-
-<p>The code is simple.
-Just wrap your images with <code class="language-plaintext highlighter-rouge">&lt;div class="col-sm"&gt;</code> and place them inside <code class="language-plaintext highlighter-rouge">&lt;div class="row"&gt;</code> (read more about the <a href="https://getbootstrap.com/docs/4.4/layout/grid/" rel="external nofollow noopener" target="_blank">Bootstrap Grid</a> system).
-To make images responsive, add <code class="language-plaintext highlighter-rouge">img-fluid</code> class to each; for rounded corners and shadows use <code class="language-plaintext highlighter-rouge">rounded</code> and <code class="language-plaintext highlighter-rouge">z-depth-1</code> classes.
-Here’s the code for the last row of images above:</p>
-
-<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"row justify-content-sm-center"</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"col-sm-8 mt-3 mt-md-0"</span><span class="nt">&gt;</span>
-        {% include figure.html path="assets/img/6.jpg" title="example image" class="img-fluid rounded z-depth-1" %}
-    <span class="nt">&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"col-sm-4 mt-3 mt-md-0"</span><span class="nt">&gt;</span>
-        {% include figure.html path="assets/img/11.jpg" title="example image" class="img-fluid rounded z-depth-1" %}
-    <span class="nt">&lt;/div&gt;</span>
-<span class="nt">&lt;/div&gt;</span>
-</code></pre></div></div>
-
-
-          </article>
-
-        </div>
-
-      
-    </div>
-
-    <!-- Footer -->    
-    <footer class="fixed-bottom">
-      <div class="container mt-0">
-        © Copyright 2023 You R. Name. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. Photos from <a href="https://unsplash.com" target="_blank" rel="external nofollow noopener">Unsplash</a>.
-
-      </div>
-    </footer>
-
-    <!-- JavaScripts -->
-    <!-- jQuery -->
-  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-
-    <!-- Bootsrap & MDB scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha256-fgLAgv7fyCGopR/gBNq2iW3ZKIdqIcyshnUULC4vex8=" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script>
-
-    <!-- Masonry & imagesLoaded -->
-  <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
-  <script defer src="/al-folio/assets/js/masonry.js" type="text/javascript"></script>
-    
-  <!-- Medium Zoom JS -->
-  <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.8/dist/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
-  <script defer src="/al-folio/assets/js/zoom.js"></script>
-
-  <!-- Bootstrap Table -->
-  <script defer src="https://unpkg.com/bootstrap-table@1.21.4/dist/bootstrap-table.min.js"></script>
-
-  <!-- Load Common JS -->
-  <script src="/al-folio/assets/js/no_defer.js"></script>
-  <script defer src="/al-folio/assets/js/common.js"></script>
-  <script defer src="/al-folio/assets/js/copy_code.js" type="text/javascript"></script>
-
-    
-  <script async src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script>
-  <script async src="https://badge.dimensions.ai/badge.js"></script>
-
-    <!-- MathJax -->
-  <script type="text/javascript">
-    window.MathJax = {
-      tex: {
-        tags: 'ams'
-      }
-    };
-  </script>
-  <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js"></script>
-  <script defer src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-
-    
-    
-
-<!-- Scrolling Progress Bar -->
-<script type="text/javascript">
-  /*
-   * This JavaScript code has been adapted from the article 
-   * https://css-tricks.com/reading-position-indicator/ authored by Pankaj Parashar, 
-   * published on the website https://css-tricks.com on the 7th of May, 2014.
-   * Couple of changes were made to the original code to make it compatible 
-   * with the `al-foio` theme.
-   */
-  const progressBar = $("#progress");
-  /*
-   * We set up the bar after all elements are done loading.
-   * In some cases, if the images in the page are larger than the intended
-   * size they'll have on the page, they'll be resized via CSS to accomodate
-   * the desired size. This mistake, however, breaks the computations as the
-   * scroll size is computed as soon as the elements finish loading.
-   * To account for this, a minimal delay was introduced before computing the
-   * values.
-   */
-  window.onload = function () {
-    setTimeout(progressBarSetup, 50);
-  };
-  /*
-   * We set up the bar according to the browser.
-   * If the browser supports the progress element we use that.
-   * Otherwise, we resize the bar thru CSS styling
-   */
-  function progressBarSetup() {
-    if ("max" in document.createElement("progress")) {
-      initializeProgressElement();
-      $(document).on("scroll", function() {
-        progressBar.attr({ value: getCurrentScrollPosition() });
-      });
-      $(window).on("resize", initializeProgressElement);
-    } else {
-      resizeProgressBar();
-      $(document).on("scroll", resizeProgressBar);
-      $(window).on("resize", resizeProgressBar);
-    }
-  }
-  /*
-   * The vertical scroll position is the same as the number of pixels that
-   * are hidden from view above the scrollable area. Thus, a value > 0 is
-   * how much the user has scrolled from the top
-   */
-  function getCurrentScrollPosition() {
-    return $(window).scrollTop();
-  }
-
-  function initializeProgressElement() {
-    let navbarHeight = $("#navbar").outerHeight(true);
-    $("body").css({ "padding-top": navbarHeight });
-    $("progress-container").css({ "padding-top": navbarHeight });
-    progressBar.css({ top: navbarHeight });
-    progressBar.attr({
-      max: getDistanceToScroll(),
-      value: getCurrentScrollPosition(),
-    });
-  }
-  /*
-   * The offset between the html document height and the browser viewport
-   * height will be greater than zero if vertical scroll is possible.
-   * This is the distance the user can scroll
-   */
-  function getDistanceToScroll() {
-    return $(document).height() - $(window).height();
-  }
-
-  function resizeProgressBar() {
-    progressBar.css({ width: getWidthPercentage() + "%" });
-  }
-  // The scroll ratio equals the percentage to resize the bar
-  function getWidthPercentage() {
-    return (getCurrentScrollPosition() / getDistanceToScroll()) * 100;
-  }
-</script>
-
-  </body>
-</html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body>
+<p><a href="https://github.com/rtviii/binformat" rel="external nofollow noopener" target="_blank">Repo</a></p>
+
+<h1 id="binary-block-format">Binary Block Format</h1>
+
+<p>Lets define <em>V(x)</em> to be a <em>variable-length</em> array of length up-to and including <em>x</em>. Then <em>V(1232) bytes</em>  is byte array that can be anywhere <em>from 0 to 1232 bytes long</em>(inclusive) wherease <em>V(len(x))</em> is an array of length anywhere between 0 and length of some other <em>x</em>.</p>
+
+<p>Building the format bottom up.</p>
+
+<h2 id="instruction">Instruction</h2>
+
+<p>Sample instruction looks like this:</p>
+<pre><code class="language-json">
+"programIdIndex": 4
+"accounts"      : [1,2,3,0],
+"data"          :"29z5mr1JoRmJYQ6yp7DsrEbrPynEpLdqB3xAAZFKpw5ZW9xsJKRbWmvBmMnywCGwhSTASU8BsRoFhJTvUXdKCvgrxDh5wM",
+
+</code></pre>
+<p>Instruction, schematically:</p>
+<pre><code class="language-rust">PROGRAM_INDEX       : = [1 byte]
+ACCOUNT_INDEX_ARRAY : = [`acc_len:` 1 byte][V(`acc_len)]`
+DATA                : = [`data_len:2` bytes][V(`data_len)]`
+</code></pre>
+<p>If we rearrange things a little bit, we can have all the “size” information at the top and don’t have to seek “into” and instruction for <code>_data\_len_</code>:</p>
+<pre><code class="language-rust">[1 byte][`acc_ix_len`: 1 byte][`data_len`:2 bytes][V( `acc_ix` )][V(`data_len`)]
+</code></pre>
+<p>Then, for  an instruction:</p>
+<ul>
+  <li>first byte is prog index</li>
+  <li>then a byte signifying how many account indices there are</li>
+  <li>then 2 bytes to signify number of bytes of instruction data</li>
+</ul>
+
+<p>And arithmetic works out to:</p>
+
+<ul>
+  <li>Overall size of the instruction is 1 + 1 + 2 + <code>acc_ix_len</code>  + <code>data_len</code>.</li>
+  <li>Account indexes begin at the 5th byte</li>
+  <li>Data array begins at ( 4 + <code>acc_ix_len</code> + 1 )st byte.</li>
+</ul>
+
+<p>So, in the end:</p>
+
+<pre><code class="language-rust">PROGRAM_INDEX       := [ 0x04 ]                                                # &lt;----- prog_ix
+ACCOUNT_INDEXES_LEN := [ 0x04 ]                                                # &lt;----- accixs.len
+DATA_LEN            := [ 0x00, 0x5e]                                           # &lt;----- ixdata.len
+ACCOUNT_INDEXES     := [ 0x01, 0x02,0x03, 0x00 ]                               # &lt;----- accixs
+DATA                := [ 0x32, 0x39, 0x7A, 0x35, 0x6D, 0x72, 0x31, 0x4A, 0x6F, # .
+                        0x52, 0x6D, 0x4A, 0x59, 0x51, 0x36, 0x79, 0x70, 0x37, # |
+                        0x44, 0x73, 0x72, 0x45, 0x62, 0x72, 0x50, 0x79, 0x6E, # | 
+                        0x45, 0x70, 0x4C, 0x64, 0x71, 0x42, 0x33, 0x78, 0x41, # | 
+                        0x41, 0x5A, 0x46, 0x4B, 0x70, 0x77, 0x35, 0x5A, 0x57, # |
+                        0x39, 0x78, 0x73, 0x4A, 0x4B, 0x52, 0x62, 0x57, 0x6D, # |-- ixdata
+                        0x76, 0x42, 0x6D, 0x4D, 0x6E, 0x79, 0x77, 0x43, 0x47, # | 
+                        0x77, 0x68, 0x53, 0x54, 0x41, 0x53, 0x55, 0x38, 0x42, # |
+                        0x73, 0x52, 0x6F, 0x46, 0x68, 0x4A, 0x54, 0x76, 0x55, # |
+                        0x58, 0x64, 0x4B, 0x43, 0x76, 0x67, 0x72, 0x78, 0x44, # |
+                        0x68, 0x35, 0x77, 0x4D                                # .
+                ]
+</code></pre>
+
+<h2 id="transaction-">Transaction :</h2>
+
+<p>The (v1 unimplemented/OLD) encoding:</p>
+<pre><code class="language-rust">FLAG_TX_START       : = [ 9 bytes: 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11 ]
+ACCOUNT_ADDRESSES   : = [ `acc_len:` 1 byte ][V(`acc_len)` * 32 bytes ]
+HEADER              : = [ 3 bytes]
+TX_NUMBER           : = [ 8 bytes]
+SIGNATURES          : = [ `sigs_num:1` byte ][V(`signs_num)` * 64 bytes ]
+INSTRUCTIONS        : = [ `ixs_len:` 2 bytes][V(`ixs_len)` ]
+</code></pre>
+
+<h3 id="introducing-indexed-addresses">Introducing Indexed addresses</h3>
+
+<p>Given that we want to play with 3 bytes of indexes and then a byte of additional database-specific padding for a total of <em>4 bytes</em>, an account like  <code>Vote111111111111111111111111111111111111111</code> might get mapped to <code>0x000031A1</code> for example.</p>
+
+<p>The problem is to how to reconcile the fact that some accounts might be non-indexed() full-32 bytes). Ex:</p>
+<pre><code class="language-json">                    {"accountKeys": [
+                        "JDuhw5kYL3rHHz6pY4GsZuqvfNe51Lpv4QufkSwXjKvW", // --&gt; 32
+                        "Fa4JCidv1WqnNAFTKxJQKHqbYLMH3vEQk8ZxPbJoTa94", // --&gt; 32
+                        "SysvarS1otHashes111111111111111111111111111",  // --&gt; 4
+                        "SysvarC1ock11111111111111111111111111111111",  // --&gt; 4
+                        "Vote111111111111111111111111111111111111111"   // --&gt; 4
+                    ],
+                    ...
+                    }
+</code></pre>
+
+<p>It would be too easy to stick all of the same type to the front of the array: the order must be preserved between the accounts and instructions.</p>
+
+<p>So we need either to</p>
+<ul>
+  <li>(1) rearrange each instruction’s account indices to conform to the new 4/32 ordering of the tx accounts or</li>
+  <li>(2)to come up with mechanism to identify the arrangement of 4/32 accounts inside the tx array.</li>
+</ul>
+
+<p>I’m strongly against the first option because it’s a pain to maintain, collapses information (about original ordering of the accounts) post conversion and therefore has a potential to be disaster in production.</p>
+
+<p>For the second option, i think we can use the combination of <em>the length of the accounts array</em> plus a naive binary encoding of the positions of the addresses in the array with <em>1</em> being <em>SB-indexed</em> and <em>0</em> being <em>SB-indexed</em> for the cost of additional <code>(ceiling(num accounts/8))</code> bytes right after the length-byte (the hope is this is rarely exceeds 4 bytes – what program uses 32 accounts as input?).</p>
+
+<p>Ex. (contrived) the following translates to <code>[0x05][0x0c]</code>. There are <code>5</code> accounts, the indexed pattern is <code>01011</code>, which, left-zero-padded to a byte, is <code>0b00001011</code> == <code>0x0c</code>.</p>
+<pre><code class="language-bash">                        "JDuhw5kYL3rHHz6pY4GsZuqvfNe51Lpv4QufkSwXjKvW", // unindexed
+                        "Fa4JCidv1WqnNAFTKxJQKHqbYLMH3vEQk8ZxPbJoTa94", // indexed
+                        "SysvarS1otHashes111111111111111111111111111",  // unindexed
+                        "SysvarC1ock11111111111111111111111111111111",  // indexed
+                        "Vote111111111111111111111111111111111111111"   // indexed
+</code></pre>
+
+<p>This introduces the overhead of needing to look up the ordering first to index into the accounts array correctly when pulling up the address itself, but we really want this 32-&gt;4 saving across the board.</p>
+
+<p>Then, the encoding:</p>
+
+<pre><code class="language-rust">LENGTH_BYTE       : = [ 2 bytes  ] // precalculated length of the transaction for skips
+ACCOUNT_ADDRESSES : = [`num_accounts`:1 byte][`index_ordering`:ceil(`num_accounts`/8)][`addresses`:V(addresses)]
+HEADER            : = [ 3 bytes ]
+TX_NUMBER         : = [ 8 bytes ]
+SIGNATURES        : = [`sigs_num`: 1 byte  ][ V(`signs_num)` * 64 bytes ]
+INSTRUCTIONS      : = [`ixs_len` : 2 bytes ][ instructions=V(`ixs_len)` ]
+</code></pre>
+
+<h3 id="transaction-start-flag">Transaction Start Flag</h3>
+
+<p>The padding is there to signify the beggining of a transaction. This way, when we look for an account or signature match in the transaction and end up in the middle of the block, we can always reorient ourselves by tracking back to the nearest <code>FLAG_TX_START</code>. Furthermore, if we replace (some) of the addresses with custom indexes, this flag would be the the anchor to which the accounts latch and can be extended to the hybrid custom indexes + vanilla addresses solution. See the <a href="#primes-trick">trick</a> below.</p>
+
+<h3 id="transaction-number">Transaction Number</h3>
+
+<p>…</p>
+
+<hr>
+
+<p>Finally, let’s rearrange things a little bit:</p>
+
+<pre><code class="language-rust">[`tx_start_flag`  : 9 bytes ] // 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, x11,
+[`acc_len`        : 1 byte  ]
+[`header`         : 3 bytes ]
+[`sigs_num`       : 1 byte  ]
+[`ixs_size_total` : 2 bytes ]
+[`tx_number`      : 8 bytes ] // sequentially number transactions from genesis
+[V(`acc_len`        )*32]
+[V(`signs_num`      )*64]
+[V(`ixs_size_total` )]
+</code></pre>
+
+<p>This way:</p>
+
+<ul>
+  <li>The size of a tx is known from first 11 bytes:  <code>ixs_size_total</code> + <code>sigs_total</code>*64 + <code>acc_len</code>*32 + 9 + 3 + 8</li>
+  <li>signatures can be read from the ( 32*<code>acc_len</code> + 24 )th byte inclusive in steps of 32.</li>
+  <li>
+    <p>ixs data begins at the 24 + <code>acc_len</code> * 32 + <code>sigs_num</code> * 64 bytes inclusive. ( Each instruction’s size is in its first 4 bytes(:=<code>ixsize</code>), so we can travel in jumps of ( <code>ixsize</code>+4 ) up to having exhausted the entire ixs data.) *</p>
+  </li>
+  <li>Is it worth adding an ix flag not to seek? probably not</li>
+</ul>
+
+<h2 id="block">Block:</h2>
+
+<p>Block is trivial then (rewards notwithstanding):</p>
+<pre><code class="language-json">    "blockHeight"      : 121654073,
+    "blockTime"        : 1652847351,
+    "blockhash"        : "5CvofWw8Z1uTjMXnUV49QggQDDK3USqpfXZWzNg6UXLe",
+    "parentSlot"       : 134229246,
+    "previousBlockhash": "FqAmdVb7y3CCNSDki4kfMx9PuMXDLXJxdi65GikdKwtf",
+    "transactions"     : [...]
+</code></pre>
+
+<p>Encoded as :</p>
+<pre><code class="language-rust">    MAGIC_BYTES       := [encoding_version: 4 bytes][1 byte: testnet/mainnet/]
+    BLOCKHEIGHT       := [8bytes ],
+    BLOCKTIME         := [8bytes ],
+    BLOCKHASH         := [32bytes],
+    PARENTSLOT        := [8bytes ]
+    PREVIOUSBLOCKHASH := [32bytes]
+    TRANSACTIONS      := [tx_size_total: 4 bytes ][...]
+</code></pre>
+
+<h3 id="general-notes">General Notes</h3>
+
+<p>*The entire encoded size of a Solana transaction cannot exceed 1232 bytes.</p>
+
+<ul>
+  <li>
+    <p>It’d be sure nice to know the average number of ix/tx and tx/block.</p>
+  </li>
+  <li>
+    <p>Both the instructions and transaction arrays can be sorted by length with the smallest coming in the front to minimize jump lenths in the case of seeks.</p>
+  </li>
+  <li>
+    <p>How many 0-bytes is really enough to eliminate collision? How wide should the flag really be?</p>
+  </li>
+  <li>
+    <p>is repeated indexing and occasional summation more costly or inserting flags everywhere?</p>
+  </li>
+  <li>
+    <p>we could put all the accounts mentioned in a block to the top of the block, but let’s not overcomplicate this for now, especially given that we might want to later stream transactions by themselves, without blocks.</p>
+  </li>
+  <li>
+    <p>Seek/read considerations:</p>
+
+    <p>Next, your disk can probably read sequential data at around 100 megabytes/second; that is, it can read 1 megabyte sequentially in around the same time it takes to perform a seek. So if two of your values are less than 1 megabyte apart, you are better off reading all of the data between them than performing the seek between them. (But benchmark this to find the optimal trade-off on your hardware.)</p>
+  </li>
+</ul>
+
+<h3 id="primes-trick">Primes trick</h3>
+
+<ul>
+  <li>not sure when yet, but for certain cases where order needs to be preserved perhaps we can use a prime-number factorization method confined to 8bytes. 
+I.e. in the case of hybrid custom-index-vanilla-address approach we can signify at which positions in the address array the addresses reside (given that they will be more numerous(?)) by assigning a prime number to each position in the address array, multiplying the positions of vanilla addresses and storing the product. everything else will be considered a custom index and will be interpreted as 4-byte number or whatever (instaed of 32).</li>
+</ul>
+
+<p>The list of the first 60 prime numbers with the first 20 multiplied yields ~ <code>5*10^26</code>.</p>
+<pre><code>2 	3 	5 	7 	11 	13 	17 	19 	23 	29 	31 	37 	41 	43 	47 	53 	59 	61 	67 	71
+73 	79 	83 	89 	97 	101 	103 	107 	109 	113 	127 	131 	137 	139 	149 	151 	157 	163 	167 	173
+179 	181 	191 	193 	197 	199 	211 	223 	227 	229 	233 	239 	241 	251 	257 	263 	269 	271 	277 	281
+</code></pre>
+
+<p>https://stackoverflow.com/questions/323604/what-are-important-points-when-designing-a-binary-file-format
+https://stackoverflow.com/questions/6651503/random-access-of-a-large-binary-file</p>
+
+<h3 id="other">Other</h3>
+
+<p>Sample transaction:</p>
+
+<pre><code class="language-json">{
+            "transaction": {
+                "message": {
+                    "accountKeys": [
+                        "5XLqnSjJBAm1XjAcR76QCn8eB1phEQ3py2VAE2f8pdCQ",
+                        "Ax9ujW5B9oqcv59N8m6f1BpTBq2rGeGaBcpKjC5UYsXU",
+                        "SysvarC1ock11111111111111111111111111111111",
+                        "FsJ3A3u2vn5cTVofAjvy6y5kwABJAqYWpe4975bi2epH"
+                    ],
+                    "header": {
+                        "numReadonlySignedAccounts"  : 0,
+                        "numReadonlyUnsignedAccounts": 2,
+                        "numRequiredSignatures"      : 1
+                    },
+                    "instructions": [
+
+
+                                                    {
+                                                        "programIdIndex": 3,
+                                                        "data": "6mJFQCt94hG4CKNYKgVcwqt6CaTGZTpekyvwA3NfDoknSEPiZm6dYb",
+                                                        "accounts": [
+                                                            0,
+                                                            1,
+                                                            2
+                                                        ],
+                                                    }
+
+                    ],
+                    "recentBlockhash": "AmHEaeFDhizgkHHv9ZXa8BSZPGf7evJc2UhCPr8KznaM"
+                },
+                "signatures": [
+"2yorZs4VQKMrjob7CeaiNTfNSa1zRUboT6oYGg3NsBfPZymaVVBAtnVGVanN8HXt3crC9tCLy6RNoshQTN3DMndi"
+                ]
+            }
+        }
+
+</code></pre>
+</body></html>
