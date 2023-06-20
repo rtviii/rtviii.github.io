@@ -9,8 +9,8 @@ profile:
   image: boltzman.png
   image_circular: false # crops the image to make it circular
   address: >
-    <p>with Ludwig Boltzman</p>
-    <p>Simmering</p>
+    <p>with Boltzman</p>
+    <p>Simmering,</p>
     <p>Vienna, 2012</p>
 
 news: false           # includes a list of news items
@@ -19,8 +19,9 @@ selected_papers: true # includes a list of papers marked as "selected={true}"
 social: true          # includes social icons at the bottom of the page
 ---
 
-My name is Artem Kushner, and I am a student in the Department of Mathematics at the University of British Columbia in [Khanh Dao Duc](https://kdaoduc.com/about/)'s lab.
+My name is Artem Kushner, I'm a student in the Dept. of Math at UBC, Vancouver in [Khanh Dao Duc](https://kdaoduc.com/about/)'s lab.
 
-I'm interested in the theory of types and programming languages, bayesian inference and compilers. I'm similarly interested in the engineering projects involving those tools, in particular ML and structural biology.
+I'm interested in the theory of types, bayesian inference and compilers. I'm also interested in the engineering projects involving those tools, in particular ML and structural biology. I'm very fond of the ribosome.
 
-Outside of academia, I worked as a software developer/db admin for projects having to do with medical devices, computer vision, bioinformatics and fintech. To that extent, i'm big fan of Unix and OSS. I enjoy running, music, mathematics and history; i planted around 250,000 trees in the north-west of Canada and my favorite book is The Name of the Rose.
+Outside of academia, I did some various work as a software work having to do with bioinformatics, HFT and HPC. To that extent, i'm big fan of Unix and OSS. I enjoy running, music, mathematics and history; i planted around 250,000 trees in the north-west of Canada and my favorite book is The Name of the Rose by Umberto Eco.
+
