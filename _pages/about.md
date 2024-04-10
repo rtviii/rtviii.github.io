@@ -10,17 +10,21 @@ profile:
   image_circular: false # crops the image to make it circular
   address: >
 
-news: false           # includes a list of news items
-latest_posts: false    # includes a list of the newest posts
+# news: false           # includes a list of news items
+# latest_posts: false    # includes a list of the newest posts
+# selected_papers: true # includes a list of papers marked as "selected={true}"
+# social: true          # includes social icons at the bottom of the page
+news: false
 selected_papers: true # includes a list of papers marked as "selected={true}"
-social: true          # includes social icons at the bottom of the page
+teaching: false
+social: false  # includes social icons at the bottom of the page
 
     # <p>with Boltzman</p>
     # <p>Simmering,</p>
     # <p>Vienna, 2017</p>
 ---
 
-Howdy. I'm a student in the math department at UBC, Vancouver in [Khanh Dao Duc](https://kdaoduc.com/about/)'s lab.
+Howdyu. I'm a student in the math department at UBC, Vancouver in [Khanh Dao Duc](https://kdaoduc.com/about/)'s lab.
 
 I'm interested in the theory of types, bayesian inference and compilers. I'm also interested in the engineering projects involving those tools, in particular ML and structural biology. I'm very fond of the ribosome.
 
