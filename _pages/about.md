@@ -20,15 +20,16 @@ selected_papers: true # includes a list of papers marked as "selected={true}"
 teaching: false
 social: false  # includes social icons at the bottom of the page
 
-    # <p>with Boltzman</p>
-    # <p>Simmering,</p>
-    # <p>Vienna, 2017</p>
 ---
+<!-- ![asissi23.jpg](/assets/img/asissi23.jpg =x250) -->
+
+
 
 Howdy. I'm a student in the math department at UBC, Vancouver in [Khanh Dao Duc](https://kdaoduc.com/about/)'s lab.
 
-I'm interested in the theory of types, bayesian inference and compilers. I'm also interested in the engineering projects involving those tools, in particular ML and structural biology. I'm very fond of the [ ribosome ](https://ribosome.xyz/).
+I'm interested in type theory and compilers, their applications in ML, cryoET and downstream structural biology. I'm very fond of the [ ribosome ](https://ribosome.xyz/).
 
-Outside of academia, I've done some work in various backend roles. I enjoy running, music, mathematics and history; i planted around 250,000 trees in the north-west of Canada, my favorite book is _[ The Name of the Rose ](https://it.wikipedia.org/wiki/Il_nome_della_rosa)_ and piece of music is _[ Concierto De Aranjuez_ ](https://en.wikipedia.org/wiki/Concierto_de_Aranjuez)_.
+Outside of academia, I've done some work in various backend roles. I enjoy running, music, mathematics and history; i planted around 250,000 trees in the north-west of Canada, my favorite book is _[ The Name of the Rose ](https://it.wikipedia.org/wiki/Il_nome_della_rosa)_ and piece of music is _[ Concierto De Aranjuez ](https://en.wikipedia.org/wiki/Concierto_de_Aranjuez)_.
+
 
 ---
