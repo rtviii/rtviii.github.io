@@ -8,8 +8,8 @@
 :root {
   --global-bg-color: #ffffff;
   --global-code-bg-color: rgba(0, 54, 159, 0.05);
-  --global-text-color: #262730;
-  --global-text-color-light: #262730;
+  --global-text-color: raisin-black-color;
+  --global-text-color-light: raisin-black-color;
   --global-theme-color: #00369f;
   --global-hover-color: #00369f;
   --global-hover-text-color: #ffffff;
@@ -17,7 +17,7 @@
   --global-footer-text-color: #e8e8e8;
   --global-footer-link-color: #ffffff;
   --global-distill-app-color: #828282;
-  --global-divider-color: #DBCFB0;
+  --global-divider-color: #2b303a;
   --global-card-bg-color: #ffffff;
   --global-tip-block: #42b983;
   --global-tip-block-bg: #e2f5ec;
@@ -99,6 +99,30 @@ body {
 }
 body h1, body h2, body h3, body h4, body h5, body h6 {
   scroll-margin-top: 66px;
+}
+
+a:link {
+  color: #0e34a0;
+  background-color: transparent;
+  text-decoration: none;
+}
+
+a:visited {
+  color: #0e34a0;
+  background-color: transparent;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #0e34a0;
+  background-color: transparent;
+  text-decoration: underline;
+}
+
+a:active {
+  color: #0e34a0;
+  background-color: transparent;
+  text-decoration: underline;
 }
 
 body.fixed-top-nav {
