@@ -12,6 +12,30 @@ body {
   }
 }
 
+a:link {
+  color: #{$deft-blue};
+  background-color: transparent;
+  text-decoration: none;
+}
+
+a:visited {
+  color: #{$deft-blue};
+  background-color: transparent;
+  text-decoration: none;
+}
+
+a:hover {
+  color:   #{$deft-blue};
+  background-color: transparent;
+  text-decoration: underline;
+}
+
+a:active {
+  color: #{$deft-blue};
+  background-color: transparent;
+  text-decoration: underline;
+}
+
 body.fixed-top-nav {
   // Add some padding for the nav-bar.
   padding-top: 56px;
