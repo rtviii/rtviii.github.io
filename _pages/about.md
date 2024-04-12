@@ -7,7 +7,7 @@ description: Student | UBC
 
 profile:
   align: right
-  image: me.jpg
+  image: warsaw_vienna.jpg
   image_circular: false # crops the image to make it circular
   address: >
 
