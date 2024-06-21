@@ -3,7 +3,7 @@ layout: about
 title: 'Home'
 permalink: /
 subtitle: <a href='#'>rtkushner@gmail.com</a>
-description: Student | UBC
+description: Kushner
 
 profile:
   align: right
@@ -23,12 +23,9 @@ social: false  # includes social icons at the bottom of the page
 ---
 <!-- ![asissi23.jpg](/assets/img/asissi23.jpg =x250) -->
 
+Howdy, I'm a student in the math department at UBC, Vancouver in [Khanh Dao Duc](https://kdaoduc.com/about/)'s lab.
 
-
-Howdy. I'm a student in the math department at UBC, Vancouver in [Khanh Dao Duc](https://kdaoduc.com/about/)'s lab.
-
-I'm interested in theory of types and compilers, separately, their applications to cryoEM/ET and downstream structural biology.
-<!-- I built and maintain [ribosome.xyz](https://ribosome.xyz/). -->
+I'm interested in theory of types and compilers; separately, ML applications to cryoEM/ET and downstream structural biology, bioninformatics infrastructure. I built and maintain [ribosome.xyz](https://ribosome.xyz/).
 
 Outside of academia, I've done some work in various backend roles. I enjoy running, music, mathematics and history; i planted around 250,000 trees in the north-west of Canada, my favorite book is _[ The Name of the Rose ](https://it.wikipedia.org/wiki/Il_nome_della_rosa)_ and piece of music is _[ Concierto De Aranjuez ](https://en.wikipedia.org/wiki/Concierto_de_Aranjuez)_.
 
