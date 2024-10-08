@@ -1,0 +1,56 @@
+body {
+     font-family: 'Roboto', sans-serif;
+   }
+
+   h1, h2, h3, h4, h5, h6 {
+     font-family: 'Roboto', sans-serif;
+   }
+
+
+
+
+.item {
+  display: flex;
+  margin-bottom: 2em;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 1em;
+}
+
+.item-content {
+  flex: 2;
+  padding-right: 1em;
+}
+
+.item-images {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+
+.item-title {
+  font-size: 1.2em;
+  margin-bottom: 0.3em;
+}
+
+.item-journal, .item-venue {
+  font-style: italic;
+  color: #666;
+  margin-bottom: 0.3em;
+}
+
+.item-authors {
+  font-size: 0.9em;
+  margin-bottom: 0.5em;
+}
+
+.item-abstract {
+  font-size: 0.9em;
+  color: #333;
+}
+
+.item-image {
+  max-width: 150px;
+  max-height: 150px;
+  margin-left: 10px;
+}

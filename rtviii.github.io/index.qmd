@@ -1,0 +1,38 @@
+---
+title: ""
+subtitle: "Artem Kushner ( Артём ) "
+image:  ./img/warsaw_vienna.jpg 
+description-meta: ars longa vita brevis
+
+
+comments: false
+about:
+  template: "trestles"
+  links:
+    - icon: github
+      text: Github
+      href: https://github.com/rtviii
+    - icon: envelope
+      text: Email
+      href: "mailto:rtkushner@gmail.com"
+    - icon: twitter-x
+      text: Twitter
+      href: https://twitter.com/rtkushner
+    - icon: spotify
+      text: Spotify
+      href: https://open.spotify.com/user/3s2branches?si=cad8f707a6084cb1
+
+format:
+  html:
+    css: custom.css
+---
+
+
+Howdy, I'm a former UBC Vancouver student in [Khanh Dao Duc](https://kdaoduc.com/about/)'s lab.
+
+My general interests are in biology, software and mathematics. I have done work in structural biology infrastrucutre, ML applications to cryoEM, the heterogeneity problem and shape analysis. I built and maintain [ribosome.xyz](https://ribosome.xyz/).
+
+Outside of academia, I've had a few backend roles. I enjoy running, music, mathematics, history; i planted around 250,000 trees in the north-west of Canada between 2016 and 2018. My favorite book is _[ The Name of the Rose ](https://it.wikipedia.org/wiki/Il_nome_della_rosa)_ and piece of music is _[ Concierto De Aranjuez ](https://en.wikipedia.org/wiki/Concierto_de_Aranjuez)_.  
+
+I can be reached at `rtkushner@gmail.com`.
+
