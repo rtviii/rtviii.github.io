@@ -5,9 +5,9 @@ listing:
     contents: 
       - work_papers.yaml
       - work_presentations.yaml
-    type: custom
+    type    : custom
     template: item-template.ejs
-    sort: "date desc"
+    sort    : "date desc"
 ---
 
 :::{#combined-listing}

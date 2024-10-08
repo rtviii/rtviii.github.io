@@ -26,7 +26,7 @@
 /* Style the right section (text content) */
 .about-contents {
   grid-column: 2;
-  max-width: 400px;
+  max-width: 600px;
   padding-right: 2rem;
   line-height: 1.6;
 }
