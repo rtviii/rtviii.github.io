@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="ars longa vita brevis">
 
-<title>артём</title>
+<title>Papers – артём</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -32,9 +31,12 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
 <link href="././img/BTNBlink.webp" rel="icon">
+<script src="site_libs/quarto-listing/list.min.js"></script>
+<script src="site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
@@ -68,6 +70,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 <script>
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-combined-listing .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-title','listing-journal','listing-year','listing-authors','listing-url','listing-abstract','listing-type','listing-images','listing-venue','listing-date',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] }],
+      
+      searchColumns: ["listing-title","listing-journal","listing-year","listing-authors","listing-url","listing-abstract","listing-type","listing-images","listing-venue","listing-date"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-combined-listing'] = new List('listing-combined-listing', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  </script>
+<script>
 document.addEventListener('DOMContentLoaded', function() {
   const images = document.querySelectorAll('.zoomable');
   images.forEach(img => {
@@ -78,9 +109,37 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
-<link rel="stylesheet" href="custom.css">
 </head>
 
 <body class="nav-sidebar floating fullcontent">
@@ -92,7 +151,7 @@ document.addEventListener('DOMContentLoaded', function() {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./listing_papers.html">Papers</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -117,7 +176,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./listing_papers.html" class="sidebar-item-text sidebar-link">
+  <a href="./listing_papers.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Papers</span></a>
   </div>
 </li>
@@ -128,46 +187,140 @@ document.addEventListener('DOMContentLoaded', function() {
 <!-- margin-sidebar -->
     
 <!-- main -->
-<div class="quarto-about-trestles">
-  <div class="about-entity">
-    <img src="./img/photos/henri_cartier_bresson_sifnos.jpg" class="about-image
-  rounded " style="width: 20em;">
+<main class="content" id="quarto-document-content">
+
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<p class="subtitle lead">Artem Kushner ( Артём )</p>
+<h1 class="title">Papers</h1>
 </div>
+
+
+
 <div class="quarto-title-meta">
+
+    
+  
+    
   </div>
+  
+
+
 </header>
-    <div class="about-links">
-  <a href="https://github.com/rtviii" class="about-link" rel="" target="">
-    <i class="bi bi-github"></i>
-     <span class="about-link-text">Github</span>
-  </a>
-  <a href="mailto:rtkushner@gmail.com" class="about-link" rel="" target="">
-    <i class="bi bi-envelope"></i>
-     <span class="about-link-text">Email</span>
-  </a>
-  <a href="https://twitter.com/rtkushner" class="about-link" rel="" target="">
-    <i class="bi bi-twitter-x"></i>
-     <span class="about-link-text">Twitter</span>
-  </a>
-  <a href="https://open.spotify.com/user/3s2branches?si=cad8f707a6084cb1" class="about-link" rel="" target="">
-    <i class="bi bi-spotify"></i>
-     <span class="about-link-text">Spotify</span>
-  </a>
-</div>
+
+
+<div id="listing-combined-listing" class="quarto-listing quarto-listing-container-custom">
+
+<div class="item">
+  <div class="item-content">
+    <h3 class="item-title anchored"><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7570653/">Structural heterogeneities of the ribosome: new frontiers and opportunities for cryo-EM</a></h3>
+    
+      <p class="item-journal">Molecules (2020)</p>
+    
+    <p class="item-authors">Frédéric Poitevin, Artem Kushner, Xinpei Li, and Khanh Dao Duc</p>
+    
+      <p class="item-abstract">This paper explores the structural heterogeneities of the ribosome across evolutionary, cellular, temporal and conformational landscapes.</p>
+    
   </div>
-  <div class="about-contents"><main class="content" id="quarto-document-content">
-<p>Hi, I’m a former UBC Vancouver student in <a href="https://kdaoduc.com/about/">Khanh Dao Duc</a>’s lab.</p>
-<p>My general interests are in biology, software and mathematics. I have done work in structural biology infrastrucutre, ML applications to cryoEM, the heterogeneity problem and shape analysis. I built and maintain <a href="https://ribosome.xyz/">ribosome.xyz</a>.</p>
-<p>Outside of academia, I’ve had a few backend roles. I enjoy running, music, mathematics, history; i planted around 250,000 trees in the north-west of Canada between 2016 and 2018. My favorite book is <em><a href="https://it.wikipedia.org/wiki/Il_nome_della_rosa">The Name of the Rose</a></em> and piece of music is <em><a href="https://en.wikipedia.org/wiki/Concierto_de_Aranjuez">Concierto De Aranjuez</a></em>.</p>
-<p>I can be reached at <code>rtkushner@gmail.com</code>.</p>
-
-
-</main></div>
+<div class="item-images">
+    
+      
+        <figure class="item-figure figure">
+          <img src="./resources/paper_teasers/heterogeneities.png" alt="" class="item-image zoomable figure-img">
+          <figcaption></figcaption>
+        </figure>
+      
+    
+  </div>
 </div>
- <!-- /main -->
+
+<div class="item">
+  <div class="item-content">
+    <h3 class="item-title anchored"><a href="https://www.aimspress.com/article/doi/10.3934/math.2022059">Application of transport-based metric for continuous interpolation between cryo-EM density maps</a></h3>
+    
+      <p class="item-journal">AIMS Mathematics (2022)</p>
+    
+    <p class="item-authors">Arthur Ecoffet, Geoffrey Woollard, Artem Kushner, and Frédéric Poitevin, Khanh Dao Duc</p>
+    
+      <p class="item-abstract">We present an approach to interpolating between cryo-EM density maps based on the theory of optimal transport</p>
+    
+  </div>
+<div class="item-images">
+    
+      
+        <figure class="item-figure figure">
+          <img src="./resources/paper_teasers/ot.jpg" alt="" class="item-image zoomable figure-img">
+          <figcaption></figcaption>
+        </figure>
+      
+        <figure class="item-figure figure">
+          <img src="./resources/paper_teasers/morphot_linear.gif" alt="" class="item-image zoomable figure-img">
+          <figcaption></figcaption>
+        </figure>
+      
+        <figure class="item-figure figure">
+          <img src="./resources/paper_teasers/morphot_ot.gif" alt="" class="item-image zoomable figure-img">
+          <figcaption></figcaption>
+        </figure>
+      
+    
+  </div>
+</div>
+
+<div class="item">
+  <div class="item-content">
+    <h3 class="item-title anchored"><a href="https://academic.oup.com/nar/article/51/D1/D509/6777803">RiboXYZ: a comprehensive database for visualizing and analyzing ribosome structures</a></h3>
+    
+      <p class="item-journal">Nucleic Acids Research (2023)</p>
+    
+    <p class="item-authors">Artem Kushner, Anton S. Petrov, and Khanh Dao Duc</p>
+    
+      <p class="item-abstract">https://ribosome.xyz</p>
+    
+  </div>
+<div class="item-images">
+    
+      
+        <figure class="item-figure figure">
+          <img src="./resources/paper_teasers/riboxyz.jpeg" alt="" class="item-image zoomable figure-img">
+          <figcaption></figcaption>
+        </figure>
+      
+    
+  </div>
+</div>
+
+<div class="item">
+  <div class="item-content">
+    <h3 class="item-title anchored"><a href="./resources/papers/ribxz_annotation_pipeline.pdf">Computational methods for unraveling ribosome structural heterogeneity</a></h3>
+    
+      <p class="item-venue">Royal Society: Ribosome Heterogeneity and Specialisation Workshop (Oct 16, 2023)</p>
+    
+    <p class="item-authors">Artem Kushner, Shiqi Yu, Aryan Tajmir Riahi, and Simcha Srebnik, Khanh Dao Duc</p>
+    
+      <p class="item-abstract">We shared some computational methods for analyzing ribosome structural heterogeneity.</p>
+    
+  </div>
+<div class="item-images">
+    
+      
+        <figure class="item-figure figure">
+          <img src="./resources/paper_teasers/riboxyz_classes.png" alt="" class="item-image zoomable figure-img">
+          <figcaption></figcaption>
+        </figure>
+      
+    
+  </div>
+</div>
+
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div>
+
+
+
+
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -188,6 +341,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
   toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
   const isCodeAnnotation = (el) => {
     for (const clz of el.classList) {
       if (clz.startsWith('code-annotation-')) {                     
