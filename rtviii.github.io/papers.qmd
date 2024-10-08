@@ -1,0 +1,15 @@
+---
+title: "Papers"
+listing:
+  - id: combined-listing
+    contents: 
+      - work_papers.yaml
+      - work_presentations.yaml
+    type: custom
+    template: item-template.ejs
+    sort: "date desc"
+---
+
+:::{#combined-listing}
+:::
+

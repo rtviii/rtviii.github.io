@@ -1,0 +1,19 @@
+freeze: true
+
+title-block-banner: true
+license: "CC BY-NC"
+
+#table of contents
+toc: true
+toc-title: Table of Contents
+toc-location: left
+toc-depth: 2
+
+
+#default author
+author:
+  - name: Artem Kushner
+  - url: https://rtviii.xyz
+
+#citation stuff
+citation: true
