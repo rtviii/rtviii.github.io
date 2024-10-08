@@ -13,11 +13,14 @@
       <p class="item-abstract"><%= item.abstract %></p>
     <% } %>
   </div>
-  <div class="item-images">
+<div class="item-images">
     <% if (item.images && item.images.length > 0) { %>
-      <% for (const image of item.images) { %>
-        <img src="<%= image %>" alt="Item illustration" class="item-image">
-      <% } %>
+      <% item.images.forEach((image, index) => { %>
+        <figure class="item-figure">
+          <img src="<%= image.src %>" alt="<%= image.caption %>" class="item-image zoomable">
+          <figcaption><%= image.caption %></figcaption>
+        </figure>
+      <% }) %>
     <% } %>
   </div>
 </div>

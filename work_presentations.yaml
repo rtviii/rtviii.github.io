@@ -6,4 +6,5 @@
   abstract: "We shared some computational methods for analyzing ribosome structural heterogeneity."
   type    : presentation
   images  : 
-    - ./resources/paper_teasers/riboxyz_classes.png
+    - src: ./resources/paper_teasers/riboxyz_classes.png
+      caption : ""

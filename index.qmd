@@ -1,7 +1,7 @@
 ---
 title: ""
 subtitle: "Artem Kushner ( Артём ) "
-image:  ./img/photos/henri_cartier_bresson_sifnos.jpg
+image: ./img/photos/henri_cartier_bresson_sifnos.jpg
 description-meta: ars longa vita brevis
 
 

@@ -6,7 +6,8 @@
   abstract: "This paper explores the structural heterogeneities of the ribosome across evolutionary, cellular, temporal and conformational landscapes."
   type    : paper
   images  : 
-    - ./resources/paper_teasers/heterogeneities.png
+    - src: ./resources/paper_teasers/heterogeneities.png
+      caption : ""
 - title  : "Application of transport-based metric for continuous interpolation between cryo-EM density maps"
   journal: "AIMS Mathematics"
 
@@ -16,7 +17,12 @@
   abstract: "We present an approach to interpolating between cryo-EM density maps based on the theory of optimal transport"
   type    : paper
   images  : 
-    - ./resources/paper_teasers/ot.jpg
+    - src: ./resources/paper_teasers/ot.jpg
+      caption : ""
+    - src: ./resources/paper_teasers/morphot_linear.gif
+      caption : ""
+    - src: ./resources/paper_teasers/morphot_ot.gif
+      caption : ""
 
 
 - title   : "RiboXYZ: a comprehensive database for visualizing and analyzing ribosome structures"
@@ -27,4 +33,5 @@
   abstract: "https://ribosome.xyz"
   type    : paper
   images  : 
-    - ./resources/paper_teasers/riboxyz.jpeg
+    - src: ./resources/paper_teasers/riboxyz.jpeg
+      caption : ""
