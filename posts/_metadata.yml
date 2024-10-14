@@ -1,4 +1,4 @@
-freeze: true
+freeze: auto
 
 title-block-banner: true
 license: "CC BY-NC"
