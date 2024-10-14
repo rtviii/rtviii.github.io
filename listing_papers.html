@@ -98,6 +98,16 @@ ul.task-list li input[type="checkbox"] {
     }
   })
   </script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const images = document.querySelectorAll('.zoomable');
+  images.forEach(img => {
+    img.addEventListener('click', function() {
+      this.classList.toggle('zoomed');
+    });
+  });
+});
+</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -170,6 +180,12 @@ window.Quarto = {
  <span class="menu-text">Papers</span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./blog.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Blog</span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -211,10 +227,13 @@ window.Quarto = {
       <p class="item-abstract">This paper explores the structural heterogeneities of the ribosome across evolutionary, cellular, temporal and conformational landscapes.</p>
     
   </div>
-  <div class="item-images">
+<div class="item-images">
     
       
-        <img src="./resources/paper_teasers/heterogeneities.png" alt="Item illustration" class="item-image">
+        <figure class="item-figure figure">
+          <img src="./resources/paper_teasers/heterogeneities.png" alt="" class="item-image zoomable figure-img">
+          <figcaption></figcaption>
+        </figure>
       
     
   </div>
@@ -231,10 +250,23 @@ window.Quarto = {
       <p class="item-abstract">We present an approach to interpolating between cryo-EM density maps based on the theory of optimal transport</p>
     
   </div>
-  <div class="item-images">
+<div class="item-images">
     
       
-        <img src="./resources/paper_teasers/ot.jpg" alt="Item illustration" class="item-image">
+        <figure class="item-figure figure">
+          <img src="./resources/paper_teasers/ot.jpg" alt="" class="item-image zoomable figure-img">
+          <figcaption></figcaption>
+        </figure>
+      
+        <figure class="item-figure figure">
+          <img src="./resources/paper_teasers/morphot_linear.gif" alt="" class="item-image zoomable figure-img">
+          <figcaption></figcaption>
+        </figure>
+      
+        <figure class="item-figure figure">
+          <img src="./resources/paper_teasers/morphot_ot.gif" alt="" class="item-image zoomable figure-img">
+          <figcaption></figcaption>
+        </figure>
       
     
   </div>
@@ -251,10 +283,13 @@ window.Quarto = {
       <p class="item-abstract">https://ribosome.xyz</p>
     
   </div>
-  <div class="item-images">
+<div class="item-images">
     
       
-        <img src="./resources/paper_teasers/riboxyz.jpeg" alt="Item illustration" class="item-image">
+        <figure class="item-figure figure">
+          <img src="./resources/paper_teasers/riboxyz.jpeg" alt="" class="item-image zoomable figure-img">
+          <figcaption></figcaption>
+        </figure>
       
     
   </div>
@@ -271,10 +306,13 @@ window.Quarto = {
       <p class="item-abstract">We shared some computational methods for analyzing ribosome structural heterogeneity.</p>
     
   </div>
-  <div class="item-images">
+<div class="item-images">
     
       
-        <img src="./resources/paper_teasers/riboxyz_classes.png" alt="Item illustration" class="item-image">
+        <figure class="item-figure figure">
+          <img src="./resources/paper_teasers/riboxyz_classes.png" alt="" class="item-image zoomable figure-img">
+          <figcaption></figcaption>
+        </figure>
       
     
   </div>
