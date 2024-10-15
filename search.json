@@ -7,6 +7,30 @@
     "text": "Hi, I’m a former UBC Vancouver student in Khanh Dao Duc’s lab.\nMy general interests are in biology, software and mathematics. I have done work in structural biology infrastrucutre, ML applications to cryoEM, the heterogeneity problem and shape analysis. I built and maintain ribosome.xyz.\nOutside of academia, I’ve had a few backend roles. I enjoy running, music, mathematics, history; i planted around 250,000 trees in the north-west of Canada between 2016 and 2018. My favorite book is The Name of the Rose and piece of music is Concierto De Aranjuez.\nI can be reached at rtkushner@gmail.com."
   },
   {
+    "objectID": "dotfiles/x_stuff.html",
+    "href": "dotfiles/x_stuff.html",
+    "title": "clipboard",
+    "section": "",
+    "text": "clipboard\nIt’s clipmenud + rofi + xbindkeys for me.\nConfigure rofi to suit keyb needs . - CM_LAUNCHER='rofi' somewhere in zshrc, - In ~/.xbindkeysrc: \"clipmenu\"       Control+Alt + c # tmux"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "TODO"
+  },
+  {
+    "objectID": "listing_papers.html",
+    "href": "listing_papers.html",
+    "title": "Papers",
+    "section": "",
+    "text": "Structural heterogeneities of the ribosome: new frontiers and opportunities for cryo-EM\n    \n      Molecules (2020)\n    \n    Frédéric Poitevin, Artem Kushner, Xinpei Li, and Khanh Dao Duc\n    \n      This paper explores the structural heterogeneities of the ribosome across evolutionary, cellular, temporal and conformational landscapes.\n    \n  \n\n    \n      \n        \n          \n          \n        \n      \n    \n  \n\n\n\n  \n    Application of transport-based metric for continuous interpolation between cryo-EM density maps\n    \n      AIMS Mathematics (2022)\n    \n    Arthur Ecoffet, Geoffrey Woollard, Artem Kushner, and Frédéric Poitevin, Khanh Dao Duc\n    \n      We present an approach to interpolating between cryo-EM density maps based on the theory of optimal transport\n    \n  \n\n    \n      \n        \n          \n          \n        \n      \n        \n          \n          \n        \n      \n        \n          \n          \n        \n      \n    \n  \n\n\n\n  \n    RiboXYZ: a comprehensive database for visualizing and analyzing ribosome structures\n    \n      Nucleic Acids Research (2023)\n    \n    Artem Kushner, Anton S. Petrov, and Khanh Dao Duc\n    \n      https://ribosome.xyz\n    \n  \n\n    \n      \n        \n          \n          \n        \n      \n    \n  \n\n\n\n  \n    Computational methods for unraveling ribosome structural heterogeneity\n    \n      Royal Society: Ribosome Heterogeneity and Specialisation Workshop (Oct 16, 2023)\n    \n    Artem Kushner, Shiqi Yu, Aryan Tajmir Riahi, and Simcha Srebnik, Khanh Dao Duc\n    \n      We shared some computational methods for analyzing ribosome structural heterogeneity.\n    \n  \n\n    \n      \n        \n          \n          \n        \n      \n    \n  \n\n\n\nNo matching items",
+    "crumbs": [
+      "Papers"
+    ]
+  },
+  {
     "objectID": "posts/ribosome-tunnel-new/index.html",
     "href": "posts/ribosome-tunnel-new/index.html",
     "title": "3D tessellation of biomolecular cavities",
@@ -47,23 +71,6 @@
     "title": "3D tessellation of biomolecular cavities",
     "section": "Result",
     "text": "Result\nWhat you are left with is a smooth polygonal mesh in the .ply format. Below is the illustration of the fidelity of the representation. Folds and depressions can clearly be seen engendered by three proteins surrounding parts of the tunnel (uL22 yellow, uL4 light blue and eL39 magenta). rRNA is not shown.6\n\n\n\nThe NPET mesh surrounded by by three ribosome proteins"
-  },
-  {
-    "objectID": "listing_papers.html",
-    "href": "listing_papers.html",
-    "title": "Papers",
-    "section": "",
-    "text": "Structural heterogeneities of the ribosome: new frontiers and opportunities for cryo-EM\n    \n      Molecules (2020)\n    \n    Frédéric Poitevin, Artem Kushner, Xinpei Li, and Khanh Dao Duc\n    \n      This paper explores the structural heterogeneities of the ribosome across evolutionary, cellular, temporal and conformational landscapes.\n    \n  \n\n    \n      \n        \n          \n          \n        \n      \n    \n  \n\n\n\n  \n    Application of transport-based metric for continuous interpolation between cryo-EM density maps\n    \n      AIMS Mathematics (2022)\n    \n    Arthur Ecoffet, Geoffrey Woollard, Artem Kushner, and Frédéric Poitevin, Khanh Dao Duc\n    \n      We present an approach to interpolating between cryo-EM density maps based on the theory of optimal transport\n    \n  \n\n    \n      \n        \n          \n          \n        \n      \n        \n          \n          \n        \n      \n        \n          \n          \n        \n      \n    \n  \n\n\n\n  \n    RiboXYZ: a comprehensive database for visualizing and analyzing ribosome structures\n    \n      Nucleic Acids Research (2023)\n    \n    Artem Kushner, Anton S. Petrov, and Khanh Dao Duc\n    \n      https://ribosome.xyz\n    \n  \n\n    \n      \n        \n          \n          \n        \n      \n    \n  \n\n\n\n  \n    Computational methods for unraveling ribosome structural heterogeneity\n    \n      Royal Society: Ribosome Heterogeneity and Specialisation Workshop (Oct 16, 2023)\n    \n    Artem Kushner, Shiqi Yu, Aryan Tajmir Riahi, and Simcha Srebnik, Khanh Dao Duc\n    \n      We shared some computational methods for analyzing ribosome structural heterogeneity.\n    \n  \n\n    \n      \n        \n          \n          \n        \n      \n    \n  \n\n\n\nNo matching items",
-    "crumbs": [
-      "Papers"
-    ]
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "TODO"
   },
   {
     "objectID": "blog.html",
