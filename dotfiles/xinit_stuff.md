@@ -8,7 +8,7 @@ Configure rofi to suit keyb needs .
 - In `~/.xbindkeysrc`:
     ```
     "clipmenu"
-      Control+Alt + c
+      Control+Alt + r
     ```
 # tmux
 

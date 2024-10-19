@@ -17,32 +17,25 @@ website:
     border: true
     collapse-level: 1
     contents:
+
       - text: "CV"
         href: ./resources/kushner_cv.pdf
+
       - text: "Papers"
         href: ./listing_papers.qmd
+
       - text: "Blog"
         href: ./blog.qmd
 
-      # - section: "Ribosome"
-      #   href: ./resources/kushner_cv.pdf
+      # - text: "Libary"
+      #   href: ./library.qmd
+
+      # - text: "People"
+      #   href: ./people.qmd
+
+
 
       # - section: "Computer Stuff"
-      #   href: ./resources/kushner_cv.pdf
-
-      # - section: "Pics"
-      #   href: ./resources/kushner_cv.pdf
-
-      # - section: "Music"
-      #   href: ./resources/kushner_cv.pdf
-
-      # - section: "Math"
-      #   href: ./resources/kushner_cv.pdf
-
-      # - section: "People"
-      #   href: ./resources/kushner_cv.pdf
-
-      # - section: "Other"
       #   href: ./resources/kushner_cv.pdf
 
 
