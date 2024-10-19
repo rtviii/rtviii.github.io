@@ -476,6 +476,13 @@ What you are left with is a smooth polygonal mesh in the `.ply` format. Below is
 
 
 
+## Improvements needed for this protocol:
+
+- eliminate radial plot dependency. This could be done by fitting a plane to the tunnel vestibule through a few conserved sites and aligning it to be normal to the PTC, dropping a cylinder with a liberal radius between the plane the ptc. 
+
+- automatic choice of cluster. for larger radii of bbox expansion the largest dbscan cluster doesnt necessarily correspond to the tunnel. 
+
+
 
 
 ## References
