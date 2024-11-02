@@ -27,7 +27,7 @@ format:
     css: custom.css
 ---
 
-Hi, I'm a ~~treeplanter~~,
+Hi, I'm ~~a treeplanter~~,
 ~~landscaper~~ ,
 ~~addict~~ ,
 ~~biochemistry student at SFU, Burnaby~~,
@@ -36,7 +36,7 @@ Hi, I'm a ~~treeplanter~~,
 ~~backend developer at Staking Facilities GmbH~~,
 ~~mathematics student at UBC, Vancouver~~,
 ~~Research Technician in [Khanh Dao Duc](https://kdaoduc.com/about/)'s lab~~,
-figuring it out at the moment.
+figuring it out again at the moment.
 
 
 My general interests are in biology, software and mathematics. I have done work in structural biology infrastrucutre, ML applications to cryoEM, the heterogeneity problem and shape analysis. I built and maintain [ribosome.xyz](https://ribosome.xyz/).
