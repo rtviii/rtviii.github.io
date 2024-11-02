@@ -9,6 +9,7 @@ author:
 
 date: "August 4 2024"
 categories: [ cryo-EM]    
+latex-auto-install: true
 execute:
   freeze: auto
 ---
@@ -326,7 +327,7 @@ Second pass of DBSCAN sharpens the cluster to peel off the outer layer of redund
 :::
 
 
-## 3. Tessellation
+## 3. Surface Reconstruction
 
 
 ::: {#ptcloud_convex_hull_points .callout-note collapse="true" icon="false"}
@@ -468,11 +469,63 @@ apply_poisson_recon(pointcloud, recon_depth=PR_depth, recon_pt_weight=PR_ptweigh
 
 
 
+### Poisson Surface Reconstruction in a few Eqns:
+
+Define basis functions space. $o.c$, $o.w$ are parameters of the octree:
+$$
+\begin{equation*}
+    F_o(q) \equiv F\left(\frac{q-o.c}{o.w}\right)\frac{1}{o.w^3}
+\end{equation*}
+$$
+    
+        
+Pick a basis function. $B$ is just a "box-function":
+
+$$
+        \begin{align*}
+            F(x,y,z) &\equiv (B(x)B(y)B(z))^{*n} \\
+            \text{with } B(t) &= 
+            \begin{cases}
+                1 & |t| < 0.5 \\
+                0 & \text{otherwise}
+            \end{cases}
+        \end{align*}
+$$
+        
+        
+Define vector field from points of your ptcloud:
+$$
+        \begin{equation*}
+            \bar{V}(q) \equiv \sum_{s\in S}\sum_{o\in\text{Ngbr}_D(s)}\alpha_{o,s}F_o(q)s.\vec{N}
+        \end{equation*}
+$$
+        \vspace{0.5em}
+        
+Solve Poisson eqn. in $\chi$ and $V$(least squares):
+$$
+        \begin{align*}
+            \sum_{o\in\mathcal{O}}\|\langle\Delta\tilde{\chi}-\nabla\cdot\bar{V},F_o\rangle\|^2 = \\
+            \sum_{o\in\mathcal{O}}\|\langle\Delta\tilde{\chi},F_o\rangle-\langle\nabla\cdot\bar{V},F_o\rangle\|^2
+        \end{align*}
+$$
+        
+        
+Trace the isosurface through the solution (that's your implicit surface):
+$$
+        \begin{align*}
+            \partial\tilde{M} &\equiv \{q\in\mathbb{R}^3 | \tilde{\chi}(q)=\gamma\} \\
+            \text{with } \gamma &= \frac{1}{|S|}\sum_{s\in S}\tilde{\chi}(s.p)
+        \end{align*}
+$$
+
 ## Result
 
 What you are left with is a smooth polygonal mesh in the `.ply` format. Below is the illustration of the fidelity of the representation. Folds and depressions can clearly be seen engendered by three proteins surrounding parts of the tunnel (uL22 _yellow_, uL4 _light blue_ and eL39 _magenta_). rRNA is not shown.[@zhou2018open3d,@sullivan2019pyvista]
 
 ![The NPET mesh surrounded by by three ribosome proteins](./data/tunnel_proteins.gif)
+
+
+
 
 
 
