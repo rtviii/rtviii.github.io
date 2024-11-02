@@ -68,7 +68,7 @@ Schematic representation of the protocol
 </div>
 <div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="f102521e" class="cell" data-execution_count="1">
+<div id="0748e2f2" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
@@ -262,7 +262,7 @@ font-style: inherit;">return</span> np.array(sphere_active_ix)</span></code></pr
 </div>
 <div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="2f4c780a" class="cell" data-execution_count="2">
+<div id="005718bd" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
@@ -445,7 +445,7 @@ font-style: inherit;">return</span> ( vox_grid, grid_dimensions, mean_abs_vector
 </div>
 </div>
 <p><strong>Bbox</strong>: There are many ways to extract a point cloud from a larger biological structure – in this case we settle for a bounding box that bounds the space between the PTC and the NPET vestibule.</p>
-<div id="359c7c4a" class="cell" data-execution_count="3">
+<div id="2df8ce03" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># "bounding_box_atoms.npy" is a N,3 array of atom coordinates</span></span>
@@ -458,7 +458,7 @@ font-style: inherit;">"bounding_box_atoms.npy"</span>) </span></code></pre></div
 </div>
 <p><strong>Sphering</strong>: To make the representation of atoms slightly more physically-plausible we replace each atom-center coordinate with positions of voxels that fall within a sphere of radius <img src="https://latex.codecogs.com/png.latex?R"> around the atom’s position. This is meant to represent the atom’s van der Waals radius.</p>
 <p>One could model different types of atoms (<img src="https://latex.codecogs.com/png.latex?N">,<img src="https://latex.codecogs.com/png.latex?C">,<img src="https://latex.codecogs.com/png.latex?O">,<img src="https://latex.codecogs.com/png.latex?H"> etc.) with separate radii, but taking <img src="https://latex.codecogs.com/png.latex?R=2"> proves a good enough compromise. The units are Angstrom and correspond to the coordinate system in which the structure of the ribosome is recorded.</p>
-<div id="d2218a22" class="cell" data-execution_count="4">
+<div id="22ba5f63" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1">voxel_spheres <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> np.array([ atompos_to_voxel_sphere(atom, <span class="dv" style="color: #AD0000;
@@ -472,7 +472,7 @@ font-weight: bold;
 font-style: inherit;">in</span> atom_centers ])</span></code></pre></div>
 </div>
 <p><strong>Voxelization &amp; Inversion</strong>: Since we are interested in the “empty space” between the atoms, we need a way to capture it. To make this possible we discretize the space by projecting the (sphered) point cloud into a voxel grid and invert the grid.</p>
-<div id="eddb01e8" class="cell" data-execution_count="5">
+<div id="6cc55df7" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># the grid is a binary 3D-array </span></span>
@@ -555,7 +555,7 @@ Figure&nbsp;1: Pointcloud inversion via a voxel grid.
 </div>
 <div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="6304793f" class="cell" data-execution_count="6">
+<div id="bd9ad932" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> sklearn.cluster <span class="im" style="color: #00769E;
@@ -684,7 +684,7 @@ font-style: inherit;">return</span> db, CLUSTERS_CONTAINER</span></code></pre></
 </div>
 <div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="08379943" class="cell" data-execution_count="7">
+<div id="04cadefb" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> sklearn.cluster <span class="im" style="color: #00769E;
@@ -755,7 +755,7 @@ font-style: inherit;">return</span> np.array(clusters_container[DBSCAN_CLUSTER_I
 </div>
 <p><strong>Clustering</strong>: Having obtained a voxelized representation of the interatomic spaces inside and around the NPET our task is now to extract <em>only the space</em> that <em>corresponds to the NPET</em>. We use <a href="https://en.wikipedia.org/wiki/DBSCAN">DBSCAN</a>.</p>
 <p><code>scikit</code>’s implementation of <code>DBSCAN</code> conveniently lets us retrieve the points from the largest cluster only, which corresponds to the active voxels of NPET space (if we eyeballed our DBSCAN parameters well).</p>
-<div id="1c58ccdf" class="cell" data-execution_count="8">
+<div id="3c0c780c" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> scikit.cluster <span class="im" style="color: #00769E;
@@ -860,8 +860,8 @@ Figure&nbsp;2: Second pass of DBSCAN sharpens the cluster to peel off the outer 
 </div>
 </div>
 </section>
-<section id="tessellation" class="level2">
-<h2 class="anchored" data-anchor-id="tessellation">3. Tessellation</h2>
+<section id="surface-reconstruction" class="level2">
+<h2 class="anchored" data-anchor-id="surface-reconstruction">3. Surface Reconstruction</h2>
 <div id="ptcloud_convex_hull_points" class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -875,7 +875,7 @@ Figure&nbsp;2: Second pass of DBSCAN sharpens the cluster to peel off the outer 
 <div id="callout-8" class="callout-8-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Surface points can be extracted by creating an alpha shape over the point cloud and taking only the points that belong to the alpha surface.</p>
-<div id="20bad453" class="cell" data-execution_count="9">
+<div id="c92c59e9" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> pyvista <span class="im" style="color: #00769E;
@@ -992,7 +992,7 @@ Figure&nbsp;3: Alpha shape provides a way to identify surface points.
 <div id="callout-9" class="callout-9-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Normal estimation is done via rolling a tangent plane over the surface points.</p>
-<div id="1c6b2b54" class="cell" data-execution_count="10">
+<div id="fdc99393" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> pyvista <span class="im" style="color: #00769E;
@@ -1071,7 +1071,7 @@ font-style: inherit;">return</span> pcd</span></code></pre></div>
 <div class="callout-body-container callout-body">
 <p>The source is available at <a href="https://github.com/mkazhdan/PoissonRecon">https://github.com/mkazhdan/PoissonRecon</a>. For programmability we connect the binary to the pipeline by wrapping it in a python <code>subprocess</code> but one can of course use the binary directly.</p>
 <p>The output of the binary is a binary <code>.ply</code> (Stanford Triangle Format) file. For purposes of distribution we also produce an <code>asciii</code>-encoded version of this <code>.ply</code> file side-by-side: some geometry packages are only able to parse the <code>ascii</code> version.</p>
-<div id="2e3f0c58" class="cell" data-execution_count="11">
+<div id="6a8adea8" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
@@ -1217,7 +1217,7 @@ font-style: inherit;">"&gt;&gt;Error:"</span>, process.stderr)</span></code></pr
 <li>retrieve only the “surface” points from the pointcloud</li>
 <li>estimate <em>normals</em> on the surface points (establish data orientation)</li>
 </ul>
-<div id="80853f12" class="cell" data-execution_count="12">
+<div id="f4ea7f6b" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1">d3d_alpha, d3d_tol     <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
@@ -1246,7 +1246,7 @@ background-color: null;
 font-style: inherit;">10</span>)</span></code></pre></div>
 </div>
 <p>The dataset is now ready for surface reconstruction. We reach for Poisson surface reconstruction<span class="citation" data-cites="kazhdan2006poisson"><sup>4</sup></span> by <em>Kazhdan</em> and <em>Hoppe</em>, a de facto standard in the field.</p>
-<div id="b5bb6e3e" class="cell" data-execution_count="13">
+<div id="456e329e" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1">PR_depth , PR_ptweight <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
@@ -1260,6 +1260,15 @@ font-style: inherit;">=</span>PR_depth, recon_pt_weight<span class="op" style="c
 background-color: null;
 font-style: inherit;">=</span>PR_ptweight)</span></code></pre></div>
 </div>
+<section id="poisson-surface-reconstruction-in-a-few-eqns" class="level3">
+<h3 class="anchored" data-anchor-id="poisson-surface-reconstruction-in-a-few-eqns">Poisson Surface Reconstruction in a few Eqns:</h3>
+<p>Define basis functions space. <img src="https://latex.codecogs.com/png.latex?o.c">, <img src="https://latex.codecogs.com/png.latex?o.w"> are parameters of the octree: <img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Bequation*%7D%0A%20%20%20%20F_o(q)%20%5Cequiv%20F%5Cleft(%5Cfrac%7Bq-o.c%7D%7Bo.w%7D%5Cright)%5Cfrac%7B1%7D%7Bo.w%5E3%7D%0A%5Cend%7Bequation*%7D%0A"></p>
+<p>Pick a basis function. <img src="https://latex.codecogs.com/png.latex?B"> is just a “box-function”:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%20%20%20%20%20%20%20%20%5Cbegin%7Balign*%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20F(x,y,z)%20&amp;%5Cequiv%20(B(x)B(y)B(z))%5E%7B*n%7D%20%5C%5C%0A%20%20%20%20%20%20%20%20%20%20%20%20%5Ctext%7Bwith%20%7D%20B(t)%20&amp;=%0A%20%20%20%20%20%20%20%20%20%20%20%20%5Cbegin%7Bcases%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%201%20&amp;%20%7Ct%7C%20%3C%200.5%20%5C%5C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%200%20&amp;%20%5Ctext%7Botherwise%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20%5Cend%7Bcases%7D%0A%20%20%20%20%20%20%20%20%5Cend%7Balign*%7D%0A"></p>
+<p>Define vector field from points of your ptcloud: <img src="https://latex.codecogs.com/png.latex?%0A%20%20%20%20%20%20%20%20%5Cbegin%7Bequation*%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20%5Cbar%7BV%7D(q)%20%5Cequiv%20%5Csum_%7Bs%5Cin%20S%7D%5Csum_%7Bo%5Cin%5Ctext%7BNgbr%7D_D(s)%7D%5Calpha_%7Bo,s%7DF_o(q)s.%5Cvec%7BN%7D%0A%20%20%20%20%20%20%20%20%5Cend%7Bequation*%7D%0A"> </p>
+<p>Solve Poisson eqn. in <img src="https://latex.codecogs.com/png.latex?%5Cchi"> and <img src="https://latex.codecogs.com/png.latex?V">(least squares): <img src="https://latex.codecogs.com/png.latex?%0A%20%20%20%20%20%20%20%20%5Cbegin%7Balign*%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20%5Csum_%7Bo%5Cin%5Cmathcal%7BO%7D%7D%5C%7C%5Clangle%5CDelta%5Ctilde%7B%5Cchi%7D-%5Cnabla%5Ccdot%5Cbar%7BV%7D,F_o%5Crangle%5C%7C%5E2%20=%20%5C%5C%0A%20%20%20%20%20%20%20%20%20%20%20%20%5Csum_%7Bo%5Cin%5Cmathcal%7BO%7D%7D%5C%7C%5Clangle%5CDelta%5Ctilde%7B%5Cchi%7D,F_o%5Crangle-%5Clangle%5Cnabla%5Ccdot%5Cbar%7BV%7D,F_o%5Crangle%5C%7C%5E2%0A%20%20%20%20%20%20%20%20%5Cend%7Balign*%7D%0A"></p>
+<p>Trace the isosurface through the solution (that’s your implicit surface): <img src="https://latex.codecogs.com/png.latex?%0A%20%20%20%20%20%20%20%20%5Cbegin%7Balign*%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20%5Cpartial%5Ctilde%7BM%7D%20&amp;%5Cequiv%20%5C%7Bq%5Cin%5Cmathbb%7BR%7D%5E3%20%7C%20%5Ctilde%7B%5Cchi%7D(q)=%5Cgamma%5C%7D%20%5C%5C%0A%20%20%20%20%20%20%20%20%20%20%20%20%5Ctext%7Bwith%20%7D%20%5Cgamma%20&amp;=%20%5Cfrac%7B1%7D%7B%7CS%7C%7D%5Csum_%7Bs%5Cin%20S%7D%5Ctilde%7B%5Cchi%7D(s.p)%0A%20%20%20%20%20%20%20%20%5Cend%7Balign*%7D%0A"></p>
+</section>
 </section>
 <section id="result" class="level2">
 <h2 class="anchored" data-anchor-id="result">Result</h2>
@@ -1270,6 +1279,13 @@ font-style: inherit;">=</span>PR_ptweight)</span></code></pre></div>
 <figcaption>The NPET mesh surrounded by by three ribosome proteins</figcaption>
 </figure>
 </div>
+</section>
+<section id="improvements-needed-for-this-protocol" class="level2">
+<h2 class="anchored" data-anchor-id="improvements-needed-for-this-protocol">Improvements needed for this protocol:</h2>
+<ul>
+<li><p>eliminate radial plot dependency. This could be done by fitting a plane to the tunnel vestibule through a few conserved sites and aligning it to be normal to the PTC, dropping a cylinder with a liberal radius between the plane the ptc.</p></li>
+<li><p>automatic choice of cluster. for larger radii of bbox expansion the largest dbscan cluster doesnt necessarily correspond to the tunnel.</p></li>
+</ul>
 </section>
 <section id="references" class="level2">
 

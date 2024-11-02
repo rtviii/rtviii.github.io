@@ -254,8 +254,9 @@ window.Quarto = {
   <li><a href="#summary-and-background" id="toc-summary-and-background" class="nav-link active" data-scroll-target="#summary-and-background">Summary and Background</a></li>
   <li><a href="#pointcloud-preparation-bounding-box-and-voxelization" id="toc-pointcloud-preparation-bounding-box-and-voxelization" class="nav-link" data-scroll-target="#pointcloud-preparation-bounding-box-and-voxelization">1. Pointcloud Preparation: Bounding Box and Voxelization</a></li>
   <li><a href="#subcloud-extraction" id="toc-subcloud-extraction" class="nav-link" data-scroll-target="#subcloud-extraction">2. Subcloud Extraction</a></li>
-  <li><a href="#tessellation" id="toc-tessellation" class="nav-link" data-scroll-target="#tessellation">3. Tessellation</a></li>
+  <li><a href="#surface-reconstruction" id="toc-surface-reconstruction" class="nav-link" data-scroll-target="#surface-reconstruction">3. Surface Reconstruction</a></li>
   <li><a href="#result" id="toc-result" class="nav-link" data-scroll-target="#result">Result</a></li>
+  <li><a href="#improvements-needed-for-this-protocol" id="toc-improvements-needed-for-this-protocol" class="nav-link" data-scroll-target="#improvements-needed-for-this-protocol">Improvements needed for this protocol:</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 </nav>
@@ -317,7 +318,7 @@ Schematic representation of the protocol
 </div>
 <div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="f102521e" class="cell" data-execution_count="1">
+<div id="0748e2f2" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> atompos_to_voxelized_sphere(center: np.ndarray, radius: <span class="bu">int</span>):</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Make sure radius reflects the size of the underlying voxel grid"""</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    x0, y0, z0 <span class="op">=</span> center</span>
@@ -374,7 +375,7 @@ Schematic representation of the protocol
 </div>
 <div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="2f4c780a" class="cell" data-execution_count="2">
+<div id="005718bd" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> index_grid(expanded_sphere_voxels: np.ndarray) :</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> normalize_atom_coordinates(coordinates: np.ndarray)<span class="op">-&gt;</span><span class="bu">tuple</span>[ np.ndarray, np.ndarray ]:</span>
@@ -423,18 +424,18 @@ Schematic representation of the protocol
 </div>
 </div>
 <p><strong>Bbox</strong>: There are many ways to extract a point cloud from a larger biological structure – in this case we settle for a bounding box that bounds the space between the PTC and the NPET vestibule.</p>
-<div id="359c7c4a" class="cell" data-execution_count="3">
+<div id="2df8ce03" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># "bounding_box_atoms.npy" is a N,3 array of atom coordinates</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>atom_centers <span class="op">=</span> np.load(<span class="st">"bounding_box_atoms.npy"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><strong>Sphering</strong>: To make the representation of atoms slightly more physically-plausible we replace each atom-center coordinate with positions of voxels that fall within a sphere of radius <span class="math inline">\(R\)</span> around the atom’s position. This is meant to represent the atom’s van der Waals radius.</p>
 <p>One could model different types of atoms (<span class="math inline">\(N\)</span>,<span class="math inline">\(C\)</span>,<span class="math inline">\(O\)</span>,<span class="math inline">\(H\)</span> etc.) with separate radii, but taking <span class="math inline">\(R=2\)</span> proves a good enough compromise. The units are Angstrom and correspond to the coordinate system in which the structure of the ribosome is recorded.</p>
-<div id="d2218a22" class="cell" data-execution_count="4">
+<div id="22ba5f63" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>voxel_spheres <span class="op">=</span> np.array([ atompos_to_voxel_sphere(atom, <span class="dv">2</span>) <span class="cf">for</span> atom <span class="kw">in</span> atom_centers ])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><strong>Voxelization &amp; Inversion</strong>: Since we are interested in the “empty space” between the atoms, we need a way to capture it. To make this possible we discretize the space by projecting the (sphered) point cloud into a voxel grid and invert the grid.</p>
-<div id="eddb01e8" class="cell" data-execution_count="5">
+<div id="6cc55df7" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the grid is a binary 3D-array </span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># with 1s where a normalized 3D-coordinate of an atom corresponds to the cell index and 0s elsewhere</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -497,7 +498,7 @@ Figure&nbsp;1: Pointcloud inversion via a voxel grid.
 </div>
 <div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="6304793f" class="cell" data-execution_count="6">
+<div id="bd9ad932" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> DBSCAN</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> DBSCAN_capture(</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    ptcloud: np.ndarray,</span>
@@ -541,7 +542,7 @@ Figure&nbsp;1: Pointcloud inversion via a voxel grid.
 </div>
 <div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="08379943" class="cell" data-execution_count="7">
+<div id="04cadefb" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> DBSCAN</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> DBSCAN_pick_largest_cluster(clusters_container:<span class="bu">dict</span>[<span class="bu">int</span>,<span class="bu">list</span>])<span class="op">-&gt;</span>np.ndarray:</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    DBSCAN_CLUSTER_ID <span class="op">=</span> <span class="dv">0</span></span>
@@ -557,7 +558,7 @@ Figure&nbsp;1: Pointcloud inversion via a voxel grid.
 </div>
 <p><strong>Clustering</strong>: Having obtained a voxelized representation of the interatomic spaces inside and around the NPET our task is now to extract <em>only the space</em> that <em>corresponds to the NPET</em>. We use <a href="https://en.wikipedia.org/wiki/DBSCAN">DBSCAN</a>.</p>
 <p><code>scikit</code>’s implementation of <a href="#dbscan_note"><code>DBSCAN</code></a> conveniently lets us retrieve the points from the largest cluster only, which corresponds to the active voxels of NPET space (if we eyeballed our DBSCAN parameters well).</p>
-<div id="1c58ccdf" class="cell" data-execution_count="8">
+<div id="3c0c780c" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scikit.cluster <span class="im">import</span> DBSCAN</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>_u_EPSILON, _u_MIN_SAMPLES, _u_METRIC  <span class="op">=</span> <span class="fl">5.5</span>, <span class="dv">600</span>, <span class="st">'euclidian'</span></span>
@@ -646,8 +647,8 @@ Figure&nbsp;2: Second pass of DBSCAN sharpens the cluster to peel off the outer 
 </div>
 </div>
 </section>
-<section id="tessellation" class="level2">
-<h2 class="anchored" data-anchor-id="tessellation">3. Tessellation</h2>
+<section id="surface-reconstruction" class="level2">
+<h2 class="anchored" data-anchor-id="surface-reconstruction">3. Surface Reconstruction</h2>
 <div id="ptcloud_convex_hull_points" class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -661,7 +662,7 @@ Figure&nbsp;2: Second pass of DBSCAN sharpens the cluster to peel off the outer 
 <div id="callout-8" class="callout-8-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Surface points can be extracted by creating an alpha shape over the point cloud and taking only the points that belong to the alpha surface.</p>
-<div id="20bad453" class="cell" data-execution_count="9">
+<div id="c92c59e9" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pyvista <span class="im">as</span> pv</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> open3d <span class="im">as</span> o3d</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -725,7 +726,7 @@ Figure&nbsp;3: Alpha shape provides a way to identify surface points.
 <div id="callout-9" class="callout-9-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Normal estimation is done via rolling a tangent plane over the surface points.</p>
-<div id="1c6b2b54" class="cell" data-execution_count="10">
+<div id="fdc99393" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pyvista <span class="im">as</span> pv</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> open3d <span class="im">as</span> o3d</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -762,7 +763,7 @@ Figure&nbsp;3: Alpha shape provides a way to identify surface points.
 <div class="callout-body-container callout-body">
 <p>The source is available at <a href="https://github.com/mkazhdan/PoissonRecon">https://github.com/mkazhdan/PoissonRecon</a>. For programmability we connect the binary to the pipeline by wrapping it in a python <code>subprocess</code> but one can of course use the binary directly.</p>
 <p>The output of the binary is a binary <code>.ply</code> (Stanford Triangle Format) file. For purposes of distribution we also produce an <code>asciii</code>-encoded version of this <code>.ply</code> file side-by-side: some geometry packages are only able to parse the <code>ascii</code> version.</p>
-<div id="2e3f0c58" class="cell" data-execution_count="11">
+<div id="6a8adea8" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> apply_poisson_reconstruction(surf_estimated_ptcloud_path: <span class="bu">str</span>, recon_depth:<span class="bu">int</span><span class="op">=</span><span class="dv">6</span>, recon_pt_weight:<span class="bu">int</span><span class="op">=</span><span class="dv">3</span>):</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> plyfile</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># The documentation can be found at https://www.cs.jhu.edu/~misha/Code/PoissonRecon/Version16.04/ in "PoissonRecon" binary</span></span>
@@ -805,17 +806,53 @@ Figure&nbsp;3: Alpha shape provides a way to identify surface points.
 <li>retrieve only the “surface” points from the pointcloud</li>
 <li>estimate <em>normals</em> on the surface points (establish data orientation)</li>
 </ul>
-<div id="80853f12" class="cell" data-execution_count="12">
+<div id="f4ea7f6b" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>d3d_alpha, d3d_tol     <span class="op">=</span> <span class="dv">2</span>, <span class="dv">1</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>surface_pts <span class="op">=</span> ptcloud_convex_hull_points(coordinates_in_the_original_frame, d3d_alpha,d3d_tol)</span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>pointcloud  <span class="op">=</span> estimate_normals(surface_pts, kdtree_radius<span class="op">=</span><span class="dv">10</span>, kdtree_max_nn<span class="op">=</span><span class="dv">15</span>, correction_tangent_planes_n<span class="op">=</span><span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The dataset is now ready for surface reconstruction. We reach for Poisson surface reconstruction<span class="citation" data-cites="kazhdan2006poisson"><sup><a href="#ref-kazhdan2006poisson" role="doc-biblioref">4</a></sup></span> by <em>Kazhdan</em> and <em>Hoppe</em>, a de facto standard in the field.</p>
-<div id="b5bb6e3e" class="cell" data-execution_count="13">
+<div id="456e329e" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>PR_depth , PR_ptweight <span class="op">=</span> <span class="dv">6</span>, <span class="dv">3</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>apply_poisson_recon(pointcloud, recon_depth<span class="op">=</span>PR_depth, recon_pt_weight<span class="op">=</span>PR_ptweight)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<section id="poisson-surface-reconstruction-in-a-few-eqns" class="level3">
+<h3 class="anchored" data-anchor-id="poisson-surface-reconstruction-in-a-few-eqns">Poisson Surface Reconstruction in a few Eqns:</h3>
+<p>Define basis functions space. <span class="math inline">\(o.c\)</span>, <span class="math inline">\(o.w\)</span> are parameters of the octree: <span class="math display">\[
+\begin{equation*}
+    F_o(q) \equiv F\left(\frac{q-o.c}{o.w}\right)\frac{1}{o.w^3}
+\end{equation*}
+\]</span></p>
+<p>Pick a basis function. <span class="math inline">\(B\)</span> is just a “box-function”:</p>
+<p><span class="math display">\[
+        \begin{align*}
+            F(x,y,z) &amp;\equiv (B(x)B(y)B(z))^{*n} \\
+            \text{with } B(t) &amp;=
+            \begin{cases}
+                1 &amp; |t| &lt; 0.5 \\
+                0 &amp; \text{otherwise}
+            \end{cases}
+        \end{align*}
+\]</span></p>
+<p>Define vector field from points of your ptcloud: <span class="math display">\[
+        \begin{equation*}
+            \bar{V}(q) \equiv \sum_{s\in S}\sum_{o\in\text{Ngbr}_D(s)}\alpha_{o,s}F_o(q)s.\vec{N}
+        \end{equation*}
+\]</span> </p>
+<p>Solve Poisson eqn. in <span class="math inline">\(\chi\)</span> and <span class="math inline">\(V\)</span>(least squares): <span class="math display">\[
+        \begin{align*}
+            \sum_{o\in\mathcal{O}}\|\langle\Delta\tilde{\chi}-\nabla\cdot\bar{V},F_o\rangle\|^2 = \\
+            \sum_{o\in\mathcal{O}}\|\langle\Delta\tilde{\chi},F_o\rangle-\langle\nabla\cdot\bar{V},F_o\rangle\|^2
+        \end{align*}
+\]</span></p>
+<p>Trace the isosurface through the solution (that’s your implicit surface): <span class="math display">\[
+        \begin{align*}
+            \partial\tilde{M} &amp;\equiv \{q\in\mathbb{R}^3 | \tilde{\chi}(q)=\gamma\} \\
+            \text{with } \gamma &amp;= \frac{1}{|S|}\sum_{s\in S}\tilde{\chi}(s.p)
+        \end{align*}
+\]</span></p>
+</section>
 </section>
 <section id="result" class="level2">
 <h2 class="anchored" data-anchor-id="result">Result</h2>
@@ -826,6 +863,13 @@ Figure&nbsp;3: Alpha shape provides a way to identify surface points.
 <figcaption>The NPET mesh surrounded by by three ribosome proteins</figcaption>
 </figure>
 </div>
+</section>
+<section id="improvements-needed-for-this-protocol" class="level2">
+<h2 class="anchored" data-anchor-id="improvements-needed-for-this-protocol">Improvements needed for this protocol:</h2>
+<ul>
+<li><p>eliminate radial plot dependency. This could be done by fitting a plane to the tunnel vestibule through a few conserved sites and aligning it to be normal to the PTC, dropping a cylinder with a liberal radius between the plane the ptc.</p></li>
+<li><p>automatic choice of cluster. for larger radii of bbox expansion the largest dbscan cluster doesnt necessarily correspond to the tunnel.</p></li>
+</ul>
 </section>
 <section id="references" class="level2">
 
