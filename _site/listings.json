@@ -1,12 +1,12 @@
 [
   {
-    "listing": "/listing_papers.html",
-    "items": []
-  },
-  {
     "listing": "/blog.html",
     "items": [
       "/posts/ribosome-tunnel-new/index.html"
     ]
+  },
+  {
+    "listing": "/listing_papers.html",
+    "items": []
   }
 ]
