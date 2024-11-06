@@ -27,15 +27,13 @@ format:
     css: custom.css
 ---
 
-Hi, I'm ~~a treeplanter~~,
+<!-- Hi, I'm ~~a treeplanter~~,
 ~~landscaper~~ ,
 ~~biochemistry student at SFU, Burnaby~~,
 ~~computer science student at UBC, Vancouver~~,
 ~~backend developer at Michael Smith's Genome Sciences Center, BC, Canada~~,
-~~backend developer at Staking Facilities GmbH~~,
-~~mathematics student at UBC, Vancouver~~,
-~~research technician in [Khanh Dao Duc](https://kdaoduc.com/about/)'s lab~~,
-figuring it out again at the moment.
+~~backend developer at Staking Facilities GmbH~~, -->
+Hi, i'm a former mathematics student at UBC, Vancouver and research technician in [Khanh Dao Duc](https://kdaoduc.com/about/)'s lab.
 
 
 My general interests are in biology, software and mathematics. I have done work in structural biology infrastrucutre, ML applications to cryoEM, the heterogeneity problem and shape analysis. I built and maintain [ribosome.xyz](https://ribosome.xyz/).
