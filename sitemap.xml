@@ -1,31 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://rtviii.xyz/library.html</loc>
-    <lastmod>2024-10-19T05:21:10.567Z</lastmod>
+    <loc>https://rtviii.xyz/books.html</loc>
+    <lastmod>2024-12-07T07:52:02.031Z</lastmod>
   </url>
   <url>
-    <loc>https://rtviii.xyz/blog.html</loc>
-    <lastmod>2024-10-14T20:55:24.398Z</lastmod>
-  </url>
-  <url>
-    <loc>https://rtviii.xyz/posts/ribosome-tunnel-new/index.html</loc>
-    <lastmod>2024-11-02T02:23:52.135Z</lastmod>
-  </url>
-  <url>
-    <loc>https://rtviii.xyz/listing_papers.html</loc>
-    <lastmod>2024-10-08T17:12:51.674Z</lastmod>
-  </url>
-  <url>
-    <loc>https://rtviii.xyz/about.html</loc>
-    <lastmod>2024-10-08T19:21:27.561Z</lastmod>
+    <loc>https://rtviii.xyz/index.html</loc>
+    <lastmod>2024-12-09T01:06:23.591Z</lastmod>
   </url>
   <url>
     <loc>https://rtviii.xyz/dotfiles/xinit_stuff.html</loc>
     <lastmod>2024-10-19T04:56:43.392Z</lastmod>
   </url>
   <url>
-    <loc>https://rtviii.xyz/index.html</loc>
-    <lastmod>2024-11-06T23:51:52.198Z</lastmod>
+    <loc>https://rtviii.xyz/about.html</loc>
+    <lastmod>2024-10-08T19:21:27.561Z</lastmod>
+  </url>
+  <url>
+    <loc>https://rtviii.xyz/listing_papers.html</loc>
+    <lastmod>2024-10-08T17:12:51.674Z</lastmod>
+  </url>
+  <url>
+    <loc>https://rtviii.xyz/posts/ribosome-tunnel-new/index.html</loc>
+    <lastmod>2024-11-02T02:23:52.135Z</lastmod>
+  </url>
+  <url>
+    <loc>https://rtviii.xyz/blog.html</loc>
+    <lastmod>2024-10-14T20:55:24.398Z</lastmod>
+  </url>
+  <url>
+    <loc>https://rtviii.xyz/library.html</loc>
+    <lastmod>2024-10-19T05:21:10.567Z</lastmod>
   </url>
 </urlset>
