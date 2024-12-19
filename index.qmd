@@ -33,8 +33,7 @@ format:
 ~~computer science student at UBC, Vancouver~~,
 ~~backend developer at Michael Smith's Genome Sciences Center, BC, Canada~~,
 ~~backend developer at Staking Facilities GmbH~~, -->
-Hi, i'm a former mathematics student at UBC, Vancouver and research technician in [Khanh Dao Duc](https://kdaoduc.com/about/)'s lab.
-
+Hi, i'm a research technician at the University of British Columbia, Vancouver with [Khanh Dao Duc](https://kdaoduc.com/about/)'s lab.
 
 My general interests are in biology, software and mathematics. I have done work in structural biology infrastrucutre, ML applications to cryoEM, the heterogeneity problem and shape analysis. I built and maintain [ribosome.xyz](https://ribosome.xyz/).
 

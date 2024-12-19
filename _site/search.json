@@ -1,19 +1,40 @@
 [
   {
-    "objectID": "library.html",
-    "href": "library.html",
-    "title": "Computers",
+    "objectID": "books.html",
+    "href": "books.html",
+    "title": "music",
     "section": "",
-    "text": "https://news.ycombinator.com/item?id=35404275\n\nComputers\n\n\nBiology\n\n\nFiction\n\n\nHistory"
+    "text": "music\nVictor Villadangos - La Guitarra en la Argentina"
   },
   {
-    "objectID": "blog.html",
-    "href": "blog.html",
-    "title": "Blog",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "артём",
     "section": "",
-    "text": "Date\n\n\nTitle\n\n\nAuthor\n\n\n\n\n\n\nAug 4, 2024\n\n\n3D tessellation of biomolecular cavities\n\n\nArtem Kushner, Khanh Dao Duc\n\n\n\n\n\nNo matching items",
+    "text": "Hi, i’m a research technician at the University of British Columbia, Vancouver with Khanh Dao Duc’s lab.\nMy general interests are in biology, software and mathematics. I have done work in structural biology infrastrucutre, ML applications to cryoEM, the heterogeneity problem and shape analysis. I built and maintain ribosome.xyz.\nOutside of academia, I’ve had a few backend roles. I enjoy running, music, mathematics, history; i planted around 250,000 trees in the north-west of Canada between 2016 and 2018. My favorite book is The Name of the Rose and piece of music is Concierto De Aranjuez.\nI can be reached at rtkushner@gmail.com."
+  },
+  {
+    "objectID": "dotfiles/xinit_stuff.html",
+    "href": "dotfiles/xinit_stuff.html",
+    "title": "clipboard",
+    "section": "",
+    "text": "clipboard\nIt’s clipmenud + rofi + xbindkeys for me.\nConfigure rofi to suit keyb needs . - CM_LAUNCHER='rofi' somewhere in zshrc, - In ~/.xbindkeysrc: \"clipmenu\"       Control+Alt + r # tmux"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "TODO"
+  },
+  {
+    "objectID": "listing_papers.html",
+    "href": "listing_papers.html",
+    "title": "Papers",
+    "section": "",
+    "text": "Structural heterogeneities of the ribosome: new frontiers and opportunities for cryo-EM\n    \n      Molecules (2020)\n    \n    Frédéric Poitevin, Artem Kushner, Xinpei Li, and Khanh Dao Duc\n    \n      This paper explores the structural heterogeneities of the ribosome across evolutionary, cellular, temporal and conformational landscapes.\n    \n  \n\n    \n      \n        \n          \n          \n        \n      \n    \n  \n\n\n\n  \n    Application of transport-based metric for continuous interpolation between cryo-EM density maps\n    \n      AIMS Mathematics (2022)\n    \n    Arthur Ecoffet, Geoffrey Woollard, Artem Kushner, and Frédéric Poitevin, Khanh Dao Duc\n    \n      We present an approach to interpolating between cryo-EM density maps based on the theory of optimal transport\n    \n  \n\n    \n      \n        \n          \n          \n        \n      \n        \n          \n          \n        \n      \n        \n          \n          \n        \n      \n    \n  \n\n\n\n  \n    RiboXYZ: a comprehensive database for visualizing and analyzing ribosome structures\n    \n      Nucleic Acids Research (2023)\n    \n    Artem Kushner, Anton S. Petrov, and Khanh Dao Duc\n    \n      https://ribosome.xyz\n    \n  \n\n    \n      \n        \n          \n          \n        \n      \n    \n  \n\n\n\n  \n    Computational methods for unraveling ribosome structural heterogeneity\n    \n      Royal Society: Ribosome Heterogeneity and Specialisation Workshop (Oct 16, 2023)\n    \n    Artem Kushner, Shiqi Yu, Aryan Tajmir Riahi, and Simcha Srebnik, Khanh Dao Duc\n    \n      We shared some computational methods for analyzing ribosome structural heterogeneity.\n    \n  \n\n    \n      \n        \n          \n          \n        \n      \n    \n  \n\n\n\nNo matching items",
     "crumbs": [
-      "Blog"
+      "Papers"
     ]
   },
   {
@@ -66,34 +87,20 @@
     "text": "Improvements needed for this protocol:\n\neliminate radial plot dependency. This could be done by fitting a plane to the tunnel vestibule through a few conserved sites and aligning it to be normal to the PTC, dropping a cylinder with a liberal radius between the plane the ptc.\nautomatic choice of cluster. for larger radii of bbox expansion the largest dbscan cluster doesnt necessarily correspond to the tunnel."
   },
   {
-    "objectID": "listing_papers.html",
-    "href": "listing_papers.html",
-    "title": "Papers",
+    "objectID": "blog.html",
+    "href": "blog.html",
+    "title": "Blog",
     "section": "",
-    "text": "Structural heterogeneities of the ribosome: new frontiers and opportunities for cryo-EM\n    \n      Molecules (2020)\n    \n    Frédéric Poitevin, Artem Kushner, Xinpei Li, and Khanh Dao Duc\n    \n      This paper explores the structural heterogeneities of the ribosome across evolutionary, cellular, temporal and conformational landscapes.\n    \n  \n\n    \n      \n        \n          \n          \n        \n      \n    \n  \n\n\n\n  \n    Application of transport-based metric for continuous interpolation between cryo-EM density maps\n    \n      AIMS Mathematics (2022)\n    \n    Arthur Ecoffet, Geoffrey Woollard, Artem Kushner, and Frédéric Poitevin, Khanh Dao Duc\n    \n      We present an approach to interpolating between cryo-EM density maps based on the theory of optimal transport\n    \n  \n\n    \n      \n        \n          \n          \n        \n      \n        \n          \n          \n        \n      \n        \n          \n          \n        \n      \n    \n  \n\n\n\n  \n    RiboXYZ: a comprehensive database for visualizing and analyzing ribosome structures\n    \n      Nucleic Acids Research (2023)\n    \n    Artem Kushner, Anton S. Petrov, and Khanh Dao Duc\n    \n      https://ribosome.xyz\n    \n  \n\n    \n      \n        \n          \n          \n        \n      \n    \n  \n\n\n\n  \n    Computational methods for unraveling ribosome structural heterogeneity\n    \n      Royal Society: Ribosome Heterogeneity and Specialisation Workshop (Oct 16, 2023)\n    \n    Artem Kushner, Shiqi Yu, Aryan Tajmir Riahi, and Simcha Srebnik, Khanh Dao Duc\n    \n      We shared some computational methods for analyzing ribosome structural heterogeneity.\n    \n  \n\n    \n      \n        \n          \n          \n        \n      \n    \n  \n\n\n\nNo matching items",
+    "text": "Date\n\n\nTitle\n\n\nAuthor\n\n\n\n\n\n\nAug 4, 2024\n\n\n3D tessellation of biomolecular cavities\n\n\nArtem Kushner, Khanh Dao Duc\n\n\n\n\n\nNo matching items",
     "crumbs": [
-      "Papers"
+      "Blog"
     ]
   },
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
+    "objectID": "library.html",
+    "href": "library.html",
+    "title": "Computers",
     "section": "",
-    "text": "TODO"
-  },
-  {
-    "objectID": "dotfiles/xinit_stuff.html",
-    "href": "dotfiles/xinit_stuff.html",
-    "title": "clipboard",
-    "section": "",
-    "text": "clipboard\nIt’s clipmenud + rofi + xbindkeys for me.\nConfigure rofi to suit keyb needs . - CM_LAUNCHER='rofi' somewhere in zshrc, - In ~/.xbindkeysrc: \"clipmenu\"       Control+Alt + r # tmux"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "артём",
-    "section": "",
-    "text": "Hi, i’m a former mathematics student at UBC, Vancouver and research technician in Khanh Dao Duc’s lab, figuring it out again at the moment.\nMy general interests are in biology, software and mathematics. I have done work in structural biology infrastrucutre, ML applications to cryoEM, the heterogeneity problem and shape analysis. I built and maintain ribosome.xyz.\nOutside of academia, I’ve had a few backend roles. I enjoy running, music, mathematics, history; i planted around 250,000 trees in the north-west of Canada between 2016 and 2018. My favorite book is The Name of the Rose and piece of music is Concierto De Aranjuez.\nI can be reached at rtkushner@gmail.com."
+    "text": "https://news.ycombinator.com/item?id=35404275\n\nComputers\n\n\nBiology\n\n\nFiction\n\n\nHistory"
   }
 ]
