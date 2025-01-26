@@ -8,5 +8,11 @@
     "items": [
       "/posts/ribosome-tunnel-new/index.html"
     ]
+  },
+  {
+    "listing": "/library.html",
+    "items": [
+      "/library_posts/post.html"
+    ]
   }
 ]
