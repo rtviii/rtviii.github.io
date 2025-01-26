@@ -3,6 +3,7 @@ project:
   output-dir: _site
   resources:
     - resources
+    - img/
 
 website:
   title: "артём"
@@ -26,6 +27,9 @@ website:
 
       - text: "Blog"
         href: ./blog.qmd
+
+      - text: "Gallery"
+        href: ./gallery.qmd
 
       # - text: "Libary"
       #   href: ./library.qmd

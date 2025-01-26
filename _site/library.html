@@ -126,6 +126,12 @@ document.addEventListener('DOMContentLoaded', function() {
  <span class="menu-text">Blog</span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./gallery.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Gallery</span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -138,18 +144,77 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-<p>https://news.ycombinator.com/item?id=35404275</p>
-<section id="computers" class="level1">
-<h1>Computers</h1>
+<style>
+.entry {
+  margin: 1em 0;
+  border-bottom: 1px solid #eee;
+}
+
+.entry-title {
+  font-size: 1.2em;
+  margin-bottom: 0.5em;
+  cursor: pointer;
+  color: #444;
+}
+
+.entry-content {
+  max-height: 2.4em; /* About 2 lines of text */
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+  margin-bottom: 1em;
+}
+
+.entry-content.expanded {
+  max-height: 2000px; /* Large enough to show full content */
+}
+
+.entry-tags {
+  font-size: 0.8em;
+  color: #666;
+  margin-bottom: 0.5em;
+}
+</style>
+<!-- 
+<div class="entries">
+  {{#entries}}
+  <div class="entry">
+    <div class="entry-title">{{title}}</div>
+    <div class="entry-content">{{content}}</div>
+  </div>
+  {{/entries}}
+</div> -->
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.entry').forEach(entry => {
+    const content = entry.querySelector('.entry-content');
+    
+    // Only make it collapsible if content is taller than 2 lines
+    if (content.scrollHeight > content.clientHeight) {
+      entry.addEventListener('click', function() {
+        content.classList.toggle('expanded');
+      });
+    } else {
+      content.style.maxHeight = 'none';
+    }
+  });
+});
+</script>
+<section id="other-peopls-blogs" class="level2">
+<h2 class="anchored" data-anchor-id="other-peopls-blogs">Other peopls blogs</h2>
+<p>https://gwern.net/backstop</p>
+<p>https://atelfo.github.io/</p>
+<p>https://markovbio.github.io/</p>
 </section>
-<section id="biology" class="level1">
-<h1>Biology</h1>
+<section id="stuff-i-havent-read-but-need-to-remeber" class="level2">
+<h2 class="anchored" data-anchor-id="stuff-i-havent-read-but-need-to-remeber">Stuff i haven’t read but need to remeber</h2>
+<p>https://en.wikipedia.org/wiki/The_Two_Cultures</p>
+<p>Feyrabend</p>
 </section>
-<section id="fiction" class="level1">
-<h1>Fiction</h1>
-</section>
-<section id="history" class="level1">
-<h1>History</h1>
+<section id="stuff-i-read-and-liked" class="level2">
+<h2 class="anchored" data-anchor-id="stuff-i-read-and-liked">Stuff i read and liked</h2>
+<p>Name of The Rose</p>
+<p>Хаджи Мурат</p>
 
 
 </section>

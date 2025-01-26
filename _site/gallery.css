@@ -1,0 +1,23 @@
+.gallery {
+  columns: 3 300px;
+  column-gap: 1rem;
+  padding: 1rem;
+}
+
+.gallery-item {
+  break-inside: avoid;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.gallery-caption {
+  padding: 0.5rem;
+  color: #666;
+  font-size: 0.9em;
+}

@@ -99,8 +99,93 @@
   {
     "objectID": "library.html",
     "href": "library.html",
-    "title": "Computers",
+    "title": "артём",
     "section": "",
-    "text": "https://news.ycombinator.com/item?id=35404275\n\nComputers\n\n\nBiology\n\n\nFiction\n\n\nHistory"
+    "text": "https://gwern.net/backstop\nhttps://atelfo.github.io/\nhttps://markovbio.github.io/"
+  },
+  {
+    "objectID": "library/post.html",
+    "href": "library/post.html",
+    "title": "Book Title",
+    "section": "",
+    "text": "&lt;h3&gt;Book Title&lt;/h3&gt;\n&lt;p&gt;Author&lt;/p&gt;\n\n\nYour review/thoughts here..."
+  },
+  {
+    "objectID": "library_posts/post.html",
+    "href": "library_posts/post.html",
+    "title": "Entry Title",
+    "section": "",
+    "text": "Your content here… New preprint from our group! We propose SHAPES, a set of metrics to quantify the distributional coverage of generative models of protein structures with embeddings at different structural hierarchies and quantify undersampling / extrapolation behaviors.New preprint from our group! We propose SHAPES, a set of metrics to quantify the distributional coverage of generative models of protein structures with embeddings at different structural hierarchies and quantify undersampling / extrapolation behaviors.New preprint from our group! We propose SHAPES, a set of metrics to quantify the distributional coverage of generative models of protein structures with embeddings at different structural hierarchies and quantify undersampling / extrapolation behaviors.New preprint from our group! We propose SHAPES, a set of metrics to quantify the distributional coverage of generative models of protein structures with embeddings at different structural hierarchies and quantify undersampling / extrapolation behaviors."
+  },
+  {
+    "objectID": "library.html#entry-1",
+    "href": "library.html#entry-1",
+    "title": "Library",
+    "section": "",
+    "text": "Your content here…",
+    "crumbs": [
+      "Libary"
+    ]
+  },
+  {
+    "objectID": "library.html#entry-2",
+    "href": "library.html#entry-2",
+    "title": "Library",
+    "section": "",
+    "text": "More content here…",
+    "crumbs": [
+      "Libary"
+    ]
+  },
+  {
+    "objectID": "library.html#shit-i-havent-read-but-would-like-to",
+    "href": "library.html#shit-i-havent-read-but-would-like-to",
+    "title": "артём",
+    "section": "",
+    "text": "Your content here…",
+    "crumbs": [
+      "Libary"
+    ]
+  },
+  {
+    "objectID": "library.html#stuff-i-havent-read-but-would-like-to",
+    "href": "library.html#stuff-i-havent-read-but-would-like-to",
+    "title": "артём",
+    "section": "",
+    "text": "Your content here…",
+    "crumbs": [
+      "Libary"
+    ]
+  },
+  {
+    "objectID": "library.html#stuff-i-read-and-liked",
+    "href": "library.html#stuff-i-read-and-liked",
+    "title": "артём",
+    "section": "Stuff i read and liked",
+    "text": "Stuff i read and liked\nName of The Rose\nХаджи Мурат"
+  },
+  {
+    "objectID": "library.html#stuff-i-havent-read-but-need-to-remeber",
+    "href": "library.html#stuff-i-havent-read-but-need-to-remeber",
+    "title": "артём",
+    "section": "Stuff i haven’t read but need to remeber",
+    "text": "Stuff i haven’t read but need to remeber\nhttps://en.wikipedia.org/wiki/The_Two_Cultures\nFeyrabend"
+  },
+  {
+    "objectID": "library.html#other-peopls-blogs",
+    "href": "library.html#other-peopls-blogs",
+    "title": "артём",
+    "section": "",
+    "text": "https://gwern.net/backstop\nhttps://atelfo.github.io/\nhttps://markovbio.github.io/"
+  },
+  {
+    "objectID": "gallery.html",
+    "href": "gallery.html",
+    "title": "Gallery",
+    "section": "",
+    "text": "Bob Noyce with an early integrated circuit design\n\n\n\n\n\nCamarón de la Isla and Paco de Lucía\n\n\n\n\n\nAugustin-Louis Cauchy\n\n\n\n\n\nHenry Kissinger and Mao Zedong\n\n\n\n\n\nDavid Hilbert\n\n\n\n\n\nAndrey Kolmogorov\n\n\n\n\n\nPierre-Simon Laplace\n\n\n\n\n\nMikhail Gromov\n\n\n\n\n\nPierre Deligne\n\n\n\n\n\nMarcel Proust moments after death\n\n\n\n\n\nMarcel Proust\n\n\n\n\n\nSéminaire Grothendieck\n\n\n\n\n\nColtrane practicing",
+    "crumbs": [
+      "Gallery"
+    ]
   }
 ]

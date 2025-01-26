@@ -1,0 +1,38 @@
+.gallery {
+  column-count: 3;
+  column-gap: 1rem;
+  padding: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.gallery > * {
+  break-inside: avoid;
+  margin-bottom: 1rem;
+}
+
+.gallery img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+/* Make it responsive */
+@media (max-width: 1024px) {
+  .gallery {
+    column-count: 2;
+  }
+}
+
+@media (max-width: 640px) {
+  .gallery {
+    column-count: 1;
+  }
+}
+
+.gallery img:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
