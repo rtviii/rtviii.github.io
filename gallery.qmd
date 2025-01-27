@@ -8,99 +8,159 @@ title: "Gallery"
 .page-columns,
 .content,
 main {
-  max-width: 100% !important;
-  width: 100% !important;
-  margin: 0 !important;
-  padding: 0 !important;
+ max-width: 100% !important;
+ width: 100% !important;
+ margin: 0 !important;
+ padding: 0 !important;
 }
 
 /* Grid layout instead of columns */
 .gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Slightly larger minimum */
-  gap: 1.5rem;
-  padding: 1.5rem;
-  width: 100%;
+ display: grid;
+ grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Slightly larger minimum */
+ gap: 1.5rem;
+ padding: 1.5rem;
+ width: 100%;
 }
 
 .gallery p {
-  margin: 0;
-  padding: 0;
-  position: relative;
-  cursor: pointer;
+ margin: 0;
+ padding: 0;
+ position: relative;
+ cursor: pointer;
 }
 
 .gallery .img-fluid {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-  display: block;
-  border-radius: 8px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+ width: 100%;
+ height: auto;
+ object-fit: cover;
+ display: block;
+ border-radius: 8px;
+ transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+ box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .gallery .img-fluid:hover {
-  transform: scale(1.03);
-  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+ transform: scale(1.03);
+ box-shadow: 0 8px 16px rgba(0,0,0,0.1);
 }
 
 /* Caption styling */
 .gallery p em {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(0,0,0,0.7);
-  color: white;
-  padding: 0.5rem;
-  border-radius: 0 0 8px 8px;
-  opacity: 0;
-  transition: opacity 0.3s ease;
+ position: absolute;
+ bottom: 0;
+ left: 0;
+ right: 0;
+ background: rgba(0,0,0,0.7);
+ color: white;
+ padding: 0.5rem;
+ border-radius: 0 0 8px 8px;
+ opacity: 0;
+ transition: opacity 0.3s ease;
 }
 
 .gallery p:hover em {
-  opacity: 1;
+ opacity: 1;
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .gallery {
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1rem;
-    padding: 1rem;
-  }
+ .gallery {
+   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+   gap: 1rem;
+   padding: 1rem;
+ }
+}
+
+/* Ensure smooth scrolling on the html element */
+html {
+ scroll-behavior: smooth;
+ scroll-padding-top: 100px; /* Adjust this value based on your nav height */
+}
+
+/* Navigation styles */
+.gallery-nav {
+ position: sticky;
+ top: 0;
+ background: white;
+ padding: 1rem;
+ margin-bottom: 2rem;
+ box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+ z-index: 100;
+ display: flex;
+ gap: 1rem;
+ justify-content: center;
+ flex-wrap: wrap;
+}
+
+.gallery-nav a {
+ text-decoration: none;
+ padding: 0.5rem 1rem;
+ border-radius: 4px;
+ background: #f0f0f0;
+ color: #333;
+ transition: all 0.2s ease;
+}
+
+.gallery-nav a:hover {
+ background: #e0e0e0;
+}
+
+/* Category header styles */
+.category-header {
+ font-size: 1.5rem;
+ margin: 2rem 0 1rem 1.5rem;
+ padding-top: 2rem;
 }
 </style>
 
-::: {.gallery}
+<!-- Navigation -->
+<div class="gallery-nav">
+ <a href="#people">People</a>
+ <a href="#art">Art</a>
+ <a href="#memories">Memories</a>
+</div>
 
-![Bob Noyce with an early integrated circuit design](./img/gallery/bob_noyce.png)
+<!-- People Category -->
+<section id="people">
+ <h2 class="category-header">People</h2>
+ ::: {.gallery}
+ ![Bob Noyce with an early integrated circuit design](./img/gallery/bob_noyce.png)
 
-![Camarón de la Isla and Paco de Lucía](./img/gallery/camaron_paco.jpg)
+ ![Camarón de la Isla and Paco de Lucía](./img/gallery/camaron_paco.jpg)
 
-![Augustin-Louis Cauchy](./img/gallery/cauchy.jpg)
+ ![Augustin-Louis Cauchy](./img/gallery/cauchy.jpg)
 
-![Henry Kissinger and Mao Zedong](./img/gallery/Henry-Kissinger-Mao.jpg)
+ ![Henry Kissinger and Mao Zedong](./img/gallery/Henry-Kissinger-Mao.jpg)
 
-![David Hilbert](./img/gallery/hilbert.jpg)
+ ![David Hilbert](./img/gallery/hilbert.jpg)
+ :::
+</section>
 
-![Andrey Kolmogorov](./img/gallery/kolmogorov.jpg)
+<!-- Art Category -->
+<section id="art">
+ <h2 class="category-header">Art</h2>
+ ::: {.gallery}
+ ![Kolmogorov](./img/gallery/kolmogorov.jpg)
 
-![Pierre-Simon Laplace](./img/gallery/laplace.jpg)
+ ![Laplace](./img/gallery/laplace.jpg)
 
-![Mikhail Gromov](./img/gallery/Mikhail_Gromov.jpg)
+ ![Mikhail Gromov](./img/gallery/Mikhail_Gromov.jpg)
+ :::
+</section>
 
-![Pierre Deligne](./img/gallery/pierre-deligne.jpg)
+<!-- Memories Category -->
+<section id="memories">
+ <h2 class="category-header">Memories</h2>
+ ::: {.gallery}
+ ![Pierre Deligne](./img/gallery/pierre-deligne.jpg)
 
-![Marcel Proust moments after death](./img/gallery/proust_dead.jpg)
+ ![Marcel Proust moments after death](./img/gallery/proust_dead.jpg)
 
-![Marcel Proust](./img/gallery/proust.jpg)
+ ![Marcel Proust](./img/gallery/proust.jpg)
 
+ ![Séminaire Grothendieck](./img/gallery/Seminaire_Grothendieck_15x10.jpg)
 
-![Séminaire Grothendieck](./img/gallery/Seminaire_Grothendieck_15x10.jpg)
-
-
-![Coltrane practicing](./img/gallery/trane.jpg)
-
-:::
+ ![Coltrane practicing](./img/gallery/trane.jpg)
+ :::
+</section>

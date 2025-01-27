@@ -166,70 +166,120 @@ document.addEventListener('DOMContentLoaded', function() {
 .page-columns,
 .content,
 main {
-  max-width: 100% !important;
-  width: 100% !important;
-  margin: 0 !important;
-  padding: 0 !important;
+ max-width: 100% !important;
+ width: 100% !important;
+ margin: 0 !important;
+ padding: 0 !important;
 }
 
 /* Grid layout instead of columns */
 .gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Slightly larger minimum */
-  gap: 1.5rem;
-  padding: 1.5rem;
-  width: 100%;
+ display: grid;
+ grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Slightly larger minimum */
+ gap: 1.5rem;
+ padding: 1.5rem;
+ width: 100%;
 }
 
 .gallery p {
-  margin: 0;
-  padding: 0;
-  position: relative;
-  cursor: pointer;
+ margin: 0;
+ padding: 0;
+ position: relative;
+ cursor: pointer;
 }
 
 .gallery .img-fluid {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-  display: block;
-  border-radius: 8px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+ width: 100%;
+ height: auto;
+ object-fit: cover;
+ display: block;
+ border-radius: 8px;
+ transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+ box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .gallery .img-fluid:hover {
-  transform: scale(1.03);
-  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+ transform: scale(1.03);
+ box-shadow: 0 8px 16px rgba(0,0,0,0.1);
 }
 
 /* Caption styling */
 .gallery p em {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(0,0,0,0.7);
-  color: white;
-  padding: 0.5rem;
-  border-radius: 0 0 8px 8px;
-  opacity: 0;
-  transition: opacity 0.3s ease;
+ position: absolute;
+ bottom: 0;
+ left: 0;
+ right: 0;
+ background: rgba(0,0,0,0.7);
+ color: white;
+ padding: 0.5rem;
+ border-radius: 0 0 8px 8px;
+ opacity: 0;
+ transition: opacity 0.3s ease;
 }
 
 .gallery p:hover em {
-  opacity: 1;
+ opacity: 1;
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .gallery {
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1rem;
-    padding: 1rem;
-  }
+ .gallery {
+   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+   gap: 1rem;
+   padding: 1rem;
+ }
+}
+
+/* Ensure smooth scrolling on the html element */
+html {
+ scroll-behavior: smooth;
+ scroll-padding-top: 100px; /* Adjust this value based on your nav height */
+}
+
+/* Navigation styles */
+.gallery-nav {
+ position: sticky;
+ top: 0;
+ background: white;
+ padding: 1rem;
+ margin-bottom: 2rem;
+ box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+ z-index: 100;
+ display: flex;
+ gap: 1rem;
+ justify-content: center;
+ flex-wrap: wrap;
+}
+
+.gallery-nav a {
+ text-decoration: none;
+ padding: 0.5rem 1rem;
+ border-radius: 4px;
+ background: #f0f0f0;
+ color: #333;
+ transition: all 0.2s ease;
+}
+
+.gallery-nav a:hover {
+ background: #e0e0e0;
+}
+
+/* Category header styles */
+.category-header {
+ font-size: 1.5rem;
+ margin: 2rem 0 1rem 1.5rem;
+ padding-top: 2rem;
 }
 </style>
+<!-- Navigation -->
+<div class="gallery-nav">
+<p><a href="#people">People</a> <a href="#art">Art</a> <a href="#memories">Memories</a></p>
+</div>
+<!-- People Category -->
+<section id="people">
+<h2 class="category-header anchored">
+People
+</h2>
 <div class="gallery">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -255,30 +305,34 @@ main {
 <figcaption>Henry Kissinger and Mao Zedong</figcaption>
 </figure>
 </div>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="./img/gallery/hilbert.jpg" class="img-fluid figure-img"></p>
-<figcaption>David Hilbert</figcaption>
-</figure>
-</div>
+<img src="./img/gallery/hilbert.jpg" class="img-fluid" alt="David Hilbert"> :::
+</div></section>
+<!-- Art Category -->
+<section id="art">
+<h2 class="category-header anchored">
+Art
+</h2>
+<div class="gallery">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="./img/gallery/kolmogorov.jpg" class="img-fluid figure-img"></p>
-<figcaption>Andrey Kolmogorov</figcaption>
+<figcaption>Kolmogorov</figcaption>
 </figure>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="./img/gallery/laplace.jpg" class="img-fluid figure-img"></p>
-<figcaption>Pierre-Simon Laplace</figcaption>
+<figcaption>Laplace</figcaption>
 </figure>
 </div>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="./img/gallery/Mikhail_Gromov.jpg" class="img-fluid figure-img"></p>
-<figcaption>Mikhail Gromov</figcaption>
-</figure>
-</div>
+<img src="./img/gallery/Mikhail_Gromov.jpg" class="img-fluid" alt="Mikhail Gromov"> :::
+</div></section>
+<!-- Memories Category -->
+<section id="memories">
+<h2 class="category-header anchored">
+Memories
+</h2>
+<div class="gallery">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="./img/gallery/pierre-deligne.jpg" class="img-fluid figure-img"></p>
@@ -303,17 +357,15 @@ main {
 <figcaption>Séminaire Grothendieck</figcaption>
 </figure>
 </div>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="./img/gallery/trane.jpg" class="img-fluid figure-img"></p>
-<figcaption>Coltrane practicing</figcaption>
-</figure>
-</div>
-</div>
+<img src="./img/gallery/trane.jpg" class="img-fluid" alt="Coltrane practicing"> :::
+</div></section>
+
+
+</main></div>
 
 
 
-</main> <!-- /main -->
+ <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -734,7 +786,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-</div> <!-- /content -->
+ <!-- /content -->
 
 
 
