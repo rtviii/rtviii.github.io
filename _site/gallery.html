@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Gallery – артём</title>
+<title>gallery – артём</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -141,23 +141,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Gallery</h1>
-</div>
 
-
-
-<div class="quarto-title-meta">
-
-    
-  
-    
-  </div>
-  
-
-
-</header>
 
 
 <style>
@@ -166,112 +150,193 @@ document.addEventListener('DOMContentLoaded', function() {
 .page-columns,
 .content,
 main {
- max-width: 100% !important;
- width: 100% !important;
- margin: 0 !important;
- padding: 0 !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
-/* Grid layout instead of columns */
-.gallery {
- display: grid;
- grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Slightly larger minimum */
- gap: 1.5rem;
- padding: 1.5rem;
- width: 100%;
-}
-
-.gallery p {
- margin: 0;
- padding: 0;
- position: relative;
- cursor: pointer;
-}
-
-.gallery .img-fluid {
- width: 100%;
- height: auto;
- object-fit: cover;
- display: block;
- border-radius: 8px;
- transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
- box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.gallery .img-fluid:hover {
- transform: scale(1.03);
- box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-}
-
-/* Caption styling */
-.gallery p em {
- position: absolute;
- bottom: 0;
- left: 0;
- right: 0;
- background: rgba(0,0,0,0.7);
- color: white;
- padding: 0.5rem;
- border-radius: 0 0 8px 8px;
- opacity: 0;
- transition: opacity 0.3s ease;
-}
-
-.gallery p:hover em {
- opacity: 1;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
- .gallery {
-   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-   gap: 1rem;
-   padding: 1rem;
- }
-}
-
-/* Ensure smooth scrolling on the html element */
+/* Navigation */
 html {
- scroll-behavior: smooth;
- scroll-padding-top: 100px; /* Adjust this value based on your nav height */
+  scroll-behavior: smooth;
+  scroll-padding-top: 100px;
 }
 
-/* Navigation styles */
+
 .gallery-nav {
- position: sticky;
- top: 0;
- background: white;
- padding: 1rem;
- margin-bottom: 2rem;
- box-shadow: 0 2px 4px rgba(0,0,0,0.1);
- z-index: 100;
- display: flex;
- gap: 1rem;
- justify-content: center;
- flex-wrap: wrap;
+  position: sticky;
+  top: 0;
+  background: white;
+  padding: 1rem;
+  /* margin-bottom: 2rem; */
+  z-index: 100;
+  display: flex;
+  gap: 1rem;
+  justify-content: start;
+  flex-wrap: wrap;
 }
 
 .gallery-nav a {
- text-decoration: none;
- padding: 0.5rem 1rem;
- border-radius: 4px;
- background: #f0f0f0;
- color: #333;
- transition: all 0.2s ease;
+  font-size: 0.75rem
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  background: #f0f0f0;
+  color: #333;
+  transition: all 0.2s ease;
 }
 
 .gallery-nav a:hover {
- background: #e0e0e0;
+  background: #e0e0e0;
 }
 
 /* Category header styles */
 .category-header {
- font-size: 1.5rem;
- margin: 2rem 0 1rem 1.5rem;
- padding-top: 2rem;
+  font-size: 1rem;
+  margin: 2rem 0 0 1.5rem;
+
+  /* padding-top: 2rem; */
 }
+
+/* Improved Gallery Grid */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Reduced from 250px to 200px */
+  gap: 1rem;
+  padding: 1rem;
+  width: 100%;
+  grid-auto-flow: dense;
+}
+
+/* If you want to ensure the container itself has a background */
+.gallery p {
+  margin: 0;
+  padding: 0;
+  position: relative;
+  cursor: pointer;
+  background: #fff;
+
+  border-radius: 8px;
+}
+
+.gallery img {
+
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  border-radius: 8px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  background: #fff;
+}
+
+.gallery p:has(img.wide) {
+  grid-column: span 2;
+}
+
+.gallery p:has(img.tall) {
+  grid-row: span 2;
+  aspect-ratio: 2/3;
+}
+
+/* Caption styling */
+.gallery p em {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0,0,0,0.7);
+  color: white;
+  padding: 0.5rem;
+  border-radius: 0 0 8px 8px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.gallery p:hover em {
+  opacity: 1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .gallery {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Reduced from 200px to 180px */
+  }
+  .gallery p.wide {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .gallery {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 0.75rem;
+    padding: 0.75rem;
+  }
+}
+
+#imageModal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+
+#imageModal.show {
+  display: flex;
+  flex-direction: column;  /* Stack children vertically */
+  justify-content: center;
+  align-items: center;
+  padding: 20px;  /* Add some padding around the content */
+}
+
+#modalImage {
+  max-width: 90%;
+  max-height: 80vh;  /* Reduced from 90vh to make room for caption */
+  object-fit: contain;
+}
+
+#modalCaption {
+  margin-top: 20px;  /* Space between image and caption */
+  color: white;
+  font-size: 1.1rem;
+  text-align: center;
+  max-width: 90%;
+  padding: 10px;
+}
+
+.gallery img {
+  cursor: zoom-in;
+}
+.gallery-item {
+  position: relative;
+}
+
+.gallery-item .caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0,0,0,0.7);
+  color: white;
+  padding: 0.5rem;
+  border-radius: 0 0 8px 8px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.gallery-item:hover .caption {
+  opacity: 1;
+}
+
+
 </style>
-<!-- Navigation -->
 <div class="gallery-nav">
 <p><a href="#people">People</a> <a href="#art">Art</a> <a href="#memories">Memories</a></p>
 </div>
@@ -283,50 +348,59 @@ People
 <div class="gallery">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="./img/gallery/bob_noyce.png" class="img-fluid figure-img"></p>
+<p><img src="./img/gallery/bob_noyce.png" class="wide img-fluid figure-img"></p>
 <figcaption>Bob Noyce with an early integrated circuit design</figcaption>
 </figure>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="./img/gallery/camaron_paco.jpg" class="img-fluid figure-img"></p>
+<p><img src="./img/gallery/camaron_paco.jpg" class="wide img-fluid figure-img"></p>
 <figcaption>Camarón de la Isla and Paco de Lucía</figcaption>
 </figure>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="./img/gallery/cauchy.jpg" class="img-fluid figure-img"></p>
+<p><img src="./img/gallery/cauchy.jpg" class="tall img-fluid figure-img"></p>
 <figcaption>Augustin-Louis Cauchy</figcaption>
 </figure>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="./img/gallery/Henry-Kissinger-Mao.jpg" class="img-fluid figure-img"></p>
+<p><img src="./img/gallery/Henry-Kissinger-Mao.jpg" class="wide img-fluid figure-img"></p>
 <figcaption>Henry Kissinger and Mao Zedong</figcaption>
 </figure>
 </div>
-<img src="./img/gallery/hilbert.jpg" class="img-fluid" alt="David Hilbert"> :::
-</div></section>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./img/gallery/hilbert.jpg" class="tall img-fluid figure-img"></p>
+<figcaption>David Hilbert</figcaption>
+</figure>
+</div>
+</div>
+</section>
 <!-- Art Category -->
 <section id="art">
 <h2 class="category-header anchored">
 Art
 </h2>
 <div class="gallery">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="./img/gallery/kolmogorov.jpg" class="img-fluid figure-img"></p>
-<figcaption>Kolmogorov</figcaption>
-</figure>
+<div class="gallery-item">
+<p><img src="./img/gallery/bob_noyce.png" class="wide img-fluid"> <span class="caption">Bob Noyce with an early integrated circuit design</span></p>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="./img/gallery/laplace.jpg" class="img-fluid figure-img"></p>
+<p><img src="./img/gallery/laplace.jpg" class="tall img-fluid figure-img"></p>
 <figcaption>Laplace</figcaption>
 </figure>
 </div>
-<img src="./img/gallery/Mikhail_Gromov.jpg" class="img-fluid" alt="Mikhail Gromov"> :::
-</div></section>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./img/gallery/Mikhail_Gromov.jpg" class="tall img-fluid figure-img"></p>
+<figcaption>Mikhail Gromov</figcaption>
+</figure>
+</div>
+</div>
+</section>
 <!-- Memories Category -->
 <section id="memories">
 <h2 class="category-header anchored">
@@ -335,37 +409,86 @@ Memories
 <div class="gallery">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="./img/gallery/pierre-deligne.jpg" class="img-fluid figure-img"></p>
+<p><img src="./img/gallery/pierre-deligne.jpg" class="tall img-fluid figure-img"></p>
 <figcaption>Pierre Deligne</figcaption>
 </figure>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="./img/gallery/proust_dead.jpg" class="img-fluid figure-img"></p>
+<p><img src="./img/gallery/proust_dead.jpg" class="wide img-fluid figure-img"></p>
 <figcaption>Marcel Proust moments after death</figcaption>
 </figure>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="./img/gallery/proust.jpg" class="img-fluid figure-img"></p>
+<p><img src="./img/gallery/proust.jpg" class="tall img-fluid figure-img"></p>
 <figcaption>Marcel Proust</figcaption>
 </figure>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="./img/gallery/Seminaire_Grothendieck_15x10.jpg" class="img-fluid figure-img"></p>
+<p><img src="./img/gallery/Seminaire_Grothendieck_15x10.jpg" class="wide img-fluid figure-img"></p>
 <figcaption>Séminaire Grothendieck</figcaption>
 </figure>
 </div>
-<img src="./img/gallery/trane.jpg" class="img-fluid" alt="Coltrane practicing"> :::
-</div></section>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./img/gallery/trane.jpg" class="tall img-fluid figure-img"></p>
+<figcaption>Coltrane practicing</figcaption>
+</figure>
+</div>
+</div>
+</section>
+<div id="imageModal">
+<img id="modalImage" src="" alt="">
+<div id="modalCaption">
+
+</div>
+</div>
+<script>
+// Get modal elements
+var modal = document.getElementById('imageModal');
+var modalImg = document.getElementById('modalImage');
+var modalCaption = document.getElementById('modalCaption');
+
+// Add click listeners to all gallery images
+var images = document.querySelectorAll('.gallery img');
+for (var i = 0; i < images.length; i++) {
+    images[i].onclick = function() {
+        modal.classList.add('show');
+        modalImg.src = this.src;
+        
+        // Get caption from the sibling span
+        const caption = this.parentElement.querySelector('.caption');
+        if (caption) {
+            modalCaption.textContent = caption.textContent;
+            modalCaption.style.display = 'block';
+        }
+        
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+// Close modal when clicking outside the image
+modal.onclick = function(event) {
+    if (event.target === modal) {
+        modal.classList.remove('show');
+        document.body.style.overflow = 'auto';
+    }
+}
+
+// Close on escape key
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        modal.classList.remove('show');
+        document.body.style.overflow = 'auto';
+    }
+});
+</script>
 
 
-</main></div>
 
-
-
- <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -786,7 +909,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
- <!-- /content -->
+</div> <!-- /content -->
 
 
 
