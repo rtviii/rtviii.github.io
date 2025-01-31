@@ -193,7 +193,6 @@ html {
   opacity: 1;
 }
 
-
 </style>
 
 <div class="gallery-nav">
@@ -202,37 +201,138 @@ html {
   <a href="#memories">Memories</a>
 </div>
 
+This is basically my tumblr board, things i like looking at every once in a while.
+
 <!-- People Category -->
 <section id="people">
   <h2 class="category-header">People</h2>
 
 :::{.gallery}
+
+
+![Auden](./img/gallery/people/auden.jpg){.tall}
+
+![Бродский, молодой](./img/gallery/people/brodsky.Jpeg){.tall}
+
+![Robreto Duran grinning at "Marvelous" Marvin Hagler](./img/gallery/people/Duran-Hagler-350x301.jpg){.wide}
+
+![Колмогоров Андрей Николаевич](./img/gallery/people/kolmogorovyoung.JPG){.wide}
+
+![](./img/gallery/people/kolmogorov.jpg){.wide}
+
+![](./img/gallery/people/evans.jpg){.wide}
+
+![Foucalt](./img/gallery/people/foucault.jpg){.tall}
+
+![Robert Frost](./img/gallery/people/frost.jpg){.tall}
+
+![Gidon Kremer](./img/gallery/people/gidon.jpg){.wide}
+
+![Gil Evans](./img/gallery/people/gilevan.jpg){.wide}
+
+![Joseph Goebbels ](./img/gallery/people/goebbels.jpeg)
+
+![Alexander Grothendieck](./img/gallery/people/grothendieck.jpg){.wide}
+
+![Poincare, young](./img/gallery/people/henripoincare-1.jpg)
+
+![Kerouac at the end of the road](./img/gallery/people/kerouac.jpg)
+
+![Maria Sklodowska/Marie Curie](./img/gallery/people/mariecurie.jpg)
+
+![](./img/gallery/people/martyn_1975.jpg){.wide}
+
+![James Clerk Maxwell, young](./img/gallery/people/maxwell.jpg)
+
+![Brad Mehldau](./img/gallery/people/mehldau.png)
+
+![](./img/gallery/people/oliver-sacks-archive.jpg){.wide}
+
+![Camarón de la Isla and Paco de Lucia](./img/gallery/people/paco_camaron.jpg)
+
+![](./img/gallery/people/part.jpg){.wide}
+
+![Frederick Sanger](./img/gallery/people/sanger.jpg)
+
+![Schoenberg](./img/gallery/people/schoenberg.jpg)
+
+![](./img/gallery/people/shackleton.jpg){.wide}
+
+![Endurance trapped in ice, 1914.](./img/gallery/people/ENDURANCE1915.jpg)
+
+![Amundsen, The Last Viking. "Adventure is just bad planning"](./img/gallery/people/amundsen.jpg)
+
 ![Bob Noyce with an early integrated circuit design](./img/gallery/bob_noyce.png){.wide}
 
-![Camarón de la Isla and Paco de Lucía](./img/gallery/camaron_paco.jpg){.wide}
+![Traitorous Eight](./img/gallery/people/traitorous8.jpg)
 
-![Augustin-Louis Cauchy](./img/gallery/cauchy.jpg){.tall}
+![Camarón de la Isla and Paco de Lucía](./img/gallery/people/camaron_paco.jpg){.wide}
 
-![Henry Kissinger and Mao Zedong](./img/gallery/Henry-Kissinger-Mao.jpg){.wide}
 
-![David Hilbert](./img/gallery/hilbert.jpg){.tall}
+![Augustin-Louis Cauchy](./img/gallery/people/cauchy.jpg){.tall}
+
+![Henry Kissinger and Mao](./img/gallery/people/Henry-Kissinger-Mao.jpg){.wide}
+
+![David Hilbert](./img/gallery/people/hilbert.jpg){.tall}
+
+
+![Laplace, Pierre-Simon](./img/gallery/people/laplace.jpg){.tall}
+
+![Михаил Громов](./img/gallery/people/Mikhail_Gromov.jpg){.tall}
+
+![Pierre Deligne](./img/gallery/people/pierre-deligne.jpg){.tall}
+
+
+![Marcel Proust](./img/gallery/people/proust.jpg){.tall}
+
+![Marcel Proust moments after death](./img/gallery/people/proust_dead.jpg){.wide}
+
+![](./img/gallery/people/proust.jpeg){.wide}
+
+![Séminaire Grothendieck](./img/gallery/people/Seminaire_Grothendieck_15x10.jpg){.wide}
+
+![Coltrane practicing](./img/gallery/people/trane.jpg){.tall}
+
+![](./img/gallery/people/Geir_Jenssen_at_Sajeta_2011.jpg){.wide}
+
+![](./img/gallery/people/dostoevsky.jpg){.wide}
+
+![Граф Толстой, 1848 г.](./img/gallery/people/tolstoy_1848.jpg){.tall}
+
+![Cormac McCarthy the American pervert](./img/gallery/people/mccarthycormac.jpg){.tall}
+
+![Nadia Boulanger](./img/gallery/people/nadia.jpg){.wide}
+
+![Varoufakis](./img/gallery/people/varoufakis.jpg){.tall}
+
+![](./img/gallery/people/nicklane.jpg){.wide}
+
+![Harry Noller, renowed biochemist, ribosome](./img/gallery/people/harry_noller.jpg)
+
+![Jim Simons, the man who solved the market and died of lung cancer](./img/gallery/people/jimsimons.jpg){.wide}
+
+![](./img/gallery/people/klc.jpg){.wide}
+
+![Harold Budd](./img/gallery/people/Harold_Budd.jpg){.tall}
+
+![John Cage](./img/gallery/people/John-Cage_Post8a.jpg){.tall}
+
+![Eno](./img/gallery/people/eno.jpg){.tall}
+
+![Joaquin Rodrigo](./img/gallery/people/rodrigo.jpg){.tall}
+
+![Paco de Lucia](./img/gallery/people/paco.jpg){.tall}
+
+
 :::
 
 </section>
 
 <!-- Art Category -->
 <section id="art">
-  <h2 class="category-header">Art</h2>
+  <h2 class="category-header">Memories</h2>
 
 :::{.gallery}
-<div class="gallery-item">
-![](./img/gallery/bob_noyce.png){.wide}
-<span class="caption">Bob Noyce with an early integrated circuit design</span>
-</div>
-
-![Laplace](./img/gallery/laplace.jpg){.tall}
-
-![Mikhail Gromov](./img/gallery/Mikhail_Gromov.jpg){.tall}
 :::
 
 </section>
@@ -240,17 +340,9 @@ html {
 <!-- Memories Category -->
 <section id="memories">
   <h2 class="category-header">Memories</h2>
-
 ::: {.gallery}
-![Pierre Deligne](./img/gallery/pierre-deligne.jpg){.tall}
 
-![Marcel Proust moments after death](./img/gallery/proust_dead.jpg){.wide}
 
-![Marcel Proust](./img/gallery/proust.jpg){.tall}
-
-![Séminaire Grothendieck](./img/gallery/Seminaire_Grothendieck_15x10.jpg){.wide}
-
-![Coltrane practicing](./img/gallery/trane.jpg){.tall}
 :::
 
 </section>
