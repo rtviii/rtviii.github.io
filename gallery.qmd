@@ -262,12 +262,9 @@ This is basically my tumblr board, things i like looking at every once in a whil
 
 ![Amundsen, The Last Viking. "Adventure is just bad planning"](./img/gallery/people/amundsen.jpg)
 
-![Bob Noyce with an early integrated circuit design](./img/gallery/bob_noyce.png){.wide}
-
 ![Traitorous Eight](./img/gallery/people/traitorous8.jpg)
 
 ![Camarón de la Isla and Paco de Lucía](./img/gallery/people/camaron_paco.jpg){.wide}
-
 
 ![Augustin-Louis Cauchy](./img/gallery/people/cauchy.jpg){.tall}
 
@@ -275,13 +272,11 @@ This is basically my tumblr board, things i like looking at every once in a whil
 
 ![David Hilbert](./img/gallery/people/hilbert.jpg){.tall}
 
-
 ![Laplace, Pierre-Simon](./img/gallery/people/laplace.jpg){.tall}
 
 ![Михаил Громов](./img/gallery/people/Mikhail_Gromov.jpg){.tall}
 
 ![Pierre Deligne](./img/gallery/people/pierre-deligne.jpg){.tall}
-
 
 ![Marcel Proust](./img/gallery/people/proust.jpg){.tall}
 

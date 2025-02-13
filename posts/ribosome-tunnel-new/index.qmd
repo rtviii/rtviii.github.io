@@ -2,7 +2,6 @@
 title: "3D tessellation of biomolecular cavities"
 subtitle: "Protocol for analyzing the ribosome exit tunnel"
 bibliography: references.bib
-csl: nature.csl
 author:
   - name: "Artem Kushner" 
   - name: "Khanh Dao Duc" 
@@ -21,6 +20,9 @@ We present a protocol to extract the surface of a biomolecular cavity for shape 
 We apply and illustrate the protocol on the ribosome structure, which contains a subcompartment known as the ribosome exit tunnel or "nascent polypeptide exit tunnel" (**NPET**). More details on the tunnel features and biological importance can be found in our previous works [@dao2018impact; @dao2019differences]. 
 
 The protocol was designed to refine the output obtained from MOLE software [@sehnal2013mole], but can be applied to reconstruct a mesh on any general point cloud. Hence,  we take the point-cloud of atom positions surrounding the tunnel as a point of departure. 
+
+
+
 
 ![Illustration of the ribosome exit tunnel (from Dao Duc et al., NAR 2019)](./data/gkz106fig1.jpeg){width=80%}
 
