@@ -11,5 +11,8 @@ xbindkeys
 clipmenu
 vscode
 
+
+
+
 sioyek
 tmux

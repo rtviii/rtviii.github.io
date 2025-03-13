@@ -7,6 +7,7 @@ project:
 
 website:
   title: "артём"
+  draft-mode: unlinked
 
   site-url: "https://rtviii.xyz"
   favicon: "./img/BTNBlink.webp"
@@ -41,13 +42,17 @@ website:
       # - section: "Computer Stuff"
       #   href: ./resources/kushner_cv.pdf
 
-
 format:
   html:
     theme: litera
     css: styles.css
+    mainfont: "Your Preferred Font"
+    headfont: "Your Heading Font"
     include-in-header:
       text: |
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
         <script>
         document.addEventListener('DOMContentLoaded', function() {
           const images = document.querySelectorAll('.zoomable');
