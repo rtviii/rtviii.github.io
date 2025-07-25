@@ -29,15 +29,16 @@ format:
 
 <!-- Hi, I'm ~~a treeplanter~~,
 ~~landscaper~~ ,
+~~bum~~,
 ~~biochemistry student at SFU, Burnaby~~,
 ~~computer science student at UBC, Vancouver~~,
 ~~backend developer at Michael Smith's Genome Sciences Center, BC, Canada~~,
 ~~backend developer at Staking Facilities GmbH~~, -->
-Hi, i'm a research technician at the University of British Columbia, Vancouver with [Khanh Dao Duc](https://kdaoduc.com/about/)'s lab.
+Hi, i'm a research technician at UBC, Vancouver with [Khanh Dao Duc](https://kdaoduc.com/about/) and at IMP, Vienna with [Sven Klumpe](https://www.imp.ac.at/groups/sven-klumpe).
 
-My general interests are in biology, software and mathematics. I have done work in structural biology infrastrucutre, ML applications to cryoEM, the heterogeneity problem and shape analysis. I built and maintain [ribosome.xyz](https://ribosome.xyz/).
+My general interests are in biology, software and mathematics. I have done work in structural biology infrastrucutre (ranging from atomic models to CryoET), ML applications to cryoEM, the heterogeneity problem and shape analysis. I built and maintain [ribosome.xyz](https://ribosome.xyz/).
 
-Outside of academia, I've had a few backend roles. I enjoy running, music, mathematics, history; i planted around 250,000 trees in the north-west of Canada between 2016 and 2018. My favorite book is _[ The Name of the Rose ](https://it.wikipedia.org/wiki/Il_nome_della_rosa)_ and piece of music is _[ Concierto De Aranjuez ](https://en.wikipedia.org/wiki/Concierto_de_Aranjuez)_.
+Outside of academia, I've had a few backend roles. I enjoy running, music, mathematics, history; i planted around 250,000 trees in the north-west of Canada between 2016 and 2018. My favorite books are by Proust, Eco and McCarthy and my favourtie piece of music is _Concierto De Aranjuez_.
 
 I can be reached at [ rtkushner@gmail.com ](mailto:rtkushner@gmail.com).
 

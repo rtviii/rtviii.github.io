@@ -1,5 +1,6 @@
 ---
 title: "Blog"
+css: styles/blog.css
 listing:
   contents: posts
   type: table
@@ -10,7 +11,8 @@ listing:
   
   filter-ui: false
   feed: true
-page-layout: article
+
+page-layout: full
 title-block-banner: true
 ---
 

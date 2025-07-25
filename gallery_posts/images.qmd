@@ -1,5 +1,0 @@
----
-images:
-  - path: "./img/gallery/bob_noyce.png"
-    caption: "Optional caption for image 1"
----

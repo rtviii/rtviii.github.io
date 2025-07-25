@@ -1,0 +1,491 @@
+---
+title: "Heterogeneities of macromolecules"
+draft: true
+format: html
+---
+
+## Cells within cells interlinked 
+
+Let's be clear. These are INTUITIONS that need confirming.
+
+1. Macromolecule-specific hierarchy-rich datasets is another vector for enirching models.
+
+Multiple separate angles here:
+
+ 1.better representations than mmcif/bcif (duh). Tensor streaming:
+ - better how? progressive _coarse-graining_ based on _structural ontologies_
+ - can probably draw on lidar literature here. see if Zarr can be drawn upon.
+
+ 2.model building:
+ - how useful is naive templating at large scales? That is, fitting "known" or on-the-spot folded sequences and larger complexes into tomograms/partial cryoem maps.
+
+ 1. MD:
+   - local refinement of coarse components
+
+
+
+How many pixels to simulate a ribosome?
+
+<!-- 
+I'm researching a paper on the heterogeneities of macromolecules across different scales and the need for standardization of macromolecular structures or at least
+ the ability to access their subparts with high precision in the current repositories,
+  in particular the pdbx/mmcif format. This is also a chance for me to learn about the corresponding fields of structural biology which preoccupy themselves with a
+   given biomolecules (is this assumption even true?): ex. ribosome people tend to herd with riboosme people and rarely think about, say, tubulin or polymerases. Hence people outside a given field, even in the adjacent fields, are generally unaware of heterogeneities and important "subontologies" within a given field. Ex i work with the riboosme and have to explain to epople how malleable the ribosome is in its motions and how vastly different the compostional and evolutionary makeups are between eukartyoes, bacteria, mitochondria etc. 
+
+it would also be nice to get some metrics/idea of the communities working on those structures, what _kind_ of work it involves and what are the "nearest" applications in industry, main sources of data. (ex. the ribosome is studied by about oh idk about 200 principal PIs if im generous with a slew of im guessing about 1000-2000 students, the main applications being medicine and evolutionary research, in particular various ligands that can inhibit or stall the ribosome, their rate of replication and modificates in cancer. the main source of data is crystallography and microscopy here)
+
+
+This is a very open-ended topic and i'm still fleshing out my thoughts on this, but perhaps a good place to start is trying to assemble a registry of these relevant macromolecules around which we can say with some fairness that a field has assembled and trying to characterize them as above. -->
+
+
+
+### Ribosome
+
+| Property | Details |
+|----------|---------|
+| Size/Scale | ~20-30 nm, ~2.5 MDa |
+| Composition | Bacterial: 50 proteins, 3 rRNAs; Eukaryotic: 80 proteins, 4 rRNAs |
+| Interactions | mRNA, tRNAs, translation factors, antibiotics |
+| Community Size | ~200 PIs, 1000-2000 students |
+| Data Acquisition Methods | X-ray crystallography, cryo-EM, biochemical assays |
+| Nomenclature | Ribosomal proteins named uL1 to uL44 (large subunit) and uS1 to uS31 (small subunit) |
+| Relevant Loci | Peptidyl Transferase Center (PTC), Decoding Center, Exit Tunnel |
+
+
+#### Main Vectors of Heterogeneity
+Structural dynamics (e.g., ratcheting, rotation), compositional differences (e.g., bacterial vs. eukaryotic), evolutionary divergence, post-translational modifications
+
+#### General Function
+Translates mRNA into proteins, essential for protein synthesis
+
+#### Key Research Groups
+The Steitz Lab (Yale University), The Ramakrishnan Lab (MRC Laboratory of Molecular Biology), The Ban Lab (ETH Zurich), The Cate Lab (University of California, Berkeley)
+
+#### Industry Applications
+Antibiotics targeting bacterial ribosomes (e.g., macrolides, tetracyclines), cancer therapy targeting ribosome biogenesis, biotechnology for protein synthesis
+
+
+### Spliceosome
+
+| Property | Details |
+|----------|---------|
+| Size/Scale | ~20-40 nm, variable mass (dynamic) |
+| Composition | 5 snRNAs, ~100-200 proteins |
+| Interactions | Pre-mRNA, splicing factors, regulatory proteins |
+| Community Size | ~100-150 PIs, 500-1000 students |
+| Data Acquisition Methods | Cryo-EM, biochemical assays, genetic screens |
+| Nomenclature | snRNPs (U1, U2, U4, U5, U6), proteins named by function |
+| PDB Structures | 5LJN (human U1 snRNP), 6EX6 (human spliceosome) |
+| Relevant Loci | Active Site, Binding Sites for Exon-Intron Junctions |
+
+#### Main Vectors of Heterogeneity
+Dynamic assembly states, species-specific differences, alternative splicing, structural flexibility
+
+#### General Function
+Removes introns from pre-mRNA, producing mature mRNA for translation
+
+#### Key Research Groups
+The Moore Lab (University of Massachusetts Medical School), The Staley Lab (University of California, San Francisco), The Shi Lab (Chinese Academy of Sciences), The Wilkinson Lab (Northwestern University)
+
+#### Industry Applications
+Drug development for myelodysplastic syndromes and cancers, gene editing for specific protein isoforms
+
+### 3. Proteasome
+
+| Property | Details |
+|----------|---------|
+| Size/Scale | ~15 nm (core), ~45 nm (full), ~2.5 MDa |
+| Composition | 20S core (28 subunits), 19S caps (~19 subunits) |
+| Interactions | Ubiquitinated proteins, regulatory factors |
+| Community Size | ~100-150 PIs, 500-1000 students |
+| Data Acquisition Methods | X-ray crystallography, cryo-EM, biochemical assays |
+| Nomenclature | 20S core has α and β subunits; 19S has Rpt and Rpn subunits |
+| PDB Structures | 5L60 (human 20S proteasome), 5MPA (human 26S proteasome) |
+| Relevant Loci | Catalytic Sites, Ubiquitin Binding Sites |
+
+#### Main Vectors of Heterogeneity
+Different types (standard, immuno-, thymoproteasome), regulatory particles, post-translational modifications, structural dynamics
+
+#### General Function
+Degrades ubiquitinated proteins, maintaining protein homeostasis
+
+#### Key Research Groups
+The Goldberg Lab (Harvard Medical School), The Finley Lab (Harvard Medical School), The Matzovetsky Lab (Technion-Israel Institute of Technology), The Glickman Lab (Technion-Israel Institute of Technology)
+
+#### Industry Applications
+Proteasome inhibitors for multiple myeloma (e.g., bortezomib), neurodegenerative disease research, immune-related therapies
+
+### 4. DNA Polymerase
+
+| Property | Details |
+|----------|---------|
+| Size/Scale | ~10 nm, ~100-500 kDa |
+| Composition | Bacterial Pol III: ~10 subunits; Eukaryotic Pol δ: 4 subunits |
+| Interactions | DNA, dNTPs, replication factors |
+| Community Size | ~150-200 PIs, 800-1500 students |
+| Data Acquisition Methods | X-ray crystallography, cryo-EM, single-molecule studies |
+| Nomenclature | Types include Pol α, β, γ, δ, ε with specific subunit names |
+| PDB Structures | 3IAY (bacterial Pol III core), 4CRB (human Pol δ) |
+| Relevant Loci | Active Site, Exonuclease Domain |
+
+#### Main Vectors of Heterogeneity
+Multiple types with distinct functions, species-specific differences, regulatory interactions, structural dynamics
+
+#### General Function
+Synthesizes DNA for replication and repair, ensuring genetic fidelity
+
+#### Key Research Groups
+The Kunkel Lab (National Institute of Environmental Health Sciences), The Goodman Lab (University of Southern California), The Friedberg Lab (University of Texas Medical Branch), The Patel Lab (New York University)
+
+#### Industry Applications
+Antiviral drugs targeting viral DNA polymerases, cancer therapy, PCR and molecular biology techniques
+
+### 5. RNA Polymerase
+
+| Property | Details |
+|----------|---------|
+| Size/Scale | ~10-15 nm, ~500 kDa |
+| Composition | 12 subunits (eukaryotic) |
+| Interactions | DNA, transcription factors, RNA |
+| Community Size | ~100-150 PIs, 500-1000 students |
+| Data Acquisition Methods | X-ray crystallography, cryo-EM, transcription assays |
+| Nomenclature | Subunits labeled α, β, β', ω in bacteria; RPB1, RPB2 in eukaryotes |
+| PDB Structures | 1I6H (bacterial RNA polymerase), 6EPE (human Pol II) |
+| Relevant Loci | Active Site, Promoter Binding Region |
+
+#### Main Vectors of Heterogeneity
+Multiple types (Pol I, II, III), species-specific differences, regulatory factors, structural dynamics
+
+#### General Function
+Transcribes DNA to RNA, initiating gene expression
+
+#### Key Research Groups
+The Cramer Lab (Max Planck Institute for Biophysical Chemistry), The Young Lab (Massachusetts Institute of Technology), The Roeder Lab (The Rockefeller University), The Kornberg Lab (Stanford University)
+
+#### Industry Applications
+Antibiotics targeting bacterial RNA polymerase (e.g., rifampicin), cancer therapy, in vitro transcription for RNA research
+
+### 6. Nuclear Pore Complex (NPC)
+
+| Property | Details |
+|----------|---------|
+| Size/Scale | ~120 nm, ~50-100 MDa |
+| Composition | ~30 distinct nucleoporins (Nups), ~500-1000 total proteins |
+| Interactions | Nuclear transport receptors, FG-Nups, Ran GTPase |
+| Community Size | ~50-100 PIs, 200-500 students |
+| Data Acquisition Methods | Cryo-EM, fluorescence microscopy, biochemical assays |
+| Nomenclature | Nups named by molecular weight (e.g., Nup62, Nup93) |
+| PDB Structures | 6O4R (human Nup107-125-96 complex), 6O4T (human Nup107-125-96-85 complex) |
+| Relevant Loci | Central Channel, FG-Repeats |
+
+#### Main Vectors of Heterogeneity
+Species-specific differences, structural variability, dynamic assembly, functional specialization
+
+#### General Function
+Regulates transport between nucleus and cytoplasm
+
+#### Key Research Groups
+The Wente Lab (University of Minnesota), The Stewart Lab (MRC Laboratory of Molecular Biology), The Görlich Lab (Max Planck Institute for Biophysical Chemistry), The Blobel Lab (Rockefeller University)
+
+#### Industry Applications
+Antiviral strategies, cancer research, neurodegenerative disorder studies
+
+### 7. Mitochondrial Respiratory Chain (Complex I)
+
+| Property | Details |
+|----------|---------|
+| Size/Scale | ~20 nm, ~1 MDa |
+| Composition | ~45 subunits (mitochondrial) |
+| Interactions | NADH, ubiquinone, other complexes |
+| Community Size | ~100-150 PIs, 500-1000 students |
+| Data Acquisition Methods | Cryo-EM, X-ray crystallography, spectroscopy |
+| Nomenclature | Subunits named by function (e.g., ND1, ND2) |
+| PDB Structures | 5LNK (bovine complex I), 6G0G (human complex I) |
+| Relevant Loci | Electron Transfer Pathway, Proton Pumping Sites |
+
+#### Main Vectors of Heterogeneity
+Species-specific differences, tissue-specific variations, dynamic regulation, pathological variations
+
+#### General Function
+Transfers electrons from NADH to ubiquinone, contributing to ATP synthesis
+
+#### Key Research Groups
+The Hirst Lab (MRC Mitochondrial Biology Unit), The Shoubridge Lab (McGill University), The Walker Lab (MRC Mitochondrial Biology Unit), The Sazanov Lab (Institute of Science and Technology, Austria)
+
+#### Industry Applications
+Research into mitochondrial diseases, aging, neurodegenerative disorders
+
+### 8. Viruses (e.g., HIV)
+
+| Property | Details |
+|----------|---------|
+| Size/Scale | ~100 nm, variable mass |
+| Composition | Capsid (~1,500 proteins), RNA (~9,000 nt), envelope proteins |
+| Interactions | Host receptors, immune system, antivirals |
+| Community Size | ~200-300 PIs, 1000-2000 students |
+| Data Acquisition Methods | Cryo-EM, X-ray crystallography, cryo-electron tomography |
+| Nomenclature | Components named by function (e.g., capsid, envelope, gag, pol) |
+| PDB Structures | 3J3Q (HIV-1 capsid protein), 5WJ9 (SARS-CoV-2 spike protein) |
+| Relevant Loci | gp120 (HIV receptor binding), reverse transcriptase active site |
+
+#### Main Vectors of Heterogeneity
+Different types, host specificity, viral protein variability, dynamic interactions
+
+#### General Function
+Infects and replicates within host cells, causing disease
+
+#### Key Research Groups
+The Freed Lab (National Cancer Institute), The Steven Lab (National Institute of Allergy and Infectious Diseases), The Rossmann Lab (Purdue University), The Wilson Lab (Scripps Research)
+
+#### Industry Applications
+Vaccine and antiviral drug design, diagnostic test development
+
+### 9. Chromatin and Nucleosomes
+
+| Property | Details |
+|----------|---------|
+| Size/Scale | ~10 nm (nucleosome), larger fibers |
+| Composition | 8 histones, ~147 bp DNA per nucleosome |
+| Interactions | Histone modifiers, transcription machinery, DNA repair |
+| Community Size | ~200-300 PIs, 1000-2000 students |
+| Data Acquisition Methods | X-ray crystallography, cryo-EM, ChIP-seq |
+| Nomenclature | Histones named H1, H2A, H2B, H3, H4 |
+| PDB Structures | 1AOI (nucleosome core particle), 6U96 (chromatosome) |
+| Relevant Loci | Histone Tails, DNA Entry/Exit Points |
+
+#### Main Vectors of Heterogeneity
+Histone variants, post-translational modifications, DNA sequence variability, higher-order structures
+
+#### General Function
+Packages DNA, regulates gene expression
+
+#### Key Research Groups
+The Allis Lab (Rockefeller University), The Reinberg Lab (New York University School of Medicine), The Shiio Lab (University of California, San Francisco), The Henikoff Lab (Fred Hutchinson Cancer Research Center)
+
+#### Industry Applications
+Epigenetic drugs for cancer, gene expression manipulation
+
+### 10. Motor Proteins (e.g., Dynein)
+
+| Property | Details |
+|----------|---------|
+| Size/Scale | ~25 nm, ~1-2 MDa |
+| Composition | ~12 subunits (heavy chain ~4,500 aa) |
+| Interactions | Microtubules, cargo, regulatory proteins |
+| Community Size | ~100-150 PIs, 500-1000 students |
+| Data Acquisition Methods | X-ray crystallography, cryo-EM, single-molecule fluorescence |
+| Nomenclature | Types include kinesin, dynein, myosin |
+| PDB Structures | 3IBI (kinesin-1 motor domain), 4RH6 (dynein motor domain) |
+| Relevant Loci | ATP Binding Site, Microtubule Binding Interface |
+
+#### Main Vectors of Heterogeneity
+Different types, subunit composition, regulatory interactions, dynamic behavior
+
+#### General Function
+Powers cellular movements like intracellular transport, cell division, muscle contraction
+
+#### Key Research Groups
+The Vale Lab (University of California, San Francisco), The Block Lab (Stanford University), The Svoboda Lab (National Institute of Standards and Technology), The Howard Lab (Max Planck Institute of Molecular Cell Biology and Genetics)
+
+#### Industry Applications
+Research into neurodegenerative diseases, anti-cancer agents, nanoscale engineering
+
+### 11. Tubulin and Microtubules
+
+| Property | Details |
+|----------|---------|
+| Size/Scale | ~25 nm diameter, μm length |
+| Composition | α/β-tubulin dimers (~450 aa each), 13 protofilaments |
+| Interactions | Motor proteins, MAPs, drugs (e.g., taxanes) |
+| Community Size | ~100-150 PIs, 500-1000 students |
+| Data Acquisition Methods | Cryo-EM, X-ray crystallography, fluorescence microscopy |
+| Nomenclature | Tubulin types α, β, γ, δ, ε |
+| PDB Structures | 1TUB (α/β-tubulin dimer), 6DDE (microtubule) |
+| Relevant Loci | GTP Binding Sites, Drug Binding Sites |
+
+#### Main Vectors of Heterogeneity
+Different isotypes, post-translational modifications, MAPs, dynamic instability
+
+#### General Function
+Maintains cell shape, facilitates intracellular transport, cell division
+
+#### Key Research Groups
+The Nogales Lab (University of California, Berkeley), The Wilson Lab (University of California, Santa Barbara), The Kapoor Lab (Rockefeller University), The Desai Lab (University of California, San Francisco)
+
+#### Industry Applications
+Anti-cancer drugs (e.g., taxanes), neurodegenerative disease research
+
+### 12. ATP Synthase
+
+| Property | Details |
+|----------|---------|
+| Size/Scale | ~10-15 nm, ~500-600 kDa |
+| Composition | F1 (5 subunits: 3α, 3β, γ, δ, ε), F0 (~10-15 subunits) |
+| Interactions | ADP, Pi, proton gradient, inhibitors |
+| Community Size | ~100-150 PIs, 500-1000 students |
+| Data Acquisition Methods | X-ray crystallography, cryo-EM, spectroscopy |
+| Nomenclature | F1 subunits (α, β, γ, δ, ε), F0 subunits (a, b, c, d) |
+| PDB Structures | 1E79 (bovine F1-ATPase), 5T4O (yeast mitochondrial ATP synthase) |
+| Relevant Loci | Catalytic Sites, Proton Channel |
+
+#### Main Vectors of Heterogeneity
+Species-specific differences, regulatory mechanisms, dynamic behavior, pathological variations
+
+#### General Function
+Generates ATP from ADP and Pi using proton gradient
+
+#### Key Research Groups
+The Walker Lab (MRC Mitochondrial Biology Unit), The Noji Lab (Osaka University), The Dimroth Lab (ETH Zurich), The Frasch Lab (Arizona State University)
+
+#### Industry Applications
+Research into mitochondrial diseases, bioenergy research, antibiotic development
+
+### 13. Pyruvate Dehydrogenase Complex (PDC)
+
+| Property | Details |
+|----------|---------|
+| Size/Scale | ~30-50 nm, ~9 MDa |
+| Composition | E1 (~24 subunits), E2 (~60 subunits), E3 (~12 subunits), regulatory enzymes |
+| Interactions | Pyruvate, CoA, NAD+, regulatory kinases |
+| Community Size | ~50-100 PIs, 200-500 students |
+| Data Acquisition Methods | Cryo-EM, X-ray crystallography, enzymology |
+| Nomenclature | E1 (pyruvate dehydrogenase), E2 (dihydrolipoyl transacetylase), E3 (dihydrolipoyl dehydrogenase) |
+| PDB Structures | 1W85 (human E1 component), 2Q9J (bacterial PDC) |
+| Relevant Loci | Active Sites of E1, E2, E3 |
+
+#### Main Vectors of Heterogeneity
+Species-specific differences, regulatory mechanisms, structural variations, pathological variations
+
+#### General Function
+Converts pyruvate to acetyl-CoA, linking glycolysis to the citric acid cycle
+
+#### Key Research Groups
+The Reed Lab (University of Texas at Austin), The Perham Lab (University of Cambridge), The Roche Lab (University of Texas Southwestern Medical Center), The Patel Lab (University of Southern California)
+
+#### Industry Applications
+Research into metabolic disorders, cancer therapy, biotechnology applications
+
+### 14. Replisome
+
+| Property | Details |
+|----------|---------|
+| Size/Scale | ~20-30 nm, ~1-2 MDa |
+| Composition | Bacterial: ~15 subunits; Eukaryotic: ~20-30 subunits |
+| Interactions | DNA, dNTPs, replication factors |
+| Community Size | ~100-150 PIs, 500-1000 students |
+| Data Acquisition Methods | Cryo-EM, single-molecule studies, biochemical assays |
+| Nomenclature | Components include DNA polymerase, helicase, primase, clamp loader |
+| PDB Structures | 3ZPB (bacterial DnaB helicase), 4MG1 (human PCNA) |
+| Relevant Loci | DNA Binding Sites, Helicase Active Site |
+
+#### Main Vectors of Heterogeneity
+Species-specific differences, replication strategies, regulatory mechanisms, dynamic behavior
+
+#### General Function
+Replicates DNA, ensuring genome duplication
+
+#### Key Research Groups
+The Stillman Lab (Cold Spring Harbor Laboratory), The Bell Lab (University of California, Berkeley), The O'Donnell Lab (Rockefeller University), The Kuriyan Lab (University of California, Berkeley)
+
+#### Industry Applications
+Cancer research, genetic disorder studies, biotechnology applications
+
+### 15. Clathrin-Coated Vesicles
+
+| Property | Details |
+|----------|---------|
+| Size/Scale | ~50-100 nm, variable mass |
+| Composition | Clathrin triskelions (~50-100 units), adaptors (~10-20 proteins) |
+| Interactions | Cargo, membrane, accessory proteins |
+| Community Size | ~50-100 PIs, 200-500 students |
+| Data Acquisition Methods | Cryo-EM, X-ray crystallography, electron tomography |
+| Nomenclature | Clathrin heavy and light chains, adaptors (e.g., AP-2, AP-1) |
+| PDB Structures | 1B89 (clathrin terminal domain), 1IW9 (AP-2 complex) |
+| Relevant Loci | Cargo Binding Sites, Membrane Interaction Regions |
+
+#### Main Vectors of Heterogeneity
+Different adaptors, cargo specificity, dynamic assembly, cell type variations
+
+#### General Function
+Facilitates receptor-mediated endocytosis and intracellular transport
+
+#### Key Research Groups
+The Schmid Lab (University of Texas Southwestern Medical Center), The Robinson Lab (University of Cambridge), The Kirchhausen Lab (Harvard Medical School), The McMahon Lab (MRC Laboratory of Molecular Biology)
+
+#### Industry Applications
+Drug delivery systems, cancer research, neurodegenerative disease studies
+
+### 16. Actin Filaments (F-actin)
+
+| Property | Details |
+|----------|---------|
+| Size/Scale | ~7 nm diameter, μm length |
+| Composition | G-actin monomers (~375 aa), polymerized into filaments |
+| Interactions | Actin-binding proteins, myosin, drugs |
+| Community Size | ~150-200 PIs, 800-1500 students |
+| Data Acquisition Methods | Cryo-EM, X-ray crystallography, fluorescence microscopy |
+| Nomenclature | G-actin, F-actin, isoforms (α, β, γ) |
+| PDB Structures | 1J6Z (G-actin), 2ZWH (F-actin) |
+| Relevant Loci | ATP Binding Site, Polymerization Interfaces |
+
+#### Main Vectors of Heterogeneity
+Different isoforms, regulatory proteins, dynamic behavior, structural variations
+
+#### General Function
+Maintains cell shape, facilitates cell movement, muscle contraction
+
+#### Key Research Groups
+The Pollard Lab (Yale University), The Spudich Lab (Stanford University), The Kovar Lab (University of Chicago), The Mullins Lab (University of California, San Francisco)
+
+#### Industry Applications
+Muscle disorder research, cancer metastasis studies, biotechnology applications
+
+### 17. Exosome (RNA Degradation)
+
+| Property | Details |
+|----------|---------|
+| Size/Scale | ~10-15 nm, ~400-500 kDa |
+| Composition | ~10-11 subunits (e.g., 9 core + catalytic subunit) |
+| Interactions | RNA substrates, regulatory factors |
+| Community Size | ~50-100 PIs, 200-500 students |
+| Data Acquisition Methods | X-ray crystallography, cryo-EM, biochemical assays |
+| Nomenclature | Specific names for components (e.g., RRP4, RRP40, DIS3) |
+| PDB Structures | 2VVO (archaeal exosome), 5V98 (human exosome) |
+| Relevant Loci | RNA Binding Sites, Catalytic Sites |
+
+#### Main Vectors of Heterogeneity
+Different cell types, pathological variations, regulatory mechanisms, dynamic behavior
+
+#### General Function
+Processes and degrades RNA, regulating RNA levels and quality
+
+#### Key Research Groups
+The Seraphin Lab (University of Strasbourg), The Tollervey Lab (University of Edinburgh), The van Hoof Lab (University of Texas Health Science Center at Houston), The Jensen Lab (Aarhus University)
+
+#### Industry Applications
+RNA-based therapeutics, cancer research, genetic disorder studies
+
+### 18. Chaperonin (e.g., GroEL/GroES)
+
+| Property | Details |
+|----------|---------|
+| Size/Scale | ~15-20 nm, ~800 kDa |
+| Composition | GroEL (14 subunits), GroES (7 subunits) |
+| Interactions | Misfolded proteins, ATP |
+| Community Size | ~50-100 PIs, 200-500 students |
+| Data Acquisition Methods | X-ray crystallography, cryo-EM, biochemical assays |
+| Nomenclature | GroEL and GroES in bacteria, CCT in eukaryotes |
+| PDB Structures | 1AON (GroEL/GroES complex), 1Q3D (human CCT complex) |
+| Relevant Loci | ATP Binding Sites, Substrate Binding Cavity |
+
+#### Main Vectors of Heterogeneity
+Different organisms, subunit variations, regulatory mechanisms, substrate specificity
+
+#### General Function
+Assists in protein folding, ensuring proper protein structure
+
+#### Key Research Groups
+The Horwich Lab (Yale University), The Hartl Lab (Max Planck Institute of Biochemistry), The Saibil Lab (Birkbeck, University of London), The Bukau Lab (University of Heidelberg)
+
+#### Industry Applications
+Protein misfolding disease research, biotechnology for protein production, drug development

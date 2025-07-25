@@ -1,0 +1,38 @@
+---
+title: "Draft"
+date: "2024-03-13"
+page-layout: article
+sidebar: false
+format:
+  html:
+    css: 
+      - blogpost.css
+---
+
+## Summary and Background
+
+We present a protocol to extract the surface of a biomolecular cavity for shape analysis and molecular simulations.
+
+We apply and illustrate the protocol on the ribosome structure, which contains a subcompartment known as the ribosome exit tunnel or "nascent polypeptide exit tunnel" (**NPET**). More details on the tunnel features and biological importance can be found in our previous works.
+
+The protocol was designed to refine the output obtained from MOLE software, but can be applied to reconstruct a mesh on any general point cloud. Hence, we take the point-cloud of atom positions surrounding the tunnel as a point of departure.
+
+## 1. Pointcloud Preparation: Bounding Box and Voxelization
+
+**Bbox**: There are many ways to extract a point cloud from a larger biological structure – in this case we settle for a bounding box that bounds the space between the PTC and the NPET vestibule.
+
+```{=html}
+<div class="interactive-figure" style="height: 400px;">
+  <div class="interactive-figure-inner" id="figure1"></div>
+</div>
+```
+
+```{ojs}
+// Example JavaScript for loading a 3D visualization
+// This would be replaced with your actual visualization code
+figure1_vis = {
+  const div = d3.select("#figure1");
+  div.html("<p>Interactive 3D visualization would be inserted here</p>");
+  return div.node();
+}
+```

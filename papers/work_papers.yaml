@@ -1,0 +1,37 @@
+- title   : "Structural heterogeneities of the ribosome: new frontiers and opportunities for cryo-EM"
+  journal : "Molecules"
+  year    : 2020
+  authors : Frédéric Poitevin, Artem Kushner, Xinpei Li, and Khanh Dao Duc
+  url     : "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7570653/"
+  abstract: "This paper explores the structural heterogeneities of the ribosome across evolutionary, cellular, temporal and conformational landscapes."
+  type    : paper
+  images  : 
+    - src: ./resources/paper_teasers/heterogeneities.png
+      caption : ""
+- title  : "Application of transport-based metric for continuous interpolation between cryo-EM density maps"
+  journal: "AIMS Mathematics"
+
+  year    : 2022
+  authors : Arthur Ecoffet, Geoffrey Woollard, Artem Kushner, and Frédéric Poitevin, Khanh Dao Duc
+  url     : "https://www.aimspress.com/article/doi/10.3934/math.2022059"
+  abstract: "We present an approach to interpolating between cryo-EM density maps based on the theory of optimal transport"
+  type    : paper
+  images  : 
+    - src: ./resources/paper_teasers/ot.jpg
+      caption : ""
+    - src: ./resources/paper_teasers/morphot_linear.gif
+      caption : ""
+    - src: ./resources/paper_teasers/morphot_ot.gif
+      caption : ""
+
+
+- title   : "RiboXYZ: a comprehensive database for visualizing and analyzing ribosome structures"
+  journal : "Nucleic Acids Research"
+  year    : 2023
+  authors : Artem Kushner, Anton S. Petrov, and Khanh Dao Duc
+  url     : "https://academic.oup.com/nar/article/51/D1/D509/6777803"
+  abstract: "https://ribosome.xyz"
+  type    : paper
+  images  : 
+    - src: ./resources/paper_teasers/riboxyz.jpeg
+      caption : ""

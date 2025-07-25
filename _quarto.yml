@@ -11,9 +11,12 @@ website:
 
   site-url: "https://rtviii.xyz"
   favicon: "./img/BTNBlink.webp"
+  
 
   sidebar:
-    style: "floating"
+    style: floating
+    position: left
+    pinned: true
     logo: './img/signature.png'
     search: false
     border: true
@@ -24,30 +27,18 @@ website:
         href: ./resources/kushner_cv.pdf
 
       - text: "Papers"
-        href: ./listing_papers.qmd
+        href: ./papers/listing_papers.qmd
 
       - text: "Blog"
         href: ./blog.qmd
 
-      - text: "Gallery"
-        href: ./gallery.qmd
-
-      # - text: "Libary"
-      #   href: ./library.qmd
-
-      # - text: "People"
-      #   href: ./people.qmd
-
-
-      # - section: "Computer Stuff"
-      #   href: ./resources/kushner_cv.pdf
+      # - text: "Gallery"
+      #   href: ./gallery/gallery.qmd
 
 format:
   html:
     theme: litera
-    css: styles.css
-    mainfont: "Your Preferred Font"
-    headfont: "Your Heading Font"
+    css: styles/base.css
     include-in-header:
       text: |
         <link rel="preconnect" href="https://fonts.googleapis.com">

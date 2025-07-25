@@ -1,0 +1,36 @@
+# Tubulin Database Application Design
+
+From the perspective of the tubulin research community, here are the key elements your database application should incorporate:
+
+## Structural Classifications
+- **Isotype tracking**: Alpha/beta/gamma tubulin variants with their distinct structural features
+- **PTM mapping**: Comprehensive post-translational modification sites (acetylation, tyrosination, polyglutamylation, etc.)
+- **Conformational states**: Straight vs. curved, GTP vs. GDP-bound states
+- **Lattice arrangements**: A vs. B lattice, protofilament number variations (13 vs. non-13)
+- **Interface classifications**: Lateral and longitudinal contact regions
+- **Seam structures**: Variations in microtubule seam architecture
+
+## Biologically Relevant Operations
+- **PTM pattern search**: Query by specific modification patterns
+- **Structural alignment tools**: Compare conformational changes between states
+- **Pharmacological binding site analysis**: Drug interaction surfaces
+- **MAP binding region identification**: Sites for motor proteins and other MAPs
+- **Evolutionary conservation mapping**: Highlight conserved regions across species
+- **Disease-associated mutation correlation**: Link mutations to structural changes
+
+## Critical Loci
+- **Nucleotide binding pockets**: GTP/GDP binding sites
+- **Taxane-binding site**: And other drug-binding domains
+- **E-site/M-site**: Exchangeable vs. non-exchangeable nucleotide sites
+- **C-terminal tails**: Highly variable regions subject to most PTMs
+- **Inter-dimer interfaces**: Critical for polymerization dynamics
+- **Loop regions**: T5, H1-S2, M, etc. that change conformation during dynamics
+
+## Additional Functionalities
+- **Dynamics prediction**: Tools to correlate structure with dynamic behavior
+- **Resolution-based filtering**: Quality assessment of structural data
+- **Experimental method classification**: Cryo-EM vs. X-ray crystallography sources
+- **Taxonomic organization**: Species-specific tubulin structures
+- **Integrated visualization**: Direct linking to molecular viewers with highlighting options
+
+Would you like me to expand on any particular aspect of this database design?
