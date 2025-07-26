@@ -22,7 +22,7 @@ css: [styles/homepage.css]
 :::  
 
 ::: {.g-col-12 .g-col-md-9 .right-column}
-![](img/Seminaire_Grothendieck.jpg){.main-photo}
+![](img/sifnos_HCB.jpg){.main-photo}
 
 Hi, I'm a research technician at UBC, Vancouver with [Khanh Dao Duc](https://kdaoduc.com/about/) and at IMP, Vienna with [Sven Klumpe](https://www.imp.ac.at/groups/sven-klumpe).
 
