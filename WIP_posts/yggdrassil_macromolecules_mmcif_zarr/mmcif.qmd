@@ -1,9 +1,7 @@
-
-
 Rewriting the file "on the fly" is hard due to lack of modularity and other:
+
 - trajectories for a single chain
 - adding a few waters etc.
-
 
 # Background | The Unfurling Landscape of Structural Biology
 

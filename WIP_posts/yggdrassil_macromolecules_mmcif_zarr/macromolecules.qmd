@@ -23,7 +23,6 @@ Multiple separate angles here:
    - local refinement of coarse components
 
 
-
 How many pixels to simulate a ribosome?
 
 <!-- 

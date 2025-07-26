@@ -13,37 +13,17 @@ website:
   favicon: "./img/BTNBlink.webp"
   
 
-  sidebar:
-    style: floating
-    position: left
-    pinned: true
-    logo: './img/signature.png'
-    search: false
-    border: true
-    collapse-level: 1
-    contents:
-
-      - text: "CV"
-        href: ./resources/kushner_cv.pdf
-
-      - text: "Papers"
-        href: ./papers/listing_papers.qmd
-
-      - text: "Blog"
-        href: ./blog.qmd
-
-      # - text: "Gallery"
-      #   href: ./gallery/gallery.qmd
 
 format:
   html:
     theme: litera
-    css: styles/base.css
+    css: styles/custom.css
     include-in-header:
       text: |
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
         <script>
         document.addEventListener('DOMContentLoaded', function() {
           const images = document.querySelectorAll('.zoomable');

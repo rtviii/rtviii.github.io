@@ -1,52 +1,70 @@
-/* Adjust the main container */
-.quarto-about-trestles {
-  max-width: 1600px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: minmax(200px, 25%) 2fr;
-  gap: 1rem;
-}
-.about-contents{
-    max-width: 600px;
-    width: 800px;
+/* styles/homepage.css */
 
-}
-#quarto-document-content{
-
-    width: 100%;
-
+/* --- Main Container --- */
+.homepage-container {
+  max-width: 1100px;
+  margin: 2rem auto;
+  padding: 0 2rem;
 }
 
-/* Style the left section (image and buttons) */
-.about-entity {
-  grid-column: 2;
-  padding-right: 1rem;
+/* --- Left Column: Signature & Nav --- */
+.left-column .signature {
+  max-width: 100px;
+  margin-bottom: 1.5rem;
 }
 
-/* Style the right section (text content) */
-.about-contents {
-  grid-column: 2;
-  max-width: 600px;
-  padding-right: 2rem;
+.left-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.left-column ul a {
+  text-decoration: none;
+  font-size: 12px;
+  color: #333;
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+.left-column ul a:hover {
+  color: #000;
+}
+
+/* --- Social Links (Now in Left Column) --- */
+.social-links {
+  margin-top: 2.5rem; /* Adds space between nav and icons */
+  font-size: 1rem;  /* Slightly smaller icons to fit better */
+  display: flex;
+  flex-wrap: wrap; /* Allows icons to wrap on small screens */
+  gap: 1.25rem;
+}
+
+.social-links a {
+  color: #888; /* UPDATED to be grayish */
+  text-decoration: none;
+  transition: color 0.2s ease-in-out; /* Smooth color change on hover */
+}
+
+.social-links a:hover {
+  color: #000; /* Back to black on hover */
+}
+
+
+/* --- Right Column: Photo & Text --- */
+.right-column .main-photo {
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.right-column p {
   line-height: 1.6;
-}
-
-/* Additional styling for text elements */
-.about-contents p {
+  color: #444;
   margin-bottom: 1rem;
 }
 
-/* Responsive adjustments */
+
+/* --- Responsive Adjustments for Mobile --- */
 @media (max-width: 768px) {
-  .quarto-about-trestles {
-    grid-template-columns: 1fr;
-  }
-  
-  .about-entity, .about-contents {
-    grid-column: 1;
-  }
-  
-  .about-contents {
-    padding-right: 1rem;
-  }
+  /* ... (no changes needed here) ... */
 }

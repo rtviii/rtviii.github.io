@@ -1,44 +1,37 @@
 ---
-title: ""
-subtitle: "Artem Kushner "
-image: ./img/photos/henri_cartier_bresson_sifnos.jpg
-description-meta: ars longa vita brevis
-
-
-comments: false
-about:
-  template: "trestles"
-  links:
-    - icon: github
-      text: Github
-      href: https://github.com/rtviii
-    - icon: envelope
-      text: Email
-      href: "mailto:rtkushner@gmail.com"
-    - icon: twitter-x
-      text: Twitter
-      href: https://twitter.com/rtkushner
-    - icon: spotify
-      text: Spotify
-      href: https://open.spotify.com/user/3s2branches?si=cad8f707a6084cb1
-
-format:
-  html:
-    css: custom.css
+page-layout: full
+css: [styles/homepage.css]
 ---
 
-<!-- Hi, I'm ~~a treeplanter~~,
-~~landscaper~~ ,
-~~bum~~,
-~~biochemistry student at SFU, Burnaby~~,
-~~computer science student at UBC, Vancouver~~,
-~~backend developer at Michael Smith's Genome Sciences Center, BC, Canada~~,
-~~backend developer at Staking Facilities GmbH~~, -->
-Hi, i'm a research technician at UBC, Vancouver with [Khanh Dao Duc](https://kdaoduc.com/about/) and at IMP, Vienna with [Sven Klumpe](https://www.imp.ac.at/groups/sven-klumpe).
+::: {.grid .homepage-container}
+
+::: {.g-col-12 .g-col-md-3 .left-column}
+![](img/signature.png){.signature}
+
+- [CV](papers/kushner_cv.pdf)
+- [Papers](papers.html)
+- [Blog](blog.html)
+- [Listings](listings.html)
+
+::: {.social-links}
+[<i class="bi bi-github"></i>](https://github.com/rtviii)
+[<i class="ai ai-google-scholar"></i>](https://scholar.google.com/citations?user=hrPyOIsAAAAJ&hl=en)
+[<i class="bi bi-twitter"></i>](https://twitter.com/rtkushner)
+:::
+
+:::  
+
+::: {.g-col-12 .g-col-md-9 .right-column}
+![](img/Seminaire_Grothendieck.jpg){.main-photo}
+
+Hi, I'm a research technician at UBC, Vancouver with [Khanh Dao Duc](https://kdaoduc.com/about/) and at IMP, Vienna with [Sven Klumpe](https://www.imp.ac.at/groups/sven-klumpe).
 
 My general interests are in biology, software and mathematics. I have done work in structural biology infrastrucutre (ranging from atomic models to CryoET), ML applications to cryoEM, the heterogeneity problem and shape analysis. I built and maintain [ribosome.xyz](https://ribosome.xyz/).
 
-Outside of academia, I've had a few backend roles. I enjoy running, music, mathematics, history; i planted around 250,000 trees in the north-west of Canada between 2016 and 2018. My favorite books are by Proust, Eco and McCarthy and my favourtie piece of music is _Concierto De Aranjuez_.
+Outside of academia, I've had a few backend roles. I enjoy running, canoeing, music, mathematics, history; i planted around 250,000 trees in the north-west of Canada between 2016 and 2018. My favorite books are by Proust, Eco and McCarthy.
 
-I can be reached at [ rtkushner@gmail.com ](mailto:rtkushner@gmail.com).
+I can be reached at [rtkushner@gmail.com](mailto:rtkushner@gmail.com).
 
+:::
+
+:::

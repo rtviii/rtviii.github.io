@@ -238,11 +238,3 @@ methods in terms of seqeunces and resolution
 
 
 
-
-
-
-
-
-
-
-applications
