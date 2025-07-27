@@ -1,29 +1,73 @@
 ---
-title: "Heterogeneities of macromolecules"
+title: "Heterogeneities of macromolecules: Cells within cells interlinked "
 draft: true
 format: html
 ---
 
-## Cells within cells interlinked 
+   ...blood-black nothingness began to spin
+   A system of cells interlinked within
+   Cells interlinked within cells interlinked
+   Within one stem.
+
+# Motivation and resources
+
+This is somethig _I_ want to build. But is there actualy use for it, how do i convince people to help me?
+Have you considered reaching out to the OME-NGFF working groups?
+
+# Dimensions to the endeavor
+
+### pdb -> zarr:
+
+- conformers and trajectories (xray, md, bfactors)
+- metadata reconcilliation
+- chunking
+- coarse-graining 
+
+### Macromolecule-specific schemas and tooling
+
+#### Enrich the data:
+
+- shape analysis
+- both via the temporal ensembles
+- FRET methylation measurements
+
+#### Structural Biology Operations that come up:
+
+- Everywhere | ligand binding (docking, binding affinity) 
+- Tubulin    | methylation
+- superimpose/aligning/template matching 
+- model building
+
+
+# TODO:
+
+- coarse graining: how does alex rose do it at mesascale?
+- https://link.springer.com/article/10.1007/s00418-023-02209-1
+- how do conformational heterogeneity a la E Zhong store and access data
+
+
+
 
 Let's be clear. These are INTUITIONS that need confirming.
 
 1. Macromolecule-specific hierarchy-rich datasets is another vector for enirching models.
+REFERENCES NEEDED
 
 Multiple separate angles here:
 
  1.better representations than mmcif/bcif (duh). Tensor streaming:
+
  - better how? progressive _coarse-graining_ based on _structural ontologies_
  - can probably draw on lidar literature here. see if Zarr can be drawn upon.
 
  2.model building:
+
  - how useful is naive templating at large scales? That is, fitting "known" or on-the-spot folded sequences and larger complexes into tomograms/partial cryoem maps.
 
  1. MD:
    - local refinement of coarse components
 
 
-How many pixels to simulate a ribosome?
 
 <!-- 
 I'm researching a paper on the heterogeneities of macromolecules across different scales and the need for standardization of macromolecular structures or at least
