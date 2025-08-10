@@ -1,10 +1,22 @@
 ---
 page-layout: custom
-css: [../styles/homepage.css]
+css: 
+  - ../styles/homepage.css
+  - ../styles/papers.css
 listing:
   contents: papers.yml
   template: template.ejs
-  id: main-listing
+  id: papers-listing
 ---
 
-{{< include ../_includes/_listing_layout.qmd >}}
+::: {.grid .homepage-container}
+{{< include ../_includes/_navigation.qmd >}}
+
+::: {.g-col-12 .g-col-md-9 .right-column}
+
+#### Published Work & Presentations
+
+::: {#papers-listing}
+:::
+:::
+:::

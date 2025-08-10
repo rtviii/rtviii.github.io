@@ -1,0 +1,86 @@
+/* styles/scrollbar-fix.css */
+/* Global scrollbar fixes to prevent unnecessary scrollbars site-wide */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Hide scrollbar globally but keep functionality */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+html,
+body {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* Ensure Quarto's default styles don't add unwanted overflow */
+.quarto-container-width {
+  overflow: visible !important;
+}
+
+main {
+  overflow: visible !important;
+}
+
+/* Prevent any element from causing horizontal scroll */
+* {
+  max-width: 100%;
+}
+
+img, video, iframe, embed, object {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Specific fix for content containers */
+.content, 
+.quarto-content,
+article,
+.page-layout-article,
+.page-layout-custom {
+  overflow-x: hidden;
+  overflow-y: visible;
+}
+
+/* Ensure code blocks don't cause horizontal scroll */
+pre {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+pre::-webkit-scrollbar {
+  height: 5px;
+}
+
+pre::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+pre::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+/* But keep code blocks scrollable with a thin scrollbar */
+pre::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
