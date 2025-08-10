@@ -9,7 +9,7 @@ css: [styles/homepage.css]
 ![](img/signature.png){.signature}
 
 - [CV](papers/kushner_cv.pdf)
-- [Papers](papers.html)
+- [Papers](papers/papers.html)
 - [Blog](blog.html)
 - [Listings](listings.html)
 

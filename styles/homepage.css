@@ -68,3 +68,49 @@
 @media (max-width: 768px) {
   /* ... (no changes needed here) ... */
 }
+
+
+
+#papers-listing,
+#main-listing {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Ensure grid layout works properly with custom page layout */
+.homepage-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Make sure the right column properly contains the listing */
+.right-column {
+  min-height: 100vh;
+  padding: 0 1rem;
+}
+
+/* Fix any overflow issues with paper entries */
+.papers-container {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.paper-entry {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .paper-entry {
+    flex-direction: column;
+  }
+  
+  .paper-image {
+    width: 100% !important;
+    margin-right: 0 !important;
+    margin-bottom: 15px;
+  }
+}

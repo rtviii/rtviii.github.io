@@ -1,0 +1,14 @@
+::: {.g-col-12 .g-col-md-3 .left-column}
+![](/img/signature.png){.signature}
+
+- [CV](/papers/kushner_cv.pdf)
+- [Papers](/papers/papers.html)
+- [Blog](/blog.html)
+- [Listings](/listings.html)
+
+::: {.social-links}
+[<i class="bi bi-github"></i>](https://github.com/rtviii)
+[<i class="ai ai-google-scholar"></i>](https://scholar.google.com/citations?user=hrPyOIsAAAAJ&hl=en)
+[<i class="bi bi-twitter"></i>](https://twitter.com/rtkushner)
+:::
+:::

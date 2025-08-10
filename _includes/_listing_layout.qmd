@@ -1,0 +1,10 @@
+::: {.grid .homepage-container}
+{{< include /_includes/_navigation.qmd >}}
+
+::: {.g-col-12 .g-col-md-9 .right-column}
+{{< meta title >}}
+
+::: {#main-listing}
+:::
+:::
+:::

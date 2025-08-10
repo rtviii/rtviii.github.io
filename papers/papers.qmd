@@ -1,0 +1,10 @@
+---
+page-layout: custom
+css: [../styles/homepage.css]
+listing:
+  contents: papers.yml
+  template: template.ejs
+  id: main-listing
+---
+
+{{< include ../_includes/_listing_layout.qmd >}}
