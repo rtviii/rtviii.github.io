@@ -26,3 +26,4 @@ https://www.jeremykun.com/2015/04/06/markov-chain-monte-carlo-without-all-the-bu
 https://iwatobipen.wordpress.com/
 
 https://alchemybio.substack.com/p/a-complete-guide-to-protein-folding
+https://www.amplifypartners.com/blog-posts/cancers-95-percent-problem

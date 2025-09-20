@@ -14,22 +14,22 @@
           <%- item.title %>
         </a>
       </h3>
-      
-      <p class="paper-description">
-        <%- item.abstract %>
-      </p>
-      
       <p class="paper-authors">
         <%= item.authors.replace('Artem Kushner', '<span class="highlight-author">Artem Kushner</span>') %> (<%- item.year %>). 
         <em><%- item.journal %></em>
       </p>
       
-      <div class="paper-links">
-        <a href="<%- item.url %>" target="_blank">View Paper</a>
-        <% if (item.pdf) { %>
+      <p class="paper-description">
+        <%- item.abstract %>
+      </p>
+      
+      
+      <!-- <div class="paper-links"> -->
+        <!-- <a href="<%- item.url %>" target="_blank">View Paper</a> -->
+        <!-- <% if (item.pdf) { %>
         <a href="<%- item.pdf %>" target="_blank">PDF</a>
-        <% } %>
-      </div>
+        <% } %> -->
+      <!-- </div> -->
     </div>
   </div>
 <% } %>

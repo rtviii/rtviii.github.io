@@ -14,7 +14,6 @@ listing:
 
 ::: {.g-col-12 .g-col-md-9 .right-column}
 
-#### Published Work & Presentations
 
 ::: {#papers-listing}
 :::
