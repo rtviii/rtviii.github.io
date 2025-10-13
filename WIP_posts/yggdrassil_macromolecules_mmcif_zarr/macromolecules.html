@@ -1,0 +1,1790 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.54">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Heterogeneities of macromolecules: Cells within cells interlinked – артём</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../.././img/BTNBlink.webp" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const images = document.querySelectorAll('.zoomable');
+  images.forEach(img => {
+    img.addEventListener('click', function() {
+      this.classList.toggle('zoomed');
+    });
+  });
+});
+</script>
+<meta name="quarto:status" content="draft">
+
+
+<link rel="stylesheet" href="../../styles/custom.css">
+<link rel="stylesheet" href="../../styles/scrollbar-fix.css">
+</head>
+
+<body class="fullcontent"><div id="quarto-draft-alert" class="alert alert-warning"><i class="bi bi-pencil-square"></i>Draft</div>
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Heterogeneities of macromolecules: Cells within cells interlinked</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>…blood-black nothingness began to spin A system of cells interlinked within Cells interlinked within cells interlinked Within one stem.</p>
+<section id="motivation-and-resources" class="level1">
+<h1>Motivation and resources</h1>
+<p>This is somethig <em>I</em> want to build. But is there actualy use for it, how do i convince people to help me? Have you considered reaching out to the OME-NGFF working groups?</p>
+</section>
+<section id="dimensions-to-the-endeavor" class="level1">
+<h1>Dimensions to the endeavor</h1>
+<section id="pdb---zarr" class="level3">
+<h3 class="anchored" data-anchor-id="pdb---zarr">pdb -&gt; zarr:</h3>
+<ul>
+<li>conformers and trajectories (xray, md, bfactors)</li>
+<li>metadata reconcilliation</li>
+<li>chunking</li>
+<li>coarse-graining</li>
+</ul>
+</section>
+<section id="macromolecule-specific-schemas-and-tooling" class="level3">
+<h3 class="anchored" data-anchor-id="macromolecule-specific-schemas-and-tooling">Macromolecule-specific schemas and tooling</h3>
+<section id="enrich-the-data" class="level4">
+<h4 class="anchored" data-anchor-id="enrich-the-data">Enrich the data:</h4>
+<ul>
+<li>shape analysis</li>
+<li>both via the temporal ensembles</li>
+<li>FRET methylation measurements</li>
+</ul>
+</section>
+<section id="structural-biology-operations-that-come-up" class="level4">
+<h4 class="anchored" data-anchor-id="structural-biology-operations-that-come-up">Structural Biology Operations that come up:</h4>
+<ul>
+<li>Everywhere | ligand binding (docking, binding affinity)</li>
+<li>Tubulin | methylation</li>
+<li>superimpose/aligning/template matching</li>
+<li>model building</li>
+</ul>
+</section>
+</section>
+</section>
+<section id="todo" class="level1">
+<h1>TODO:</h1>
+<ul>
+<li>coarse graining: how does alex rose do it at mesascale?</li>
+<li>https://link.springer.com/article/10.1007/s00418-023-02209-1</li>
+<li>how do conformational heterogeneity a la E Zhong store and access data</li>
+</ul>
+<p>Let’s be clear. These are INTUITIONS that need confirming.</p>
+<ol type="1">
+<li>Macromolecule-specific hierarchy-rich datasets is another vector for enirching models. REFERENCES NEEDED</li>
+</ol>
+<p>Multiple separate angles here:</p>
+<p>1.better representations than mmcif/bcif (duh). Tensor streaming:</p>
+<ul>
+<li>better how? progressive <em>coarse-graining</em> based on <em>structural ontologies</em></li>
+<li>can probably draw on lidar literature here. see if Zarr can be drawn upon.</li>
+</ul>
+<p>2.model building:</p>
+<ul>
+<li>how useful is naive templating at large scales? That is, fitting “known” or on-the-spot folded sequences and larger complexes into tomograms/partial cryoem maps.</li>
+</ul>
+<ol type="1">
+<li>MD:</li>
+</ol>
+<ul>
+<li>local refinement of coarse components</li>
+</ul>
+<!-- 
+I'm researching a paper on the heterogeneities of macromolecules across different scales and the need for standardization of macromolecular structures or at least
+ the ability to access their subparts with high precision in the current repositories,
+  in particular the pdbx/mmcif format. This is also a chance for me to learn about the corresponding fields of structural biology which preoccupy themselves with a
+   given biomolecules (is this assumption even true?): ex. ribosome people tend to herd with riboosme people and rarely think about, say, tubulin or polymerases. Hence people outside a given field, even in the adjacent fields, are generally unaware of heterogeneities and important "subontologies" within a given field. Ex i work with the riboosme and have to explain to epople how malleable the ribosome is in its motions and how vastly different the compostional and evolutionary makeups are between eukartyoes, bacteria, mitochondria etc. 
+
+it would also be nice to get some metrics/idea of the communities working on those structures, what _kind_ of work it involves and what are the "nearest" applications in industry, main sources of data. (ex. the ribosome is studied by about oh idk about 200 principal PIs if im generous with a slew of im guessing about 1000-2000 students, the main applications being medicine and evolutionary research, in particular various ligands that can inhibit or stall the ribosome, their rate of replication and modificates in cancer. the main source of data is crystallography and microscopy here)
+
+
+This is a very open-ended topic and i'm still fleshing out my thoughts on this, but perhaps a good place to start is trying to assemble a registry of these relevant macromolecules around which we can say with some fairness that a field has assembled and trying to characterize them as above. -->
+<section id="ribosome" class="level3">
+<h3 class="anchored" data-anchor-id="ribosome">Ribosome</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 52%">
+<col style="width: 47%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Property</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Size/Scale</td>
+<td>~20-30 nm, ~2.5 MDa</td>
+</tr>
+<tr class="even">
+<td>Composition</td>
+<td>Bacterial: 50 proteins, 3 rRNAs; Eukaryotic: 80 proteins, 4 rRNAs</td>
+</tr>
+<tr class="odd">
+<td>Interactions</td>
+<td>mRNA, tRNAs, translation factors, antibiotics</td>
+</tr>
+<tr class="even">
+<td>Community Size</td>
+<td>~200 PIs, 1000-2000 students</td>
+</tr>
+<tr class="odd">
+<td>Data Acquisition Methods</td>
+<td>X-ray crystallography, cryo-EM, biochemical assays</td>
+</tr>
+<tr class="even">
+<td>Nomenclature</td>
+<td>Ribosomal proteins named uL1 to uL44 (large subunit) and uS1 to uS31 (small subunit)</td>
+</tr>
+<tr class="odd">
+<td>Relevant Loci</td>
+<td>Peptidyl Transferase Center (PTC), Decoding Center, Exit Tunnel</td>
+</tr>
+</tbody>
+</table>
+<section id="main-vectors-of-heterogeneity" class="level4">
+<h4 class="anchored" data-anchor-id="main-vectors-of-heterogeneity">Main Vectors of Heterogeneity</h4>
+<p>Structural dynamics (e.g., ratcheting, rotation), compositional differences (e.g., bacterial vs.&nbsp;eukaryotic), evolutionary divergence, post-translational modifications</p>
+</section>
+<section id="general-function" class="level4">
+<h4 class="anchored" data-anchor-id="general-function">General Function</h4>
+<p>Translates mRNA into proteins, essential for protein synthesis</p>
+</section>
+<section id="key-research-groups" class="level4">
+<h4 class="anchored" data-anchor-id="key-research-groups">Key Research Groups</h4>
+<p>The Steitz Lab (Yale University), The Ramakrishnan Lab (MRC Laboratory of Molecular Biology), The Ban Lab (ETH Zurich), The Cate Lab (University of California, Berkeley)</p>
+</section>
+<section id="industry-applications" class="level4">
+<h4 class="anchored" data-anchor-id="industry-applications">Industry Applications</h4>
+<p>Antibiotics targeting bacterial ribosomes (e.g., macrolides, tetracyclines), cancer therapy targeting ribosome biogenesis, biotechnology for protein synthesis</p>
+</section>
+</section>
+<section id="spliceosome" class="level3">
+<h3 class="anchored" data-anchor-id="spliceosome">Spliceosome</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 52%">
+<col style="width: 47%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Property</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Size/Scale</td>
+<td>~20-40 nm, variable mass (dynamic)</td>
+</tr>
+<tr class="even">
+<td>Composition</td>
+<td>5 snRNAs, ~100-200 proteins</td>
+</tr>
+<tr class="odd">
+<td>Interactions</td>
+<td>Pre-mRNA, splicing factors, regulatory proteins</td>
+</tr>
+<tr class="even">
+<td>Community Size</td>
+<td>~100-150 PIs, 500-1000 students</td>
+</tr>
+<tr class="odd">
+<td>Data Acquisition Methods</td>
+<td>Cryo-EM, biochemical assays, genetic screens</td>
+</tr>
+<tr class="even">
+<td>Nomenclature</td>
+<td>snRNPs (U1, U2, U4, U5, U6), proteins named by function</td>
+</tr>
+<tr class="odd">
+<td>PDB Structures</td>
+<td>5LJN (human U1 snRNP), 6EX6 (human spliceosome)</td>
+</tr>
+<tr class="even">
+<td>Relevant Loci</td>
+<td>Active Site, Binding Sites for Exon-Intron Junctions</td>
+</tr>
+</tbody>
+</table>
+<section id="main-vectors-of-heterogeneity-1" class="level4">
+<h4 class="anchored" data-anchor-id="main-vectors-of-heterogeneity-1">Main Vectors of Heterogeneity</h4>
+<p>Dynamic assembly states, species-specific differences, alternative splicing, structural flexibility</p>
+</section>
+<section id="general-function-1" class="level4">
+<h4 class="anchored" data-anchor-id="general-function-1">General Function</h4>
+<p>Removes introns from pre-mRNA, producing mature mRNA for translation</p>
+</section>
+<section id="key-research-groups-1" class="level4">
+<h4 class="anchored" data-anchor-id="key-research-groups-1">Key Research Groups</h4>
+<p>The Moore Lab (University of Massachusetts Medical School), The Staley Lab (University of California, San Francisco), The Shi Lab (Chinese Academy of Sciences), The Wilkinson Lab (Northwestern University)</p>
+</section>
+<section id="industry-applications-1" class="level4">
+<h4 class="anchored" data-anchor-id="industry-applications-1">Industry Applications</h4>
+<p>Drug development for myelodysplastic syndromes and cancers, gene editing for specific protein isoforms</p>
+</section>
+</section>
+<section id="proteasome" class="level3">
+<h3 class="anchored" data-anchor-id="proteasome">3. Proteasome</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 52%">
+<col style="width: 47%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Property</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Size/Scale</td>
+<td>~15 nm (core), ~45 nm (full), ~2.5 MDa</td>
+</tr>
+<tr class="even">
+<td>Composition</td>
+<td>20S core (28 subunits), 19S caps (~19 subunits)</td>
+</tr>
+<tr class="odd">
+<td>Interactions</td>
+<td>Ubiquitinated proteins, regulatory factors</td>
+</tr>
+<tr class="even">
+<td>Community Size</td>
+<td>~100-150 PIs, 500-1000 students</td>
+</tr>
+<tr class="odd">
+<td>Data Acquisition Methods</td>
+<td>X-ray crystallography, cryo-EM, biochemical assays</td>
+</tr>
+<tr class="even">
+<td>Nomenclature</td>
+<td>20S core has α and β subunits; 19S has Rpt and Rpn subunits</td>
+</tr>
+<tr class="odd">
+<td>PDB Structures</td>
+<td>5L60 (human 20S proteasome), 5MPA (human 26S proteasome)</td>
+</tr>
+<tr class="even">
+<td>Relevant Loci</td>
+<td>Catalytic Sites, Ubiquitin Binding Sites</td>
+</tr>
+</tbody>
+</table>
+<section id="main-vectors-of-heterogeneity-2" class="level4">
+<h4 class="anchored" data-anchor-id="main-vectors-of-heterogeneity-2">Main Vectors of Heterogeneity</h4>
+<p>Different types (standard, immuno-, thymoproteasome), regulatory particles, post-translational modifications, structural dynamics</p>
+</section>
+<section id="general-function-2" class="level4">
+<h4 class="anchored" data-anchor-id="general-function-2">General Function</h4>
+<p>Degrades ubiquitinated proteins, maintaining protein homeostasis</p>
+</section>
+<section id="key-research-groups-2" class="level4">
+<h4 class="anchored" data-anchor-id="key-research-groups-2">Key Research Groups</h4>
+<p>The Goldberg Lab (Harvard Medical School), The Finley Lab (Harvard Medical School), The Matzovetsky Lab (Technion-Israel Institute of Technology), The Glickman Lab (Technion-Israel Institute of Technology)</p>
+</section>
+<section id="industry-applications-2" class="level4">
+<h4 class="anchored" data-anchor-id="industry-applications-2">Industry Applications</h4>
+<p>Proteasome inhibitors for multiple myeloma (e.g., bortezomib), neurodegenerative disease research, immune-related therapies</p>
+</section>
+</section>
+<section id="dna-polymerase" class="level3">
+<h3 class="anchored" data-anchor-id="dna-polymerase">4. DNA Polymerase</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 52%">
+<col style="width: 47%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Property</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Size/Scale</td>
+<td>~10 nm, ~100-500 kDa</td>
+</tr>
+<tr class="even">
+<td>Composition</td>
+<td>Bacterial Pol III: ~10 subunits; Eukaryotic Pol δ: 4 subunits</td>
+</tr>
+<tr class="odd">
+<td>Interactions</td>
+<td>DNA, dNTPs, replication factors</td>
+</tr>
+<tr class="even">
+<td>Community Size</td>
+<td>~150-200 PIs, 800-1500 students</td>
+</tr>
+<tr class="odd">
+<td>Data Acquisition Methods</td>
+<td>X-ray crystallography, cryo-EM, single-molecule studies</td>
+</tr>
+<tr class="even">
+<td>Nomenclature</td>
+<td>Types include Pol α, β, γ, δ, ε with specific subunit names</td>
+</tr>
+<tr class="odd">
+<td>PDB Structures</td>
+<td>3IAY (bacterial Pol III core), 4CRB (human Pol δ)</td>
+</tr>
+<tr class="even">
+<td>Relevant Loci</td>
+<td>Active Site, Exonuclease Domain</td>
+</tr>
+</tbody>
+</table>
+<section id="main-vectors-of-heterogeneity-3" class="level4">
+<h4 class="anchored" data-anchor-id="main-vectors-of-heterogeneity-3">Main Vectors of Heterogeneity</h4>
+<p>Multiple types with distinct functions, species-specific differences, regulatory interactions, structural dynamics</p>
+</section>
+<section id="general-function-3" class="level4">
+<h4 class="anchored" data-anchor-id="general-function-3">General Function</h4>
+<p>Synthesizes DNA for replication and repair, ensuring genetic fidelity</p>
+</section>
+<section id="key-research-groups-3" class="level4">
+<h4 class="anchored" data-anchor-id="key-research-groups-3">Key Research Groups</h4>
+<p>The Kunkel Lab (National Institute of Environmental Health Sciences), The Goodman Lab (University of Southern California), The Friedberg Lab (University of Texas Medical Branch), The Patel Lab (New York University)</p>
+</section>
+<section id="industry-applications-3" class="level4">
+<h4 class="anchored" data-anchor-id="industry-applications-3">Industry Applications</h4>
+<p>Antiviral drugs targeting viral DNA polymerases, cancer therapy, PCR and molecular biology techniques</p>
+</section>
+</section>
+<section id="rna-polymerase" class="level3">
+<h3 class="anchored" data-anchor-id="rna-polymerase">5. RNA Polymerase</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 52%">
+<col style="width: 47%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Property</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Size/Scale</td>
+<td>~10-15 nm, ~500 kDa</td>
+</tr>
+<tr class="even">
+<td>Composition</td>
+<td>12 subunits (eukaryotic)</td>
+</tr>
+<tr class="odd">
+<td>Interactions</td>
+<td>DNA, transcription factors, RNA</td>
+</tr>
+<tr class="even">
+<td>Community Size</td>
+<td>~100-150 PIs, 500-1000 students</td>
+</tr>
+<tr class="odd">
+<td>Data Acquisition Methods</td>
+<td>X-ray crystallography, cryo-EM, transcription assays</td>
+</tr>
+<tr class="even">
+<td>Nomenclature</td>
+<td>Subunits labeled α, β, β’, ω in bacteria; RPB1, RPB2 in eukaryotes</td>
+</tr>
+<tr class="odd">
+<td>PDB Structures</td>
+<td>1I6H (bacterial RNA polymerase), 6EPE (human Pol II)</td>
+</tr>
+<tr class="even">
+<td>Relevant Loci</td>
+<td>Active Site, Promoter Binding Region</td>
+</tr>
+</tbody>
+</table>
+<section id="main-vectors-of-heterogeneity-4" class="level4">
+<h4 class="anchored" data-anchor-id="main-vectors-of-heterogeneity-4">Main Vectors of Heterogeneity</h4>
+<p>Multiple types (Pol I, II, III), species-specific differences, regulatory factors, structural dynamics</p>
+</section>
+<section id="general-function-4" class="level4">
+<h4 class="anchored" data-anchor-id="general-function-4">General Function</h4>
+<p>Transcribes DNA to RNA, initiating gene expression</p>
+</section>
+<section id="key-research-groups-4" class="level4">
+<h4 class="anchored" data-anchor-id="key-research-groups-4">Key Research Groups</h4>
+<p>The Cramer Lab (Max Planck Institute for Biophysical Chemistry), The Young Lab (Massachusetts Institute of Technology), The Roeder Lab (The Rockefeller University), The Kornberg Lab (Stanford University)</p>
+</section>
+<section id="industry-applications-4" class="level4">
+<h4 class="anchored" data-anchor-id="industry-applications-4">Industry Applications</h4>
+<p>Antibiotics targeting bacterial RNA polymerase (e.g., rifampicin), cancer therapy, in vitro transcription for RNA research</p>
+</section>
+</section>
+<section id="nuclear-pore-complex-npc" class="level3">
+<h3 class="anchored" data-anchor-id="nuclear-pore-complex-npc">6. Nuclear Pore Complex (NPC)</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 52%">
+<col style="width: 47%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Property</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Size/Scale</td>
+<td>~120 nm, ~50-100 MDa</td>
+</tr>
+<tr class="even">
+<td>Composition</td>
+<td>~30 distinct nucleoporins (Nups), ~500-1000 total proteins</td>
+</tr>
+<tr class="odd">
+<td>Interactions</td>
+<td>Nuclear transport receptors, FG-Nups, Ran GTPase</td>
+</tr>
+<tr class="even">
+<td>Community Size</td>
+<td>~50-100 PIs, 200-500 students</td>
+</tr>
+<tr class="odd">
+<td>Data Acquisition Methods</td>
+<td>Cryo-EM, fluorescence microscopy, biochemical assays</td>
+</tr>
+<tr class="even">
+<td>Nomenclature</td>
+<td>Nups named by molecular weight (e.g., Nup62, Nup93)</td>
+</tr>
+<tr class="odd">
+<td>PDB Structures</td>
+<td>6O4R (human Nup107-125-96 complex), 6O4T (human Nup107-125-96-85 complex)</td>
+</tr>
+<tr class="even">
+<td>Relevant Loci</td>
+<td>Central Channel, FG-Repeats</td>
+</tr>
+</tbody>
+</table>
+<section id="main-vectors-of-heterogeneity-5" class="level4">
+<h4 class="anchored" data-anchor-id="main-vectors-of-heterogeneity-5">Main Vectors of Heterogeneity</h4>
+<p>Species-specific differences, structural variability, dynamic assembly, functional specialization</p>
+</section>
+<section id="general-function-5" class="level4">
+<h4 class="anchored" data-anchor-id="general-function-5">General Function</h4>
+<p>Regulates transport between nucleus and cytoplasm</p>
+</section>
+<section id="key-research-groups-5" class="level4">
+<h4 class="anchored" data-anchor-id="key-research-groups-5">Key Research Groups</h4>
+<p>The Wente Lab (University of Minnesota), The Stewart Lab (MRC Laboratory of Molecular Biology), The Görlich Lab (Max Planck Institute for Biophysical Chemistry), The Blobel Lab (Rockefeller University)</p>
+</section>
+<section id="industry-applications-5" class="level4">
+<h4 class="anchored" data-anchor-id="industry-applications-5">Industry Applications</h4>
+<p>Antiviral strategies, cancer research, neurodegenerative disorder studies</p>
+</section>
+</section>
+<section id="mitochondrial-respiratory-chain-complex-i" class="level3">
+<h3 class="anchored" data-anchor-id="mitochondrial-respiratory-chain-complex-i">7. Mitochondrial Respiratory Chain (Complex I)</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 52%">
+<col style="width: 47%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Property</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Size/Scale</td>
+<td>~20 nm, ~1 MDa</td>
+</tr>
+<tr class="even">
+<td>Composition</td>
+<td>~45 subunits (mitochondrial)</td>
+</tr>
+<tr class="odd">
+<td>Interactions</td>
+<td>NADH, ubiquinone, other complexes</td>
+</tr>
+<tr class="even">
+<td>Community Size</td>
+<td>~100-150 PIs, 500-1000 students</td>
+</tr>
+<tr class="odd">
+<td>Data Acquisition Methods</td>
+<td>Cryo-EM, X-ray crystallography, spectroscopy</td>
+</tr>
+<tr class="even">
+<td>Nomenclature</td>
+<td>Subunits named by function (e.g., ND1, ND2)</td>
+</tr>
+<tr class="odd">
+<td>PDB Structures</td>
+<td>5LNK (bovine complex I), 6G0G (human complex I)</td>
+</tr>
+<tr class="even">
+<td>Relevant Loci</td>
+<td>Electron Transfer Pathway, Proton Pumping Sites</td>
+</tr>
+</tbody>
+</table>
+<section id="main-vectors-of-heterogeneity-6" class="level4">
+<h4 class="anchored" data-anchor-id="main-vectors-of-heterogeneity-6">Main Vectors of Heterogeneity</h4>
+<p>Species-specific differences, tissue-specific variations, dynamic regulation, pathological variations</p>
+</section>
+<section id="general-function-6" class="level4">
+<h4 class="anchored" data-anchor-id="general-function-6">General Function</h4>
+<p>Transfers electrons from NADH to ubiquinone, contributing to ATP synthesis</p>
+</section>
+<section id="key-research-groups-6" class="level4">
+<h4 class="anchored" data-anchor-id="key-research-groups-6">Key Research Groups</h4>
+<p>The Hirst Lab (MRC Mitochondrial Biology Unit), The Shoubridge Lab (McGill University), The Walker Lab (MRC Mitochondrial Biology Unit), The Sazanov Lab (Institute of Science and Technology, Austria)</p>
+</section>
+<section id="industry-applications-6" class="level4">
+<h4 class="anchored" data-anchor-id="industry-applications-6">Industry Applications</h4>
+<p>Research into mitochondrial diseases, aging, neurodegenerative disorders</p>
+</section>
+</section>
+<section id="viruses-e.g.-hiv" class="level3">
+<h3 class="anchored" data-anchor-id="viruses-e.g.-hiv">8. Viruses (e.g., HIV)</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 52%">
+<col style="width: 47%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Property</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Size/Scale</td>
+<td>~100 nm, variable mass</td>
+</tr>
+<tr class="even">
+<td>Composition</td>
+<td>Capsid (~1,500 proteins), RNA (~9,000 nt), envelope proteins</td>
+</tr>
+<tr class="odd">
+<td>Interactions</td>
+<td>Host receptors, immune system, antivirals</td>
+</tr>
+<tr class="even">
+<td>Community Size</td>
+<td>~200-300 PIs, 1000-2000 students</td>
+</tr>
+<tr class="odd">
+<td>Data Acquisition Methods</td>
+<td>Cryo-EM, X-ray crystallography, cryo-electron tomography</td>
+</tr>
+<tr class="even">
+<td>Nomenclature</td>
+<td>Components named by function (e.g., capsid, envelope, gag, pol)</td>
+</tr>
+<tr class="odd">
+<td>PDB Structures</td>
+<td>3J3Q (HIV-1 capsid protein), 5WJ9 (SARS-CoV-2 spike protein)</td>
+</tr>
+<tr class="even">
+<td>Relevant Loci</td>
+<td>gp120 (HIV receptor binding), reverse transcriptase active site</td>
+</tr>
+</tbody>
+</table>
+<section id="main-vectors-of-heterogeneity-7" class="level4">
+<h4 class="anchored" data-anchor-id="main-vectors-of-heterogeneity-7">Main Vectors of Heterogeneity</h4>
+<p>Different types, host specificity, viral protein variability, dynamic interactions</p>
+</section>
+<section id="general-function-7" class="level4">
+<h4 class="anchored" data-anchor-id="general-function-7">General Function</h4>
+<p>Infects and replicates within host cells, causing disease</p>
+</section>
+<section id="key-research-groups-7" class="level4">
+<h4 class="anchored" data-anchor-id="key-research-groups-7">Key Research Groups</h4>
+<p>The Freed Lab (National Cancer Institute), The Steven Lab (National Institute of Allergy and Infectious Diseases), The Rossmann Lab (Purdue University), The Wilson Lab (Scripps Research)</p>
+</section>
+<section id="industry-applications-7" class="level4">
+<h4 class="anchored" data-anchor-id="industry-applications-7">Industry Applications</h4>
+<p>Vaccine and antiviral drug design, diagnostic test development</p>
+</section>
+</section>
+<section id="chromatin-and-nucleosomes" class="level3">
+<h3 class="anchored" data-anchor-id="chromatin-and-nucleosomes">9. Chromatin and Nucleosomes</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 52%">
+<col style="width: 47%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Property</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Size/Scale</td>
+<td>~10 nm (nucleosome), larger fibers</td>
+</tr>
+<tr class="even">
+<td>Composition</td>
+<td>8 histones, ~147 bp DNA per nucleosome</td>
+</tr>
+<tr class="odd">
+<td>Interactions</td>
+<td>Histone modifiers, transcription machinery, DNA repair</td>
+</tr>
+<tr class="even">
+<td>Community Size</td>
+<td>~200-300 PIs, 1000-2000 students</td>
+</tr>
+<tr class="odd">
+<td>Data Acquisition Methods</td>
+<td>X-ray crystallography, cryo-EM, ChIP-seq</td>
+</tr>
+<tr class="even">
+<td>Nomenclature</td>
+<td>Histones named H1, H2A, H2B, H3, H4</td>
+</tr>
+<tr class="odd">
+<td>PDB Structures</td>
+<td>1AOI (nucleosome core particle), 6U96 (chromatosome)</td>
+</tr>
+<tr class="even">
+<td>Relevant Loci</td>
+<td>Histone Tails, DNA Entry/Exit Points</td>
+</tr>
+</tbody>
+</table>
+<section id="main-vectors-of-heterogeneity-8" class="level4">
+<h4 class="anchored" data-anchor-id="main-vectors-of-heterogeneity-8">Main Vectors of Heterogeneity</h4>
+<p>Histone variants, post-translational modifications, DNA sequence variability, higher-order structures</p>
+</section>
+<section id="general-function-8" class="level4">
+<h4 class="anchored" data-anchor-id="general-function-8">General Function</h4>
+<p>Packages DNA, regulates gene expression</p>
+</section>
+<section id="key-research-groups-8" class="level4">
+<h4 class="anchored" data-anchor-id="key-research-groups-8">Key Research Groups</h4>
+<p>The Allis Lab (Rockefeller University), The Reinberg Lab (New York University School of Medicine), The Shiio Lab (University of California, San Francisco), The Henikoff Lab (Fred Hutchinson Cancer Research Center)</p>
+</section>
+<section id="industry-applications-8" class="level4">
+<h4 class="anchored" data-anchor-id="industry-applications-8">Industry Applications</h4>
+<p>Epigenetic drugs for cancer, gene expression manipulation</p>
+</section>
+</section>
+<section id="motor-proteins-e.g.-dynein" class="level3">
+<h3 class="anchored" data-anchor-id="motor-proteins-e.g.-dynein">10. Motor Proteins (e.g., Dynein)</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 52%">
+<col style="width: 47%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Property</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Size/Scale</td>
+<td>~25 nm, ~1-2 MDa</td>
+</tr>
+<tr class="even">
+<td>Composition</td>
+<td>~12 subunits (heavy chain ~4,500 aa)</td>
+</tr>
+<tr class="odd">
+<td>Interactions</td>
+<td>Microtubules, cargo, regulatory proteins</td>
+</tr>
+<tr class="even">
+<td>Community Size</td>
+<td>~100-150 PIs, 500-1000 students</td>
+</tr>
+<tr class="odd">
+<td>Data Acquisition Methods</td>
+<td>X-ray crystallography, cryo-EM, single-molecule fluorescence</td>
+</tr>
+<tr class="even">
+<td>Nomenclature</td>
+<td>Types include kinesin, dynein, myosin</td>
+</tr>
+<tr class="odd">
+<td>PDB Structures</td>
+<td>3IBI (kinesin-1 motor domain), 4RH6 (dynein motor domain)</td>
+</tr>
+<tr class="even">
+<td>Relevant Loci</td>
+<td>ATP Binding Site, Microtubule Binding Interface</td>
+</tr>
+</tbody>
+</table>
+<section id="main-vectors-of-heterogeneity-9" class="level4">
+<h4 class="anchored" data-anchor-id="main-vectors-of-heterogeneity-9">Main Vectors of Heterogeneity</h4>
+<p>Different types, subunit composition, regulatory interactions, dynamic behavior</p>
+</section>
+<section id="general-function-9" class="level4">
+<h4 class="anchored" data-anchor-id="general-function-9">General Function</h4>
+<p>Powers cellular movements like intracellular transport, cell division, muscle contraction</p>
+</section>
+<section id="key-research-groups-9" class="level4">
+<h4 class="anchored" data-anchor-id="key-research-groups-9">Key Research Groups</h4>
+<p>The Vale Lab (University of California, San Francisco), The Block Lab (Stanford University), The Svoboda Lab (National Institute of Standards and Technology), The Howard Lab (Max Planck Institute of Molecular Cell Biology and Genetics)</p>
+</section>
+<section id="industry-applications-9" class="level4">
+<h4 class="anchored" data-anchor-id="industry-applications-9">Industry Applications</h4>
+<p>Research into neurodegenerative diseases, anti-cancer agents, nanoscale engineering</p>
+</section>
+</section>
+<section id="tubulin-and-microtubules" class="level3">
+<h3 class="anchored" data-anchor-id="tubulin-and-microtubules">11. Tubulin and Microtubules</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 52%">
+<col style="width: 47%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Property</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Size/Scale</td>
+<td>~25 nm diameter, μm length</td>
+</tr>
+<tr class="even">
+<td>Composition</td>
+<td>α/β-tubulin dimers (~450 aa each), 13 protofilaments</td>
+</tr>
+<tr class="odd">
+<td>Interactions</td>
+<td>Motor proteins, MAPs, drugs (e.g., taxanes)</td>
+</tr>
+<tr class="even">
+<td>Community Size</td>
+<td>~100-150 PIs, 500-1000 students</td>
+</tr>
+<tr class="odd">
+<td>Data Acquisition Methods</td>
+<td>Cryo-EM, X-ray crystallography, fluorescence microscopy</td>
+</tr>
+<tr class="even">
+<td>Nomenclature</td>
+<td>Tubulin types α, β, γ, δ, ε</td>
+</tr>
+<tr class="odd">
+<td>PDB Structures</td>
+<td>1TUB (α/β-tubulin dimer), 6DDE (microtubule)</td>
+</tr>
+<tr class="even">
+<td>Relevant Loci</td>
+<td>GTP Binding Sites, Drug Binding Sites</td>
+</tr>
+</tbody>
+</table>
+<section id="main-vectors-of-heterogeneity-10" class="level4">
+<h4 class="anchored" data-anchor-id="main-vectors-of-heterogeneity-10">Main Vectors of Heterogeneity</h4>
+<p>Different isotypes, post-translational modifications, MAPs, dynamic instability</p>
+</section>
+<section id="general-function-10" class="level4">
+<h4 class="anchored" data-anchor-id="general-function-10">General Function</h4>
+<p>Maintains cell shape, facilitates intracellular transport, cell division</p>
+</section>
+<section id="key-research-groups-10" class="level4">
+<h4 class="anchored" data-anchor-id="key-research-groups-10">Key Research Groups</h4>
+<p>The Nogales Lab (University of California, Berkeley), The Wilson Lab (University of California, Santa Barbara), The Kapoor Lab (Rockefeller University), The Desai Lab (University of California, San Francisco)</p>
+</section>
+<section id="industry-applications-10" class="level4">
+<h4 class="anchored" data-anchor-id="industry-applications-10">Industry Applications</h4>
+<p>Anti-cancer drugs (e.g., taxanes), neurodegenerative disease research</p>
+</section>
+</section>
+<section id="atp-synthase" class="level3">
+<h3 class="anchored" data-anchor-id="atp-synthase">12. ATP Synthase</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 52%">
+<col style="width: 47%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Property</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Size/Scale</td>
+<td>~10-15 nm, ~500-600 kDa</td>
+</tr>
+<tr class="even">
+<td>Composition</td>
+<td>F1 (5 subunits: 3α, 3β, γ, δ, ε), F0 (~10-15 subunits)</td>
+</tr>
+<tr class="odd">
+<td>Interactions</td>
+<td>ADP, Pi, proton gradient, inhibitors</td>
+</tr>
+<tr class="even">
+<td>Community Size</td>
+<td>~100-150 PIs, 500-1000 students</td>
+</tr>
+<tr class="odd">
+<td>Data Acquisition Methods</td>
+<td>X-ray crystallography, cryo-EM, spectroscopy</td>
+</tr>
+<tr class="even">
+<td>Nomenclature</td>
+<td>F1 subunits (α, β, γ, δ, ε), F0 subunits (a, b, c, d)</td>
+</tr>
+<tr class="odd">
+<td>PDB Structures</td>
+<td>1E79 (bovine F1-ATPase), 5T4O (yeast mitochondrial ATP synthase)</td>
+</tr>
+<tr class="even">
+<td>Relevant Loci</td>
+<td>Catalytic Sites, Proton Channel</td>
+</tr>
+</tbody>
+</table>
+<section id="main-vectors-of-heterogeneity-11" class="level4">
+<h4 class="anchored" data-anchor-id="main-vectors-of-heterogeneity-11">Main Vectors of Heterogeneity</h4>
+<p>Species-specific differences, regulatory mechanisms, dynamic behavior, pathological variations</p>
+</section>
+<section id="general-function-11" class="level4">
+<h4 class="anchored" data-anchor-id="general-function-11">General Function</h4>
+<p>Generates ATP from ADP and Pi using proton gradient</p>
+</section>
+<section id="key-research-groups-11" class="level4">
+<h4 class="anchored" data-anchor-id="key-research-groups-11">Key Research Groups</h4>
+<p>The Walker Lab (MRC Mitochondrial Biology Unit), The Noji Lab (Osaka University), The Dimroth Lab (ETH Zurich), The Frasch Lab (Arizona State University)</p>
+</section>
+<section id="industry-applications-11" class="level4">
+<h4 class="anchored" data-anchor-id="industry-applications-11">Industry Applications</h4>
+<p>Research into mitochondrial diseases, bioenergy research, antibiotic development</p>
+</section>
+</section>
+<section id="pyruvate-dehydrogenase-complex-pdc" class="level3">
+<h3 class="anchored" data-anchor-id="pyruvate-dehydrogenase-complex-pdc">13. Pyruvate Dehydrogenase Complex (PDC)</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 52%">
+<col style="width: 47%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Property</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Size/Scale</td>
+<td>~30-50 nm, ~9 MDa</td>
+</tr>
+<tr class="even">
+<td>Composition</td>
+<td>E1 (~24 subunits), E2 (~60 subunits), E3 (~12 subunits), regulatory enzymes</td>
+</tr>
+<tr class="odd">
+<td>Interactions</td>
+<td>Pyruvate, CoA, NAD+, regulatory kinases</td>
+</tr>
+<tr class="even">
+<td>Community Size</td>
+<td>~50-100 PIs, 200-500 students</td>
+</tr>
+<tr class="odd">
+<td>Data Acquisition Methods</td>
+<td>Cryo-EM, X-ray crystallography, enzymology</td>
+</tr>
+<tr class="even">
+<td>Nomenclature</td>
+<td>E1 (pyruvate dehydrogenase), E2 (dihydrolipoyl transacetylase), E3 (dihydrolipoyl dehydrogenase)</td>
+</tr>
+<tr class="odd">
+<td>PDB Structures</td>
+<td>1W85 (human E1 component), 2Q9J (bacterial PDC)</td>
+</tr>
+<tr class="even">
+<td>Relevant Loci</td>
+<td>Active Sites of E1, E2, E3</td>
+</tr>
+</tbody>
+</table>
+<section id="main-vectors-of-heterogeneity-12" class="level4">
+<h4 class="anchored" data-anchor-id="main-vectors-of-heterogeneity-12">Main Vectors of Heterogeneity</h4>
+<p>Species-specific differences, regulatory mechanisms, structural variations, pathological variations</p>
+</section>
+<section id="general-function-12" class="level4">
+<h4 class="anchored" data-anchor-id="general-function-12">General Function</h4>
+<p>Converts pyruvate to acetyl-CoA, linking glycolysis to the citric acid cycle</p>
+</section>
+<section id="key-research-groups-12" class="level4">
+<h4 class="anchored" data-anchor-id="key-research-groups-12">Key Research Groups</h4>
+<p>The Reed Lab (University of Texas at Austin), The Perham Lab (University of Cambridge), The Roche Lab (University of Texas Southwestern Medical Center), The Patel Lab (University of Southern California)</p>
+</section>
+<section id="industry-applications-12" class="level4">
+<h4 class="anchored" data-anchor-id="industry-applications-12">Industry Applications</h4>
+<p>Research into metabolic disorders, cancer therapy, biotechnology applications</p>
+</section>
+</section>
+<section id="replisome" class="level3">
+<h3 class="anchored" data-anchor-id="replisome">14. Replisome</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 52%">
+<col style="width: 47%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Property</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Size/Scale</td>
+<td>~20-30 nm, ~1-2 MDa</td>
+</tr>
+<tr class="even">
+<td>Composition</td>
+<td>Bacterial: ~15 subunits; Eukaryotic: ~20-30 subunits</td>
+</tr>
+<tr class="odd">
+<td>Interactions</td>
+<td>DNA, dNTPs, replication factors</td>
+</tr>
+<tr class="even">
+<td>Community Size</td>
+<td>~100-150 PIs, 500-1000 students</td>
+</tr>
+<tr class="odd">
+<td>Data Acquisition Methods</td>
+<td>Cryo-EM, single-molecule studies, biochemical assays</td>
+</tr>
+<tr class="even">
+<td>Nomenclature</td>
+<td>Components include DNA polymerase, helicase, primase, clamp loader</td>
+</tr>
+<tr class="odd">
+<td>PDB Structures</td>
+<td>3ZPB (bacterial DnaB helicase), 4MG1 (human PCNA)</td>
+</tr>
+<tr class="even">
+<td>Relevant Loci</td>
+<td>DNA Binding Sites, Helicase Active Site</td>
+</tr>
+</tbody>
+</table>
+<section id="main-vectors-of-heterogeneity-13" class="level4">
+<h4 class="anchored" data-anchor-id="main-vectors-of-heterogeneity-13">Main Vectors of Heterogeneity</h4>
+<p>Species-specific differences, replication strategies, regulatory mechanisms, dynamic behavior</p>
+</section>
+<section id="general-function-13" class="level4">
+<h4 class="anchored" data-anchor-id="general-function-13">General Function</h4>
+<p>Replicates DNA, ensuring genome duplication</p>
+</section>
+<section id="key-research-groups-13" class="level4">
+<h4 class="anchored" data-anchor-id="key-research-groups-13">Key Research Groups</h4>
+<p>The Stillman Lab (Cold Spring Harbor Laboratory), The Bell Lab (University of California, Berkeley), The O’Donnell Lab (Rockefeller University), The Kuriyan Lab (University of California, Berkeley)</p>
+</section>
+<section id="industry-applications-13" class="level4">
+<h4 class="anchored" data-anchor-id="industry-applications-13">Industry Applications</h4>
+<p>Cancer research, genetic disorder studies, biotechnology applications</p>
+</section>
+</section>
+<section id="clathrin-coated-vesicles" class="level3">
+<h3 class="anchored" data-anchor-id="clathrin-coated-vesicles">15. Clathrin-Coated Vesicles</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 52%">
+<col style="width: 47%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Property</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Size/Scale</td>
+<td>~50-100 nm, variable mass</td>
+</tr>
+<tr class="even">
+<td>Composition</td>
+<td>Clathrin triskelions (~50-100 units), adaptors (~10-20 proteins)</td>
+</tr>
+<tr class="odd">
+<td>Interactions</td>
+<td>Cargo, membrane, accessory proteins</td>
+</tr>
+<tr class="even">
+<td>Community Size</td>
+<td>~50-100 PIs, 200-500 students</td>
+</tr>
+<tr class="odd">
+<td>Data Acquisition Methods</td>
+<td>Cryo-EM, X-ray crystallography, electron tomography</td>
+</tr>
+<tr class="even">
+<td>Nomenclature</td>
+<td>Clathrin heavy and light chains, adaptors (e.g., AP-2, AP-1)</td>
+</tr>
+<tr class="odd">
+<td>PDB Structures</td>
+<td>1B89 (clathrin terminal domain), 1IW9 (AP-2 complex)</td>
+</tr>
+<tr class="even">
+<td>Relevant Loci</td>
+<td>Cargo Binding Sites, Membrane Interaction Regions</td>
+</tr>
+</tbody>
+</table>
+<section id="main-vectors-of-heterogeneity-14" class="level4">
+<h4 class="anchored" data-anchor-id="main-vectors-of-heterogeneity-14">Main Vectors of Heterogeneity</h4>
+<p>Different adaptors, cargo specificity, dynamic assembly, cell type variations</p>
+</section>
+<section id="general-function-14" class="level4">
+<h4 class="anchored" data-anchor-id="general-function-14">General Function</h4>
+<p>Facilitates receptor-mediated endocytosis and intracellular transport</p>
+</section>
+<section id="key-research-groups-14" class="level4">
+<h4 class="anchored" data-anchor-id="key-research-groups-14">Key Research Groups</h4>
+<p>The Schmid Lab (University of Texas Southwestern Medical Center), The Robinson Lab (University of Cambridge), The Kirchhausen Lab (Harvard Medical School), The McMahon Lab (MRC Laboratory of Molecular Biology)</p>
+</section>
+<section id="industry-applications-14" class="level4">
+<h4 class="anchored" data-anchor-id="industry-applications-14">Industry Applications</h4>
+<p>Drug delivery systems, cancer research, neurodegenerative disease studies</p>
+</section>
+</section>
+<section id="actin-filaments-f-actin" class="level3">
+<h3 class="anchored" data-anchor-id="actin-filaments-f-actin">16. Actin Filaments (F-actin)</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 52%">
+<col style="width: 47%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Property</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Size/Scale</td>
+<td>~7 nm diameter, μm length</td>
+</tr>
+<tr class="even">
+<td>Composition</td>
+<td>G-actin monomers (~375 aa), polymerized into filaments</td>
+</tr>
+<tr class="odd">
+<td>Interactions</td>
+<td>Actin-binding proteins, myosin, drugs</td>
+</tr>
+<tr class="even">
+<td>Community Size</td>
+<td>~150-200 PIs, 800-1500 students</td>
+</tr>
+<tr class="odd">
+<td>Data Acquisition Methods</td>
+<td>Cryo-EM, X-ray crystallography, fluorescence microscopy</td>
+</tr>
+<tr class="even">
+<td>Nomenclature</td>
+<td>G-actin, F-actin, isoforms (α, β, γ)</td>
+</tr>
+<tr class="odd">
+<td>PDB Structures</td>
+<td>1J6Z (G-actin), 2ZWH (F-actin)</td>
+</tr>
+<tr class="even">
+<td>Relevant Loci</td>
+<td>ATP Binding Site, Polymerization Interfaces</td>
+</tr>
+</tbody>
+</table>
+<section id="main-vectors-of-heterogeneity-15" class="level4">
+<h4 class="anchored" data-anchor-id="main-vectors-of-heterogeneity-15">Main Vectors of Heterogeneity</h4>
+<p>Different isoforms, regulatory proteins, dynamic behavior, structural variations</p>
+</section>
+<section id="general-function-15" class="level4">
+<h4 class="anchored" data-anchor-id="general-function-15">General Function</h4>
+<p>Maintains cell shape, facilitates cell movement, muscle contraction</p>
+</section>
+<section id="key-research-groups-15" class="level4">
+<h4 class="anchored" data-anchor-id="key-research-groups-15">Key Research Groups</h4>
+<p>The Pollard Lab (Yale University), The Spudich Lab (Stanford University), The Kovar Lab (University of Chicago), The Mullins Lab (University of California, San Francisco)</p>
+</section>
+<section id="industry-applications-15" class="level4">
+<h4 class="anchored" data-anchor-id="industry-applications-15">Industry Applications</h4>
+<p>Muscle disorder research, cancer metastasis studies, biotechnology applications</p>
+</section>
+</section>
+<section id="exosome-rna-degradation" class="level3">
+<h3 class="anchored" data-anchor-id="exosome-rna-degradation">17. Exosome (RNA Degradation)</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 52%">
+<col style="width: 47%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Property</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Size/Scale</td>
+<td>~10-15 nm, ~400-500 kDa</td>
+</tr>
+<tr class="even">
+<td>Composition</td>
+<td>~10-11 subunits (e.g., 9 core + catalytic subunit)</td>
+</tr>
+<tr class="odd">
+<td>Interactions</td>
+<td>RNA substrates, regulatory factors</td>
+</tr>
+<tr class="even">
+<td>Community Size</td>
+<td>~50-100 PIs, 200-500 students</td>
+</tr>
+<tr class="odd">
+<td>Data Acquisition Methods</td>
+<td>X-ray crystallography, cryo-EM, biochemical assays</td>
+</tr>
+<tr class="even">
+<td>Nomenclature</td>
+<td>Specific names for components (e.g., RRP4, RRP40, DIS3)</td>
+</tr>
+<tr class="odd">
+<td>PDB Structures</td>
+<td>2VVO (archaeal exosome), 5V98 (human exosome)</td>
+</tr>
+<tr class="even">
+<td>Relevant Loci</td>
+<td>RNA Binding Sites, Catalytic Sites</td>
+</tr>
+</tbody>
+</table>
+<section id="main-vectors-of-heterogeneity-16" class="level4">
+<h4 class="anchored" data-anchor-id="main-vectors-of-heterogeneity-16">Main Vectors of Heterogeneity</h4>
+<p>Different cell types, pathological variations, regulatory mechanisms, dynamic behavior</p>
+</section>
+<section id="general-function-16" class="level4">
+<h4 class="anchored" data-anchor-id="general-function-16">General Function</h4>
+<p>Processes and degrades RNA, regulating RNA levels and quality</p>
+</section>
+<section id="key-research-groups-16" class="level4">
+<h4 class="anchored" data-anchor-id="key-research-groups-16">Key Research Groups</h4>
+<p>The Seraphin Lab (University of Strasbourg), The Tollervey Lab (University of Edinburgh), The van Hoof Lab (University of Texas Health Science Center at Houston), The Jensen Lab (Aarhus University)</p>
+</section>
+<section id="industry-applications-16" class="level4">
+<h4 class="anchored" data-anchor-id="industry-applications-16">Industry Applications</h4>
+<p>RNA-based therapeutics, cancer research, genetic disorder studies</p>
+</section>
+</section>
+<section id="chaperonin-e.g.-groelgroes" class="level3">
+<h3 class="anchored" data-anchor-id="chaperonin-e.g.-groelgroes">18. Chaperonin (e.g., GroEL/GroES)</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 52%">
+<col style="width: 47%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Property</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Size/Scale</td>
+<td>~15-20 nm, ~800 kDa</td>
+</tr>
+<tr class="even">
+<td>Composition</td>
+<td>GroEL (14 subunits), GroES (7 subunits)</td>
+</tr>
+<tr class="odd">
+<td>Interactions</td>
+<td>Misfolded proteins, ATP</td>
+</tr>
+<tr class="even">
+<td>Community Size</td>
+<td>~50-100 PIs, 200-500 students</td>
+</tr>
+<tr class="odd">
+<td>Data Acquisition Methods</td>
+<td>X-ray crystallography, cryo-EM, biochemical assays</td>
+</tr>
+<tr class="even">
+<td>Nomenclature</td>
+<td>GroEL and GroES in bacteria, CCT in eukaryotes</td>
+</tr>
+<tr class="odd">
+<td>PDB Structures</td>
+<td>1AON (GroEL/GroES complex), 1Q3D (human CCT complex)</td>
+</tr>
+<tr class="even">
+<td>Relevant Loci</td>
+<td>ATP Binding Sites, Substrate Binding Cavity</td>
+</tr>
+</tbody>
+</table>
+<section id="main-vectors-of-heterogeneity-17" class="level4">
+<h4 class="anchored" data-anchor-id="main-vectors-of-heterogeneity-17">Main Vectors of Heterogeneity</h4>
+<p>Different organisms, subunit variations, regulatory mechanisms, substrate specificity</p>
+</section>
+<section id="general-function-17" class="level4">
+<h4 class="anchored" data-anchor-id="general-function-17">General Function</h4>
+<p>Assists in protein folding, ensuring proper protein structure</p>
+</section>
+<section id="key-research-groups-17" class="level4">
+<h4 class="anchored" data-anchor-id="key-research-groups-17">Key Research Groups</h4>
+<p>The Horwich Lab (Yale University), The Hartl Lab (Max Planck Institute of Biochemistry), The Saibil Lab (Birkbeck, University of London), The Bukau Lab (University of Heidelberg)</p>
+</section>
+<section id="industry-applications-17" class="level4">
+<h4 class="anchored" data-anchor-id="industry-applications-17">Industry Applications</h4>
+<p>Protein misfolding disease research, biotechnology for protein production, drug development</p>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/rtviii\.xyz");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -1,0 +1,113 @@
+body {
+  font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+
+  font-size: 14px; /* CHANGED from 15px. You can even try 13px if this is still too large. */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+  font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+
+
+
+.item {
+  display: flex;
+  margin-bottom: 2em;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 1em;
+}
+
+.item-content {
+  flex: 3;
+  padding-right: 1em;
+  width: 60%;
+}
+
+.item-images {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 40%;
+}
+
+.item-title {
+  font-size: 1.2em;
+  margin-bottom: 0.3em;
+}
+
+.item-journal, .item-venue {
+  font-style: italic;
+  color: #666;
+  margin-bottom: 0.3em;
+}
+
+.item-authors {
+  font-size: 0.9em;
+  margin-bottom: 0.5em;
+  font-style: italic; /* Italicize authors */
+}
+
+.item-abstract {
+  font-size: 0.9em;
+  color: #333;
+}
+
+.item-figure {
+  margin: 0 0 10px 0;
+  width: 100%;
+}
+
+.item-image {
+  max-width: 100%;
+  height: auto;
+  cursor: zoom-in; /* Indicate zoomable */
+  transition: transform 0.3s ease;
+}
+
+.item-image:hover {
+  transform: scale(1.15); /* Slight zoom on hover */
+}
+
+.item-image.zoomed {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1.5);
+  z-index: 1000;
+  max-width: 90vw;
+  max-height: 90vh;
+  object-fit: contain;
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  cursor: zoom-out;
+}
+
+figcaption {
+  font-size: 0.7em;
+  color: #777;
+  text-align: center;
+  margin-top: 5px;
+}
+
+
+/* Make the image bigger on the homepage */
+body[data-page-type="homepage"] .quarto-grid-item img,
+.quarto-title-block img {
+  max-width: 100% !important;
+  width: 100% !important;
+  height: auto !important;
+}
+
+
+/* Fix the page-layout-article constraints */
+.page-layout-article {
+  --page-width: 100% !important;
+  --sidebar-width: 180px !important;
+  --content-width: calc(100% - 220px) !important;
+}
+

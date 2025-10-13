@@ -1,0 +1,18 @@
+/* Styling for the new listings page */
+.listings-container ul {
+  list-style-type: none; /* Removes the bullet points */
+  padding-left: 0;       /* Removes the default list padding */
+}
+
+.listings-container li {
+  margin-bottom: 0.5rem; /* Adds a bit of space between list items */
+}
+
+.listings-container a {
+  text-decoration: none; /* Removes the underline from links */
+  color: #555;          /* Sets a subtle gray color for the links */
+}
+
+.listings-container a:hover {
+  color: #000;          /* Makes links black on hover */
+}

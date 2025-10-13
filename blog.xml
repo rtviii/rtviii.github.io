@@ -9,15 +9,14 @@
 <link>https://rtviii.xyz/blog.html</link>
 <atom:link href="https://rtviii.xyz/blog.xml" rel="self" type="application/rss+xml"/>
 <description></description>
-<generator>quarto-1.5.53</generator>
-<lastBuildDate>Sun, 04 Aug 2024 04:00:00 GMT</lastBuildDate>
+<generator>quarto-1.5.54</generator>
+<lastBuildDate>Sat, 03 Aug 2024 22:00:00 GMT</lastBuildDate>
 <item>
   <title>3D tessellation of biomolecular cavities</title>
   <dc:creator>Artem Kushner</dc:creator>
   <dc:creator>Khanh Dao Duc</dc:creator>
-  <link>https://rtviii.xyz/posts/ribosome-tunnel-new/</link>
+  <link>https://rtviii.xyz/posts/npet-poisson-recon/</link>
   <description><![CDATA[ 
-
 
 
 
@@ -25,11 +24,11 @@
 <section id="summary-and-background" class="level2">
 <h2 class="anchored" data-anchor-id="summary-and-background">Summary and Background</h2>
 <p>We present a protocol to extract the surface of a biomolecular cavity for shape analysis and molecular simulations.</p>
-<p>We apply and illustrate the protocol on the ribosome structure, which contains a subcompartment known as the ribosome exit tunnel or “nascent polypeptide exit tunnel” (<strong>NPET</strong>). More details on the tunnel features and biological importance can be found in our previous works<span class="citation" data-cites="dao2018impact dao2019differences"><sup>1,2</sup></span>.</p>
-<p>The protocol was designed to refine the output obtained from MOLE software<span class="citation" data-cites="sehnal2013mole"><sup>3</sup></span>, but can be applied to reconstruct a mesh on any general point cloud. Hence, we take the point-cloud of atom positions surrounding the tunnel as a point of departure.</p>
+<p>We apply and illustrate the protocol on the ribosome structure, which contains a subcompartment known as the ribosome exit tunnel or “nascent polypeptide exit tunnel” (<strong>NPET</strong>). More details on the tunnel features and biological importance can be found in our previous works <span class="citation" data-cites="dao2018impact dao2019differences">(Dao Duc and Song 2018; Dao Duc et al. 2019)</span>.</p>
+<p>The protocol was designed to refine the output obtained from MOLE software <span class="citation" data-cites="sehnal2013mole">(Sehnal et al. 2013)</span>, but can be applied to reconstruct a mesh on any general point cloud. Hence, we take the point-cloud of atom positions surrounding the tunnel as a point of departure.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://rtviii.xyz/posts/ribosome-tunnel-new/data/gkz106fig1.jpeg" class="img-fluid figure-img" style="width:80.0%"></p>
+<p><img src="https://rtviii.xyz/posts/npet-poisson-recon/data/gkz106fig1.jpeg" class="img-fluid figure-img" style="width:80.0%"></p>
 <figcaption>Illustration of the ribosome exit tunnel (from Dao Duc et al., NAR 2019)</figcaption>
 </figure>
 </div>
@@ -49,7 +48,7 @@ Schematic representation of the protocol
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p><img src="https://rtviii.xyz/posts/ribosome-tunnel-new/data/visual_protocol.png" class="img-fluid" alt=""></p>
+<p><img src="https://rtviii.xyz/posts/npet-poisson-recon/data/visual_protocol.png" class="img-fluid" alt=""></p>
 </div>
 </div>
 </div>
@@ -68,7 +67,7 @@ Schematic representation of the protocol
 </div>
 <div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="0748e2f2" class="cell" data-execution_count="1">
+<div id="0cfdd806" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
@@ -262,7 +261,7 @@ font-style: inherit;">return</span> np.array(sphere_active_ix)</span></code></pr
 </div>
 <div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="005718bd" class="cell" data-execution_count="2">
+<div id="fadfef4c" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
@@ -445,7 +444,7 @@ font-style: inherit;">return</span> ( vox_grid, grid_dimensions, mean_abs_vector
 </div>
 </div>
 <p><strong>Bbox</strong>: There are many ways to extract a point cloud from a larger biological structure – in this case we settle for a bounding box that bounds the space between the PTC and the NPET vestibule.</p>
-<div id="2df8ce03" class="cell" data-execution_count="3">
+<div id="32a4c389" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># "bounding_box_atoms.npy" is a N,3 array of atom coordinates</span></span>
@@ -458,7 +457,7 @@ font-style: inherit;">"bounding_box_atoms.npy"</span>) </span></code></pre></div
 </div>
 <p><strong>Sphering</strong>: To make the representation of atoms slightly more physically-plausible we replace each atom-center coordinate with positions of voxels that fall within a sphere of radius <img src="https://latex.codecogs.com/png.latex?R"> around the atom’s position. This is meant to represent the atom’s van der Waals radius.</p>
 <p>One could model different types of atoms (<img src="https://latex.codecogs.com/png.latex?N">,<img src="https://latex.codecogs.com/png.latex?C">,<img src="https://latex.codecogs.com/png.latex?O">,<img src="https://latex.codecogs.com/png.latex?H"> etc.) with separate radii, but taking <img src="https://latex.codecogs.com/png.latex?R=2"> proves a good enough compromise. The units are Angstrom and correspond to the coordinate system in which the structure of the ribosome is recorded.</p>
-<div id="22ba5f63" class="cell" data-execution_count="4">
+<div id="68de0ab9" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1">voxel_spheres <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> np.array([ atompos_to_voxel_sphere(atom, <span class="dv" style="color: #AD0000;
@@ -472,7 +471,7 @@ font-weight: bold;
 font-style: inherit;">in</span> atom_centers ])</span></code></pre></div>
 </div>
 <p><strong>Voxelization &amp; Inversion</strong>: Since we are interested in the “empty space” between the atoms, we need a way to capture it. To make this possible we discretize the space by projecting the (sphered) point cloud into a voxel grid and invert the grid.</p>
-<div id="6cc55df7" class="cell" data-execution_count="5">
+<div id="c7e2363e" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># the grid is a binary 3D-array </span></span>
@@ -513,7 +512,7 @@ font-style: inherit;">1</span>)).T</span></code></pre></div>
 <div id="fig-ptcloud" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-ptcloud-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="https://rtviii.xyz/posts/ribosome-tunnel-new/data/4UG0.bbox_atoms.gif" class="img-fluid figure-img" data-ref-parent="fig-cluster">
+<img src="https://rtviii.xyz/posts/npet-poisson-recon/data/4UG0.bbox_atoms.gif" class="img-fluid figure-img" data-ref-parent="fig-cluster">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-ptcloud-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 (a) Initial bounding-box point cloud
@@ -525,7 +524,7 @@ font-style: inherit;">1</span>)).T</span></code></pre></div>
 <div id="fig-inverted" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-inverted-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="https://rtviii.xyz/posts/ribosome-tunnel-new/data/4UG0.inverted_grid.gif" class="img-fluid figure-img" data-ref-parent="fig-cluster">
+<img src="https://rtviii.xyz/posts/npet-poisson-recon/data/4UG0.inverted_grid.gif" class="img-fluid figure-img" data-ref-parent="fig-cluster">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-inverted-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 (b) Inverted point cloud
@@ -555,7 +554,7 @@ Figure&nbsp;1: Pointcloud inversion via a voxel grid.
 </div>
 <div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="bd9ad932" class="cell" data-execution_count="6">
+<div id="ba398de3" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> sklearn.cluster <span class="im" style="color: #00769E;
@@ -684,7 +683,7 @@ font-style: inherit;">return</span> db, CLUSTERS_CONTAINER</span></code></pre></
 </div>
 <div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="04cadefb" class="cell" data-execution_count="7">
+<div id="2d2ca4a3" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> sklearn.cluster <span class="im" style="color: #00769E;
@@ -755,7 +754,7 @@ font-style: inherit;">return</span> np.array(clusters_container[DBSCAN_CLUSTER_I
 </div>
 <p><strong>Clustering</strong>: Having obtained a voxelized representation of the interatomic spaces inside and around the NPET our task is now to extract <em>only the space</em> that <em>corresponds to the NPET</em>. We use <a href="https://en.wikipedia.org/wiki/DBSCAN">DBSCAN</a>.</p>
 <p><code>scikit</code>’s implementation of <code>DBSCAN</code> conveniently lets us retrieve the points from the largest cluster only, which corresponds to the active voxels of NPET space (if we eyeballed our DBSCAN parameters well).</p>
-<div id="3c0c780c" class="cell" data-execution_count="8">
+<div id="116a7fb1" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> scikit.cluster <span class="im" style="color: #00769E;
@@ -804,7 +803,7 @@ DBSCAN Parameters and grid size.
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://rtviii.xyz/posts/ribosome-tunnel-new/data/4UG0.dbscan.clusters.gif" class="img-fluid figure-img"></p>
+<p><img src="https://rtviii.xyz/posts/npet-poisson-recon/data/4UG0.dbscan.clusters.gif" class="img-fluid figure-img"></p>
 <figcaption>Clusters identified by DBSCAN on the inverted index grid. The largest cluster corresponds to the tunnel space.</figcaption>
 </figure>
 </div>
@@ -829,7 +828,7 @@ Subcloud refinement
 <div id="fig-trimmed" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-trimmed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="https://rtviii.xyz/posts/ribosome-tunnel-new/data/4UG0.ptcloud_trimmed.gif" class="img-fluid figure-img" data-ref-parent="fig-cluster">
+<img src="https://rtviii.xyz/posts/npet-poisson-recon/data/4UG0.ptcloud_trimmed.gif" class="img-fluid figure-img" data-ref-parent="fig-cluster">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-trimmed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 (a) Largest DBSCAN cluster (trimmed from the vestibule side).
@@ -841,7 +840,7 @@ Subcloud refinement
 <div id="fig-trimmed-sharpened" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-trimmed-sharpened-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="https://rtviii.xyz/posts/ribosome-tunnel-new/data/4UG0.ptcloud_trimmed_sharpened.gif" class="img-fluid figure-img" data-ref-parent="fig-cluster">
+<img src="https://rtviii.xyz/posts/npet-poisson-recon/data/4UG0.ptcloud_trimmed_sharpened.gif" class="img-fluid figure-img" data-ref-parent="fig-cluster">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-trimmed-sharpened-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 (b) Cluster refinement: DBSCAN{e=3,mn=123} result (marine blue) on the largest cluster of DBSCAN{e=5.5,mn=600} (gray)
@@ -875,7 +874,7 @@ Figure&nbsp;2: Second pass of DBSCAN sharpens the cluster to peel off the outer 
 <div id="callout-8" class="callout-8-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Surface points can be extracted by creating an alpha shape over the point cloud and taking only the points that belong to the alpha surface.</p>
-<div id="c92c59e9" class="cell" data-execution_count="9">
+<div id="4efc69d4" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> pyvista <span class="im" style="color: #00769E;
@@ -949,7 +948,7 @@ font-style: inherit;">return</span> convex_hull.points</span></code></pre></div>
 <div id="fig-alpha-shape" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-alpha-shape-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="https://rtviii.xyz/posts/ribosome-tunnel-new/data/4UG0.alphashape.gif" class="img-fluid figure-img" data-ref-parent="fig-alpha">
+<img src="https://rtviii.xyz/posts/npet-poisson-recon/data/4UG0.alphashape.gif" class="img-fluid figure-img" data-ref-parent="fig-alpha">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-alpha-shape-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 (a) Alpha-shape over the pointcloud
@@ -961,7 +960,7 @@ font-style: inherit;">return</span> convex_hull.points</span></code></pre></div>
 <div id="fig-surf-pts" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-surf-pts-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="https://rtviii.xyz/posts/ribosome-tunnel-new/data/4UG0.surface_pts.gif" class="img-fluid figure-img" data-ref-parent="fig-alpha">
+<img src="https://rtviii.xyz/posts/npet-poisson-recon/data/4UG0.surface_pts.gif" class="img-fluid figure-img" data-ref-parent="fig-alpha">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-surf-pts-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 (b) Surface points of the point cloud
@@ -992,7 +991,7 @@ Figure&nbsp;3: Alpha shape provides a way to identify surface points.
 <div id="callout-9" class="callout-9-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Normal estimation is done via rolling a tangent plane over the surface points.</p>
-<div id="fdc99393" class="cell" data-execution_count="10">
+<div id="abeba458" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> pyvista <span class="im" style="color: #00769E;
@@ -1050,7 +1049,7 @@ font-style: inherit;">return</span> pcd</span></code></pre></div>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://rtviii.xyz/posts/ribosome-tunnel-new/data/4UG0_normals.gif" class="img-fluid figure-img"></p>
+<p><img src="https://rtviii.xyz/posts/npet-poisson-recon/data/4UG0_normals.gif" class="img-fluid figure-img"></p>
 <figcaption>Normals’ orientations are depicted as vectors(black) on each datapoint.</figcaption>
 </figure>
 </div>
@@ -1071,7 +1070,7 @@ font-style: inherit;">return</span> pcd</span></code></pre></div>
 <div class="callout-body-container callout-body">
 <p>The source is available at <a href="https://github.com/mkazhdan/PoissonRecon">https://github.com/mkazhdan/PoissonRecon</a>. For programmability we connect the binary to the pipeline by wrapping it in a python <code>subprocess</code> but one can of course use the binary directly.</p>
 <p>The output of the binary is a binary <code>.ply</code> (Stanford Triangle Format) file. For purposes of distribution we also produce an <code>asciii</code>-encoded version of this <code>.ply</code> file side-by-side: some geometry packages are only able to parse the <code>ascii</code> version.</p>
-<div id="6a8adea8" class="cell" data-execution_count="11">
+<div id="d58c840a" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
@@ -1205,7 +1204,7 @@ font-style: inherit;">"&gt;&gt;Error:"</span>, process.stderr)</span></code></pr
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://rtviii.xyz/posts/ribosome-tunnel-new/data/4UG0.reconstruction.gif" class="img-fluid figure-img"></p>
+<p><img src="https://rtviii.xyz/posts/npet-poisson-recon/data/4UG0.reconstruction.gif" class="img-fluid figure-img"></p>
 <figcaption>The final NPET surface reconstruction</figcaption>
 </figure>
 </div>
@@ -1217,7 +1216,7 @@ font-style: inherit;">"&gt;&gt;Error:"</span>, process.stderr)</span></code></pr
 <li>retrieve only the “surface” points from the pointcloud</li>
 <li>estimate <em>normals</em> on the surface points (establish data orientation)</li>
 </ul>
-<div id="f4ea7f6b" class="cell" data-execution_count="12">
+<div id="6f2fa229" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1">d3d_alpha, d3d_tol     <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
@@ -1245,8 +1244,8 @@ font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">10</span>)</span></code></pre></div>
 </div>
-<p>The dataset is now ready for surface reconstruction. We reach for Poisson surface reconstruction<span class="citation" data-cites="kazhdan2006poisson"><sup>4</sup></span> by <em>Kazhdan</em> and <em>Hoppe</em>, a de facto standard in the field.</p>
-<div id="456e329e" class="cell" data-execution_count="13">
+<p>The dataset is now ready for surface reconstruction. We reach for Poisson surface reconstruction<span class="citation" data-cites="kazhdan2006poisson">(Kazhdan, Bolitho, and Hoppe 2006)</span> by <em>Kazhdan</em> and <em>Hoppe</em>, a de facto standard in the field.</p>
+<div id="c21dff90" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1">PR_depth , PR_ptweight <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
@@ -1272,10 +1271,10 @@ font-style: inherit;">=</span>PR_ptweight)</span></code></pre></div>
 </section>
 <section id="result" class="level2">
 <h2 class="anchored" data-anchor-id="result">Result</h2>
-<p>What you are left with is a smooth polygonal mesh in the <code>.ply</code> format. Below is the illustration of the fidelity of the representation. Folds and depressions can clearly be seen engendered by three proteins surrounding parts of the tunnel (uL22 <em>yellow</em>, uL4 <em>light blue</em> and eL39 <em>magenta</em>). rRNA is not shown.<span class="citation" data-cites="zhou2018open3d"><sup>6</sup></span></p>
+<p>What you are left with is a smooth polygonal mesh in the <code>.ply</code> format. Below is the illustration of the fidelity of the representation. Folds and depressions can clearly be seen engendered by three proteins surrounding parts of the tunnel (uL22 <em>yellow</em>, uL4 <em>light blue</em> and eL39 <em>magenta</em>). rRNA is not shown.<span class="citation" data-cites="zhou2018open3d">Sullivan and Kaszynski (2019)</span></p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://rtviii.xyz/posts/ribosome-tunnel-new/data/tunnel_proteins.gif" class="img-fluid figure-img"></p>
+<p><img src="https://rtviii.xyz/posts/npet-poisson-recon/data/tunnel_proteins.gif" class="img-fluid figure-img"></p>
 <figcaption>The NPET mesh surrounded by by three ribosome proteins</figcaption>
 </figure>
 </div>
@@ -1294,40 +1293,29 @@ font-style: inherit;">=</span>PR_ptweight)</span></code></pre></div>
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" data-entry-spacing="0" data-line-spacing="2">
-<div id="ref-dao2018impact" class="csl-entry">
-<div class="csl-left-margin">1. </div><div class="csl-right-inline">Dao Duc, K. &amp; Song, Y. S. The impact of ribosomal interference, codon usage, and exit tunnel interactions on translation elongation rate variation. <em>PLoS genetics</em> <strong>14</strong>, e1007166 (2018).</div>
-</div>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0">
 <div id="ref-dao2019differences" class="csl-entry">
-<div class="csl-left-margin">2. </div><div class="csl-right-inline">Dao Duc, K., Batra, S. S., Bhattacharya, N., Cate, J. H. &amp; Song, Y. S. Differences in the path to exit the ribosome across the three domains of life. <em>Nucleic acids research</em> <strong>47</strong>, 4198–4210 (2019).</div>
+Dao Duc, Khanh, Sanjit S Batra, Nicholas Bhattacharya, Jamie HD Cate, and Yun S Song. 2019. <span>“Differences in the Path to Exit the Ribosome Across the Three Domains of Life.”</span> <em>Nucleic Acids Research</em> 47 (8): 4198–4210.
 </div>
-<div id="ref-sehnal2013mole" class="csl-entry">
-<div class="csl-left-margin">3. </div><div class="csl-right-inline">Sehnal, D. <em>et al.</em> MOLE 2.0: Advanced approach for analysis of biomacromolecular channels. <em>Journal of cheminformatics</em> <strong>5</strong>, 1–13 (2013).</div>
+<div id="ref-dao2018impact" class="csl-entry">
+Dao Duc, Khanh, and Yun S Song. 2018. <span>“The Impact of Ribosomal Interference, Codon Usage, and Exit Tunnel Interactions on Translation Elongation Rate Variation.”</span> <em>PLoS Genetics</em> 14 (1): e1007166.
 </div>
 <div id="ref-kazhdan2006poisson" class="csl-entry">
-<div class="csl-left-margin">4. </div><div class="csl-right-inline">Kazhdan, M., Bolitho, M. &amp; Hoppe, H. Poisson surface reconstruction. in <em>Proceedings of the fourth eurographics symposium on geometry processing</em> vol. 7 (2006).</div>
+Kazhdan, Michael, Matthew Bolitho, and Hugues Hoppe. 2006. <span>“Poisson Surface Reconstruction.”</span> In <em>Proceedings of the Fourth Eurographics Symposium on Geometry Processing</em>. Vol. 7. 4.
 </div>
-<div id="ref-zhou2018open3d" class="csl-entry">
-<div class="csl-left-margin">5. </div><div class="csl-right-inline">Zhou, Q.-Y., Park, J. &amp; Koltun, V. Open3D: A modern library for 3D data processing. <em>arXiv preprint arXiv:1801.09847</em> (2018).</div>
+<div id="ref-sehnal2013mole" class="csl-entry">
+Sehnal, David, Radka Svobodová Vařeková, Karel Berka, Lukáš Pravda, Veronika Navrátilová, Pavel Banáš, Crina-Maria Ionescu, Michal Otyepka, and Jaroslav Koča. 2013. <span>“MOLE 2.0: Advanced Approach for Analysis of Biomacromolecular Channels.”</span> <em>Journal of Cheminformatics</em> 5: 1–13.
 </div>
 <div id="ref-sullivan2019pyvista" class="csl-entry">
-<div class="csl-left-margin">6. </div><div class="csl-right-inline">Sullivan, C. &amp; Kaszynski, A. PyVista: 3D plotting and mesh analysis through a streamlined interface for the visualization toolkit (VTK). <em>Journal of Open Source Software</em> <strong>4</strong>, 1450 (2019).</div>
+Sullivan, C, and Alexander Kaszynski. 2019. <span>“PyVista: 3D Plotting and Mesh Analysis Through a Streamlined Interface for the Visualization Toolkit (VTK).”</span> <em>Journal of Open Source Software</em> 4 (37): 1450.
 </div>
-</div></section><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{kushner2024,
-  author = {Kushner, Artem and Dao Duc, Khanh},
-  title = {3D Tessellation of Biomolecular Cavities},
-  date = {2024-08-04},
-  url = {https://rtviii.xyz/posts/ribosome-tunnel-new/},
-  langid = {en}
-}
-</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-kushner2024" class="csl-entry quarto-appendix-citeas">
-<div class="">Kushner, A. &amp; Dao Duc, K. 3D tessellation
-of biomolecular cavities. <a href="https://rtviii.xyz/posts/ribosome-tunnel-new/">https://rtviii.xyz/posts/ribosome-tunnel-new/</a>
-(2024).</div>
-</div></div></section></div> ]]></description>
+<div id="ref-zhou2018open3d" class="csl-entry">
+Zhou, Qian-Yi, Jaesik Park, and Vladlen Koltun. 2018. <span>“Open3D: A Modern Library for 3D Data Processing.”</span> <em>arXiv Preprint arXiv:1801.09847</em>.
+</div>
+</div></section></div> ]]></description>
   <category>cryo-EM</category>
-  <guid>https://rtviii.xyz/posts/ribosome-tunnel-new/</guid>
-  <pubDate>Sun, 04 Aug 2024 04:00:00 GMT</pubDate>
+  <guid>https://rtviii.xyz/posts/npet-poisson-recon/</guid>
+  <pubDate>Sat, 03 Aug 2024 22:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>

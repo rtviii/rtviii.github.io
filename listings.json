@@ -1,12 +1,12 @@
 [
   {
-    "listing": "/listing_papers.html",
-    "items": []
-  },
-  {
     "listing": "/blog.html",
     "items": [
-      "/posts/ribosome-tunnel-new/index.html"
+      "/posts/npet-poisson-recon/index.html"
     ]
+  },
+  {
+    "listing": "/papers/papers.html",
+    "items": []
   }
 ]
