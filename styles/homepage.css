@@ -5,9 +5,16 @@
   max-width: 1100px;
   margin: 2rem auto;
   padding: 0 2rem;
+  overflow: visible;
 }
 
 /* --- Left Column: Signature & Nav --- */
+.left-column {
+  position: sticky;
+  top: 2rem;
+  height: fit-content;
+}
+
 .left-column .signature {
   max-width: 100px;
   margin-bottom: 1.5rem;
@@ -31,27 +38,31 @@
   color: #000;
 }
 
-/* --- Social Links (Now in Left Column) --- */
+/* --- Social Links --- */
 .social-links {
-  margin-top: 2.5rem; /* Adds space between nav and icons */
-  font-size: 1rem;  /* Slightly smaller icons to fit better */
+  margin-top: 2.5rem;
+  font-size: 1rem;
   display: flex;
-  flex-wrap: wrap; /* Allows icons to wrap on small screens */
+  flex-wrap: wrap;
   gap: 1.25rem;
 }
 
 .social-links a {
-  color: #888; /* UPDATED to be grayish */
+  color: #888;
   text-decoration: none;
-  transition: color 0.2s ease-in-out; /* Smooth color change on hover */
+  transition: color 0.2s ease-in-out;
 }
 
 .social-links a:hover {
-  color: #000; /* Back to black on hover */
+  color: #000;
 }
 
+/* --- Right Column --- */
+.right-column {
+  padding: 0;
+  overflow: visible;
+}
 
-/* --- Right Column: Photo & Text --- */
 .right-column .main-photo {
   width: 100%;
   margin-bottom: 1.5rem;
@@ -63,8 +74,15 @@
   margin-bottom: 1rem;
 }
 
-
-/* --- Responsive Adjustments for Mobile --- */
+/* --- Responsive --- */
 @media (max-width: 768px) {
-  /* ... (no changes needed here) ... */
+  .homepage-container {
+    padding: 1rem;
+  }
+  
+  .left-column {
+    position: relative;
+    top: 0;
+    margin-bottom: 2rem;
+  }
 }

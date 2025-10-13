@@ -1,0 +1,37 @@
+```{=html}
+<div class="papers-container">
+<% for (const item of items) { %>
+  <div class="paper-entry">
+    <div class="paper-image">
+      <a href="<%- item.url %>" target="_blank">
+        <img src="<%- item.image %>" alt="<%- item.title %>">
+      </a>
+    </div>
+    
+    <div class="paper-details">
+      <h3 class="paper-title">
+        <a href="<%- item.url %>" target="_blank">
+          <%- item.title %>
+        </a>
+      </h3>
+      <p class="paper-authors">
+        <%= item.authors.replace('Artem Kushner', '<span class="highlight-author">Artem Kushner</span>') %> (<%- item.year %>). 
+        <em><%- item.journal %></em>
+      </p>
+      
+      <p class="paper-description">
+        <%- item.abstract %>
+      </p>
+      
+      
+      <!-- <div class="paper-links"> -->
+        <!-- <a href="<%- item.url %>" target="_blank">View Paper</a> -->
+        <!-- <% if (item.pdf) { %>
+        <a href="<%- item.pdf %>" target="_blank">PDF</a>
+        <% } %> -->
+      <!-- </div> -->
+    </div>
+  </div>
+<% } %>
+</div>
+```

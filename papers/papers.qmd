@@ -1,0 +1,21 @@
+---
+page-layout: custom
+css: 
+  - ../styles/homepage.css
+  - ../styles/papers.css
+listing:
+  contents: papers.yml
+  template: template.ejs
+  id: papers-listing
+---
+
+::: {.grid .homepage-container}
+{{< include ../_includes/_navigation.qmd >}}
+
+::: {.g-col-12 .g-col-md-9 .right-column}
+
+
+::: {#papers-listing}
+:::
+:::
+:::

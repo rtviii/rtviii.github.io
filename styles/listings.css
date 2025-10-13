@@ -1,0 +1,45 @@
+.listings-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem 4rem; /* vertical gap | horizontal gap */
+  padding: 1rem 0;
+  align-items: flex-start; /* Aligns columns to the top */
+}
+
+.listing-section {
+  flex-grow: 1;
+  /* Each section will try to be at least 200px wide */
+  /* but can grow to fill space */
+  min-width: 200px; 
+}
+
+.listing-section h2 {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 0.75rem;
+  border: none;
+  padding: 0;
+  text-transform: none;
+}
+
+.listing-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.listing-section li {
+  margin-bottom: 0.25rem;
+  line-height: 1.4;
+}
+
+.listing-section a {
+  color: #34495e;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 400;
+}
+
+.listing-section a:hover {
+  color: #000000;
+}

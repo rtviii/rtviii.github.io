@@ -1,0 +1,51 @@
+- title: "Detection of archaeal-and prokaryotic-like ribosome exit tunnels within eukaryotic kingdoms"
+  authors: Yu Shiqi, Kushner Artem, Srebnik Simcha, Dao Duc Khanh 
+  journal: "Biophysical Journal"
+  year: 2025
+  abstract: ""
+  url: "https://www.biorxiv.org/content/10.1101/2025.04.08.647849v2.full.pdf"
+  pdf: "https://academic.oup.com/nar/article-pdf/51/D1/D509/47699411/gkac978.pdf"
+  image: "paper_teasers/prok-like_tunnel.png"
+
+- title: Advanced coarse-grained model for fast simulation of nascent polypeptide chain dynamics within the ribosome
+  authors: Shiqi Yu, Artem Kushner, Ella Teasell, Wenjun Zhao, Simcha Srebnik, Khanh Dao Duc
+  journal: "Biophysical Journal"
+  year: 2025
+  abstract: "We present an advanced coarse-grained model for simulating the dynamics of nascent polypeptide chains within the ribosome"
+  url: "https://www.biorxiv.org/content/biorxiv/early/2025/04/10/2025.04.08.647858.full.pdf"
+  image: "paper_teasers/cg_model.png"
+
+- title: "RiboXYZ: a comprehensive database for visualizing and analyzing ribosome structures"
+  authors: "Artem Kushner, Anton S. Petrov, and Khanh Dao Duc"
+  journal: "Nucleic Acids Research"
+  year: 2023
+  abstract: "RiboXYZ is a comprehensive database designed for the visualization and analysis of ribosome structures from various organisms and functional states. Visit the project at ribosome.xyz."
+  url: "https://academic.oup.com/nar/article/51/D1/D509/6777803"
+  pdf: "https://academic.oup.com/nar/article-pdf/51/D1/D509/47699411/gkac978.pdf"
+  image: "paper_teasers/7K00.gif"
+
+- title: "Application of transport-based metric for continuous interpolation between cryo-EM density maps"
+  authors: "Arthur Ecoffet, Geoffrey Woollard, Artem Kushner, Frédéric Poitevin, Khanh Dao Duc"
+  journal: "AIMS Mathematics"
+  year: 2022
+  abstract: "We present an approach to interpolating between cryo-EM density maps based on the theory of optimal transport, allowing for a more physically meaningful representation of conformational changes."
+  url: "https://www.aimspress.com/article/doi/10.3934/math.2022059"
+  pdf: "https://www.aimspress.com/article/id/6966/export-pdf"
+  image: "paper_teasers/morphot_ot.gif"
+
+- title: "Structural heterogeneities of the ribosome: new frontiers and opportunities for cryo-EM"
+  authors: "Frédéric Poitevin, Artem Kushner, Xinpei Li, and Khanh Dao Duc"
+  journal: "Molecules"
+  year: 2020
+  abstract: "This paper explores the structural heterogeneities of the ribosome across evolutionary, cellular, temporal and conformational landscapes, highlighting new frontiers for cryo-EM."
+  url: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7570653/"
+  pdf: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7570653/pdf/molecules-25-04412.pdf"
+  image: "paper_teasers/heterogeneities.png"
+
+- title: "Computational methods for unraveling ribosome structural heterogeneity"
+  authors: Artem Kushner, Shiqi Yu, Aryan Tajmir Riahi, and Simcha Srebnik, Khanh Dao Duc
+  year: 2023
+  journal: "Royal Society: Ribosome Heterogeneity and Specialisation Workshop"
+  # url: "./resources/papers/ribxz_annotation_pipeline.pdf"
+  image:  "./paper_teasers/ribxz_annotation_pipeline.png"
+  abstract: "We shared some computational methods for analyzing ribosome structural heterogeneity."
