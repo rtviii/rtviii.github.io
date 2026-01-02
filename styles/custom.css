@@ -111,3 +111,20 @@ body[data-page-type="homepage"] .quarto-grid-item img,
   --content-width: calc(100% - 220px) !important;
 }
 
+
+/* Tippy Custom Theme */
+.tippy-box[data-theme~='light-border'] {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  color: #333;
+  border-radius: 6px;
+}
+
+.tippy-box[data-theme~='light-border'] .tippy-content {
+  padding: 0; /* Let our internal div handle padding */
+}
+
+.tippy-box[data-theme~='light-border'] .tippy-arrow {
+  color: #fff;
+}
