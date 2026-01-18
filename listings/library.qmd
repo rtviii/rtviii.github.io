@@ -60,23 +60,3 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 ```
-
-## Other peopls blogs
-
-https://gwern.net/backstop
-
-https://atelfo.github.io/
-
-https://markovbio.github.io/
-
-## Stuff i haven't read but need to remeber
-
-https://en.wikipedia.org/wiki/The_Two_Cultures
-
-Feyrabend
-
-## Stuff i read and liked
-
-Name of The Rose
-
-Хаджи Мурат

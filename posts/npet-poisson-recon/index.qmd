@@ -4,7 +4,7 @@ subtitle: "Protocol for analyzing the ribosome exit tunnel"
 bibliography: references.bib
 author:
   - name: "Artem Kushner" 
-  - name: "Khanh Dao Duc" 
+  - name: "Khanh Dao Duc"
 
 date: "August 4 2024"
 categories: [ cryo-EM]    

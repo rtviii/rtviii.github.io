@@ -11,7 +11,7 @@ css: [styles/homepage.css]
 - [CV](papers/kushner_cv.pdf)
 - [Papers](papers/papers.html)
 - [Blog](blog.html)
-<!-- - [Listings](listings.html) -->
+- [Lists](listings.html)
 
 ::: {.social-links}
 [<i class="bi bi-github"></i>](https://github.com/rtviii)
@@ -28,7 +28,7 @@ Hi, I'm a research technician at IMP, Vienna with [Sven Klumpe](https://www.imp.
 
 My general interests are in biology, software and mathematics. I have done work in structural biology infrastrucutre (ranging from atomic models to CryoET), ML applications to cryoEM, the heterogeneity problem and shape analysis. I built and maintain [ribosome.xyz](https://ribosome.xyz/).
 
-Outside of academia, I've had a few backend roles. I enjoy running, canoeing, music, mathematics, history; i planted around 250,000 trees in the north-west of Canada between 2016 and 2018. My favorite books are by Proust, Eco and McCarthy.
+Outside of academia, I've had a few backend roles. I enjoy running, hiking, canoeing, music, history, economics; i planted around 250,000 trees in the north-west of Canada between 2016 and 2018. My favorite books are by Proust, Eco and McCarthy.
 
 I can be reached at [rtkushner@gmail.com](mailto:rtkushner@gmail.com).
 

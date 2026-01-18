@@ -4,7 +4,7 @@
 - [CV](/papers/kushner_cv.pdf)
 - [Papers](/papers/papers.html)
 - [Blog](/blog.html)
-<!-- - [Listings](/listings.html) -->
+- [Lists](/listings.html)
 
 ::: {.social-links}
 [<i class="bi bi-github"></i>](https://github.com/rtviii)

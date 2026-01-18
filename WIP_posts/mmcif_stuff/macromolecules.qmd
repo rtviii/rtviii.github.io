@@ -1,5 +1,5 @@
 ---
-title: "Heterogeneities of macromolecules: Cells within cells interlinked "
+title: "Heterogeneities of macromolecules"
 draft: true
 format: html
 ---
@@ -12,7 +12,7 @@ format: html
 # Motivation and resources
 
 This is somethig _I_ want to build. But is there actualy use for it, how do i convince people to help me?
-Have you considered reaching out to the OME-NGFF working groups?
+Have you considered reaching out to the OME-NGFF, other working groups?
 
 # Dimensions to the endeavor
 
@@ -34,7 +34,7 @@ Have you considered reaching out to the OME-NGFF working groups?
 #### Structural Biology Operations that come up:
 
 - Everywhere | ligand binding (docking, binding affinity) 
-- Tubulin    | methylation
+- Tubulin    | ptms
 - superimpose/aligning/template matching 
 - model building
 
@@ -44,8 +44,6 @@ Have you considered reaching out to the OME-NGFF working groups?
 - coarse graining: how does alex rose do it at mesascale?
 - https://link.springer.com/article/10.1007/s00418-023-02209-1
 - how do conformational heterogeneity a la E Zhong store and access data
-
-
 
 
 Let's be clear. These are INTUITIONS that need confirming.
@@ -58,7 +56,7 @@ Multiple separate angles here:
  1.better representations than mmcif/bcif (duh). Tensor streaming:
 
  - better how? progressive _coarse-graining_ based on _structural ontologies_
- - can probably draw on lidar literature here. see if Zarr can be drawn upon.
+ - can probably draw on lidar literature here. see if Zarr can be used as platform.
 
  2.model building:
 

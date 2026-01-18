@@ -2,17 +2,15 @@ project:
   type: website
   output-dir: _site
   resources:
+    - scripts.js
     - resources
     - img/
 
 website:
   title: "артём"
   draft-mode: unlinked
-
   site-url: "https://rtviii.xyz"
   favicon: "./img/BTNBlink.webp"
-  
-
 
 format:
   html:
@@ -20,19 +18,13 @@ format:
     css: 
       - styles/custom.css
       - styles/scrollbar-fix.css
+    # include-after-body: scripts.js  # Pointing to the file created above
     include-in-header:
       text: |
+        <script src="/scripts.js"></script>
+        <script src="https://unpkg.com/@popperjs/core@2"></script>
+        <script src="https://unpkg.com/tippy.js@6"></script>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
-        <script>
-        document.addEventListener('DOMContentLoaded', function() {
-          const images = document.querySelectorAll('.zoomable');
-          images.forEach(img => {
-            img.addEventListener('click', function() {
-              this.classList.toggle('zoomed');
-            });
-          });
-        });
-        </script>

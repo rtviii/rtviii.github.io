@@ -10,7 +10,7 @@ Rewriting the file "on the fly" is hard due to lack of modularity and other:
 Data organization at the confluence of CryoET, protein and rna engineering and LLMs' ability to manipulate types/ontologies.
 
 - gargantuan-scale images at angstrom-resolution
-- digital twins
+- [structural] "digital twins"
 - molecular force fields
 - near-perfect polymer folding
 - ligand/binding affinity prediction
@@ -112,3 +112,49 @@ https://proteopedia.org/wiki/index.php/Unusual_sequence_numbering
 
 https://docs.rosettacommons.org/docs/latest/development_documentation/tutorials/robust
 
+
+
+Stephanie Wankowitz: 
+
+https://diffuse.science/posts/encoding/
+--> https://pmc.ncbi.nlm.nih.gov/articles/PMC11220883/pdf/m-11-00494.pdf
+https://x.com/stephanie_mul/status/1955319804539150665
+
+To go over:
+-https://pubmed.ncbi.nlm.nih.gov/40586518/
+-https://pmc.ncbi.nlm.nih.gov/articles/PMC12208665/pdf/elife-103797.pdf
+-https://arxiv.org/pdf/2505.01919
+
+
+`Translation, Librations, Screws`
+https://onlinelibrary.wiley.com/doi/abs/10.1107/S0567740868001718
+
+
+Diego del Alamo:
+
+```
+To give one example, if you receive a model of an antigen against which you want to design antibodies, and some of the surface loops look weird, you'd like to know if they are justified by experimental data or were modeled w/ Rosetta, AF3, etc, ...
+
+.. because you don't want to design against some computational artifact. If you got the model from a human, that's fine, you can go ask. But structbio agents are ephemeral and can't be consulted a week later. So ideally that info gets stuffed in the PDB/CIF header. ...
+
+... But then that raises the question of how much metadata you can pack in there. Are you putting in MSAs? Etc. Anyway my guess is that this will soon be scaled up such that human supervision becomes unwieldy, so an agent should be able to answer these kinds of questions
+```
+
+Gabriele Corso:
+
+"Is anyone developing open-source MCP frameworks for llms to parse and understand biomolecular structures accurately? If so, please reach out to me, i would love to discuss, help and support!"
+
+
+------------
+
+
+ML features:
+
+- **Native graph representations** with k-nearest neighbor graphs, edge type annotations, and node features for GNNs like GearNet and DeepRank-GNN
+- **Multi-resolution tokenization** (AlphaFold 3 uses flexible schemes: standard residues as single tokens, modified residues as atoms, ligands as individual atoms)
+- **Pre-computed MSA embeddings** as feature channels
+- **Confidence metrics** (pLDDT, PAE) as first-class data alongside coordinates
+- **Versioned model parameters** linking predictions to the networks that generated them
+
+
+? Can this also be used a "paging cache" for the QKV store of transformers etc, msa embeddings that would facilitate modern models' operation?
