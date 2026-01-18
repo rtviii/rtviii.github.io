@@ -63,7 +63,9 @@ css:
 ## landmarks
 - [Can one hear the shape of a drum ](https://www.math.ucdavis.edu/~hunter/m207b/kac.pdf)
 - [The question concerning technology in china, Yuk Hui](https://sidoli.w.waseda.jp/Hui_2016_The_Question_Concerning_Technology_in_China_An_Essay_in_Cosmotechnics_Introduction.pdf)
+
 - [Politics and the English Language, Orwell](https://www.orwellfoundation.com/the-orwell-foundation/orwell/essays-and-other-works/politics-and-the-english-language/)
+- [the moral character of cryptographic work, Rogaway](https://web.cs.ucdavis.edu/~rogaway/papers/moral-fn.pdf)
 - [the hedgehog and the fox ](https://www.arvindguptatoys.com/arvindgupta/hedgehog-berlin.pdf)
 ::: 
 ::: {.listing-section}
