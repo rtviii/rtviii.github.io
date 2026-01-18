@@ -87,10 +87,9 @@ css:
 
 
 
-::: {.listing-section}
+<!-- ::: {.listing-section}
 ## music vids
 - [LA NEGRA EN UTRERA. Al toque: Camarón, Moraito y Raimundo Amador](https://www.youtube.com/watch?v=tyJrhIN38n8&list=RDtyJrhIN38n8&start_radio=1)
-- [ https://www.youtube.com/watch?v=Ir9qgbpJSMk&list=RD4SksJKyk6bY ](https://www.youtube.com/watch?v=Ir9qgbpJSMk&list=RD4SksJKyk6bY)
 - [ https://www.youtube.com/watch?v=TMbPMmOI9Lo&list=RDTMbPMmOI9Lo ](https://www.youtube.com/watch?v=TMbPMmOI9Lo&list=RDTMbPMmOI9Lo)
 - [ https://www.youtube.com/watch?v=lbKsf8vQLVk&list=RDlbKsf8vQLVk ](https://www.youtube.com/watch?v=lbKsf8vQLVk&list=RDlbKsf8vQLVk)
 - [ https://www.youtube.com/watch?v=WHI2nWdRdXw&list=RDWHI2nWdRdXw ](https://www.youtube.com/watch?v=WHI2nWdRdXw&list=RDWHI2nWdRdXw)
@@ -99,11 +98,12 @@ css:
 - [ https://www.youtube.com/watch?v=D0RPSDEOxTA ](https://www.youtube.com/watch?v=D0RPSDEOxTA)
 :::
 ::: {.listing-section}
-
+ -->
 
 ::: {.listing-section}
 ## stuff
 - [Gaucho doc ](https://www.youtube.com/watch?v=HW4TxQCGhwI&t=482s)
+- [Villadangos - Escualo](https://www.youtube.com/watch?v=Ir9qgbpJSMk&list=RD4SksJKyk6bY)
 - [shackleton, endurance](https://en.wikipedia.org/wiki/The_Endurance:_Shackleton%27s_Legendary_Antarctic_Expedition)
 - [when turing and wittgenstein met](http://philonantes.free.fr/Lectures%20on%20the%20foundations1939.pdf)
 - [metternich letters to dorothea von lieven](https://www.gutenberg.org/ebooks/50708)
