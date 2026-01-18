@@ -86,3 +86,12 @@
     margin-bottom: 2rem;
   }
 }
+.photo-credit {
+  display: block;
+  font-size: 0.5rem;
+  /* font-style: italic; */
+  color: #292929;
+  margin-top: -1rem;
+  margin-bottom: 1.5rem;
+  text-align: right;
+}
