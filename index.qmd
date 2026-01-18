@@ -23,8 +23,9 @@ css: [styles/homepage.css]
 
 ::: {.g-col-12 .g-col-md-9 .right-column}
 ![](img/sifnos_HCB.jpg){.main-photo}
+[Sifnos, Greece (1961) | Henri Cartier-Bresson]{.photo-credit}
 
-Howdy, this is my personal website. I'm a research technician at IMP, Vienna with [Sven Klumpe](https://www.imp.ac.at/groups/sven-klumpe) and at UBC, Vancouver with [Khanh Dao Duc](https://kdaoduc.com/about/).
+Howdy, I'm a research technician at IMP, Vienna with [Sven Klumpe](https://www.imp.ac.at/groups/sven-klumpe) and at UBC, Vancouver with [Khanh Dao Duc](https://kdaoduc.com/about/).
 
 My general interests are in biology, software and mathematics. I have done work in structural biology infrastructure (atomic models, CryoET), ML applications to cryoEM, shape analysis. I built and maintain [ribosome.xyz](https://ribosome.xyz/).
 
