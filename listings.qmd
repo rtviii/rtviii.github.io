@@ -36,20 +36,22 @@ css:
 
 ::: {.listing-section}
 ## top x
+
+- Joaquin Rodrigo: Concierto De Aranjuez, Adagio (Paco de Lucía, Orquesta de Cadaques, Edmon Colomer)
 - Jim Hall sextet: Concierto De Aranjuez
 - Gil Evans: Las Vegas Tango
-- Arvo Part: Stabat Mater (Le Nuove Musiche, Krijn Koetsveld, Wendy Roobol)
+- Arvo Part: Tabula Rasa, Fratres, Cantus in memoriam Benjamin Britten (Gidon Kremer, Keith Jarrett, Tatiana Grindenko)
 - Kara-Lis Coverdale: Grafts
 - Floating Points: Promises
+- Doubling Riders: I Graffiti di Orione e Delle Pleiade (Dedicated to Henri Lhote)
+- Arvo Part: Stabat Mater (Le Nuove Musiche, Krijn Koetsveld, Wendy Roobol)
 - Brian Eno: The Ship
 - Lino Capra Vaccina: Andante Ancestrale
-- Doubling Riders: I Graffiti di Orione e Delle Pleiade (Dedicated to Henri Lhote)
-- Arvo Part: Tabula Rasa, Fratres, Cantus in memoriam Benjamin Britten (Gidon Kremer, Keith Jarrett, Tatiana Grindenko)
+- John Luther Adams: Become Ocean
 - Pharoah Sanders: Harvest Time
 - Traditional: Black is The Color of My True Love's Hair (Marc Johnson, Bill Frisell, John Scofield, Peter Erskine)
 - Jordan De La Sierra: Gymnosphere: Song of the Rose
 - Laraaji: Unicorns in Paradise
-- John Luther Adams: Become Ocean
 - Tim Hecker: Radio Amor
 :::
 ::: {.listing-section}
