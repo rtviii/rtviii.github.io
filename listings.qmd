@@ -59,10 +59,15 @@ css:
 ::: {.listing-section}
 ## landmarks
 - [Can one hear the shape of a drum ](https://www.math.ucdavis.edu/~hunter/m207b/kac.pdf)
+
 - [The question concerning technology in china, Yuk Hui](https://sidoli.w.waseda.jp/Hui_2016_The_Question_Concerning_Technology_in_China_An_Essay_in_Cosmotechnics_Introduction.pdf)
 - [Politics and the English Language, Orwell](https://www.orwellfoundation.com/the-orwell-foundation/orwell/essays-and-other-works/politics-and-the-english-language/)
 - [the moral character of cryptographic work, Rogaway](https://web.cs.ucdavis.edu/~rogaway/papers/moral-fn.pdf)
 - [the hedgehog and the fox ](https://www.arvindguptatoys.com/arvindgupta/hedgehog-berlin.pdf)
+
+- [hints on PL](https://flint.cs.yale.edu/cs428/doc/HintsPL.pdf)
+- [on the criteria to be used in decomposing systems into modules](https://dl.acm.org/doi/epdf/10.1145/361598.361623)
+- [cosmotechnics as cosmopolitics](https://www.e-flux.com/journal/86/161887/cosmotechnics-as-cosmopolitics)
 ::: 
 ::: {.listing-section}
 
@@ -91,10 +96,11 @@ css:
 - [my november guest, Frost](https://poets.org/poem/my-november-guest)
 - [leap before you look](https://web.mit.edu/cordelia/www/Poems/Leap_Before_you_look.html)
 - [circus animals desertion](https://www.poetryfoundation.org/poems/43299/the-circus-animals-desertion)
+- [проплывают облака](https://www.askbooka.ru/stihi/iosif-brodskiy/proplyvayut-oblaka.html)
+- [степная дудка](https://www.culture.ru/poems/11078/stepnaya-dudka)
 
 :::
 ::: {.listing-section}
-
 
 
 <!-- ::: {.listing-section}
@@ -118,5 +124,6 @@ css:
 - [when turing and wittgenstein met](http://philonantes.free.fr/Lectures%20on%20the%20foundations1939.pdf)
 - [metternich letters to dorothea von lieven](https://www.gutenberg.org/ebooks/50708)
 - [recoltes et semailles](http://cm2vivi2002.free.fr/AG-biblio/AG-RetS.pdf)
+- [straussian moment](https://gwern.net/doc/politics/2007-thiel.pdf)
 :::
 ::: {.listing-section}
