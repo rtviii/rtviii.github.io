@@ -19,17 +19,18 @@ css:
 ::: {.listing-section}
 ## blogs
 
-- [https://jeremybernste.in/writing/](https://jeremybernste.in/writing/)
+
+<!-- - [https://jeremybernste.in/writing/](https://jeremybernste.in/writing/) -->
 - [https://ericjmichaud.com/](https://ericjmichaud.com/)
-- [https://hyperparameter.space ](https://hyperparameter.space/blog)
+- [https://blog.xiangpeng.systems/](https://blog.xiangpeng.systems/)
+<!-- - [https://hyperparameter.space ](https://hyperparameter.space/blog) -->
 - [https://www.privatdozent.co/](https://www.privatdozent.co/)
-- [https://ghost.oxen.ai ](https://ghost.oxen.ai)
-- [https://www.aibiodesign.com/p ](jhttps://www.aibiodesign.com/p)
+<!-- - [https://ghost.oxen.ai ](https://ghost.oxen.ai) -->
+<!-- - [https://www.aibiodesign.com/p ](jhttps://www.aibiodesign.com/p) -->
 - [https://atelfo.github.io/ ](https://atelfo.github.io/)
 - [https://markovbio.github.io/ ](https://markovbio.github.io/)
 - [http://gusevlab.org/projects/hsq/#h.7g8y898qpkvy ](http://gusevlab.org/projects/hsq/#h.7g8y898qpkvy)
-- [ https://www.jeremykun.com/2015/04/06/markov-chain-monte-carlo-without-all-the-bullshit/ ](https://www.jeremykun.com/2015/04/06/markov-chain-monte-carlo-without-all-the-bullshit/)
-- [ https://iwatobipen.wordpress.com/ ](https://iwatobipen.wordpress.com/)
+- [ https://www.jeremykun.com/ ](https://www.jeremykun.com/)
 - [ https://alchemybio.substack.com/p ](https://alchemybio.substack.com/p)
 ::: 
 ::: {.listing-section}
@@ -59,12 +60,10 @@ css:
 ::: {.listing-section}
 ## landmarks
 - [Can one hear the shape of a drum ](https://www.math.ucdavis.edu/~hunter/m207b/kac.pdf)
-
 - [The question concerning technology in china, Yuk Hui](https://sidoli.w.waseda.jp/Hui_2016_The_Question_Concerning_Technology_in_China_An_Essay_in_Cosmotechnics_Introduction.pdf)
 - [Politics and the English Language, Orwell](https://www.orwellfoundation.com/the-orwell-foundation/orwell/essays-and-other-works/politics-and-the-english-language/)
 - [the moral character of cryptographic work, Rogaway](https://web.cs.ucdavis.edu/~rogaway/papers/moral-fn.pdf)
 - [the hedgehog and the fox ](https://www.arvindguptatoys.com/arvindgupta/hedgehog-berlin.pdf)
-
 - [hints on PL](https://flint.cs.yale.edu/cs428/doc/HintsPL.pdf)
 - [on the criteria to be used in decomposing systems into modules](https://dl.acm.org/doi/epdf/10.1145/361598.361623)
 - [cosmotechnics as cosmopolitics](https://www.e-flux.com/journal/86/161887/cosmotechnics-as-cosmopolitics)
@@ -125,5 +124,7 @@ css:
 - [metternich letters to dorothea von lieven](https://www.gutenberg.org/ebooks/50708)
 - [recoltes et semailles](http://cm2vivi2002.free.fr/AG-biblio/AG-RetS.pdf)
 - [straussian moment](https://gwern.net/doc/politics/2007-thiel.pdf)
+- [Suzanne Ciani - Buchla Concerts 1975](https://www.youtube.com/watch?v=nJWk7jiASP0&list=RDnJWk7jiASP0)
+- [flowers of evil, cianni](https://www.youtube.com/watch?v=T8brDNOgB3g&list=RDT8brDNOgB3g)
 :::
 ::: {.listing-section}

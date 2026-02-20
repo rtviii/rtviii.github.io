@@ -1,0 +1,198 @@
+---
+title: "CryoET Concepts in Pixels, Boxes, and FFTs"
+subtitle: "A No-Jargon Guide to Frequency Space and Reconstruction"
+author:
+  - name: "Artem Kushner"
+date: "February 17, 2026"
+categories: [cryo-ET, structural biology]
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+---
+
+Cool — let’s throw away the jargon and build it from **pixels in a box**, with just enough math to make the knobs feel inevitable.
+
+I’m going to do it in this order:
+
+1. **What “frequency” means for an image/volume** (pixels → FFT → spectrum)
+2. **Å/px + Nyquist + “high frequencies”** (what’s actually high)
+3. **CTF**: what “oscillations” and “phase flips” literally mean
+4. **CTF “correction”**: what operations people actually do
+5. **Deconvolution**: what it implies in this context
+6. **Normalization + box size** (for template matching)
+7. **Power spectrum, low-pass 40 Å, and what Å means in frequency space**
+8. **Why “whitening” is called whitening**
+
+## 1. Pixels → Frequencies: what “spectrum” means
+
+Take the simplest case: a **1D** signal: an array of numbers
+
+$$
+x[n],\quad n=0,\dots,N-1
+$$
+
+A “frequency component” is “how much of a sine/cosine wave at a given wavelength is present”. The FFT gives you:
+
+$$
+X[k] = \sum_{n=0}^{N-1} x[n]\; e^{-i 2\pi kn/N}
+$$
+
+- $X[k]$ is **complex**: it has magnitude and phase.
+- Each $k$ corresponds to a spatial frequency (cycles per length).
+
+Now upgrade to a **2D image** $x[y,x]$: FFT gives $X[k_y,k_x]$.  
+Upgrade to a **3D volume** $x[z,y,x]$: FFT gives $X[k_z,k_y,k_x]$.
+
+So “the spectrum” in cryoET is just:  
+> **the FFT of your 3D voxel box, indexed by spatial frequencies in 3D.**
+
+### Power spectrum
+
+The **power** at a frequency is:
+
+$$
+P(\mathbf{k}) = |X(\mathbf{k})|^2
+$$
+
+Often people radially average it into a 1D curve vs radius $|\mathbf{k}|$. That curve is what they call “the power spectrum”.
+
+
+
+## 2. Å/px, Nyquist, and "High Frequencies"
+
+### Å/px (apix)
+
+Your volume is a grid. Each voxel corresponds to a physical spacing:
+
+- voxel size = $a$ Å/px
+
+So if $a=12$ Å/px, then one voxel step is 12 Å in the sample.
+
+### Nyquist (in pixels)
+
+On a discrete grid, the shortest wavelength you can represent is **2 pixels** (one up-down cycle). That’s the sampling theorem. So the best possible (sampling-limited) real-space resolution is:
+
+$$
+\text{Nyquist resolution} = 2a\ \text{Å}
+$$
+
+Example: $a=12$ Å/px → Nyquist = 24 Å.  
+Meaning: you literally cannot represent features smaller than ~24 Å reliably in that sampled volume, because you don’t have enough samples.
+
+### “High frequency” in this context
+
+“Frequency” here means **spatial frequency**:
+
+- **low spatial frequency** = slowly varying stuff (big blobs, gradients)
+- **high spatial frequency** = rapid changes (edges, fine detail)
+
+If a feature has size $d$ Å, then its spatial frequency is about:
+
+$$
+f \approx 1/d\quad (\text{units: } \text{Å}^{-1})
+$$
+
+So “high frequencies” are the ones with **small d** (fine details), approaching Nyquist.
+
+::: {.callout-note}
+## Why is apix often > 1?
+Careful: **apix is a sampling choice**, not the microscope’s fundamental limit. In cryoET, people often reconstruct at binned pixel sizes like 4–15 Å/px because tomograms are noisy, the missing wedge exists, and computational cost explodes at small pixels.
+:::
+
+## 3. CTF: Oscillations and Phase Flips
+
+Think of your sample as producing some “ideal” projection signal in Fourier space $S(\mathbf{k})$. The microscope multiplies it by a frequency-dependent function:
+
+$$
+I(\mathbf{k}) \approx \text{CTF}(\mathbf{k}) \cdot S(\mathbf{k}) + N(\mathbf{k})
+$$
+
+### The key: CTF changes sign as a function of frequency
+
+A simplified form is:
+
+$$
+\text{CTF}(k) = \sin(\chi(k))
+$$
+
+where $\chi(k)$ depends on defocus, wavelength, etc. The important qualitative fact: $\sin(\chi)$ oscillates: +, 0, −, 0, +, 0, − … as $k$ increases.
+
+
+
+- **Positive sign**: signal is transmitted normally.
+- **Negative sign**: signal is **inverted** (multiplying by -1). This is the **"phase flip"**.
+- **Zeros**: the frequency is basically wiped out.
+
+## 4. CTF Correction
+
+Correction tries to undo that multiplication.
+
+### Phase-flipping (simplest)
+
+If you only fix the sign:
+
+$$
+S'(\mathbf{k}) = \text{sign}(\text{CTF}(\mathbf{k}))\cdot I(\mathbf{k})
+$$
+
+### Full correction (Wiener Filter)
+
+Naively dividing by CTF explodes noise where the CTF is near 0. Instead, we use:
+
+$$
+S'(\mathbf{k}) = \frac{\text{CTF}(\mathbf{k})}{\text{CTF}(\mathbf{k})^2 + \alpha}\; I(\mathbf{k})
+$$
+
+- $\alpha$ is a “noise / signal” regularization parameter.
+
+## 5. Deconvolution
+
+In cryoET pipelines, **“deconv”** is usually shorthand for undoing CTF envelope damping or reconstruction blur. It behaves like a **sharpening filter**: it boosts higher frequencies relative to low frequencies, increasing edge contrast.
+
+## 6. Normalization and Box Size
+
+Template matching uses **normalized cross-correlation** (NCC):
+
+$$
+\text{NCC}(v,t)= \frac{\sum_i (v_i - \mu_v)(t_i-\mu_t)} {\sqrt{\sum_i (v_i-\mu_v)^2}\;\sqrt{\sum_i (t_i-\mu_t)^2}}
+$$
+
+Normalization ensures that the match score depends on **shape similarity**, not on absolute intensity or local contrast.
+
+::: {.callout-warning}
+## Box size constraints
+- **Too small**: stats dominated by the particle itself; you normalize away the signal.
+- **Too big**: stats dominated by background gradients/lamella thickness; normalization becomes unstable.
+:::
+
+## 7. Filtering: The "40 Å Low-pass"
+
+A low-pass filter at 40 Å is a cutoff in frequency space. Convert the length scale to a spatial frequency:
+
+$$
+f_c = 1/40\ \text{Å}^{-1} = 0.025\ \text{Å}^{-1}
+$$
+
+You multiply your FFT by a filter function $W(\mathbf{k})$ that suppresses anything higher than $f_c$ and then inverse FFT back:
+
+$$
+x_\text{filtered} = \mathcal{F}^{-1}\{ W(\mathbf{k}) X(\mathbf{k}) \}
+$$
+
+
+
+## 8. Why “Whitening” is called Whitening
+
+**White noise** has equal power at all frequencies (a flat spectrum). If your data is "colored" (certain frequencies dominate), you "whiten" it by scaling:
+
+$$
+X_\text{white}(\mathbf{k}) = \frac{X(\mathbf{k})}{\sqrt{P(|\mathbf{k}|)}}
+$$
+
+This is **frequency-dependent scaling**, not averaging. It ensures no specific frequency band unfairly dominates the match score.
+
+---
+
+**Next step:** Since we've cleared up the theory, would you like me to look at those specific score maps from your logs to see exactly how toggling "whitening" changed your standard deviation and false-positive cutoffs?
