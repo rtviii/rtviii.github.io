@@ -15,10 +15,8 @@ css:
 ::: {.listings-grid}
 
 
-
 ::: {.listing-section}
 ## blogs
-
 
 <!-- - [https://jeremybernste.in/writing/](https://jeremybernste.in/writing/) -->
 - [https://ericjmichaud.com/](https://ericjmichaud.com/)
@@ -32,6 +30,11 @@ css:
 - [http://gusevlab.org/projects/hsq/#h.7g8y898qpkvy ](http://gusevlab.org/projects/hsq/#h.7g8y898qpkvy)
 - [ https://www.jeremykun.com/ ](https://www.jeremykun.com/)
 - [ https://alchemybio.substack.com/p ](https://alchemybio.substack.com/p)
+- [the log](https://engineering.linkedin.com/distributed-systems/log-what-every-software-engineer-should-know-about-real-time-datas-unifying)
+- [oops, you built a database](https://dx.tips/oops-database)
+- [oops, you built a compiler](https://people.csail.mit.edu/rachit/post/you-have-built-a-compiler/)
+- [https://spawn-queue.acm.org/doi/10.1145/1394127.1394128](https://spawn-queue.acm.org/doi/10.1145/1394127.1394128)
+
 ::: 
 ::: {.listing-section}
 
