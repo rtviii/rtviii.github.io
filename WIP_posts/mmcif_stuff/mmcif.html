@@ -130,7 +130,7 @@ ul.task-list li input[type="checkbox"] {
 <li>What is the job here that won’t need doing in 5-10 years?</li>
 <li>What is the job that will need doing doing in 5 years but doesn’t exist now?</li>
 </ul>
-<p>entity_poly_seq can’t be mandatory since you can produce a mmCIF file without any polymeric molecular entity. You could write a mmCIF file with a single ion in it, no protein, no nucleic acid and it still would be a valid mmCif file while that file can’t have entity_poly_seq because… no polymer ;) I guess once you have a linear polymer in a mmCIF file, entity_poly_seq should be in there, too.__ That can’t be reflected by mmCIF dictionaries since they don’t know conditionals.___</p>
+<p>entity_poly_seq can’t be mandatory since you can produce a mmCIF file without any polymeric molecular entity. You could write a mmCIF file with a single ion in it, no protein, no nucleic acid and it still would be a valid mmCif file while that file can’t have entity_poly_seq because… no polymer ;) I guess once you have a linear polymer in a mmCIF file, entity_poly_seq should be in there, too.** That can’t be reflected by mmCIF dictionaries since they don’t know conditionals._**</p>
 </section>
 </section>
 <section id="semi-useful-links" class="level1">
@@ -202,6 +202,27 @@ ul.task-list li input[type="checkbox"] {
 <section id="atomworks" class="level1">
 <h1>atomworks</h1>
 <p>https://rosettacommons.github.io/atomworks/latest/tutorial/index.html</p>
+<p>#——–</p>
+<p>Verification of Your Points</p>
+<p>From the RCSB documentation and the PDBx/mmCIF standard: 1. Entity vs.&nbsp;Instance (Chain) Logic</p>
+<pre><code>The Rule: A PDB Entity is defined by its chemical sequence. If two chains have the exact same sequence of amino acids or nucleotides, they are Instances of the same Entity.
+
+Variability: If there is any difference in the chemical sequence (a mutation, a different construct, or even a different species), they must be assigned to different Entities.
+
+Note on "Missing" Data: If Chain A and Chain B have the same underlying sequence, but Chain A is missing residues 1–10 in the density while Chain B is complete, they are still the same Entity. The entity represents the chemical molecule present in the experiment, not just what was successfully modeled.</code></pre>
+<ol start="2" type="1">
+<li>auth_seq_id (The “Author” Numbering)</li>
+</ol>
+<p>The documentation confirms your block of text is 100% correct:</p>
+<pre><code>Author-Assigned: It is the numbering provided by the researcher to match literature or UniProt.
+
+Arbitrary &amp; Gapped: It does not have to be sequential. It can start at -5, have a gap from 20 to 50, and use "insertion codes" (e.g., 100A, 100B).
+
+Differing between Chains: This is the crucial part. Even if two chains are the same Entity, the author can give them different auth_seq_id ranges (e.g., Chain A is 1-100, Chain B is 201-300).
+
+*Mol Behavior:** Mol* (and most viewers) defaults to auth_seq_id because that's what biologists recognize from papers, whereas label_seq_id is the strict, software-friendly 1, 2, 3... count.</code></pre>
+<p>Summary Table for Quick Reference Feature label_seq_id (Canonical) auth_seq_id (Author) Starts at Always 1 Anywhere (negative, 0, 100…) Gaps Not allowed (must be continuous) Allowed Consistency Same for all instances of an entity Can differ between chains Viewer Default Used for internal data mapping Default for 3D selection/labe</p>
+<p>https://www.rcsb.org/docs/general-help/identifiers-in-pdb</p>
 
 
 </section>
