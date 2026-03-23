@@ -15,51 +15,62 @@ css:
 ::: {.listings-grid}
 
 
-
 ::: {.listing-section}
 ## blogs
 
-- [ https://hyperparameter.space ](https://hyperparameter.space/blog)
+<!-- - [https://jeremybernste.in/writing/](https://jeremybernste.in/writing/) -->
+- [https://ericjmichaud.com/](https://ericjmichaud.com/)
+- [https://blog.xiangpeng.systems/](https://blog.xiangpeng.systems/)
+<!-- - [https://hyperparameter.space ](https://hyperparameter.space/blog) -->
 - [https://www.privatdozent.co/](https://www.privatdozent.co/)
-- [ https://ghost.oxen.ai ](https://ghost.oxen.ai)
-- [ https://www.aibiodesign.com/p ](jhttps://www.aibiodesign.com/p)
-- [ https://atelfo.github.io/ ](https://atelfo.github.io/)
-- [ https://markovbio.github.io/ ](https://markovbio.github.io/)
-- [ http://gusevlab.org/projects/hsq/#h.7g8y898qpkvy ](http://gusevlab.org/projects/hsq/#h.7g8y898qpkvy)
-- [ https://www.jeremykun.com/2015/04/06/markov-chain-monte-carlo-without-all-the-bullshit/ ](https://www.jeremykun.com/2015/04/06/markov-chain-monte-carlo-without-all-the-bullshit/)
-- [ https://iwatobipen.wordpress.com/ ](https://iwatobipen.wordpress.com/)
+<!-- - [https://ghost.oxen.ai ](https://ghost.oxen.ai) -->
+<!-- - [https://www.aibiodesign.com/p ](jhttps://www.aibiodesign.com/p) -->
+- [https://atelfo.github.io/ ](https://atelfo.github.io/)
+- [https://markovbio.github.io/ ](https://markovbio.github.io/)
+- [http://gusevlab.org/projects/hsq/#h.7g8y898qpkvy ](http://gusevlab.org/projects/hsq/#h.7g8y898qpkvy)
+- [ https://www.jeremykun.com/ ](https://www.jeremykun.com/)
 - [ https://alchemybio.substack.com/p ](https://alchemybio.substack.com/p)
+- [the log](https://engineering.linkedin.com/distributed-systems/log-what-every-software-engineer-should-know-about-real-time-datas-unifying)
+- [oops, you built a database](https://dx.tips/oops-database)
+- [oops, you built a compiler](https://people.csail.mit.edu/rachit/post/you-have-built-a-compiler/)
+- [https://spawn-queue.acm.org/doi/10.1145/1394127.1394128](https://spawn-queue.acm.org/doi/10.1145/1394127.1394128)
+
 ::: 
 ::: {.listing-section}
 
 ::: {.listing-section}
 ## top x
+
+- Joaquin Rodrigo: Concierto De Aranjuez, Adagio (Paco de Lucía, Orquesta de Cadaques, Edmon Colomer)
 - Jim Hall sextet: Concierto De Aranjuez
 - Gil Evans: Las Vegas Tango
-- Arvo Part: Stabat Mater (Le Nuove Musiche, Krijn Koetsveld, Wendy Roobol)
+- Arvo Part: Tabula Rasa, Fratres, Cantus in memoriam Benjamin Britten (Gidon Kremer, Keith Jarrett, Tatiana Grindenko)
 - Kara-Lis Coverdale: Grafts
 - Floating Points: Promises
+- Doubling Riders: I Graffiti di Orione e Delle Pleiade (Dedicated to Henri Lhote)
+- Arvo Part: Stabat Mater (Le Nuove Musiche, Krijn Koetsveld, Wendy Roobol)
 - Brian Eno: The Ship
 - Lino Capra Vaccina: Andante Ancestrale
-- Doubling Riders: I Graffiti di Orione e Delle Pleiade (Dedicated to Henri Lhote)
-- Arvo Part: Tabula Rasa, Fratres, Cantus in memoriam Benjamin Britten (Gidon Kremer, Keith Jarrett, Tatiana Grindenko)
+- John Luther Adams: Become Ocean
 - Pharoah Sanders: Harvest Time
 - Traditional: Black is The Color of My True Love's Hair (Marc Johnson, Bill Frisell, John Scofield, Peter Erskine)
-- Rupert Clervaux, Sian Ahern: In Shadowlands of Like and Lineness
-- Jordan De La Sierra: Temple of Aesthetic Action
+- Jordan De La Sierra: Gymnosphere: Song of the Rose
 - Laraaji: Unicorns in Paradise
-- John Luther Adams: Become Ocean
 - Tim Hecker: Radio Amor
 :::
 ::: {.listing-section}
 
 ::: {.listing-section}
 ## landmarks
+- [influnece of electron noise on 3d reconstruction](https://scispace.com/pdf/influence-of-electron-noise-on-three-dimensional-image-3ub5fjpf49.pdf)
 - [Can one hear the shape of a drum ](https://www.math.ucdavis.edu/~hunter/m207b/kac.pdf)
 - [The question concerning technology in china, Yuk Hui](https://sidoli.w.waseda.jp/Hui_2016_The_Question_Concerning_Technology_in_China_An_Essay_in_Cosmotechnics_Introduction.pdf)
 - [Politics and the English Language, Orwell](https://www.orwellfoundation.com/the-orwell-foundation/orwell/essays-and-other-works/politics-and-the-english-language/)
 - [the moral character of cryptographic work, Rogaway](https://web.cs.ucdavis.edu/~rogaway/papers/moral-fn.pdf)
 - [the hedgehog and the fox ](https://www.arvindguptatoys.com/arvindgupta/hedgehog-berlin.pdf)
+- [hints on PL](https://flint.cs.yale.edu/cs428/doc/HintsPL.pdf)
+- [on the criteria to be used in decomposing systems into modules](https://dl.acm.org/doi/epdf/10.1145/361598.361623)
+- [cosmotechnics as cosmopolitics](https://www.e-flux.com/journal/86/161887/cosmotechnics-as-cosmopolitics)
 ::: 
 ::: {.listing-section}
 
@@ -68,23 +79,31 @@ css:
 ::: {.listing-section}
 ## stishki
 <!-- Other blogs -->
-- [жизнь жизнь](https://www.culture.ru/poems/11091/zhizn-zhizn)
+- [жизнь жизнь](https://www.askbooka.ru/stihi/arseniy-tarkovskiy/zhizn-zhizn.html)
 - [Nabokov - Pale Fire ](https://ia601405.us.archive.org/10/items/HeliganSecretsOfTheLostGardens/NabokovVladimir-PaleFire.pdf)
 - [duino elegies](https://www.poetryintranslation.com/PITBR/German/Rilke.php#anchor_Toc509812215)
-- [шесть лет спустя](https://www.culture.ru/poems/30477/shest-let-spustya)
+- [шесть лет спустя](https://www.askbooka.ru/stihi/iosif-brodskiy/shest-let-spustya.html)
 - [on raglan road](https://allpoetry.com/On-Raglan-Road)
 - [nerva l - the poem from foucault](https://fr.wikisource.org/wiki/Page:Nerval_-_Choix_des_po%C3%A9sies_de_Ronsard,_1830.djvu/355)
+- [america, ginsberg](https://www.poetryfoundation.org/poems/49305/america-56d22b41f119f)
 - [Вы хожу один я на дорогу ](https://culture.ru/poems/37203/vykhozhu-odin-ya-na-dorogu)
 - [letters from iceland, auden](https://ia601402.us.archive.org/16/items/in.ernet.dli.2015.81886/2015.81886.Letters-From-Iceland.pdf)
 - [whatt, beckett ](https://floriancafe.blogspot.com/2013/05/samuel-beckett-reads-from-watt.html)
 - [oh lovely appearance of death](https://hymnary.org/text/ah_lovely_appearance_of_death_no_sight)
-- [babochka](https://www.culture.ru/poems/30551/babochka)
-- [strand, the couple](https://www.youtube.com/watch?v=ws26Aqa7I9o)
+- [babochka](https://math.berkeley.edu/~giventh/verse/btfly.pdf)
 - [Божественная Комедия в переводе Лозинского](https://cpcl.info/text/dante_bozhestvennaya-komediya_1967/$p35/)
+- [old angel midnight, keroauc](https://www.scribd.com/document/319289289/First-Five-Pages-from-Old-Angel-Midnight)
 - [мой костёр в тумане светит](https://ru.wikisource.org/wiki/%D0%9C%D0%BE%D0%B9_%D0%BA%D0%BE%D1%81%D1%82%D0%B5%D1%80_%D0%B2_%D1%82%D1%83%D0%BC%D0%B0%D0%BD%D0%B5_%D1%81%D0%B2%D0%B5%D1%82%D0%B8%D1%82)
+- [the more loving one](https://www.poetryfoundation.org/poems/161869/the-more-loving-one-65a7f822258fd)
+- [Shakespeare's sonnets](https://shakespeare.mit.edu/Poetry/sonnet.CXXX.html)
+- [my november guest, Frost](https://poets.org/poem/my-november-guest)
+- [leap before you look](https://web.mit.edu/cordelia/www/Poems/Leap_Before_you_look.html)
+- [circus animals desertion](https://www.poetryfoundation.org/poems/43299/the-circus-animals-desertion)
+- [проплывают облака](https://www.askbooka.ru/stihi/iosif-brodskiy/proplyvayut-oblaka.html)
+- [степная дудка](https://www.culture.ru/poems/11078/stepnaya-dudka)
+
 :::
 ::: {.listing-section}
-
 
 
 <!-- ::: {.listing-section}
@@ -108,5 +127,8 @@ css:
 - [when turing and wittgenstein met](http://philonantes.free.fr/Lectures%20on%20the%20foundations1939.pdf)
 - [metternich letters to dorothea von lieven](https://www.gutenberg.org/ebooks/50708)
 - [recoltes et semailles](http://cm2vivi2002.free.fr/AG-biblio/AG-RetS.pdf)
+- [straussian moment](https://gwern.net/doc/politics/2007-thiel.pdf)
+- [Suzanne Ciani - Buchla Concerts 1975](https://www.youtube.com/watch?v=nJWk7jiASP0&list=RDnJWk7jiASP0)
+- [flowers of evil, cianni](https://www.youtube.com/watch?v=T8brDNOgB3g&list=RDT8brDNOgB3g)
 :::
 ::: {.listing-section}
