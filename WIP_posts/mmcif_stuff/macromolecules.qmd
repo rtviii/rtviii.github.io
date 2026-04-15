@@ -4,10 +4,10 @@ draft: true
 format: html
 ---
 
-   ...blood-black nothingness began to spin
-   A system of cells interlinked within
-   Cells interlinked within cells interlinked
-   Within one stem.
+...blood-black nothingness began to spin
+A system of cells interlinked within
+Cells interlinked within cells interlinked
+Within one stem.
 
 # Motivation and resources
 
@@ -29,7 +29,6 @@ Have you considered reaching out to the OME-NGFF, other working groups?
 
 - shape analysis
 - both via the temporal ensembles
-- FRET methylation measurements
 
 #### Structural Biology Operations that come up:
 

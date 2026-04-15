@@ -71,7 +71,9 @@ css:
 - [hints on PL](https://flint.cs.yale.edu/cs428/doc/HintsPL.pdf)
 - [on the criteria to be used in decomposing systems into modules](https://dl.acm.org/doi/epdf/10.1145/361598.361623)
 - [cosmotechnics as cosmopolitics](https://www.e-flux.com/journal/86/161887/cosmotechnics-as-cosmopolitics)
+- [on the foolishness of "natural language programming" dijkstra](https://www.cs.utexas.edu/~EWD/ewd06xx/EWD667.PDF);
 ::: 
+
 ::: {.listing-section}
 
 
@@ -101,6 +103,7 @@ css:
 - [circus animals desertion](https://www.poetryfoundation.org/poems/43299/the-circus-animals-desertion)
 - [проплывают облака](https://www.askbooka.ru/stihi/iosif-brodskiy/proplyvayut-oblaka.html)
 - [степная дудка](https://www.culture.ru/poems/11078/stepnaya-dudka)
+- [Blake, The Emanation of the Giant Albion](https://en.wikisource.org/wiki/Jerusalem._The_Emanation_of_the_Giant_Albion)
 
 :::
 ::: {.listing-section}
@@ -130,5 +133,6 @@ css:
 - [straussian moment](https://gwern.net/doc/politics/2007-thiel.pdf)
 - [Suzanne Ciani - Buchla Concerts 1975](https://www.youtube.com/watch?v=nJWk7jiASP0&list=RDnJWk7jiASP0)
 - [flowers of evil, cianni](https://www.youtube.com/watch?v=T8brDNOgB3g&list=RDT8brDNOgB3g)
+- [the song of solomon and how she sang it to me](https://www.youtube.com/watch?v=iuoNYWlYYJ8)
 :::
 ::: {.listing-section}
