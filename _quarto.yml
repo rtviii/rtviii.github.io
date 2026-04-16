@@ -11,13 +11,39 @@ website:
   draft-mode: unlinked
   site-url: "https://rtviii.xyz"
   favicon: "./img/BTNBlink.webp"
+  search: false
+  sidebar:
+    - id: mmcif
+      title: "Toward a Modern Foundation"
+      style: "docked"
+      align: left
+      collapse-level: 2
+      contents:
+        - text: "Overview"
+          href: posts/mmcif/index.qmd
+        - text: "1. Problems with mmCIF"
+          href: posts/mmcif/01-problems.qmd
+        - text: "2. Architecture"
+          href: posts/mmcif/02-architecture.qmd
+        - text: "3. Explorations"
+          href: posts/mmcif/03-explorations.qmd
+        - text: "4. Open questions"
+          href: posts/mmcif/04-open-questions.qmd
+        - text: "Appendix: black-box data"
+          href: posts/mmcif/05-black-box-data.qmd
+        - text: "Appendix: modularity examples"
+          href: posts/mmcif/06-modularity-examples.qmd
 
 format:
   html:
     theme: litera
-    css: 
+    css:
       - styles/custom.css
       - styles/scrollbar-fix.css
+    grid:
+      sidebar-width: 280px
+      body-width: 900px
+      margin-width: 260px
     # include-after-body: scripts.js  # Pointing to the file created above
     include-in-header:
       text: |

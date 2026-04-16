@@ -1,0 +1,53 @@
+<style>
+  /* Collapsible subsections for this blog post only */
+  main#quarto-document-content .collapsible-h2 {
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    align-items: baseline;
+    gap: 0.4em;
+  }
+  main#quarto-document-content .collapsible-h2::before {
+    content: "\25BE"; /* down-pointing triangle */
+    display: inline-block;
+    transition: transform 0.15s ease;
+    font-size: 0.75em;
+    color: #888;
+    flex-shrink: 0;
+  }
+  main#quarto-document-content .collapsible-h2.is-collapsed::before {
+    transform: rotate(-90deg);
+  }
+  main#quarto-document-content .collapsible-body.is-hidden {
+    display: none;
+  }
+</style>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var article = document.querySelector("main#quarto-document-content");
+    if (!article) return;
+
+    var h2s = article.querySelectorAll("h2");
+    h2s.forEach(function (h2) {
+      // Collect siblings until the next h2.
+      var siblings = [];
+      var el = h2.nextElementSibling;
+      while (el && el.tagName !== "H2") {
+        siblings.push(el);
+        el = el.nextElementSibling;
+      }
+      if (siblings.length === 0) return;
+
+      var wrapper = document.createElement("div");
+      wrapper.className = "collapsible-body";
+      siblings.forEach(function (s) { wrapper.appendChild(s); });
+      h2.insertAdjacentElement("afterend", wrapper);
+      h2.classList.add("collapsible-h2");
+
+      h2.addEventListener("click", function () {
+        wrapper.classList.toggle("is-hidden");
+        h2.classList.toggle("is-collapsed");
+      });
+    });
+  });
+</script>

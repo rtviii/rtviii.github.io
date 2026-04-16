@@ -1,3 +1,12 @@
 /.quarto/
-_site/**
 _site/
+_site/**
+
+**/q_*.md
+q_*.md
+
+.claude/
+.DS_Store
+*.swp
+*.swo
+node_modules/

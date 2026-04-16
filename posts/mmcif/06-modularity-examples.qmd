@@ -1,0 +1,46 @@
+---
+title: "Modularity examples in software ecosystems"
+order: 6
+---
+
+The LLVM/DataFusion pattern -- stable core IR, pluggable frontends and backends, passes as the unit of extension -- recurs across enough mature systems that it is probably the right general shape for any data infrastructure problem with heterogeneous consumers and evolving annotation types.
+
+## LLVM
+
+[llvm.org](https://llvm.org). The canonical example, and worth dwelling on because the design choices are unusually explicit and documented. LLVM's central insight was that compiler infrastructure had been rebuilt from scratch for every new language and every new target architecture because each compiler was a direct language-to-machine-code pipeline with no shared intermediate layer. The solution was to define a typed, static single-assignment intermediate representation (LLVM IR) that is rich enough to express the semantics of any language a frontend might compile from, and general enough that any backend can lower it to machine code. The IR is the contract. Frontends (Clang for C/C++, rustc for Rust, swiftc for Swift) are entirely independent of each other and of any backend; backends (x86, ARM, WebAssembly, RISC-V) are entirely independent of any frontend. Analyses and transformations -- dead code elimination, loop unrolling, inlining, alias analysis -- are passes over the IR that any frontend-backend pair inherits automatically.
+
+The critical design discipline is what stays out of the IR. LLVM IR does not contain alias analysis results, inlining decisions, or loop trip counts -- these are derived by passes that run over it. This is not accidental parsimony; it is a hard-won lesson that putting derived information in the core creates consistency and versioning problems. If alias analysis results are in the IR, two tools that compute them differently produce incompatible IRs. If they are a pass, each tool runs its own pass and the IR remains a shared ground truth. The IR contains only what cannot be derived from anything more primitive: the program's type system, its dataflow graph, its control flow structure.
+
+Translated to structural biology: LLVM IR is topology + coordinates + heterogeneity variables. Backbone dihedrals, contact maps, spatial neighbor graphs, spherical harmonic features, pair representations -- these are passes. They depend on the core, produce arrays from it, and can be parameterized (cutoff radius, l_max, whether to include waters) without touching the core. Two groups computing neighbor graphs with different cutoffs get different results, and that is fine, because neither result is in the core. The core is stable.
+
+## Apache DataFusion
+
+[datafusion.apache.org](https://datafusion.apache.org). Where LLVM is a compiler infrastructure, DataFusion is a query engine infrastructure -- and the distinction matters for the structural biology use case because querying is the access pattern we actually need. DataFusion is a modular execution engine written in Rust, built on Apache Arrow's columnar in-memory format. Its architecture separates: a logical plan (what the query asks for, as a tree of relational operators), a physical plan (how to execute it, with concrete algorithms chosen by an optimizer), and data sources that implement a `TableProvider` trait exposing a schema, a scan method, and optional predicate and projection pushdown.
+
+The pushdown mechanism is the key practical payoff. When a query asks for atoms within 5Å of a ligand where pLDDT > 70, DataFusion's optimizer pushes the pLDDT predicate down into the confidence annotation store and the spatial predicate down into the neighbor index, so only matching chunks are read from either source. The query engine doesn't need to know that one source is a Zarr array and the other is an R-tree index; it only needs the `TableProvider` interface. Adding a new annotation source -- a UniProt feature API, a CATH domain store, a custom validation database -- means implementing `TableProvider` for that source. All existing queries that don't touch it continue to work; queries that join against it automatically get predicate pushdown if the source supports it.
+
+For structural biology, the implication is that molecular selectors should compile to DataFusion logical plan nodes, and each annotation layer should be a `TableProvider`. "Chain A, residues 50--80, in states where the active site is closed, annotated with CATH domain" becomes a join across three sources -- coordinate slices, a conformational state classifier, and a CATH lookup -- with predicates pushed into each independently. The zarr-datafusion crate ([github.com/jayendra13/zarr-datafusion](https://github.com/jayendra13/zarr-datafusion)) already exists as a proof of concept that Zarr arrays can be exposed as DataFusion table sources, meaning the plumbing between the storage layer we want and the query engine we want is already partially built.
+
+## AnnData / MuData
+
+[anndata.readthedocs.io](https://anndata.readthedocs.io), [mudata.readthedocs.io](https://mudata.readthedocs.io). The single-cell field's solution to the identical problem: a core count matrix (cells x genes) plus named metadata axes (.obs, .var), with overlay slots (.obsm for embeddings, .obsp for cell-cell graphs) as the plugin layer. MuData extends the pattern to multi-modal data. The Scanpy ecosystem converged on this around 2018--2019 and it now underlies essentially the entire field. It is the closest existing proof that this architecture achieves broad adoption in biology when one high-profile tool adopts it as its native format.
+
+## Entity-Component System
+
+[bevyengine.org](https://bevyengine.org), used in Bevy, Unity DOTS, Flecs. The cleanest abstract formulation: entities are bare integer IDs; components are typed arrays indexed by entity ID; systems are queries over entities matching some component combination. Adding a new data type means defining a new component; no existing system changes. The query language is structurally identical to molecular selection, and the performance motivation -- avoiding deep inheritance hierarchies -- maps directly onto heterogeneous annotation types that different consumers need in different combinations.
+
+## ONNX
+
+[onnx.ai](https://onnx.ai). The ML world's LLVM IR: a stable graph representation that PyTorch, TensorFlow, and JAX can export to and that TensorRT and ONNX Runtime execute. Useful here primarily as a cautionary tale: ONNX accumulated versioning problems because the field kept pushing new operator semantics into the core spec, requiring an explicit opset versioning system as a patch. The lesson is that growth pressure will always push toward expanding the core, and resisting that pressure is an active design discipline, not a default outcome.
+
+## OpenTelemetry
+
+[opentelemetry.io](https://opentelemetry.io). Unifies traces, metrics, and logs -- qualitatively different signal types -- under a single data model with backend-specific sinks as plugins. The analogy: experimental validation scores, MD fluctuations, and MS crosslink signals are as different from each other as traces are from metrics, yet all reference the same underlying entities. OpenTelemetry's semantic conventions -- a controlled vocabulary for attribute names and units -- are the direct equivalent of canonical residue identifiers stable across annotation types.
+
+## CF Conventions over NetCDF
+
+[cfconventions.org](https://cfconventions.org). Climate science's version: NetCDF provides the array core; the CF Conventions are a community plugin layer specifying standard_name vocabularies, unit conventions, and coordinate semantics. Any CF-compliant file is interoperable with any CF-aware tool regardless of its specific variables. The structural biology parallel is direct -- Zarr as the substrate, community conventions on top specifying axis label semantics, atom-to-residue index mappings, and provenance field names. The CF Conventions took roughly a decade of community iteration to stabilize, which is probably the realistic scope for a structural biology equivalent.
+
+## Stability as a design outcome
+
+The stability argument for this architecture is worth stating separately. LLVM IR has been remarkably stable for twenty years despite enormous changes in the languages that target it and the hardware that runs it. The stability comes from the IR being genuinely minimal and the plugin interfaces being genuinely sufficient. mmCIF's instability -- the ongoing accretion of IHMCIF extensions, ModelCIF extensions, and the queue of further category proposals -- comes from putting non-core things in the core. Every new experimental method that doesn't fit the existing categories requires a dictionary amendment, a committee process, and a new parser version. A format whose core is only topology + coordinates + heterogeneity variables, and whose plugin interface is (selector, typed body, provenance), has no reason to change its core when cryo-ET subtomogram averaging, high-throughput crosslinking MS, or single-molecule FRET produce new data types. They each get a plugin. The core is stable because it is genuinely irreducible.

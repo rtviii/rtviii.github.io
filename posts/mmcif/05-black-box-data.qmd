@@ -1,0 +1,6 @@
+---
+title: "\"Black-box\" data"
+order: 5
+---
+
+A deeper design critique of white-box formats comes from Naef and Bronstein's recent Chemical Science perspective (2026, rsc.li/chemical-science). Their central argument is that ML models in biology have traditionally relied on data produced as a byproduct of scientific inquiry -- repositories like the PDB aggregate and standardize this data, but they are not purpose-generated for ML, leading to poor standardization, limited scale, and systematic biases -- and that the more critical question now is not "the next AlphaFold" but "the next PDB," meaning new experimental data sources intentionally optimized for machine consumption rather than human intuition. The format implications are sharp: data generated to be consumed by models rather than inspected by scientists has no natural representation in mmCIF, whose entire design presupposes that a human will eventually open the file, assign meaning to the chain IDs, and judge whether the electron density fits -- a constraint that should be optional, not structural.

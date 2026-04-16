@@ -2,7 +2,7 @@
 title: "Blog"
 css: styles/blog.css
 listing:
-  contents: posts
+  contents: "posts/*/index.qmd"
   type: table
   sort: "date desc"
   categories: true

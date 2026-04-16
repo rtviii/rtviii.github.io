@@ -1,0 +1,127 @@
+---
+title: "Architecture"
+order: 2
+---
+
+Before surveying specific technologies or existing formalisms, it is worth stating what shape we think the right data model has. This is a design claim, not a survey -- a stake in the ground that the explorations in the next section should be read against.
+
+The central problem with forcing heterogeneous molecular data into a single abstraction -- whether a flat atom table, a `coords[state, atom, 3]` tensor, or a single DAG -- is that the data actually contains four mathematically distinct kinds of structure, each with different algebra and different storage requirements. Conflating them produces a format that handles each of them badly.
+
+The proposal here is four coupled layers: **containment**, **representation**, **heterogeneity**, and **materialization**. Each layer has a distinct mathematical character. The core is the first two; the third and fourth are where the format earns its keep for modern use cases.
+
+## Containment
+
+The containment layer answers "what is this system made of?" It is irreducibly a tree (or forest for multi-molecule assemblies): each atom belongs to exactly one residue, each residue to exactly one chain instance, each chain instance to one entity template, each entity to the assembly. Single parentage is not a limitation -- it is the correct algebra for physical containment.
+
+In array-native form this is parent-index arrays:
+
+```
+atom_residue_id[N_atom]
+residue_chain_id[N_res]
+chain_entity_id[N_chain]
+instance_assembly_id[N_inst]
+```
+
+This gives stable integer IDs that every other layer references. An annotation, a graph edge, a heterogeneity variable -- all attach to an atom index or residue index from this layer. The containment layer should therefore be as minimal as possible. What belongs here: atom element, atom name, residue comp_id, chain type, entity type. What does not belong here: backbone dihedrals, contact distances, domain assignments, validation scores, force-field parameters. Those are derivable from the containment layer and live elsewhere -- either as annotation overlays or as computed passes. The reason this discipline matters is stated in [What is not in the core](#what-is-not-in-the-core).
+
+One open question: bond connectivity. Bond orders for standard residues can be inferred from comp_id lookups against the CCD, but for ligands this inference is unreliable -- mmCIF doesn't carry bond orders inline, and the CCD is a separate dependency. The case for putting an explicit bond graph in the containment core (rather than treating it as a derived pass) is that bond connectivity is not computable from coordinates and element types alone for arbitrary small molecules, making it genuinely irreducible information for heterogeneous systems. This is revisited in [ML-native structural operations](03-explorations.qmd#ml-native-structural-operations).
+
+## Representation
+
+A molecular system has many valid abstractions at different levels of granularity, and these are not all compatible with a single tree. A residue simultaneously belongs to a chain, to a CATH domain, to an active-site set, to a rigid-body partition used in refinement, and to a pharmacophore grouping used in docking. Forcing these into one parent hierarchy creates category confusion; a residue cannot have five parents in the containment tree.
+
+The representation layer is therefore not a tree but a collection of named projection DAGs -- mappings from one level of description to another. Each mapping is a sparse bipartite graph with weights:
+
+```
+mapping/backbone_only:
+  child_atom_id[E], parent_bead_id[E], weight[E]
+
+mapping/domain_partition_cath_v4.3:
+  child_residue_id[E], parent_domain_id[E], weight[E]
+
+mapping/rigid_body_partition_refinement:
+  child_residue_id[E], parent_body_id[E], weight[E]
+```
+
+Mappings are named and versioned -- there is no universal "parent" relation, only separate namespaces. Two groups using different domain partition schemes produce different mappings; neither invalidates the other or touches the containment layer. This is the molecular analog of OME-Zarr multiscales: the same system described at multiple resolutions with explicit, queryable operators between levels.
+
+The representation layer is also the natural home for coarse-grained descriptions of the kind IHM's multi-scale model attempts. A CG bead is not an atom in the containment layer -- it is a node in a coarse-graining mapping with associated weights over atoms or residues.
+
+## Heterogeneity
+
+The heterogeneity layer describes how the system varies. This is the hardest layer to design because the right abstraction depends entirely on what kind of variation is being described, and different experimental and computational methods produce fundamentally different kinds of variation. Forcing them all into one formalism -- a list of discrete states, a factor graph over per-residue variables, a continuous latent space -- will produce something that handles each case awkwardly.
+
+We propose distinguishing four regimes, because each has a different natural representation and the transitions between them are meaningful design boundaries.
+
+**Regime 1: small discrete ensemble.** A finite, enumerable set of conformers -- NMR bundles, qFit sidechain ensembles, multi-conformer crystallographic models, short MD-derived state libraries. The right representation is explicit: a state index plus coordinates or coordinate deltas per state. N_states in the tens to low hundreds. No cleverness required.
+
+**Regime 2: trajectory.** An ordered sequence of frames from MD, coarse-grained simulation, or a cryo-EM particle alignment series treated as a time series. The right representation is what H5MD already does: a dense (N_frame, N_atom, 3) array chunked along the frame axis, with per-frame metadata (time, energy, box vectors). Composition is fixed or nearly fixed. The format question here is not about heterogeneity representation but about chunking strategy, compression, and efficient access patterns for training data. Trajectories belong in this regime even when they are very long; the frame axis does not need to be interpreted as a state space.
+
+**Regime 3: low-dimensional continuous landscape.** The heterogeneity is not a finite state list but a distribution over a low-dimensional manifold -- cryoDRGN latent spaces, normal mode deformations, rigid-body motions of domains, ribosome ratcheting. Here the critical insight is that a hundred residues moving together as a collective motion is not a hundred heterogeneity variables. It is one low-dimensional variable plus a stored mapping from that variable to the displacement field over all affected atoms:
+
+```
+mode_basis[k, N_atom, 3]      # k basis vectors
+mode_coeff[N_sample, k]        # sample coordinates in latent space
+```
+
+or in the neural decoder case:
+
+```
+latent_z[N_sample, d]
+decoder_ref                    # TorchScript blob or checkpoint reference
+```
+
+The factor graph formalism -- assigning one variable per residue and then coupling them -- is the wrong abstraction for this regime. It produces a combinatorial object (a tensor over N variable states) precisely where the physics offers a compact low-dimensional substitute. A factor over 100 residue variables has the right formal structure but requires storing a table exponential in the number of variables; a normal mode basis for 100 atoms requires storing k vectors of length 100, where k is typically 10-50. The collective nature of the motion is the compression.
+
+Named discrete states in this regime are best understood as landmarks or clusters in the continuous space -- selected by a human or a clustering algorithm after the fact -- rather than fundamental objects in the data model. The format stores both: the continuous representation (latent coordinates per sample) and any named landmarks, with provenance recording how the landmarks were defined.
+
+**Regime 4: sparse combinatorial heterogeneity.** Genuinely independent local variables with sparse coupling -- a ligand that is either absent or in one of two binding poses, a loop that adopts one of three discrete substates, two distal sidechains whose rotamers are experimentally established to be correlated. This is the regime where factor graphs are actually appropriate: the variables are discrete, local in scope, few enough to enumerate, and coupled sparsely enough that the factor table remains small.
+
+A factor graph represents the joint distribution over local heterogeneity variables as a product of local potentials: $P(z) \propto \prod_f \psi_f(z_f)$, where each factor $\psi_f$ couples a small subset of variables. The classic mmCIF limitation -- "alt A of residue 50 co-occurs with alt A of residue 80" -- is a two-variable factor between two discrete rotamer variables, a 2x2 table of log-potentials. That is entirely representable and compact. A factor over a ligand presence variable (3 states) and a loop substate variable (3 states) is a 3x3 table.
+
+A concrete heterogeneity variable record in Regime 4:
+
+```
+variable_id   variable_type   scope_level      scope_id   cardinality   name
+v_ligand      discrete        instance         L1         3             "ligand_pose"
+v_loop        discrete        residue_range    120-130    3             "loop_open_closed"
+v50_rot       discrete        residue          50         2             "rotamer_A_B"
+v80_rot       discrete        residue          80         2             "rotamer_A_B"
+```
+
+The important design discipline is to not use this formalism outside its regime. The signal that a system has crossed from Regime 4 into Regime 3 is when someone wants to introduce a factor coupling more than roughly five to ten variables -- at that point, a continuous parameterization almost always exists and is more compact. A loop with 20 residues each having two backbone substates is not 20 coupled binary variables; it is one or two continuous modes with a stored displacement basis. The format should make this boundary explicit rather than leaving it to the depositor's judgment.
+
+## Materialization
+
+Given a heterogeneity description, how are actual coordinates produced? Materialization is a separate concern from the heterogeneity model because the same abstract description can be realized by different storage strategies depending on ensemble size, composition variability, and access pattern.
+
+**Mode A: full enumeration.** `coords[N_state, N_atom, 3]` with per-state metadata (population, free energy, latent vector). Appropriate for Regime 1 and for moderate Regime 4 ensembles where the joint assignment space is small. Simple consumers -- visualization tools, PDB depositions -- only need to handle this mode.
+
+**Mode B: delta encoding.** A base conformation plus sparse per-state or per-variable-assignment coordinate deltas. Appropriate when most states differ only locally -- qFit-like sidechain ensembles where the backbone is unchanged, loop substates where the rest of the chain is unaffected. Far more compact than Mode A for large sparse ensembles.
+
+```
+base_coords[N_atom, 3]
+
+delta_table:
+  owner_type     # state | variable_value
+  owner_id
+  atom_id[K]
+  delta_xyz[K, 3]
+```
+
+**Mode C: generative.** Coordinates are produced by applying a stored operator to a compact representation. Subcases: rigid-body transforms (quaternion + translation per instance per state), normal mode coefficients (linear sum over a stored basis), and learned decoders (latent vector fed to a stored TorchScript or checkpoint). Appropriate for Regime 3 and for systems with many symmetry-related copies. The decoder reference is provenance -- it records which model version produced the representation, enabling regeneration and recomputation as methods improve.
+
+The key design principle is that materialization mode is a storage choice, not a property of the physics. The format should not force Regime 3 systems into Mode A just because Mode A is simpler to implement.
+
+## What is not in the core
+
+The LLVM discipline -- elaborated in [Modularity examples](06-modularity-examples.qmd) -- states that the IR should contain only what cannot be derived from anything more primitive, and that derived information should live in passes rather than in the core. This is worth stating explicitly for the structural biology case because the pressure to put derived information in the core is constant and has demonstrably destabilized mmCIF through category accretion.
+
+Backbone dihedrals are a function of Cartesian coordinates. Contact maps are a function of coordinates and a cutoff. Spatial neighbor graphs are a function of coordinates, a cutoff, and a choice of distance metric. Spherical harmonic edge features are a function of neighbor graphs and a choice of l_max. AF2-style pair representations are a function of sequence and structure. Validation scores are a function of coordinates and a reference database. Domain assignments are a function of coordinates and a domain classification algorithm. All of these are passes over the containment layer and the geometry layer. None of them belongs in the core.
+
+The practical payoff: a format whose core is topology, coordinates, and heterogeneity variables has no reason to grow when a new experimental method produces a new derived quantity. The new quantity becomes an annotation overlay (see [Query language and annotations](03-explorations.qmd#query-language-and-annotations)) or a computed pass. The core is stable because it is genuinely irreducible, not because it was protected by committee inertia.
+
+::: {.callout-note collapse="true"}
+## TODO
+Define the exact boundary between "topology" and "containment" -- bond connectivity is not strictly derivable from coordinates and element types for all ligands, so the bond graph arguably belongs in the core alongside coordinates. Revisit after reading Boltz-1 tokenization code.
+:::

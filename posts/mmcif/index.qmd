@@ -1,0 +1,22 @@
+---
+title: "Toward a Modern Foundation for Structural Biology Data"
+subtitle: "Notes on mmCIF, its limits, and what an ML-native successor might look like"
+date: "2026-04-15"
+date-modified: last-modified
+categories: [structural-biology, data-formats, mmcif]
+draft: true
+listing: false
+---
+
+_Working draft -- exploratory, incomplete. A scaffold for collecting references, usecases, and tradeoffs._
+
+This is a multi-part post. Use the sidebar to jump between sections.
+
+## Contents
+
+1. [Problems with mmCIF and the current ecosystem](01-problems.qmd) -- single-structure assumption, parsing fragility, missing experimental linkage, no ML-native access, pain points.
+2. [Architecture](02-architecture.qmd) -- the four layers (containment, representation, heterogeneity, materialization) and what stays out of the core.
+3. [Explorations toward alternatives](03-explorations.qmd) -- Zarr/DataFusion/TileDB storage, heterogeneity regimes mapped to existing tools, query language, ML-native operations.
+4. [Open questions](04-open-questions.qmd)
+5. [Appendix: "black-box" data](05-black-box-data.qmd)
+6. [Appendix: modularity examples in software ecosystems](06-modularity-examples.qmd) -- LLVM, DataFusion, AnnData, ECS, ONNX, OpenTelemetry, CF Conventions.

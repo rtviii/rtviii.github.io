@@ -1,0 +1,12 @@
+bibliography: references.bib
+toc: true
+toc-depth: 3
+toc-location: right
+page-navigation: false
+execute:
+  freeze: auto
+format:
+  html:
+    link-external-newwindow: true
+include-in-header:
+  file: _collapsible.html
