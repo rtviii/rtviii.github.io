@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.54">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Architecture – артём</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<link href="../.././img/BTNBlink.webp" rel="icon">
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="../../scripts.js"></script>
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/tippy.js@6"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles/custom.css">
+<link rel="stylesheet" href="../../styles/scrollbar-fix.css">
+</head>
+
+<body class="nav-sidebar docked">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../posts/mmcif/02-architecture.html">2. Architecture</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">Toward a Modern Foundation</a> 
+    </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/mmcif/01-problems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">1. Problems with mmCIF</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/mmcif/02-architecture.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">2. Architecture</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/mmcif/03-composition.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">3. Composition</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/mmcif/04-annotations-and-passes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">4. Annotations and computed passes</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/mmcif/05-open-questions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">5. Open questions</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/mmcif/06-black-box-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Appendix: black-box data</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/mmcif/07-modularity-examples.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Appendix: modularity examples</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#core-layers" id="toc-core-layers" class="nav-link active" data-scroll-target="#core-layers">2.1 Core layers</a>
+  <ul class="collapse">
+  <li><a href="#containment" id="toc-containment" class="nav-link" data-scroll-target="#containment">2.1.1 Hierarchy</a></li>
+  <li><a href="#representation" id="toc-representation" class="nav-link" data-scroll-target="#representation">2.1.2 Representation</a></li>
+  </ul></li>
+  <li><a href="#ensemble-layers" id="toc-ensemble-layers" class="nav-link" data-scroll-target="#ensemble-layers">2.2 Ensemble layers</a>
+  <ul class="collapse">
+  <li><a href="#heterogeneity" id="toc-heterogeneity" class="nav-link" data-scroll-target="#heterogeneity">2.2.1 Heterogeneity</a></li>
+  <li><a href="#materialization" id="toc-materialization" class="nav-link" data-scroll-target="#materialization">2.2.2 Materialization</a></li>
+  </ul></li>
+  <li><a href="#what-is-not-in-the-core" id="toc-what-is-not-in-the-core" class="nav-link" data-scroll-target="#what-is-not-in-the-core">2.3 What is not in the core</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Architecture</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Before surveying specific technologies or existing formalisms, it is worth stating what shape we think the right data model has. This is a design claim, not a survey – a stake in the ground that the explorations in the next sections should be read against.</p>
+<p>The central problem with forcing heterogeneous molecular data into a single abstraction – whether a flat atom table, a <code>coords[state, atom, 3]</code> tensor, or a single DAG – is that the data actually contains several mathematically distinct kinds of structure, each with different algebra and different storage requirements. Conflating them produces a format that handles each badly.</p>
+<p>We split the architecture into two halves. The <strong>core layers</strong> describe what is true of every state of the system: its physical parts, and the named groupings scientists impose on those parts. The <strong>ensemble layers</strong> describe how states differ from one another and how those differences are stored. The core is stable under heterogeneity; the ensemble layers are the ones that earn the format its keep for modern use cases.</p>
+<p>Within those halves there are four numbered layers:</p>
+<ul>
+<li>§2.1.1 <strong>Hierarchy</strong> – the physical tree: which atom is in which residue, which residue is in which chain, and so on.</li>
+<li>§2.1.2 <strong>Representation</strong> – named DAGs over hierarchy: domain partitions, coarse-grained mappings, rigid-body groups, multiscale pyramids.</li>
+<li>§2.2.1 <strong>Heterogeneity</strong> – how states vary, classified into three regimes with scopes attached to hierarchy levels.</li>
+<li>§2.2.2 <strong>Materialization</strong> – how those descriptions turn into actual coordinates.</li>
+</ul>
+<p>Three distinct DAG structures show up, one in each of three layers, and conflating them is how existing formats end up tangled. It is worth naming them once up front so we can refer to each without ambiguity later:</p>
+<ul>
+<li>The <strong>representation DAG</strong> (§2.1.2) is a mapping from hierarchy nodes to named groupings: atoms to coarse-grained beads, residues to domains, residues to TLS groups. Sparse bipartite, weighted, many per format.</li>
+<li>The <strong>scope DAG</strong> (§2.2.1) is a state-space structure: nodes are (scope, state) pairs, edges are nesting or coupling constraints between heterogeneity descriptors at different hierarchy levels.</li>
+<li>The <strong>operator graph</strong> (§2.2.2) is implicit in Materialization Mode C: a decoder or mode basis is a stored operator whose inputs are latent coordinates and whose outputs are displacement fields.</li>
+</ul>
+<p>The three structures live in different layers, have different semantics, and serve different consumers. Separating them is most of the design work.</p>
+<section id="core-layers" class="level2">
+<h2 class="anchored" data-anchor-id="core-layers">2.1 Core layers</h2>
+<p>The core describes what is invariant across every conformational state the system can take: the atoms that exist, what they are called, what contains them, and what named groupings have been defined over them. A deposition with one structure and a deposition with an ensemble of ten thousand samples share the same core; the ensemble layers sit on top.</p>
+<section id="containment" class="level3">
+<h3 class="anchored" data-anchor-id="containment">2.1.1 Hierarchy</h3>
+<p>The Hierarchy layer is the <em>physical</em> nesting of the system: which atom is in which residue, which residue is in which chain instance, which chain instance is in which assembly. It answers “what is this system made of?” It is irreducibly a tree (or forest for multi-molecule assemblies): each atom belongs to exactly one residue, each residue to exactly one chain instance, each chain instance to one entity template, each entity to the assembly. Single parentage is not a limitation – it is the correct algebra for physical containment. This is the one place in the architecture where we insist the data structure is a tree, because nesting by physical parthood genuinely is one. Any <em>non-physical</em> hierarchy someone might want to impose on the same atoms – CATH domain within chain, rigid-body group within domain, secondary-structure element within chain – is a curatorial choice and lives in Representation (§2.1.2), not here.</p>
+<p>In array-native form this is parent-index arrays:</p>
+<pre><code>atom_residue_id[N_atom]
+residue_chain_id[N_res]
+chain_entity_id[N_chain]
+instance_assembly_id[N_inst]</code></pre>
+<p>These give stable integer IDs that every other layer references. An annotation, a graph edge, a heterogeneity variable – all attach to an atom index or residue index from this layer. Hierarchy should therefore be as minimal as possible. What belongs here: atom element, atom name, residue comp_id, chain type, entity type. What does not belong here: backbone dihedrals, contact distances, domain assignments, validation scores, force-field parameters, TLS groupings, CATH domains. Those are derivable, curatorial, or non-unique; they live in Representation (§2.1.2) or as annotation overlays. The reason this discipline matters is stated in §2.3.</p>
+<p>One open question: bond connectivity. Bond orders for standard residues can be inferred from comp_id lookups against the CCD, but for ligands this inference is unreliable – mmCIF doesn’t carry bond orders inline, and the CCD is a separate dependency. The case for putting an explicit bond graph in the hierarchy core (rather than treating it as a derived pass) is that bond connectivity is not computable from coordinates and element types alone for arbitrary small molecules, making it genuinely irreducible information for heterogeneous systems. This is revisited in <a href="../../posts/mmcif/04-annotations-and-passes.html#ml-native-structural-operations">ML-native structural operations</a>.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example: a monomeric protein
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>A single-chain protein of 300 residues has a four-level hierarchy tree: one assembly, one entity (the polypeptide), one chain instance, 300 residues, and $$2400 atoms. Parent-index arrays: <code>atom_residue_id</code> has length 2400 and points into a residue table of length 300; <code>residue_chain_id</code> has length 300 and points to chain 0; <code>chain_entity_id[0] = 0</code>; <code>instance_assembly_id[0] = 0</code>. Every query that needs “all atoms of residue 45” is an index lookup.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example: a multi-component ribonucleoprotein
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>A bacterial 70S ribosome carries three polymer entities (16S rRNA, 23S rRNA, 5S rRNA) and ~50 protein entities, instantiated as 55+ chain instances in the assembly, plus bound tRNAs, mRNA, ions, and waters. Every chain instance has exactly one entity parent and exactly one assembly parent; every atom has exactly one residue parent; every residue has exactly one chain-instance parent. The tree is deeper in breadth than a monomer but the algebra is identical – no chain instance has two entities, no atom has two residues. All the interesting multi-parent relations (e.g., “this atom is part of the A site, but only when a tRNA is bound there”) are Representation (§2.1.2) or Heterogeneity (§2.2.1), not Hierarchy.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="representation" class="level3">
+<h3 class="anchored" data-anchor-id="representation">2.1.2 Representation</h3>
+<p>A molecular system has many valid abstractions at different levels of granularity, and these are not all compatible with a single tree. A residue simultaneously belongs to a chain (that’s Hierarchy), to a CATH domain, to an active-site set, to a rigid-body partition used in refinement, to a secondary-structure element, and possibly to a pharmacophore grouping used in docking. Forcing these into one parent hierarchy creates category confusion; a residue cannot have five Hierarchy parents.</p>
+<p>The Representation layer is therefore not a tree but a collection of <strong>named projection DAGs</strong> – mappings from hierarchy nodes to groupings. Each mapping is a sparse bipartite graph, possibly weighted:</p>
+<pre><code>mapping/backbone_only:
+  child_atom_id[E], parent_bead_id[E], weight[E]
+
+mapping/domain_partition_cath_v4.3:
+  child_residue_id[E], parent_domain_id[E], weight[E]
+
+mapping/rigid_body_partition_refinement:
+  child_residue_id[E], parent_body_id[E], weight[E]
+
+mapping/tls_groups_as_refined:
+  child_atom_id[E], parent_tls_id[E], weight[E]</code></pre>
+<p>Mappings are named and versioned – there is no universal “parent” relation in this layer, only separate namespaces. Two groups using different domain partition schemes produce different mappings; neither invalidates the other or touches Hierarchy. This is the molecular analog of OME-Zarr multiscales: the same system described at multiple resolutions with explicit, queryable operators between levels.</p>
+<p>This is the layer where DAG structure genuinely lives in the core. Every representation mapping is a bipartite DAG from some Hierarchy level to a target grouping; multiple mappings coexist as named siblings. A coarse-graining operator and an anatomical-domain partition sit next to each other, both referencing the same atom IDs but projecting to different label sets. The weights on edges handle non-crisp assignments: a boundary residue between two CATH domains can contribute with weight 0.5 to each; a coarse-grained bead built from four atoms stores the weights used to compute its position.</p>
+<p>Three kinds of representation mapping recur and are worth distinguishing:</p>
+<ul>
+<li><strong>Coarse-graining mappings</strong> project fine Hierarchy levels onto coarser labels (atom <span class="math inline">\(\to\)</span> residue is already Hierarchy; atom <span class="math inline">\(\to\)</span> backbone-bead or residue <span class="math inline">\(\to\)</span> Martini-bead is Representation). These are what IHM’s multi-scale model attempts, and the layer where CG beads should live.</li>
+<li><strong>Grouping mappings</strong> project Hierarchy levels onto curatorial labels (CATH domains, secondary-structure elements, active-site membership). These are many-to-one or many-to-many and never unique; different sources produce different mappings of the same system.</li>
+<li><strong>Partition mappings</strong> project Hierarchy atoms or residues onto refinement-defined groups (TLS bodies, rigid-body partitions, symmetry-equivalent copies). These are often produced by a specific piece of software and are best stored with enough provenance to reproduce.</li>
+</ul>
+<p>Every mapping in Representation references Hierarchy IDs as its left side and declares its own label set on the right. None of them alters Hierarchy. The storage discipline is the same as for a sparse matrix: edge arrays plus per-edge data.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example: CATH domain assignment
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>CATH classifies the residues of a protein into hierarchical structural domains. For a 400-residue two-domain kinase, the mapping might be: <code>child_residue_id = [0..220, 221..399]</code>, <code>parent_domain_id = [cath_3.30.200.20, cath_1.10.510.10]</code>, <code>weight = [1.0, 1.0]</code>. A second mapping from the same deposition might point to SCOP instead, with different domain boundaries. Both coexist, both reference the same residue IDs, neither is the single truth.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example: TLS groups in a refined crystal structure
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>A crystallographer assigns the N-terminal and C-terminal domains to separate TLS groups during refinement. The mapping is atoms <span class="math inline">\(\to\)</span> group: <code>child_atom_id</code> covers every atom in the structure, <code>parent_tls_id</code> takes two values (<code>tls_N</code>, <code>tls_C</code>), and weights are 1.0 because each atom belongs to exactly one group. The 20-parameter (T, L, S) tensors themselves are not stored in this mapping – they live in the Heterogeneity layer as a Regime 3 (degenerate continuous) descriptor scoped to the TLS groups defined here. The mapping is the hierarchy-to-group projection; the heterogeneity descriptor is the parameters.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example: Martini 3 coarse-graining
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>A Martini representation projects heavy atoms onto $$4-to-1 coarse-grained beads. For a lysine residue, four atoms (CA, CB, CG, CD) might project onto a backbone bead with weights that average their positions. A separate sidechain bead covers (CE, NZ) with its own weights. Stored as: <code>child_atom_id</code>, <code>parent_bead_id</code>, <code>weight</code> edge arrays of length $E = $ (atoms contributing to beads). The coordinates of the beads are <em>not</em> stored here – they are computed as a weighted average when needed, using these weights. This keeps the representation mapping frozen while coordinates vary across heterogeneity states (§2.2.1). This is the projection DAG in action: any mapping that can be expressed as “combine source node coordinates with these weights to get target node coordinates” lives here.</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="ensemble-layers" class="level2">
+<h2 class="anchored" data-anchor-id="ensemble-layers">2.2 Ensemble layers</h2>
+<p>The ensemble layers describe how the system varies across the states the data captures, and how those variations are physically laid out in storage. Heterogeneity is the abstract description of variation; Materialization is the storage strategy. They are separated because the same abstract description can be stored several ways depending on ensemble size, access pattern, and whether the data came from a method that produces samples, parameters, or a trajectory.</p>
+<p>The bridge between the core and the ensemble layers is <em>scope</em>.</p>
+<blockquote class="blockquote">
+<p><strong>Scope.</strong> The set of nodes in the core that a given heterogeneity descriptor applies to. Formally, a <em>scope handle</em> is a reference into Hierarchy or Representation – a specific Hierarchy node (one atom, one residue, one chain, the whole assembly), a span of Hierarchy nodes (a residue range), or a label from a Representation mapping (the atoms in a named TLS group, the residues in a CATH domain). A descriptor’s scope determines (i) which atoms its displacement contribution <span class="math inline">\(\Delta_i^\ell(\cdot)\)</span> affects, and (ii) where the descriptor sits in the scope DAG when it is composed with other descriptors.</p>
+</blockquote>
+<p>Every heterogeneity descriptor attaches to exactly one scope. A B-factor is atom-scoped (atoms are Hierarchy nodes); a TLS descriptor is scoped to a group declared in Representation; a cryoDRGN latent is scoped to the whole assembly. The scope is what makes a descriptor legible to composition (chapter 3): it is the mechanism by which “what varies at chain level” and “what varies at residue level” can coexist in the same deposition without stepping on each other.</p>
+<section id="heterogeneity" class="level3">
+<h3 class="anchored" data-anchor-id="heterogeneity">2.2.1 Heterogeneity</h3>
+<p>The Heterogeneity layer describes how the system varies – both the geometric variation that matters for function and the thermodynamic variation that carries free-energy content single structures discard <span class="citation" data-cites="wankowicz2025entropy lane2023frontier">(<a href="#ref-wankowicz2025entropy" role="doc-biblioref">Wankowicz and Fraser 2025</a>; <a href="#ref-lane2023frontier" role="doc-biblioref">Lane 2023</a>)</span>. This is the hardest layer to design because the right abstraction depends entirely on what kind of variation is being described, and different experimental and computational methods produce fundamentally different kinds of variation. Forcing them all into one formalism – a list of discrete states, a factor graph over per-residue variables, a continuous latent space – will produce something that handles each case awkwardly.</p>
+<p>We distinguish three heterogeneity regimes, because each has a different natural representation and the transitions between them are meaningful design boundaries. A fourth formalism – the factor graph regime, collapsed into a note below – covers a narrow case that is rarely worth implementing as a first-class deposition feature. Orthogonal to the regime axis is scope: every heterogeneity descriptor attaches to a level of the Hierarchy tree (§2.1.1) or a grouping in Representation (§2.1.2). A B-factor is atom-scoped; a TLS group or ECHT hierarchical disorder component <span class="citation" data-cites="ploscariu2021ensemble">(<a href="#ref-ploscariu2021ensemble" role="doc-biblioref">Ploscariu et al. 2021</a>)</span> is scoped to a Representation grouping; the compositional/conformational nesting proposed by <span class="citation" data-cites="wankowicz2024encoding">Wankowicz and Fraser (<a href="#ref-wankowicz2024encoding" role="doc-biblioref">2024</a>)</span> is entity-instance scope containing residue-range scope. Both axes are features of the format.</p>
+<p>When multiple heterogeneity descriptors coexist, their couplings (where they exist at all) form the <strong>scope DAG</strong>: nodes are (scope, state) pairs, and edges encode whether a child-scope state is legal only under some parent-scope state (hierarchical nesting) or whether a factor potential spans scopes (the rare cross-scope factor case). Chapter 3 walks through how descriptors at different scopes compose through this DAG to produce full coordinates.</p>
+<p><strong>Heterogeneity Regime 1: Discrete Ensemble.</strong> A finite, enumerable set of conformers – NMR bundles, qFit sidechain ensembles, multi-conformer crystallographic models, short MD-derived state libraries. The right representation is explicit: a state index plus coordinates or coordinate deltas per state, typically scoped to a residue or residue range. The number of states sits in the tens to low hundreds. No cleverness required.</p>
+<p>The incumbent encoding in mmCIF is the altloc field paired with refined occupancy. What is broken is semantic, not structural: the same altloc letter overloads conformational variation (different geometry, same chemistry) and compositional variation (different chemistry entirely – ligand absent vs.&nbsp;present, two bound fragments in the same site) <span class="citation" data-cites="rosenberg2024altlocs wankowicz2024encoding">(<a href="#ref-rosenberg2024altlocs" role="doc-biblioref">Rosenberg, Marx, and Bronstein 2024</a>; <a href="#ref-wankowicz2024encoding" role="doc-biblioref">Wankowicz and Fraser 2024</a>)</span>, and most analysis software silently discards alternates beyond <code>A</code>. Treating discrete states as a distinct regime rather than absorbing them into a continuous disorder parameter is empirically grounded: controlled simulations show refined B-factors can underestimate true positional heterogeneity by up to sixfold for mobile atoms <span class="citation" data-cites="kuzmanic2014xray">(<a href="#ref-kuzmanic2014xray" role="doc-biblioref">Kuzmanic, Pannu, and Zagrovic 2014</a>)</span>, so the information carried by discrete conformers is not something B-factors ever recover. Binding events propagate rotamer rearrangements well beyond the binding site <span class="citation" data-cites="wankowicz2022ligand">(<a href="#ref-wankowicz2022ligand" role="doc-biblioref">Wankowicz et al. 2022</a>)</span>, which is precisely the kind of coupling this regime is meant to capture.</p>
+<p><strong>Heterogeneity Regime 2: Trajectory.</strong> An ordered sequence of frames sharing a fixed topology – MD, coarse-grained simulation, time-resolved crystallography, a cryo-EM particle series treated as a time series. The Hierarchy, Representation, and per-atom properties (atom names, residue assignments, bond graph) are the same across every frame; what varies is the coordinate array. The right representation is what H5MD already does: a dense <span class="math inline">\((N_{\mathrm{frame}}, N_{\mathrm{atom}}, 3)\)</span> array chunked along the frame axis, with per-frame metadata (time, energy, box vectors). The format question here is not about heterogeneity representation but about chunking strategy, compression, and efficient access patterns – and whether the coordinate array is inline or pointed to as an external artifact via Materialization Mode C (§2.2.2), which is usually the right call because trajectories dwarf everything else in the deposition.</p>
+<p>The frame axis does not need to be interpreted as a state space, and for long trajectories it shouldn’t be. But derived state decompositions can coexist alongside the raw stream: a Markov state model reduces a trajectory to a small set of metastable states with a transition rate matrix <span class="citation" data-cites="bozovic2020pdz">(<a href="#ref-bozovic2020pdz" role="doc-biblioref">Bozovic et al. 2020</a>)</span>, which is effectively a Heterogeneity Regime 1 ensemble with provenance pointing back to the Heterogeneity Regime 2 source. Both shapes are valid, and the format should support carrying them side by side rather than forcing a commitment to one.</p>
+<p>You don’t store a few reference structures; you store one, plus deltas or raw coordinates for every frame.</p>
+<p>“Trajectory” is broader than MD. Any ordered sequence of frames shares this shape: a cryo-EM time-resolved dataset, a photo-activated structural series, an electron microscope tomographic tilt series reduced to atomic models. The format doesn’t need to know whether the ordering is time, reaction coordinate, or experimental parameter — it just needs to carry the index.</p>
+<p><strong>Heterogeneity Regime 3: Continuous Landscape.</strong> The heterogeneity is not a finite state list but a distribution over a low-dimensional manifold – cryoDRGN latent spaces, normal mode deformations, rigid-body motions of domains, ribosome ratcheting. Here the critical insight is that a hundred residues moving together as a collective motion is not a hundred heterogeneity variables. It is one low-dimensional variable plus a stored mapping from that variable to the displacement field over all affected atoms:</p>
+<pre><code>mode_basis[k, N_atom, 3]      # k basis vectors
+mode_coeff[N_sample, k]        # sample coordinates in latent space</code></pre>
+<p>or in the neural decoder case:</p>
+<pre><code>latent_z[N_sample, d]
+decoder_ref                    # TorchScript blob or checkpoint reference</code></pre>
+<p>Named discrete states in this regime are best understood as landmarks or clusters in the continuous space – selected by a human or a clustering algorithm after the fact – rather than fundamental objects in the data model. The format stores both: the continuous representation (latent coordinates per sample) and any named landmarks, with provenance recording how the landmarks were defined.</p>
+<p>One reality check: this regime is already the output of a growing class of structure-prediction and reconstruction methods, but the field has nowhere to put it. Diffusion-based structure priors <span class="citation" data-cites="chung2024dps levy2025inverse">(<a href="#ref-chung2024dps" role="doc-biblioref">Chung et al. 2024</a>; <a href="#ref-levy2025inverse" role="doc-biblioref">Levy et al. 2025</a>)</span> and cryo-EM-guided samplers <span class="citation" data-cites="raghu2025cryoboltz">(<a href="#ref-raghu2025cryoboltz" role="doc-biblioref">Raghu et al. 2025</a>)</span> produce either pretrained generative models usable as decoders or posterior sample sets with informative uncertainty – outputs whose natural representation is continuous, and whose current fate is being collapsed back into a Materialization Mode A sample of explicit structures because there is no format slot for “a decoder reference” or “samples from a posterior linked to this structure.” <span class="citation" data-cites="lane2023frontier">Lane (<a href="#ref-lane2023frontier" role="doc-biblioref">2023</a>)</span>’s framing of the single-structure frontier is the field-level complaint this regime is meant to answer; Materialization Mode C, below, is the materialization half of the fix.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+The factor graph regime
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>A fourth formalism covers a narrow case: genuinely independent local discrete variables with sparse coupling – a ligand that is either absent or in one of a few binding poses <span class="citation" data-cites="flowers2025qfit">(<a href="#ref-flowers2025qfit" role="doc-biblioref">Flowers et al. 2025</a>)</span>, two distal sidechains whose rotamers are experimentally established to be correlated. A factor graph is the formally right abstraction: the joint distribution <span class="math inline">\(P(z) \propto \prod_f \psi_f(z_f)\)</span>, with each factor <span class="math inline">\(\psi_f\)</span> coupling a small subset of variables. The classic “alt A of residue 50 co-occurs with alt A of residue 80” mmCIF limitation is exactly a two-variable <span class="math inline">\(2 \times 2\)</span> factor.</p>
+<p>In practice, depositions with genuinely factor-graph structure almost always have a small joint state space that can be flattened into an explicit Heterogeneity Regime 1 enumeration with joint populations – which is in spirit what <span class="citation" data-cites="wankowicz2024encoding">Wankowicz and Fraser (<a href="#ref-wankowicz2024encoding" role="doc-biblioref">2024</a>)</span>’s hierarchical compositional/conformational nesting does, using the Hierarchy scope to carry the coupling. The factor-graph view is worth keeping as an analytical frame (a factor coupling more than roughly five to ten variables is a reliable signal the problem has actually crossed into Heterogeneity Regime 3, where a continuous parameterization will be more compact), but it should not be implemented as a first-class deposition feature. Heterogeneity Regime 1 flattening plus hierarchical scope covers the real cases.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example: an NMR bundle as Regime 1
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>A solution NMR structure of a 100-residue protein is deposited as a bundle of 20 models. Each model is a full set of ~800 atom coordinates. The heterogeneity descriptor is a single whole-assembly-scoped Regime 1 variable with cardinality 20; the state axis is a discrete label. No correlations to encode, no couplings to other scopes. Materialization is Mode A (full enumeration) because composition is identical across states and the ensemble is small. This is the simplest real case of the architecture: one heterogeneity descriptor, one scope, one regime, one mode.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example: a microsecond MD trajectory reduced to an MSM
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>A 1 µs explicit-solvent MD trajectory of a PDZ domain produces 500,000 frames stored as a Regime 2 <span class="math inline">\((500000, \sim 1000, 3)\)</span> array with per-frame time and energy metadata. Downstream analysis clusters the trajectory into 5 metastable states using tICA + k-means, and fits a transition rate matrix between them. Both representations coexist in the deposition: the raw trajectory (Regime 2, whole-assembly scope, chunked along the frame axis), and a Regime 1 descriptor with five states plus a <span class="math inline">\(5 \times 5\)</span> rate-matrix annotation, with provenance linking the reduced descriptor back to the source trajectory. A consumer interested in training data reads the trajectory; a consumer interested in kinetics reads the MSM. Neither is forced to convert between them.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example: cryoDRGN landscape of a ratcheting ribosome
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>A cryo-EM reconstruction of an elongating ribosome uses cryoDRGN to learn an 8-dimensional continuous latent space over $$100,000 particles. The heterogeneity descriptor is an assembly-scoped Regime 3 variable: the stored data is the <span class="math inline">\((100000, 8)\)</span> latent-coordinate array and a decoder reference (a checkpoint file), plus a handful of named landmarks (classical, hybrid, post-translocation) picked out as cluster centers. Materialization is Mode C: coordinates at any latent point are computed on demand by running the decoder. Sub-scope descriptors can coexist – e.g., a separate Regime 1 descriptor on the tRNA entity instance capturing presence/absence at the A, P, and E sites, nested under the assembly-scope latent if the latent distribution correlates with occupancy.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="materialization" class="level3">
+<h3 class="anchored" data-anchor-id="materialization">2.2.2 Materialization</h3>
+<p>Given a heterogeneity description, how are actual coordinates produced? Materialization is a separate concern from the heterogeneity model because the same abstract description can be realized by different storage strategies depending on ensemble size, composition variability, and access pattern.</p>
+<p>Three modes cover the space. They are mutually substitutable for a given heterogeneity descriptor – switching from one to another is a storage choice that does not change what the descriptor means.</p>
+<p><strong>Materialization Mode A: Full Enumeration.</strong> <code>coords[N_state, N_atom, 3]</code> with per-state metadata (population, free energy, latent vector). Appropriate for Heterogeneity Regime 1 and for factor-graph ensembles where the joint assignment space is small. Simple consumers – visualization tools, PDB depositions – only need to handle this mode.</p>
+<p><strong>Materialization Mode B: Delta Encoding.</strong> A base conformation plus sparse per-state or per-variable-assignment coordinate deltas. Appropriate when most states differ only locally – qFit-like sidechain ensembles where the backbone is unchanged, loop substates where the rest of the chain is unaffected. Far more compact than Materialization Mode A for large sparse ensembles.</p>
+<pre><code>base_coords[N_atom, 3]
+
+delta_table:
+  owner_type     # state | variable_value
+  owner_id
+  atom_id[K]
+  delta_xyz[K, 3]</code></pre>
+<p><strong>Materialization Mode C: Generative / External Reference.</strong> Coordinates are produced by applying a stored operator to a compact representation. Subcases: rigid-body transforms (quaternion + translation per instance per state), normal mode coefficients (linear sum over a stored basis), and learned decoders (latent vector fed to a stored TorchScript or checkpoint). The descriptor stores the operator plus its inputs; coordinates are computed on demand. This is where the <strong>operator graph</strong> from the architecture intro lives: a decoder or basis is a stored morphism from latents to displacements, and it can itself be versioned, referenced, and shared across depositions.</p>
+<p>Mode C also covers the obvious-but-underformalized case of referencing an external artifact. An MD trajectory stored as H5MD or Zarr, a cryoDRGN decoder checkpoint, a normal-mode basis file – any of these can be the heavy payload, with the structure file carrying a stable pointer (artifact identifier, producing method, version, content hash) and the coupling back to atom IDs. The structure does not need to swallow the trajectory; it needs to know where the trajectory lives and how to align its indices.</p>
+<p>The three operator subcases – linear basis, neural decoder, trajectory lookup – differ in what is stored but share the same interface: given an input and a reference, produce displacements. Swapping a linear basis for a neural decoder does not change the descriptor’s identity, only its compression.</p>
+<p>The key design principle is that materialization mode is a storage choice, not a property of the physics. The format should not force Heterogeneity Regime 3 systems into Materialization Mode A just because Materialization Mode A is simpler to implement.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example: qFit multiconformer sidechain ensemble as Mode B
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>A 1.3 Å crystal structure processed by qFit has ~50 residues with two or three modeled sidechain conformations each, while the backbone and most sidechains are unchanged across states. Materialization Mode A would store ~N_state full copies of the ~5000-atom structure (<span class="math inline">\(5000 \cdot N_{\mathrm{state}}\)</span> coordinates), most of which are identical. Mode B stores one reference structure plus a delta table listing only the atoms that differ per state: <span class="math inline">\(\sim 50 \cdot 3 \cdot 10 \approx 1500\)</span> delta entries total, two orders of magnitude smaller. Both encode the same heterogeneity descriptor (a Regime 1 ensemble scoped per affected residue); only the storage differs.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example: normal-mode decomposition plus external H5MD trajectory as Mode C
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-11" class="callout-11-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>A microsecond MD trajectory of a 200-residue domain is analyzed by principal component analysis into 10 dominant modes accounting for ~80% of the positional variance. The deposition stores two things under Mode C: the mode basis <span class="math inline">\((10, N_{\mathrm{atom}}, 3)\)</span> array with per-mode eigenvalues, sufficient to reconstruct any PCA projection of the trajectory; and an external reference to the raw H5MD file (artifact URI, content hash, chunking metadata), so a consumer that wants original frames can still reach them. The mode basis is the operator; the PCA coefficients are its inputs; coordinates are generated on demand. Neither Mode A nor Mode B would compress a microsecond trajectory to the <span class="math inline">\((10 \cdot N_{\mathrm{atom}} \cdot 3)\)</span>-number basis without losing the non-principal variance, so the mode basis plus the external reference together cover both the compact representation and the full fidelity one.</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="what-is-not-in-the-core" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-not-in-the-core">2.3 What is not in the core</h2>
+<p>The LLVM discipline – elaborated in <a href="../../posts/mmcif/07-modularity-examples.html">Modularity examples</a> – states that the IR should contain only what cannot be derived from anything more primitive, and that derived information should live in passes rather than in the core. This is worth stating explicitly for the structural biology case because the pressure to put derived information in the core is constant and has demonstrably destabilized mmCIF through category accretion.</p>
+<p>Backbone dihedrals are a function of Cartesian coordinates. Contact maps are a function of coordinates and a cutoff. Spatial neighbor graphs are a function of coordinates, a cutoff, and a choice of distance metric. Spherical harmonic edge features are a function of neighbor graphs and a choice of <span class="math inline">\(l_{\max}\)</span>. AF2-style pair representations are a function of sequence and structure. Validation scores are a function of coordinates and a reference database. Domain assignments are a function of coordinates and a domain classification algorithm. All of these are passes over Hierarchy + Representation + Heterogeneity + Materialization. None of them belongs in the core.</p>
+<p>The practical payoff: a format whose core is topology, coordinates, and heterogeneity variables has no reason to grow when a new experimental method produces a new derived quantity. The new quantity becomes an annotation overlay (see <a href="../../posts/mmcif/04-annotations-and-passes.html#query-language-and-annotations">Query language and annotations</a>) or a computed pass. The core is stable because it is genuinely irreducible, not because it was protected by committee inertia.</p>
+
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-bozovic2020pdz" class="csl-entry" role="listitem">
+Bozovic, Olga, Claudio Zanobini, Adnan Gulzar, Brankica Jankovic, David Buhrke, Matthias Post, Steffen Wolf, Gerhard Stock, and Peter Hamm. 2020. <span>“Real-Time Observation of Ligand-Induced Allosteric Transitions in a <span>PDZ</span> Domain.”</span> <em>Proceedings of the National Academy of Sciences</em>. <a href="https://doi.org/10.1073/pnas.2012999117">https://doi.org/10.1073/pnas.2012999117</a>.
+</div>
+<div id="ref-chung2024dps" class="csl-entry" role="listitem">
+Chung, Hyungjin, Jeongsol Kim, Michael T. McCann, Marc L. Klasky, and Jong Chul Ye. 2024. <span>“Diffusion Posterior Sampling for General Noisy Inverse Problems.”</span> <em>arXiv</em>. <a href="https://doi.org/10.48550/arXiv.2209.14687">https://doi.org/10.48550/arXiv.2209.14687</a>.
+</div>
+<div id="ref-flowers2025qfit" class="csl-entry" role="listitem">
+Flowers, Jessica, Nathaniel Echols, Galen J. Correy, Priyadarshini Jaishankar, Takaya Togo, Adam R. Renslo, Henry van den Bedem, James S. Fraser, and Stephanie A. Wankowicz. 2025. <span>“Expanding Automated Multiconformer Ligand Modeling to Macrocycles and Fragments.”</span> <em>eLife</em>. <a href="https://doi.org/10.7554/eLife.103797">https://doi.org/10.7554/eLife.103797</a>.
+</div>
+<div id="ref-kuzmanic2014xray" class="csl-entry" role="listitem">
+Kuzmanic, Antonija, Navraj S. Pannu, and Bojan Zagrovic. 2014. <span>“X-Ray Refinement Significantly Underestimates the Level of Microscopic Heterogeneity in Biomolecular Crystals.”</span> <em>Nature Communications</em>. <a href="https://doi.org/10.1038/ncomms4220">https://doi.org/10.1038/ncomms4220</a>.
+</div>
+<div id="ref-lane2023frontier" class="csl-entry" role="listitem">
+Lane, Thomas J. 2023. <span>“Protein Structure Prediction Has Reached the Single-Structure Frontier.”</span> <em>Nature Methods</em>. <a href="https://doi.org/10.1038/s41592-022-01760-4">https://doi.org/10.1038/s41592-022-01760-4</a>.
+</div>
+<div id="ref-levy2025inverse" class="csl-entry" role="listitem">
+Levy, Axel, Eric R. Chan, Sara Fridovich-Keil, Frédéric Poitevin, Ellen D. Zhong, and Gordon Wetzstein. 2025. <span>“Solving Inverse Problems in Protein Space Using Diffusion-Based Priors.”</span> <em>arXiv</em>. <a href="https://doi.org/10.48550/arXiv.2406.04239">https://doi.org/10.48550/arXiv.2406.04239</a>.
+</div>
+<div id="ref-ploscariu2021ensemble" class="csl-entry" role="listitem">
+Ploscariu, Nicoleta, Tom Burnley, Piet Gros, and Nicholas M. Pearce. 2021. <span>“Improving Sampling of Crystallographic Disorder in Ensemble Refinement.”</span> <em>Acta Crystallographica Section D: Structural Biology</em>. <a href="https://doi.org/10.1107/S2059798321010044">https://doi.org/10.1107/S2059798321010044</a>.
+</div>
+<div id="ref-raghu2025cryoboltz" class="csl-entry" role="listitem">
+Raghu, Rishwanth, Axel Levy, Gordon Wetzstein, and Ellen D. Zhong. 2025. <span>“Multiscale Guidance of Protein Structure Prediction with Heterogeneous Cryo-<span>EM</span> Data.”</span> <em>arXiv</em>. <a href="https://doi.org/10.48550/arXiv.2506.04490">https://doi.org/10.48550/arXiv.2506.04490</a>.
+</div>
+<div id="ref-rosenberg2024altlocs" class="csl-entry" role="listitem">
+Rosenberg, Aviv A., Ailie Marx, and Alexander M. Bronstein. 2024. <span>“A Dataset of Alternately Located Segments in Protein Crystal Structures.”</span> <em>Scientific Data</em>. <a href="https://doi.org/10.1038/s41597-024-03595-4">https://doi.org/10.1038/s41597-024-03595-4</a>.
+</div>
+<div id="ref-wankowicz2024encoding" class="csl-entry" role="listitem">
+Wankowicz, Stephanie A., and James S. Fraser. 2024. <span>“Comprehensive Encoding of Conformational and Compositional Protein Structural Ensembles Through the <span class="nocase">mmCIF</span> Data Structure.”</span> <em>IUCrJ</em>. <a href="https://doi.org/10.1107/S2052252524005098">https://doi.org/10.1107/S2052252524005098</a>.
+</div>
+<div id="ref-wankowicz2025entropy" class="csl-entry" role="listitem">
+———. 2025. <span>“Advances in Uncovering the Mechanisms of Macromolecular Conformational Entropy.”</span> <em>Nature Chemical Biology</em>. <a href="https://doi.org/10.1038/s41589-025-01879-3">https://doi.org/10.1038/s41589-025-01879-3</a>.
+</div>
+<div id="ref-wankowicz2022ligand" class="csl-entry" role="listitem">
+Wankowicz, Stephanie A., Saulo H. de Oliveira, Daniel W. Hogan, Henry van den Bedem, and James S. Fraser. 2022. <span>“Ligand Binding Remodels Protein Side-Chain Conformational Heterogeneity.”</span> <em>eLife</em>. <a href="https://doi.org/10.7554/eLife.74114">https://doi.org/10.7554/eLife.74114</a>.
+</div>
+</div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/rtviii\.xyz");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

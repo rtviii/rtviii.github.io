@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.54">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Composition – артём</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<link href="../.././img/BTNBlink.webp" rel="icon">
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="../../scripts.js"></script>
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/tippy.js@6"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles/custom.css">
+<link rel="stylesheet" href="../../styles/scrollbar-fix.css">
+</head>
+
+<body class="nav-sidebar docked">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../posts/mmcif/03-composition.html">3. Composition</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">Toward a Modern Foundation</a> 
+    </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/mmcif/01-problems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">1. Problems with mmCIF</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/mmcif/02-architecture.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">2. Architecture</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/mmcif/03-composition.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">3. Composition</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/mmcif/04-annotations-and-passes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">4. Annotations and computed passes</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/mmcif/05-open-questions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">5. Open questions</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/mmcif/06-black-box-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Appendix: black-box data</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../posts/mmcif/07-modularity-examples.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Appendix: modularity examples</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#the-composition-principle" id="toc-the-composition-principle" class="nav-link active" data-scroll-target="#the-composition-principle">The composition principle</a></li>
+  <li><a href="#assumption-independence-or-hierarchical-nesting" id="toc-assumption-independence-or-hierarchical-nesting" class="nav-link" data-scroll-target="#assumption-independence-or-hierarchical-nesting">Assumption: independence or hierarchical nesting</a></li>
+  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples">Worked examples</a>
+  <ul class="collapse">
+  <li><a href="#example-1-crystallographic-kinase-with-inhibitor-1.6-å" id="toc-example-1-crystallographic-kinase-with-inhibitor-1.6-å" class="nav-link" data-scroll-target="#example-1-crystallographic-kinase-with-inhibitor-1.6-å">Example 1: Crystallographic kinase with inhibitor, 1.6 Å</a></li>
+  <li><a href="#example-2-protein-with-ambiguous-ligand-pose-training-data-for-a-docking-model" id="toc-example-2-protein-with-ambiguous-ligand-pose-training-data-for-a-docking-model" class="nav-link" data-scroll-target="#example-2-protein-with-ambiguous-ligand-pose-training-data-for-a-docking-model">Example 2: Protein with ambiguous ligand pose, training data for a docking model</a></li>
+  <li><a href="#example-3-70s-ribosome-cryo-em-reconstruction" id="toc-example-3-70s-ribosome-cryo-em-reconstruction" class="nav-link" data-scroll-target="#example-3-70s-ribosome-cryo-em-reconstruction">Example 3: 70S ribosome cryo-EM reconstruction</a></li>
+  <li><a href="#example-4-gpcr-with-md-trajectory-and-ligand-binding-substates" id="toc-example-4-gpcr-with-md-trajectory-and-ligand-binding-substates" class="nav-link" data-scroll-target="#example-4-gpcr-with-md-trajectory-and-ligand-binding-substates">Example 4: GPCR with MD trajectory and ligand-binding substates</a></li>
+  <li><a href="#example-5-cryo-et-subtomogram-averaged-ribosome-with-multi-scale-heterogeneity" id="toc-example-5-cryo-et-subtomogram-averaged-ribosome-with-multi-scale-heterogeneity" class="nav-link" data-scroll-target="#example-5-cryo-et-subtomogram-averaged-ribosome-with-multi-scale-heterogeneity">Example 5: Cryo-ET subtomogram-averaged ribosome with multi-scale heterogeneity</a></li>
+  </ul></li>
+  <li><a href="#what-composition-buys" id="toc-what-composition-buys" class="nav-link" data-scroll-target="#what-composition-buys">What composition buys</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Composition</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>The previous chapter argued that heterogeneity should be described by a regime chosen from a small taxonomy – <a href="../../posts/mmcif/02-architecture.html#heterogeneity">Heterogeneity Regime 1: Discrete Ensemble</a>, <a href="../../posts/mmcif/02-architecture.html#heterogeneity">Heterogeneity Regime 2: Trajectory</a>, <a href="../../posts/mmcif/02-architecture.html#heterogeneity">Heterogeneity Regime 3: Continuous Landscape</a>, with the factor graph regime as a sidebar – and that every descriptor attaches to a <em>scope</em>: a level of the physical <a href="../../posts/mmcif/02-architecture.html#containment">Hierarchy</a> or a grouping declared in <a href="../../posts/mmcif/02-architecture.html#representation">Representation</a>. This chapter is about the consequence: real systems almost never have just one heterogeneity descriptor. A crystallographic structure can simultaneously carry an atom-scoped B-factor, a residue-scoped altloc, and a chain-scoped TLS group; a cryo-EM reconstruction can carry an assembly-scoped ratcheting mode, a subunit-scoped rigid-body motion, and several entity-instance-scoped compositional states. The format has to support these descriptors coexisting, composing predictably, and being stored in different regimes and different materialization modes without any of them pinning the others to a particular choice.</p>
+<section id="the-composition-principle" class="level2">
+<h2 class="anchored" data-anchor-id="the-composition-principle">The composition principle</h2>
+<p>The total configuration of the system in some sampled state <span class="math inline">\(s\)</span> is the reference structure plus contributions from every scope along the Hierarchy path of each atom. In the notation of the previous chapter:</p>
+<p><span class="math display">\[
+x_i(s) = x_i^{\mathrm{ref}} + \sum_{\ell \in \mathrm{path}(i)} \Delta_i^{\ell}(s_\ell)
+\]</span></p>
+<ul>
+<li><span class="math inline">\(i\)</span> indexes a specific atom.</li>
+<li><span class="math inline">\(x_i^{\mathrm{ref}}\)</span> is the atom’s reference position, a single point in <span class="math inline">\(\mathbb{R}^3\)</span>.</li>
+<li><span class="math inline">\(\mathrm{path}(i)\)</span> is the list of Hierarchy ancestors of atom <span class="math inline">\(i\)</span> – for example <span class="math inline">\([\text{atom }i, \text{residue }45, \text{chain }A, \text{assembly}]\)</span> for a backbone atom.</li>
+<li><span class="math inline">\(s\)</span> is the total state tuple, with one entry per heterogeneity descriptor declared on the structure; <span class="math inline">\(s_\ell\)</span> picks out the entry for the descriptor at level <span class="math inline">\(\ell\)</span>.</li>
+<li><span class="math inline">\(\Delta_i^\ell(s_\ell)\)</span> is the displacement vector in <span class="math inline">\(\mathbb{R}^3\)</span> contributed to atom <span class="math inline">\(i\)</span> by level <span class="math inline">\(\ell\)</span> being in state <span class="math inline">\(s_\ell\)</span>. For a chain-scoped TLS group it is “apply the parameterized rigid-body transform to <span class="math inline">\(x_i^{\mathrm{ref}}\)</span>, then subtract <span class="math inline">\(x_i^{\mathrm{ref}}\)</span>”; for a residue-scoped altloc in state <span class="math inline">\(B\)</span> it is the stored delta for atom <span class="math inline">\(i\)</span> in altloc <span class="math inline">\(B\)</span>; for an atom-scoped Gaussian jitter it is a sample from the per-atom displacement distribution.</li>
+</ul>
+<p>The formula is agnostic to whether any particular <span class="math inline">\(s_\ell\)</span> is discrete or continuous. A residue-scoped altloc variable takes values in <span class="math inline">\(\{A, B\}\)</span>; a chain-scoped rigid-body variable takes values in <span class="math inline">\(\mathbb{R}^3\)</span>; an atom-scoped isotropic ADP variable is an implicit Gaussian. All three produce displacement vectors that add linearly, so the same composition rule handles mixed-regime structures without special cases.</p>
+<p>Visually, the contributions stack along the Hierarchy path of the atom:</p>
+<p><span class="math display">\[
+\underbrace{x_i(s)}_{\text{rendered}}
+\;=\;
+\underbrace{x_i^{\mathrm{ref}}}_{\text{reference}}
+\;+\;
+\underbrace{\Delta_i^{\text{assembly}}(s_{\text{asm}})}_{\text{e.g. ratcheting mode, 8D}}
+\;+\;
+\underbrace{\Delta_i^{\text{chain}}(s_{\text{ch}})}_{\text{e.g. TLS rigid-body}}
+\;+\;
+\underbrace{\Delta_i^{\text{residue}}(s_{\text{res}})}_{\text{e.g. altloc A/B}}
+\;+\;
+\underbrace{\Delta_i^{\text{atom}}(s_{\text{atm}})}_{\text{e.g. ADP jitter}}
+\]</span></p>
+<p>Each <span class="math inline">\(\Delta_i^{\ell}\)</span> is indexed by the state variable at its own scope and contributes a vector in <span class="math inline">\(\mathbb{R}^3\)</span>. The underbraces spell out what a typical deposition actually stores at each scope: a Regime 3 continuous mode at the assembly, a Regime 3 rigid-body parameterization at the chain, a Regime 1 discrete choice at the residue, and a Regime 3 Gaussian at the atom. Four regimes, one formula.</p>
+<p>There are two direct consequences. First, the regime chosen at one scope does not constrain the regime at any other scope: a chain-level continuous descriptor and a residue-level discrete descriptor coexist without friction. Second, the materialization mode is also per-scope: a chain-level descriptor can be stored as parameters (<a href="../../posts/mmcif/02-architecture.html#materialization">Materialization Mode C: Generative / External Reference</a>) while a residue-level descriptor is stored as sparse deltas (<a href="../../posts/mmcif/02-architecture.html#materialization">Materialization Mode B: Delta Encoding</a>) and a few named system-wide snapshots are stored as full enumerations (<a href="../../posts/mmcif/02-architecture.html#materialization">Materialization Mode A: Full Enumeration</a>). Composition happens at render time, not at store time.</p>
+</section>
+<section id="assumption-independence-or-hierarchical-nesting" class="level2">
+<h2 class="anchored" data-anchor-id="assumption-independence-or-hierarchical-nesting">Assumption: independence or hierarchical nesting</h2>
+<p>We assume heterogeneity descriptors at different scopes are either <strong>independent</strong> or <strong>hierarchically nested</strong>, with explicit cross-scope factor potentials allowed as a rarely-used escape hatch. The two common cases:</p>
+<p><strong>Independence.</strong> The joint distribution factors: <span class="math inline">\(p(s) = \prod_\ell p(s_\ell)\)</span>. Storage is linear in the sum of per-scope state spaces, not in their product. The chain-level TLS parameters, residue-level altlocs, and atom-level jitter of a typical crystal are usually assumed independent under this model, which is exactly how crystallographic refinement treats them.</p>
+<p><strong>Hierarchical nesting.</strong> The state space of a child-scope descriptor is conditional on the parent-scope descriptor. The canonical case is a compositional-ligand <span class="math inline">\(\supset\)</span> conformational-loop nesting: when the chain has ligand bound (compositional state <span class="math inline">\(X\)</span>), the loop can take conformations <span class="math inline">\(\{A, B\}\)</span>; when the ligand is absent (compositional state <span class="math inline">\(Y\)</span>), the loop takes conformation <span class="math inline">\(\{C\}\)</span> only. The child descriptor carries a pointer to the parent state that activates it, and invalid combinations are rejected at render time. This is a restricted Cartesian product – a DAG of (scope, state) nodes with edges encoding which parent-child combinations are legal.</p>
+<p><strong>Explicit cross-scope factor.</strong> A factor <span class="math inline">\(\psi(s_\ell, s_m)\)</span> that weights combinations of states across two scopes without strictly forbidding them. This is the factor graph formalism from the architecture chapter, now potentially acting between levels rather than within a single level. We allow it but expect it to be rare: in practice, biological heterogeneity is structured and is better encoded via nesting than via generic coupling tables.</p>
+<p>The independence-or-nesting assumption is what makes storage scale with the sum, not the product, of scope state spaces. Without it, the format has to fall back on storing full Cartesian state tables, which is <a href="../../posts/mmcif/02-architecture.html#heterogeneity">Heterogeneity Regime 1: Discrete Ensemble</a> at the whole-system scope and defeats the point of scoping descriptors.</p>
+</section>
+<section id="worked-examples" class="level2">
+<h2 class="anchored" data-anchor-id="worked-examples">Worked examples</h2>
+<p>Five scenarios at increasing complexity. Each lists every heterogeneity descriptor, its scope, its regime, and its materialization mode, and notes the coupling pattern. The last two are the interesting ones – they mix all three heterogeneity regimes across the Hierarchy in a single deposition.</p>
+<section id="example-1-crystallographic-kinase-with-inhibitor-1.6-å" class="level3">
+<h3 class="anchored" data-anchor-id="example-1-crystallographic-kinase-with-inhibitor-1.6-å">Example 1: Crystallographic kinase with inhibitor, 1.6 Å</h3>
+<p>A typical medium-resolution crystal structure. Two domains that rock relative to each other across the unit cell, sidechain rotamer flexibility in a subset of surface residues, and residual thermal motion everywhere.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Scope</th>
+<th>Descriptor</th>
+<th>Heterogeneity regime</th>
+<th>Materialization mode</th>
+<th>Stored</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>chain, N-terminal domain</td>
+<td>rigid-body TLS</td>
+<td><a href="../../posts/mmcif/02-architecture.html#heterogeneity">Regime 3: Continuous Landscape</a> (degenerate)</td>
+<td><a href="../../posts/mmcif/02-architecture.html#materialization">Mode C: Generative</a></td>
+<td>20 TLS params</td>
+</tr>
+<tr class="even">
+<td>chain, C-terminal domain</td>
+<td>rigid-body TLS</td>
+<td><a href="../../posts/mmcif/02-architecture.html#heterogeneity">Regime 3: Continuous Landscape</a> (degenerate)</td>
+<td><a href="../../posts/mmcif/02-architecture.html#materialization">Mode C: Generative</a></td>
+<td>20 TLS params</td>
+</tr>
+<tr class="odd">
+<td>residue (~30 residues)</td>
+<td>altloc (2 states each)</td>
+<td><a href="../../posts/mmcif/02-architecture.html#heterogeneity">Regime 1: Discrete Ensemble</a></td>
+<td><a href="../../posts/mmcif/02-architecture.html#materialization">Mode B: Delta Encoding</a></td>
+<td>sparse deltas per residue</td>
+</tr>
+<tr class="even">
+<td>atom (all atoms)</td>
+<td>isotropic jitter</td>
+<td><a href="../../posts/mmcif/02-architecture.html#heterogeneity">Regime 3: Continuous Landscape</a> (degenerate)</td>
+<td><a href="../../posts/mmcif/02-architecture.html#materialization">Mode C: Generative</a></td>
+<td>1 scalar per atom</td>
+</tr>
+</tbody>
+</table>
+<p>Coupling: assumed independent across descriptors, which is how crystallographic refinement produces them. A render is obtained by sampling TLS parameters for each domain, independently sampling altloc for each of the <span class="math inline">\(\sim 30\)</span> variable residues, and sampling isotropic jitter per atom. Total storage is <span class="math inline">\(O(N_{\mathrm{atom}})\)</span>, not <span class="math inline">\(O(N_{\mathrm{altloc\ states}} \cdot N_{\mathrm{atom}})\)</span>.</p>
+<p>This is the most common layout and would cover a large fraction of existing PDB entries if mapped directly. Today it is deposited as a single-model multiconformer entry with an altloc column, TLS blocks, and a B-factor column – three descriptors encoded in three unrelated syntactic conventions. The architecture proposed here makes them three instances of the same abstraction.</p>
+</section>
+<section id="example-2-protein-with-ambiguous-ligand-pose-training-data-for-a-docking-model" class="level3">
+<h3 class="anchored" data-anchor-id="example-2-protein-with-ambiguous-ligand-pose-training-data-for-a-docking-model">Example 2: Protein with ambiguous ligand pose, training data for a docking model</h3>
+<p>The same binding site is observed with three distinct ligand poses across a batch of crystals, each pose associated with a different loop conformation of a nearby flexible region. This is an ML-training-data use case: the model consumer wants every valid combination as a training example, not an averaged blur.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Scope</th>
+<th>Descriptor</th>
+<th>Heterogeneity regime</th>
+<th>Materialization mode</th>
+<th>Stored</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>entity instance (ligand)</td>
+<td>compositional pose (3 states)</td>
+<td><a href="../../posts/mmcif/02-architecture.html#heterogeneity">Regime 1: Discrete Ensemble</a></td>
+<td><a href="../../posts/mmcif/02-architecture.html#materialization">Mode A: Full Enumeration</a></td>
+<td>full ligand coords <span class="math inline">\(\times 3\)</span></td>
+</tr>
+<tr class="even">
+<td>residue range 120–130</td>
+<td>loop conformation</td>
+<td><a href="../../posts/mmcif/02-architecture.html#heterogeneity">Regime 1: Discrete Ensemble</a></td>
+<td><a href="../../posts/mmcif/02-architecture.html#materialization">Mode A: Full Enumeration</a></td>
+<td>full loop coords, conditional on pose</td>
+</tr>
+<tr class="odd">
+<td>atom (all atoms)</td>
+<td>isotropic jitter</td>
+<td><a href="../../posts/mmcif/02-architecture.html#heterogeneity">Regime 3: Continuous Landscape</a> (degenerate)</td>
+<td><a href="../../posts/mmcif/02-architecture.html#materialization">Mode C: Generative</a></td>
+<td>1 scalar per atom</td>
+</tr>
+</tbody>
+</table>
+<p>Coupling: the loop-conformation descriptor is <strong>nested under</strong> the ligand-pose descriptor. Pose 1 activates loop state <em>open</em>, pose 2 activates <em>half-open</em>, pose 3 activates <em>closed</em>. A render first chooses a ligand pose, then chooses the unique loop state parented by that pose, then samples atom-level jitter.</p>
+<p>The nesting collapses what would naively be a <span class="math inline">\(3 \times 3 = 9\)</span>-state joint into 3 legal combinations, with storage linear in the size of the three loop conformations rather than quadratic. More importantly, an ML consumer iterating over states gets exactly the biologically meaningful combinations and no unphysical cross-products. The compositional/conformational hierarchy is visible in the data and legible at training time.</p>
+</section>
+<section id="example-3-70s-ribosome-cryo-em-reconstruction" class="level3">
+<h3 class="anchored" data-anchor-id="example-3-70s-ribosome-cryo-em-reconstruction">Example 3: 70S ribosome cryo-EM reconstruction</h3>
+<p>Large assembly with simultaneously active heterogeneity at several scopes: global ratcheting between the small and large subunits, local rRNA helix breathing, variable tRNA occupancy at three sites, and domain-level rearrangements within each subunit.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Scope</th>
+<th>Descriptor</th>
+<th>Heterogeneity regime</th>
+<th>Materialization mode</th>
+<th>Stored</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>assembly (subunit pair)</td>
+<td>ratcheting + head swivel</td>
+<td><a href="../../posts/mmcif/02-architecture.html#heterogeneity">Regime 3: Continuous Landscape</a> (low-dim)</td>
+<td><a href="../../posts/mmcif/02-architecture.html#materialization">Mode C: Generative</a></td>
+<td>2-axis basis + <span class="math inline">\(N_{\mathrm{sample}}\)</span> coefficient vectors</td>
+</tr>
+<tr class="even">
+<td>subunit (small)</td>
+<td>domain rigid-body motion</td>
+<td><a href="../../posts/mmcif/02-architecture.html#heterogeneity">Regime 3: Continuous Landscape</a> (low-dim)</td>
+<td><a href="../../posts/mmcif/02-architecture.html#materialization">Mode C: Generative</a></td>
+<td><span class="math inline">\(k\)</span> modes + coefficients</td>
+</tr>
+<tr class="odd">
+<td>subunit (large)</td>
+<td>domain rigid-body motion</td>
+<td><a href="../../posts/mmcif/02-architecture.html#heterogeneity">Regime 3: Continuous Landscape</a> (low-dim)</td>
+<td><a href="../../posts/mmcif/02-architecture.html#materialization">Mode C: Generative</a></td>
+<td><span class="math inline">\(k\)</span> modes + coefficients</td>
+</tr>
+<tr class="even">
+<td>secondary structure (rRNA helices, ~20 helices)</td>
+<td>TLS breathing</td>
+<td><a href="../../posts/mmcif/02-architecture.html#heterogeneity">Regime 3: Continuous Landscape</a> (degenerate)</td>
+<td><a href="../../posts/mmcif/02-architecture.html#materialization">Mode C: Generative</a></td>
+<td>20 TLS params per helix</td>
+</tr>
+<tr class="odd">
+<td>entity instance (tRNA at A, P, E sites)</td>
+<td>occupancy (absent / present-tRNA-X / present-tRNA-Y)</td>
+<td><a href="../../posts/mmcif/02-architecture.html#heterogeneity">Regime 1: Discrete Ensemble</a></td>
+<td><a href="../../posts/mmcif/02-architecture.html#materialization">Mode A: Full Enumeration</a></td>
+<td>full tRNA coords when present</td>
+</tr>
+<tr class="even">
+<td>entity instance (tRNA, conditional on present)</td>
+<td>pose within site</td>
+<td><a href="../../posts/mmcif/02-architecture.html#heterogeneity">Regime 1: Discrete Ensemble</a></td>
+<td><a href="../../posts/mmcif/02-architecture.html#materialization">Mode A: Full Enumeration</a></td>
+<td>handful of full poses per tRNA</td>
+</tr>
+<tr class="odd">
+<td>protein-protein interface (several)</td>
+<td>mini-TLS</td>
+<td><a href="../../posts/mmcif/02-architecture.html#heterogeneity">Regime 3: Continuous Landscape</a> (degenerate)</td>
+<td><a href="../../posts/mmcif/02-architecture.html#materialization">Mode C: Generative</a></td>
+<td>20 params per interface</td>
+</tr>
+<tr class="even">
+<td>atom (all atoms)</td>
+<td>isotropic jitter</td>
+<td><a href="../../posts/mmcif/02-architecture.html#heterogeneity">Regime 3: Continuous Landscape</a> (degenerate)</td>
+<td><a href="../../posts/mmcif/02-architecture.html#materialization">Mode C: Generative</a></td>
+<td>1 scalar per atom</td>
+</tr>
+</tbody>
+</table>
+<p>Coupling: the tRNA pose descriptor at each site is nested under the occupancy descriptor for that site (“you have a pose only if there is a tRNA there”). The domain motions within each subunit may or may not be coupled to the global ratchet depending on how the data was analyzed; the format supports either by nesting the subunit-level descriptor under the assembly-level one, or by leaving them independent.</p>
+<p>This layout demonstrates the payoff of the architecture at scale. A ribosome has tens of thousands of atoms and a rich, multi-scale heterogeneity that is the entire point of the biological system. Flattening it into a single-model <code>coords[state, atom, 3]</code> tensor throws away the structure; flattening it into a <a href="../../posts/mmcif/02-architecture.html#heterogeneity">Heterogeneity Regime 1: Discrete Ensemble</a> of explicit full-assembly conformers produces combinatorially many states that are not what the microscope measured. Storing each kind of variation at its natural scope, in its natural regime, with the materialization that fits, preserves both the compression and the semantic structure.</p>
+</section>
+<section id="example-4-gpcr-with-md-trajectory-and-ligand-binding-substates" class="level3">
+<h3 class="anchored" data-anchor-id="example-4-gpcr-with-md-trajectory-and-ligand-binding-substates">Example 4: GPCR with MD trajectory and ligand-binding substates</h3>
+<p>A G-protein-coupled receptor is studied by a combination of crystallography and molecular dynamics. A reference crystal structure defines the Hierarchy; a 2 µs all-atom MD trajectory captures the local dynamics around the orthosteric binding site; and three discrete ligand-bound substates are fit to density in the MD-sampled conformational basin. This exercises all three heterogeneity regimes in a single deposition.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Scope</th>
+<th>Descriptor</th>
+<th>Heterogeneity regime</th>
+<th>Materialization mode</th>
+<th>Stored</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>assembly</td>
+<td>full MD trajectory</td>
+<td><a href="../../posts/mmcif/02-architecture.html#heterogeneity">Regime 2: Trajectory</a></td>
+<td><a href="../../posts/mmcif/02-architecture.html#materialization">Mode C: External Reference</a></td>
+<td>pointer to H5MD file, 2 µs at 10 ps stride = <span class="math inline">\(2 \times 10^5\)</span> frames</td>
+</tr>
+<tr class="even">
+<td>assembly</td>
+<td>tICA-derived 3-state MSM</td>
+<td><a href="../../posts/mmcif/02-architecture.html#heterogeneity">Regime 1: Discrete Ensemble</a></td>
+<td><a href="../../posts/mmcif/02-architecture.html#materialization">Mode A: Full Enumeration</a></td>
+<td>3 representative structures + <span class="math inline">\(3 \times 3\)</span> rate matrix</td>
+</tr>
+<tr class="odd">
+<td>entity instance (ligand)</td>
+<td>binding substate (3 poses)</td>
+<td><a href="../../posts/mmcif/02-architecture.html#heterogeneity">Regime 1: Discrete Ensemble</a></td>
+<td><a href="../../posts/mmcif/02-architecture.html#materialization">Mode A: Full Enumeration</a></td>
+<td>3 ligand conformations</td>
+</tr>
+<tr class="even">
+<td>residue range (TM6 kink, residues 298–312)</td>
+<td>backbone twist</td>
+<td><a href="../../posts/mmcif/02-architecture.html#heterogeneity">Regime 3: Continuous Landscape</a> (1D)</td>
+<td><a href="../../posts/mmcif/02-architecture.html#materialization">Mode C: Generative</a></td>
+<td>1 mode vector + <span class="math inline">\(N_{\mathrm{sample}}\)</span> scalar coefficients</td>
+</tr>
+<tr class="odd">
+<td>atom (all atoms)</td>
+<td>anisotropic ADP</td>
+<td><a href="../../posts/mmcif/02-architecture.html#heterogeneity">Regime 3: Continuous Landscape</a> (degenerate)</td>
+<td><a href="../../posts/mmcif/02-architecture.html#materialization">Mode C: Generative</a></td>
+<td>6 params per atom</td>
+</tr>
+</tbody>
+</table>
+<p>Coupling: the MSM descriptor is marked as <em>derived from</em> the trajectory descriptor (not nested – a provenance link, not a state-space restriction). The ligand substate descriptor is nested under the MSM: substate 1 appears only in metastable state A, substate 2 in state B, substate 3 in either B or C. The TM6 twist and the ADPs are independent of everything else.</p>
+<p>A consumer reading this deposition has several legitimate views: a trajectory-only view (just the Regime 2 payload) for training an MD surrogate, an ensemble view (the 3 MSM states <span class="math inline">\(\times\)</span> the nested ligand substates) for docking studies, a single static view (pick one MSM state, one substate, one twist coefficient, fold in atom-scope ADPs as B-factors) for PyMOL. None of these views requires converting the others.</p>
+</section>
+<section id="example-5-cryo-et-subtomogram-averaged-ribosome-with-multi-scale-heterogeneity" class="level3">
+<h3 class="anchored" data-anchor-id="example-5-cryo-et-subtomogram-averaged-ribosome-with-multi-scale-heterogeneity">Example 5: Cryo-ET subtomogram-averaged ribosome with multi-scale heterogeneity</h3>
+<p>A single-cell cryo-electron tomography reconstruction of bacterial ribosomes in situ: a few thousand particle instances embedded in the tomogram, each with its own rigid-body pose in the cell, each contributing to a subtomogram average that resolves the conformational landscape of translation. This is a case where the Hierarchy has an extra instance-scope axis above the assembly (the particles), and heterogeneity shows up at nearly every level.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Scope</th>
+<th>Descriptor</th>
+<th>Heterogeneity regime</th>
+<th>Materialization mode</th>
+<th>Stored</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>particle (instance in tomogram)</td>
+<td>rigid-body pose</td>
+<td><a href="../../posts/mmcif/02-architecture.html#heterogeneity">Regime 3: Continuous Landscape</a> (6-DOF)</td>
+<td><a href="../../posts/mmcif/02-architecture.html#materialization">Mode C: Generative</a></td>
+<td>quaternion + translation per particle, <span class="math inline">\(\sim 4000\)</span> particles</td>
+</tr>
+<tr class="even">
+<td>particle (instance)</td>
+<td>functional-state class</td>
+<td><a href="../../posts/mmcif/02-architecture.html#heterogeneity">Regime 1: Discrete Ensemble</a></td>
+<td>particle <span class="math inline">\(\to\)</span> class index</td>
+<td>class label per particle (4 classes)</td>
+</tr>
+<tr class="odd">
+<td>assembly (averaged)</td>
+<td>ratcheting latent</td>
+<td><a href="../../posts/mmcif/02-architecture.html#heterogeneity">Regime 3: Continuous Landscape</a> (8D, cryoDRGN)</td>
+<td><a href="../../posts/mmcif/02-architecture.html#materialization">Mode C: Generative</a></td>
+<td>latent coords per particle + decoder checkpoint</td>
+</tr>
+<tr class="even">
+<td>entity instance (A-site tRNA)</td>
+<td>occupancy + identity</td>
+<td><a href="../../posts/mmcif/02-architecture.html#heterogeneity">Regime 1: Discrete Ensemble</a></td>
+<td><a href="../../posts/mmcif/02-architecture.html#materialization">Mode A: Full Enumeration</a></td>
+<td>5 possibilities (absent, initiator, three elongators)</td>
+</tr>
+<tr class="odd">
+<td>entity instance (P-site tRNA)</td>
+<td>occupancy + identity</td>
+<td><a href="../../posts/mmcif/02-architecture.html#heterogeneity">Regime 1: Discrete Ensemble</a></td>
+<td><a href="../../posts/mmcif/02-architecture.html#materialization">Mode A: Full Enumeration</a></td>
+<td>5 possibilities</td>
+</tr>
+<tr class="even">
+<td>secondary structure (intersubunit bridges)</td>
+<td>hinge angle</td>
+<td><a href="../../posts/mmcif/02-architecture.html#heterogeneity">Regime 3: Continuous Landscape</a> (1D)</td>
+<td><a href="../../posts/mmcif/02-architecture.html#materialization">Mode C: Generative</a></td>
+<td>1 mode + coefficients, derived from cryoDRGN latent</td>
+</tr>
+<tr class="odd">
+<td>atom (all atoms of the averaged model)</td>
+<td>isotropic jitter</td>
+<td><a href="../../posts/mmcif/02-architecture.html#heterogeneity">Regime 3: Continuous Landscape</a> (degenerate)</td>
+<td><a href="../../posts/mmcif/02-architecture.html#materialization">Mode C: Generative</a></td>
+<td>1 scalar per atom</td>
+</tr>
+</tbody>
+</table>
+<p>Coupling: the functional-state class (a discrete descriptor per particle) is <strong>correlated with but not nested under</strong> the continuous cryoDRGN latent – class labels were assigned by clustering in latent space, so the class descriptor is a named-landmark overlay on the continuous landscape, sharing provenance with the Regime 3 descriptor. The A-site and P-site tRNA descriptors are jointly constrained by a cross-scope factor (<span class="math inline">\(\psi(s_A, s_P)\)</span>: certain combinations like “initiator in A-site plus elongator in P-site” are disallowed by biology) – this is the rare case where the factor graph formalism genuinely earns its keep. The intersubunit hinge angle is marked as <em>derived from</em> the ratcheting latent; a consumer that reads the latent can regenerate hinges, while a consumer that only wants rigid-body positions can use the hinge descriptor directly.</p>
+<p>The Hierarchy here has one level above the assembly – the particle instance – because each particle has its own 6-DOF pose and its own class assignment. Per-particle heterogeneity (pose, class) lives at that scope; per-averaged-structure heterogeneity (latent, hinge, ADP) lives at the assembly and below. The format treats these uniformly: a descriptor is just a (scope, regime, mode) triple, and adding a new scope level above the assembly does not break anything below.</p>
+</section>
+</section>
+<section id="what-composition-buys" class="level2">
+<h2 class="anchored" data-anchor-id="what-composition-buys">What composition buys</h2>
+<p>Three things, in decreasing order of concreteness:</p>
+<p><em>Storage linearity.</em> Independence and nesting both keep total storage to the sum of per-scope costs rather than the product. An ensemble with heterogeneity at five different scopes and a few states each does not become a Cartesian product of twenty-thousand conformers.</p>
+<p><em>Regime independence.</em> Each scope picks the regime that fits its physics. A structure is not pushed into <a href="../../posts/mmcif/02-architecture.html#heterogeneity">Regime 1: Discrete Ensemble</a> just because one of its scopes is discrete, nor into <a href="../../posts/mmcif/02-architecture.html#heterogeneity">Regime 3: Continuous Landscape</a> just because another is continuous. The reverse pressure is also absent: there is no incentive to collapse everything into a single uniform regime for consistency.</p>
+<p><em>Semantic legibility.</em> Consumers – whether a visualization tool, an ML dataloader, or a refinement program – can ask “what varies at chain scope,” “what varies at residue scope,” “what varies at atom scope” and get back descriptors typed by scope. A PyMOL-like consumer can ignore everything above residue scope if it wants a single-model render. A training pipeline can iterate over the nested compositional/conformational combinations without flattening to 50,000 explicit states. A refinement engine can update the chain-scope TLS parameters without touching the residue-scope altlocs.</p>
+<p>The next chapter walks through the annotations and computed-pass machinery that sits on top of this layered core, and how established tools (Zarr, DataFusion, TileDB, HDF5) map onto the storage side of the four layers plus the composition rule above.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/rtviii\.xyz");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
