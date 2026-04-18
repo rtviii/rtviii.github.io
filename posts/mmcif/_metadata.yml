@@ -8,5 +8,5 @@ execute:
 format:
   html:
     link-external-newwindow: true
-include-in-header:
-  file: _collapsible.html
+# Collapsible H2/H3 behavior lives in /scripts.js (section 3),
+# scoped to /posts/mmcif/ via a path check.

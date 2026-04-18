@@ -1,13 +1,13 @@
 <style>
   /* Collapsible subsections for this blog post only */
-  main#quarto-document-content .collapsible-h2 {
+  main#quarto-document-content .collapsible-heading {
     cursor: pointer;
     user-select: none;
     display: flex;
     align-items: baseline;
     gap: 0.4em;
   }
-  main#quarto-document-content .collapsible-h2::before {
+  main#quarto-document-content .collapsible-heading::before {
     content: "\25BE"; /* down-pointing triangle */
     display: inline-block;
     transition: transform 0.15s ease;
@@ -15,7 +15,7 @@
     color: #888;
     flex-shrink: 0;
   }
-  main#quarto-document-content .collapsible-h2.is-collapsed::before {
+  main#quarto-document-content .collapsible-heading.is-collapsed::before {
     transform: rotate(-90deg);
   }
   main#quarto-document-content .collapsible-body.is-hidden {
@@ -27,12 +27,14 @@
     var article = document.querySelector("main#quarto-document-content");
     if (!article) return;
 
-    var h2s = article.querySelectorAll("h2");
-    h2s.forEach(function (h2) {
-      // Collect siblings until the next h2.
+    // Wrap H2/H3 sections so they collapse. For an H2, siblings are collected
+    // until the next H2 (H3s inside fall into the H2 wrapper and are also
+    // independently collapsible). For an H3, siblings are collected until the
+    // next H2 or H3.
+    function wrapHeading(heading, stopTags) {
       var siblings = [];
-      var el = h2.nextElementSibling;
-      while (el && el.tagName !== "H2") {
+      var el = heading.nextElementSibling;
+      while (el && stopTags.indexOf(el.tagName) === -1) {
         siblings.push(el);
         el = el.nextElementSibling;
       }
@@ -41,13 +43,23 @@
       var wrapper = document.createElement("div");
       wrapper.className = "collapsible-body";
       siblings.forEach(function (s) { wrapper.appendChild(s); });
-      h2.insertAdjacentElement("afterend", wrapper);
-      h2.classList.add("collapsible-h2");
+      heading.insertAdjacentElement("afterend", wrapper);
+      heading.classList.add("collapsible-heading");
 
-      h2.addEventListener("click", function () {
+      heading.addEventListener("click", function () {
         wrapper.classList.toggle("is-hidden");
-        h2.classList.toggle("is-collapsed");
+        heading.classList.toggle("is-collapsed");
       });
+    }
+
+    // Process H3 first so H3 wrappers are created before H2 absorbs them as
+    // a single sibling. Either order works because the H2 wrapper simply
+    // contains the H3 wrapper as one of its children.
+    article.querySelectorAll("h3").forEach(function (h) {
+      wrapHeading(h, ["H2", "H3"]);
+    });
+    article.querySelectorAll("h2").forEach(function (h) {
+      wrapHeading(h, ["H2"]);
     });
   });
 </script>

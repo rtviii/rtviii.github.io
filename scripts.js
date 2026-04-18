@@ -78,4 +78,74 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
   }
+
+  // 3. Collapsible H2/H3 sections for the mmCIF blog series.
+  // Scoped to pages under /posts/mmcif/ so this is harmless elsewhere.
+  if (window.location.pathname.indexOf("/posts/mmcif/") !== -1) {
+    installCollapsibleHeadings();
+  }
 });
+
+function installCollapsibleHeadings() {
+  var article = document.querySelector("main#quarto-document-content");
+  if (!article) return;
+
+  if (!document.getElementById("mmcif-collapsible-styles")) {
+    var style = document.createElement("style");
+    style.id = "mmcif-collapsible-styles";
+    style.textContent =
+      "main#quarto-document-content .collapsible-heading {" +
+      "  cursor: pointer;" +
+      "  user-select: none;" +
+      "  display: flex;" +
+      "  align-items: baseline;" +
+      "  gap: 0.4em;" +
+      "}" +
+      "main#quarto-document-content .collapsible-heading::before {" +
+      "  content: \"\\25BE\";" +
+      "  display: inline-block;" +
+      "  transition: transform 0.15s ease;" +
+      "  font-size: 0.75em;" +
+      "  color: #888;" +
+      "  flex-shrink: 0;" +
+      "}" +
+      "main#quarto-document-content .collapsible-heading.is-collapsed::before {" +
+      "  transform: rotate(-90deg);" +
+      "}" +
+      "main#quarto-document-content .collapsible-body.is-hidden {" +
+      "  display: none;" +
+      "}";
+    document.head.appendChild(style);
+  }
+
+  function wrapHeading(heading, stopTags) {
+    var siblings = [];
+    var el = heading.nextElementSibling;
+    while (el && stopTags.indexOf(el.tagName) === -1) {
+      siblings.push(el);
+      el = el.nextElementSibling;
+    }
+    if (siblings.length === 0) return;
+
+    var wrapper = document.createElement("div");
+    wrapper.className = "collapsible-body";
+    siblings.forEach(function (s) { wrapper.appendChild(s); });
+    heading.insertAdjacentElement("afterend", wrapper);
+    heading.classList.add("collapsible-heading");
+
+    heading.addEventListener("click", function () {
+      wrapper.classList.toggle("is-hidden");
+      heading.classList.toggle("is-collapsed");
+    });
+  }
+
+  // Process H3 first so H3 wrappers exist before the surrounding H2 sweeps them
+  // into its own body (the H2 wrapper then contains the H3 wrapper as a child;
+  // both toggle independently).
+  article.querySelectorAll("h3").forEach(function (h) {
+    wrapHeading(h, ["H2", "H3"]);
+  });
+  article.querySelectorAll("h2").forEach(function (h) {
+    wrapHeading(h, ["H2"]);
+  });
+}

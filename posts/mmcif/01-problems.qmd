@@ -3,22 +3,32 @@ title: "Problems with mmCIF and the current ecosystem"
 order: 1
 ---
 
-## The single-structure assumption
 
-mmCIF models one experiment -> one structure. The `alt_id` mechanism is the primary tool for conformational heterogeneity: individual atoms carry a single-character label (A, B, C...) and an occupancy (summing to 1.0 within a residue). This means: each residue independently declares its own conformers; there is no way to state "alt A of residue 50 co-occurs with alt A of residue 80"; and occupancies are per-atom scalars with no associated uncertainty, free energy, or kinetic information.
+## Pain points (enumerated)
 
-The **IHMCIF dictionary** (the IHM working group extension, [github.com/ihmwg/IHMCIF](https://github.com/ihmwg/IHMCIF)) extends mmCIF with ~30 new categories for integrative/hybrid models. It adds: discrete multi-state models, ordered ensembles (states connected by time or other ordering), multi-scale representations (atomic + coarse-grained beads in the same model), and spatial restraint descriptions. PDB-IHM was unified with the PDB archive in August 2024 and now issues standard PDB accession codes. But: states remain discrete and independent, there is no thermodynamic annotation, no per-state uncertainty, no support for continuous distributions, and the text-file serialization doesn't scale to large ensembles.
+- **Parsing fragility.** No reference implementation. Every parser is different. Links below.
+- **No random access.** Cannot read chain B without scanning chain A. For 200k+ atom structures this is a real bottleneck. Not a huge problem for a structural/comp biologist yet in practice, but already a tightening bottleneck for the ML models.
+- **Residue numbering.** Author vs. label vs. UniProt, insertion codes, no canonical mapping. See [bioinformatics.stackexchange.com/questions/14210](https://bioinformatics.stackexchange.com/questions/14210/pdb-residue-numbering), [proteopedia](https://proteopedia.org/wiki/index.php/Unusual_sequence_numbering), also SAbR renumbering tool: [github.com/delalamo/SAbR](https://github.com/delalamo/SAbR).
 
-Wankowicz & Fraser (IUCrJ, 2024) -- "Comprehensive Encoding of Conformational and Compositional Protein Structural Ensembles through mmCIF Data Structure" -- directly addresses encoding ensembles within mmCIF. **Must read to understand what's achievable within the existing framework and where it hits walls.**
+- **Ligand representation.** 3-to-5-char Component IDs, bond orders in a separate dictionary, no inline SMILES, insufficient for conformational sampling (ligands frequently need SMILES as separate input).
 
-::: {.callout-note collapse="true"}
-## TODO
-Read and annotate the Wankowicz & Fraser 2024 paper. Compare their proposed categories to IHM categories. Identify exactly where mmCIF's text-based, category-based design prevents the representation we want.
-:::
+- **Future scale.** Current PDB deposition is one-structure-per-experiment. When cryo-ET subtomogram averaging routinely produces per-particle structures, or when high-throughput crystallography campaigns produce thousands of related structures, the deposition model will need to change. This is not yet a data _storage_ problem for atomic models but an _access_, _association_, and _transformation_ problem.
+
+
+
+## The single-structure assumption has to evolve
+
+
+mmCIF models one experiment -> one structure. Insufficient 
+
+The `alt_id` mechanism is an ok tool for conformational heterogeneity: individual atoms carry a single-character label (A, B, C...) and an occupancy (summing to 1.0 within a residue). This means: each residue independently declares its own conformers; there is no way to state "alt A of residue 50 co-occurs with alt A of residue 80"; and occupancies are per-atom scalars with no associated uncertainty, free energy, or kinetic information. No way to capture continuous motion however and doesn't yet scale to larger systems.
 
 ## Text format, parsing fragility
 
 mmCIF is plain text with fixed syntactic rules (CIF2 spec: [iucr.org/resources/cif/cif2](https://www.iucr.org/resources/cif/cif2)) but no canonical reference implementation. Every consumer writes its own parser. They all handle edge cases differently:
+
+
+
 
 - DeepMind's AlphaFold mmCIF parser: [huggingface.co/.../mmcif_parsing.py](https://huggingface.co/spaces/simonduerr/ProteinMPNN/blob/f969e9cfb6f11ba299c7108aadff124e9cf38b1f/alphafold/alphafold/data/mmcif_parsing.py)
 - model-angelo (GNN model building) fixing parsing: [github.com/3dem/model-angelo/issues/51](https://github.com/3dem/model-angelo/issues/51)
@@ -51,20 +61,5 @@ Every GNN-based structure model constructs a molecular graph from parsed coordin
 - No convention for packaging ensembles as training data for ensemble-aware models
 - Tokenization for heterogeneous systems (protein + ligand + nucleic acid + ions) is done ad-hoc in AF3/Boltz/Chai with no shared vocabulary
 
-::: {.callout-note collapse="true"}
-## TODO
-Collect specific examples of preprocessing code from AF2, Boltz-1, Chai-1, ProteinMPNN showing redundant graph construction. Quantify the time spent in data loading vs. model forward pass for typical training runs. Survey how e3nn irreps are constructed and whether precomputation is feasible.
-:::
 
-## Pain points (enumerated)
-
-- **Parsing fragility.** No reference implementation. Every parser is different. See links above.
-- **No random access.** Cannot read chain B without scanning chain A. For 200k+ atom structures this is a real bottleneck.
-- **Residue numbering.** Author vs. label vs. UniProt, insertion codes, no canonical mapping. See [bioinformatics.stackexchange.com/questions/14210](https://bioinformatics.stackexchange.com/questions/14210/pdb-residue-numbering), [proteopedia](https://proteopedia.org/wiki/index.php/Unusual_sequence_numbering), also SAbR renumbering tool: [github.com/delalamo/SAbR](https://github.com/delalamo/SAbR).
-- **Ligand representation.** 3-to-5-char Component IDs, bond orders in a separate dictionary, no inline SMILES, insufficient for conformational sampling (qFit-ligand needs SMILES as separate input). Encoding sometimes nonsensical (e.g., a tRNA chain tagged "F" because it carries phenylalanine -- no respect for RNA alphabet standardization).
-- **Future scale.** Current PDB deposition is one-structure-per-experiment. When cryo-ET subtomogram averaging routinely produces per-particle structures, or when high-throughput crystallography campaigns produce thousands of related structures, the deposition model will need to change. This is not yet a data _storage_ problem for atomic models but an _access_, _association_, and _transformation_ problem.
-
-::: {.callout-note collapse="true"}
-## TODO
-Dedicated section on dynamics vocabulary (MD trajectory conventions, what H5MD/MDTraj/MDAnalysis do, what's realistic to unify vs. what's wishful thinking). Dedicated section on ML access patterns with concrete code examples and benchmarks.
-:::
+The **IHMCIF dictionary** (the IHM working group extension, [github.com/ihmwg/IHMCIF](https://github.com/ihmwg/IHMCIF)) extends mmCIF with ~30 new categories for integrative/hybrid models. It adds: discrete multi-state models, ordered ensembles (states connected by time or other ordering), multi-scale representations (atomic + coarse-grained beads in the same model), and spatial restraint descriptions. PDB-IHM was unified with the PDB archive in August 2024 and now issues standard PDB accession codes. But: states remain discrete and independent, there is no thermodynamic annotation, no per-state uncertainty, no support for continuous distributions, and the text-file serialization doesn't scale to large ensembles.

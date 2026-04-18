@@ -1,6 +1,6 @@
 ---
 title: "Modularity examples in software ecosystems"
-order: 6
+order: 7
 ---
 
 The LLVM/DataFusion pattern -- stable core IR, pluggable frontends and backends, passes as the unit of extension -- recurs across enough mature systems that it is probably the right general shape for any data infrastructure problem with heterogeneous consumers and evolving annotation types.
