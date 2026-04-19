@@ -4,7 +4,7 @@
     "href": "blog.html",
     "title": "Blog",
     "section": "",
-    "text": "Date\n\n\nTitle\n\n\nAuthor\n\n\n\n\n\n\nAug 4, 2024\n\n\n3D tessellation of biomolecular cavities\n\n\nArtem Kushner, Khanh Dao Duc\n\n\n\n\n\nNo matching items"
+    "text": "Date\n\n\nTitle\n\n\nAuthor\n\n\n\n\n\n\nApr 15, 2026\n\n\nToward a Modern Foundation for Structural Biology Data\n\n\n \n\n\n\n\nAug 4, 2024\n\n\n3D tessellation of biomolecular cavities\n\n\nArtem Kushner, Khanh Dao Duc\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "listings.html#blogs",
@@ -286,6 +286,26 @@
     "text": "A deeper design critique of white-box formats comes from Naef and Bronstein’s recent Chemical Science perspective (2026, rsc.li/chemical-science). Their central argument is that ML models in biology have traditionally relied on data produced as a byproduct of scientific inquiry – repositories like the PDB aggregate and standardize this data, but they are not purpose-generated for ML, leading to poor standardization, limited scale, and systematic biases – and that the more critical question now is not “the next AlphaFold” but “the next PDB,” meaning new experimental data sources intentionally optimized for machine consumption rather than human intuition. The format implications are sharp: data generated to be consumed by models rather than inspected by scientists has no natural representation in mmCIF, whose entire design presupposes that a human will eventually open the file, assign meaning to the chain IDs, and judge whether the electron density fits – a constraint that should be optional, not structural.",
     "crumbs": [
       "Appendix: black-box data"
+    ]
+  },
+  {
+    "objectID": "posts/mmcif/index.html",
+    "href": "posts/mmcif/index.html",
+    "title": "Toward a Modern Foundation for Structural Biology Data",
+    "section": "",
+    "text": "Working draft – exploratory, incomplete. A scaffold for collecting references, usecases, and tradeoffs.\nThis is a multi-part post. Use the sidebar to jump between sections.",
+    "crumbs": [
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "posts/mmcif/index.html#contents",
+    "href": "posts/mmcif/index.html#contents",
+    "title": "Toward a Modern Foundation for Structural Biology Data",
+    "section": "Contents",
+    "text": "Contents\n\nProblems with mmCIF and the current ecosystem – single-structure assumption, parsing fragility, missing experimental linkage, no ML-native access, pain points.\nArchitecture – the four layers (hierarchy, representation, heterogeneity, materialization) split into a core / ensemble halves, and what stays out of the core.\nComposition – how heterogeneity at multiple scopes composes; scope-local regimes and mixed materialization modes; worked examples (crystallography, protein+ligand, ribosome).\nAnnotations and computed passes – Zarr/DataFusion/TileDB storage, heterogeneity regimes mapped to existing tools, query language, ML-native operations.\nOpen questions\nAppendix: “black-box” data\nAppendix: modularity examples in software ecosystems – LLVM, DataFusion, AnnData, ECS, ONNX, OpenTelemetry, CF Conventions.",
+    "crumbs": [
+      "Overview"
     ]
   },
   {

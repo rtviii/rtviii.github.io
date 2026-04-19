@@ -10,7 +10,39 @@
 <atom:link href="https://rtviii.xyz/blog.xml" rel="self" type="application/rss+xml"/>
 <description></description>
 <generator>quarto-1.5.54</generator>
-<lastBuildDate>Sat, 03 Aug 2024 22:00:00 GMT</lastBuildDate>
+<lastBuildDate>Tue, 14 Apr 2026 22:00:00 GMT</lastBuildDate>
+<item>
+  <title>Toward a Modern Foundation for Structural Biology Data</title>
+  <link>https://rtviii.xyz/posts/mmcif/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><em>Working draft – exploratory, incomplete. A scaffold for collecting references, usecases, and tradeoffs.</em></p>
+<p>This is a multi-part post. Use the sidebar to jump between sections.</p>
+<section id="contents" class="level2">
+<h2 class="anchored" data-anchor-id="contents">Contents</h2>
+<ol type="1">
+<li><a href="../../posts/mmcif/01-problems.html">Problems with mmCIF and the current ecosystem</a> – single-structure assumption, parsing fragility, missing experimental linkage, no ML-native access, pain points.</li>
+<li><a href="../../posts/mmcif/02-architecture.html">Architecture</a> – the four layers (hierarchy, representation, heterogeneity, materialization) split into a core / ensemble halves, and what stays out of the core.</li>
+<li><a href="../../posts/mmcif/03-composition.html">Composition</a> – how heterogeneity at multiple scopes composes; scope-local regimes and mixed materialization modes; worked examples (crystallography, protein+ligand, ribosome).</li>
+<li><a href="../../posts/mmcif/04-annotations-and-passes.html">Annotations and computed passes</a> – Zarr/DataFusion/TileDB storage, heterogeneity regimes mapped to existing tools, query language, ML-native operations.</li>
+<li><a href="../../posts/mmcif/05-open-questions.html">Open questions</a></li>
+<li><a href="../../posts/mmcif/06-black-box-data.html">Appendix: “black-box” data</a></li>
+<li><a href="../../posts/mmcif/07-modularity-examples.html">Appendix: modularity examples in software ecosystems</a> – LLVM, DataFusion, AnnData, ECS, ONNX, OpenTelemetry, CF Conventions.</li>
+</ol>
+
+
+</section>
+
+ ]]></description>
+  <category>structural-biology</category>
+  <category>data-formats</category>
+  <category>mmcif</category>
+  <guid>https://rtviii.xyz/posts/mmcif/</guid>
+  <pubDate>Tue, 14 Apr 2026 22:00:00 GMT</pubDate>
+</item>
 <item>
   <title>3D tessellation of biomolecular cavities</title>
   <dc:creator>Artem Kushner</dc:creator>
