@@ -3,6 +3,17 @@ title: "Problems with mmCIF and the current ecosystem"
 order: 1
 ---
 
+{{< include /_includes/_post_head.qmd >}}
+
+{{< include _glossary.qmd >}}
+
+{{< include /_includes/_post_mid.qmd >}}
+
+# {{< meta title >}}
+
+
+
+
 
 ## Pain points (enumerated)
 
@@ -63,3 +74,5 @@ Every GNN-based structure model constructs a molecular graph from parsed coordin
 
 
 The **IHMCIF dictionary** (the IHM working group extension, [github.com/ihmwg/IHMCIF](https://github.com/ihmwg/IHMCIF)) extends mmCIF with ~30 new categories for integrative/hybrid models. It adds: discrete multi-state models, ordered ensembles (states connected by time or other ordering), multi-scale representations (atomic + coarse-grained beads in the same model), and spatial restraint descriptions. PDB-IHM was unified with the PDB archive in August 2024 and now issues standard PDB accession codes. But: states remain discrete and independent, there is no thermodynamic annotation, no per-state uncertainty, no support for continuous distributions, and the text-file serialization doesn't scale to large ensembles.
+
+{{< include /_includes/_layout_end.qmd >}}

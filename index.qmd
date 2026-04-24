@@ -1,28 +1,11 @@
 ---
-page-layout: full
+page-layout: custom
 css: [styles/homepage.css]
 ---
 
-::: {.grid .homepage-container}
+{{< include _includes/_layout_start.qmd >}}
 
-::: {.g-col-12 .g-col-md-3 .left-column}
-![](img/signature.png){.signature}
-
-- [CV](papers/kushner_cv.pdf)
-- [Papers](papers/papers.html)
-- [Blog](blog.html)
-- [Lists](listings.html)
-
-::: {.social-links}
-[<i class="bi bi-github"></i>](https://github.com/rtviii)
-[<i class="ai ai-google-scholar"></i>](https://scholar.google.com/citations?user=hrPyOIsAAAAJ&hl=en)
-[<i class="bi bi-twitter"></i>](https://twitter.com/rtkushner)
-:::
-
-:::  
-
-::: {.g-col-12 .g-col-md-9 .right-column}
-![](img/sifnos_HCB.jpg){.main-photo}
+![](/img/sifnos_HCB.jpg){.main-photo}
 [Sifnos, Greece (1961) | Henri Cartier-Bresson]{.photo-credit}
 
 Howdy, I'm a research technician at IMP, Vienna with [Sven Klumpe](https://www.imp.ac.at/groups/sven-klumpe) and at UBC, Vancouver with [Khanh Dao Duc](https://kdaoduc.com/about/).
@@ -33,6 +16,4 @@ Outside of academia, I've had a few backend roles. I enjoy running, hiking, cano
 
 [rtkushner@gmail.com](mailto:rtkushner@gmail.com).
 
-:::
-
-:::
+{{< include _includes/_layout_end.qmd >}}

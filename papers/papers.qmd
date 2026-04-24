@@ -1,6 +1,6 @@
 ---
 page-layout: custom
-css: 
+css:
   - ../styles/homepage.css
   - ../styles/papers.css
 listing:
@@ -9,13 +9,9 @@ listing:
   id: papers-listing
 ---
 
-::: {.grid .homepage-container}
-{{< include ../_includes/_navigation.qmd >}}
-
-::: {.g-col-12 .g-col-md-9 .right-column}
-
+{{< include /_includes/_layout_start.qmd >}}
 
 ::: {#papers-listing}
 :::
-:::
-:::
+
+{{< include /_includes/_layout_end.qmd >}}

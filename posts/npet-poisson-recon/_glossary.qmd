@@ -1,0 +1,9 @@
+::: {.post-glossary}
+- [Summary and background](#summary-and-background)
+- [1. Pointcloud preparation](#pointcloud-preparation-bounding-box-and-voxelization)
+- [2. Subcloud extraction](#subcloud-extraction)
+- [3. Surface reconstruction](#surface-reconstruction)
+- [Result](#result)
+- [Improvements](#improvements-needed-for-this-protocol)
+- [References](#references)
+:::

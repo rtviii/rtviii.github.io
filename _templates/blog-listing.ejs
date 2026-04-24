@@ -1,0 +1,19 @@
+```{=html}
+<div class="rt-blog-list">
+<% for (const item of items) { %>
+  <a class="rt-blog-row" href="<%- item.path %>">
+    <span class="rt-blog-date">
+      <% if (item.date) { %>
+        <%= new Date(item.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %>
+      <% } %>
+    </span>
+    <span class="rt-blog-meta">
+      <span class="rt-blog-title"><%= item.title %></span>
+      <% if (item.subtitle) { %>
+        <span class="rt-blog-subtitle"><%= item.subtitle %></span>
+      <% } %>
+    </span>
+  </a>
+<% } %>
+</div>
+```

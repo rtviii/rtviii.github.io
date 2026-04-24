@@ -4,9 +4,19 @@ subtitle: "Notes on mmCIF, its limits, and what an ML-native successor might loo
 date: "2026-04-15"
 date-modified: last-modified
 categories: [structural-biology, data-formats, mmcif]
-draft: true
-listing: false
 ---
+
+{{< include /_includes/_post_head.qmd >}}
+
+{{< include _glossary.qmd >}}
+
+{{< include /_includes/_post_mid.qmd >}}
+
+# {{< meta title >}}
+
+[{{< meta subtitle >}}]{.post-subtitle}
+
+
 
 _Working draft -- exploratory, incomplete. A scaffold for collecting references, usecases, and tradeoffs._
 
@@ -21,3 +31,5 @@ This is a multi-part post. Use the sidebar to jump between sections.
 5. [Open questions](05-open-questions.qmd)
 6. [Appendix: "black-box" data](06-black-box-data.qmd)
 7. [Appendix: modularity examples in software ecosystems](07-modularity-examples.qmd) -- LLVM, DataFusion, AnnData, ECS, ONNX, OpenTelemetry, CF Conventions.
+
+{{< include /_includes/_layout_end.qmd >}}

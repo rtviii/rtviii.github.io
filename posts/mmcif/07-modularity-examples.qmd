@@ -3,6 +3,17 @@ title: "Modularity examples in software ecosystems"
 order: 7
 ---
 
+{{< include /_includes/_post_head.qmd >}}
+
+{{< include _glossary.qmd >}}
+
+{{< include /_includes/_post_mid.qmd >}}
+
+# {{< meta title >}}
+
+
+
+
 The LLVM/DataFusion pattern -- stable core IR, pluggable frontends and backends, passes as the unit of extension -- recurs across enough mature systems that it is probably the right general shape for any data infrastructure problem with heterogeneous consumers and evolving annotation types.
 
 ## LLVM
@@ -44,3 +55,5 @@ For structural biology, the implication is that molecular selectors should compi
 ## Stability as a design outcome
 
 The stability argument for this architecture is worth stating separately. LLVM IR has been remarkably stable for twenty years despite enormous changes in the languages that target it and the hardware that runs it. The stability comes from the IR being genuinely minimal and the plugin interfaces being genuinely sufficient. mmCIF's instability -- the ongoing accretion of IHMCIF extensions, ModelCIF extensions, and the queue of further category proposals -- comes from putting non-core things in the core. Every new experimental method that doesn't fit the existing categories requires a dictionary amendment, a committee process, and a new parser version. A format whose core is only topology + coordinates + heterogeneity variables, and whose plugin interface is (selector, typed body, provenance), has no reason to change its core when cryo-ET subtomogram averaging, high-throughput crosslinking MS, or single-molecule FRET produce new data types. They each get a plugin. The core is stable because it is genuinely irreducible.
+
+{{< include /_includes/_layout_end.qmd >}}

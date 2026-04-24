@@ -1,11 +1,30 @@
 body {
   font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 
-  font-size: 14px; /* CHANGED from 15px. You can even try 13px if this is still too large. */
+  font-size: 14px;
+  background-color: #fafaf7;
+  color: #1a1a1a;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   margin: 0;
   padding: 0;
+}
+
+/* Slightly airier reading + quieter headings for post body */
+main p, .content p {
+  line-height: 1.7;
+}
+
+h1, h2, h3 {
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+/* With page-layout: custom, titles are rendered inline inside the right column
+ * via {{< meta title >}} — suppress Quarto's auto title-block so it doesn't
+ * render above the grid and break nav alignment. */
+.page-layout-custom > header#title-block-header {
+  display: none;
 }
 
 h1, h2, h3, h4, h5, h6, p {

@@ -1,5 +1,5 @@
 ::: {.g-col-12 .g-col-md-3 .left-column}
-![](/img/signature.png){.signature}
+[![](/img/signature.png){.signature}](/)
 
 - [CV](/papers/kushner_cv.pdf)
 - [Papers](/papers/papers.html)

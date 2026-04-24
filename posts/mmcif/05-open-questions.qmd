@@ -3,8 +3,21 @@ title: "Open questions"
 order: 5
 ---
 
+{{< include /_includes/_post_head.qmd >}}
+
+{{< include _glossary.qmd >}}
+
+{{< include /_includes/_post_mid.qmd >}}
+
+# {{< meta title >}}
+
+
+
+
 - Is this a format, a library, a type system, a database, or all of the above? The answer probably depends on use case: a format for archival/sharing, a library for access/manipulation, a type system for validation, a database for querying.
 - What is the minimum viable subset that is useful? Probably: a Zarr-based layout with conventions for topology + coordinates + ensemble dimension + annotation overlays, a Python library for read/write, and converters to/from mmCIF.
 - Who adopts first? ML practitioners (who have the most acute pain from current formats)? cryo-ET groups (who are already on Zarr via copick/CZ Portal)? Crystallographers (who have the deepest investment in mmCIF)?
 - What is the relationship to existing standards? Complement (converters to/from mmCIF), competition (replace mmCIF for new use cases), or extension (new conventions that live alongside existing ones)?
 - Does the bond graph belong in the Hierarchy core? The argument for: bond connectivity is not reliably inferrable for arbitrary ligands. The argument against: it is derivable for all standard residues via CCD lookup, and putting it in the core creates a maintenance burden for the bond dictionary. Resolution probably requires examining what Boltz-1 and AF3 actually do when they encounter an unknown ligand.
+
+{{< include /_includes/_layout_end.qmd >}}

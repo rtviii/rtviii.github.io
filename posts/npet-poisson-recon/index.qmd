@@ -3,15 +3,30 @@ title: "3D tessellation of biomolecular cavities"
 subtitle: "Protocol for analyzing the ribosome exit tunnel"
 bibliography: references.bib
 author:
-  - name: "Artem Kushner" 
+  - name: "Artem Kushner"
   - name: "Khanh Dao Duc"
 
 date: "August 4 2024"
-categories: [ cryo-EM]    
+categories: [ cryo-EM]
 latex-auto-install: true
+title-block-style: none
+page-layout: custom
+css: /styles/homepage.css
 execute:
-  freeze: auto
+  freeze: true
 ---
+
+{{< include /_includes/_post_head.qmd >}}
+
+{{< include _glossary.qmd >}}
+
+{{< include /_includes/_post_mid.qmd >}}
+
+# {{< meta title >}}
+
+[{{< meta subtitle >}}]{.post-subtitle}
+
+
 
 ## Summary and Background
 
@@ -541,3 +556,5 @@ What you are left with is a smooth polygonal mesh in the `.ply` format. Below is
 
 
 ## References
+
+{{< include /_includes/_layout_end.qmd >}}

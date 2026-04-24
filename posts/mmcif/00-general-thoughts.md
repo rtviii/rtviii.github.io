@@ -1,0 +1,1 @@
+- the annotation infrastructure lends itself well to collaboration directly on the data. the model accumulates heterogenous modalities of annotations on itself, becomes a computational object in itself.

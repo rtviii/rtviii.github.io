@@ -3,6 +3,17 @@ title: "Composition"
 order: 3
 ---
 
+{{< include /_includes/_post_head.qmd >}}
+
+{{< include _glossary.qmd >}}
+
+{{< include /_includes/_post_mid.qmd >}}
+
+# {{< meta title >}}
+
+
+
+
 The previous chapter argued that heterogeneity should be described by a regime chosen from a small taxonomy -- [Heterogeneity Regime 1: Discrete Ensemble](02-architecture.qmd#heterogeneity), [Heterogeneity Regime 2: Trajectory](02-architecture.qmd#heterogeneity), [Heterogeneity Regime 3: Continuous Landscape](02-architecture.qmd#heterogeneity), with the factor graph regime as a sidebar -- and that every descriptor attaches to a *scope*: a level of the physical [Hierarchy](02-architecture.qmd#containment) or a grouping declared in [Representation](02-architecture.qmd#representation). This chapter is about the consequence: real systems almost never have just one heterogeneity descriptor. A crystallographic structure can simultaneously carry an atom-scoped B-factor, a residue-scoped altloc, and a chain-scoped TLS group; a cryo-EM reconstruction can carry an assembly-scoped ratcheting mode, a subunit-scoped rigid-body motion, and several entity-instance-scoped compositional states. The format has to support these descriptors coexisting, composing predictably, and being stored in different regimes and different materialization modes without any of them pinning the others to a particular choice.
 
 ## The composition principle
@@ -150,3 +161,5 @@ Three things, in decreasing order of concreteness:
 *Semantic legibility.* Consumers -- whether a visualization tool, an ML dataloader, or a refinement program -- can ask "what varies at chain scope," "what varies at residue scope," "what varies at atom scope" and get back descriptors typed by scope. A PyMOL-like consumer can ignore everything above residue scope if it wants a single-model render. A training pipeline can iterate over the nested compositional/conformational combinations without flattening to 50,000 explicit states. A refinement engine can update the chain-scope TLS parameters without touching the residue-scope altlocs.
 
 The next chapter walks through the annotations and computed-pass machinery that sits on top of this layered core, and how established tools (Zarr, DataFusion, TileDB, HDF5) map onto the storage side of the four layers plus the composition rule above.
+
+{{< include /_includes/_layout_end.qmd >}}

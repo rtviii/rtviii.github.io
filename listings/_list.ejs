@@ -1,0 +1,13 @@
+```{=html}
+<ul class="rt-list">
+<% for (const item of items) { %>
+  <li class="rt-list-item">
+    <% if (item.path) { %>
+      <a href="<%- item.path %>" target="_blank" rel="noopener"><%= item.text %></a>
+    <% } else { %>
+      <span><%= item.text %></span>
+    <% } %>
+  </li>
+<% } %>
+</ul>
+```

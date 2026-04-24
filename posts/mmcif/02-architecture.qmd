@@ -3,26 +3,34 @@ title: "Architecture"
 order: 2
 ---
 
-Before surveying specific technologies or existing formalisms, it is worth stating what shape we think the right data model has. This is a design claim, not a survey -- a stake in the ground that the explorations in the next sections should be read against.
+{{< include /_includes/_post_head.qmd >}}
 
-The central problem with forcing heterogeneous molecular data into a single abstraction -- whether a flat atom table, a `coords[state, atom, 3]` tensor, or a single DAG -- is that the data actually contains several mathematically distinct kinds of structure, each with different algebra and different storage requirements. Conflating them produces a format that handles each badly.
+{{< include _glossary.qmd >}}
 
-We split the architecture into two halves. The **core layers** describe what is true of every state of the system: its physical parts, and the named groupings scientists impose on those parts. The **ensemble layers** describe how states differ from one another and how those differences are stored. The core is stable under heterogeneity; the ensemble layers are the ones that earn the format its keep for modern use cases.
+{{< include /_includes/_post_mid.qmd >}}
 
-Within those halves there are four numbered layers:
+# {{< meta title >}}
 
-- §2.1.1 **Hierarchy** -- the physical tree: which atom is in which residue, which residue is in which chain, and so on.
-- §2.1.2 **Representation** -- named DAGs over hierarchy: domain partitions, coarse-grained mappings, rigid-body groups, multiscale pyramids.
-- §2.2.1 **Heterogeneity** -- how states vary, classified into three regimes with scopes attached to hierarchy levels.
-- §2.2.2 **Materialization** -- how those descriptions turn into actual coordinates.
+
+
+One problem with forcing heterogeneous molecular data into a single abstraction is that the data actually contains several distinct kinds of structure, each with different algebra and different storage requirements. Conflating them will produce a format that handles each badly.
+
+Let's split this into two halves roughly: the core layer and the ensembling layer. The **core layer** describes the "what", the  primary physical components of the system and their functional groupings. The **ensembling layers** describe what distinct states characterize these primitive (if any) and how these states differ from each other. The core is stable under heterogeneity; the ensemble layers are the ones that earn the format its keep for modern use cases.
+
+For ease of addressing these concepts, let's name these layers thusly:
+
+-  **Hierarchy** -- the physical tree: which atom is in which residue, which residue is in which chain, and so on.
+-  **Composition** -- named DAGs over hierarchy: domain partitions, coarse-grained mappings, rigid-body groups, a la multiscale pyramids.
+-  **Heterogeneity** -- what states are representable and how they vary. Three regimes with scopes attached to hierarchy levels.
+-  **Materialization** -- how those descriptions turn into actual coordinates wherever possible.
+
 
 Three distinct DAG structures show up, one in each of three layers, and conflating them is how existing formats end up tangled. It is worth naming them once up front so we can refer to each without ambiguity later:
 
-- The **representation DAG** (§2.1.2) is a mapping from hierarchy nodes to named groupings: atoms to coarse-grained beads, residues to domains, residues to TLS groups. Sparse bipartite, weighted, many per format.
-- The **scope DAG** (§2.2.1) is a state-space structure: nodes are (scope, state) pairs, edges are nesting or coupling constraints between heterogeneity descriptors at different hierarchy levels.
-- The **operator graph** (§2.2.2) is implicit in Materialization Mode C: a decoder or mode basis is a stored operator whose inputs are latent coordinates and whose outputs are displacement fields.
+- The **representation DAG**  is a mapping from hierarchy nodes to named groupings: atoms to coarse-grained beads, residues to domains, residues to TLS groups. Sparse bipartite, weighted, many per format.
 
-The three structures live in different layers, have different semantics, and serve different consumers. Separating them is most of the design work.
+- The **scope DAG** is a state-space structure: nodes are (scope, state) pairs, edges are nesting or coupling constraints between heterogeneity descriptors at different hierarchy levels.
+
 
 ## 2.1 Core layers {#core-layers}
 
@@ -234,3 +242,5 @@ The LLVM discipline -- elaborated in [Modularity examples](07-modularity-example
 Backbone dihedrals are a function of Cartesian coordinates. Contact maps are a function of coordinates and a cutoff. Spatial neighbor graphs are a function of coordinates, a cutoff, and a choice of distance metric. Spherical harmonic edge features are a function of neighbor graphs and a choice of $l_{\max}$. AF2-style pair representations are a function of sequence and structure. Validation scores are a function of coordinates and a reference database. Domain assignments are a function of coordinates and a domain classification algorithm. All of these are passes over Hierarchy + Representation + Heterogeneity + Materialization. None of them belongs in the core.
 
 The practical payoff: a format whose core is topology, coordinates, and heterogeneity variables has no reason to grow when a new experimental method produces a new derived quantity. The new quantity becomes an annotation overlay (see [Query language and annotations](04-annotations-and-passes.qmd#query-language-and-annotations)) or a computed pass. The core is stable because it is genuinely irreducible, not because it was protected by committee inertia.
+
+{{< include /_includes/_layout_end.qmd >}}

@@ -6,6 +6,15 @@
   margin: 2rem auto;
   padding: 0 2rem;
   overflow: visible;
+  transform: translateX(-100px);
+}
+
+/* On narrower viewports a 100px left shift pushes content off-screen,
+   so reset once there isn't enough room for it. */
+@media (max-width: 1300px) {
+  .homepage-container {
+    transform: none;
+  }
 }
 
 /* --- Left Column: Signature & Nav --- */
@@ -94,4 +103,51 @@
   margin-top: -1rem;
   margin-bottom: 1.5rem;
   text-align: right;
+}
+
+/* Post glossary (left rail on leaf blog posts) */
+.post-glossary {
+  margin-top: 1.25rem;
+}
+
+.post-glossary ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.post-glossary li {
+  margin-bottom: 0.45rem;
+  line-height: 1.35;
+}
+
+.post-glossary a {
+  font-size: 12px;
+  color: #333;
+  text-decoration: none;
+  letter-spacing: 0.01em;
+}
+
+.post-glossary a:hover {
+  color: #000;
+}
+
+/* Long-post title + subtitle rendered inside the right column */
+.right-column > h1:first-of-type {
+  font-size: 1.6rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.25rem 0;
+  color: #111;
+}
+
+.post-subtitle {
+  display: block;
+  font-size: 0.95rem;
+  color: #707070;
+  margin-bottom: 2rem;
+}
+
+.post-subtitle:empty {
+  display: none;
 }

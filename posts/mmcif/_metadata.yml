@@ -1,3 +1,7 @@
+page-layout: custom
+title-block-style: none
+css:
+  - /styles/homepage.css
 bibliography: references.bib
 toc: true
 toc-depth: 3

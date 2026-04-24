@@ -1,0 +1,5 @@
+::: {.grid .homepage-container}
+
+::: {.g-col-12 .g-col-md-3 .left-column}
+[![](/img/signature.png){.signature}](/)
+

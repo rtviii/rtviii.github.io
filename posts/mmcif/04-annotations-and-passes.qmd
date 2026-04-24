@@ -3,6 +3,17 @@ title: "Annotations and computed passes"
 order: 4
 ---
 
+{{< include /_includes/_post_head.qmd >}}
+
+{{< include _glossary.qmd >}}
+
+{{< include /_includes/_post_mid.qmd >}}
+
+# {{< meta title >}}
+
+
+
+
 ## Format and storage foundations
 
 Structural biology data is fundamentally multidimensional: atoms have properties (element, charge, name), atoms belong to residues and chains (hierarchy), atoms have coordinates that vary across conformational states (ensemble dimension), and various scalar/vector/tensor fields can be associated with atoms, residues, or the entire system at any level of this hierarchy. A text file of atom records serializes this but sacrifices random access, compression, and dimensional structure.
@@ -97,3 +108,5 @@ Mapping this onto the heterogeneity regime taxonomy:
 - Factor graph ensembles are probably not a primary training data source for structure prediction models, but they are relevant for models that explicitly predict correlated sidechain or loop conformations.
 
 The format implication: ensemble training data packaging is not a separate problem from the heterogeneity representation. If ensembles have a native representation in the format with standard population annotations, packaging training data for distribution-predicting models is a read operation. Under current formats it requires custom pipeline code for every model and every data source.
+
+{{< include /_includes/_layout_end.qmd >}}
