@@ -1,5 +1,5 @@
 ---
-title: "\"Black-box\" data"
+title: "\"Black-box\" data and model-side artifacts"
 order: 6
 ---
 
@@ -15,5 +15,52 @@ order: 6
 
 
 A deeper design critique of white-box formats comes from Naef and Bronstein's recent Chemical Science perspective (2026, rsc.li/chemical-science). Their central argument is that ML models in biology have traditionally relied on data produced as a byproduct of scientific inquiry -- repositories like the PDB aggregate and standardize this data, but they are not purpose-generated for ML, leading to poor standardization, limited scale, and systematic biases -- and that the more critical question now is not "the next AlphaFold" but "the next PDB," meaning new experimental data sources intentionally optimized for machine consumption rather than human intuition. The format implications are sharp: data generated to be consumed by models rather than inspected by scientists has no natural representation in mmCIF, whose entire design presupposes that a human will eventually open the file, assign meaning to the chain IDs, and judge whether the electron density fits -- a constraint that should be optional, not structural.
+
+The same argument runs in the reverse direction. If models are first-class consumers of structural data, their *outputs* -- weights, latents, predicted distributions, posterior samples -- are first-class deposition artifacts in their own right, and the format has to carry them with the same legibility and provenance discipline it carries experimentally derived data. The categories below are the ones currently homeless: stored implicitly inside per-paper checkpoint dumps, scattered across model-specific repositories with no link back to the structure they were trained against or applied to, and reconstructed from scratch every time a downstream consumer wants to use them. All four fit the same `(selector, body, provenance)` overlay machinery from [chapter 4](04-annotations-and-engine.qmd#query-language-and-annotations); the appendix is a sketch of what each one looks like in that machinery.
+
+::: {.def data-term="Model-side artifact"}
+A first-class deposition object whose origin is a model rather than an experiment: stored weights, latent coordinates, decoder checkpoints, predicted ensembles, training metadata. All four route through the same `(selector, body, provenance)` overlay machinery as human-curated annotations; the difference is what the provenance has to carry to make the artifact trustable -- weights hash, training data version, evaluation metrics.
+:::
+
+## Weights and decoders
+
+Materialization Mode C ([Layout § Materialization](02-architecture.qmd#materialization)) is already the slot for stored generative operators -- a normal-mode basis, a PCA basis, a cryoDRGN decoder. The structure file does not contain the weights; it carries a stable pointer to the artifact (URI plus content hash), the contract the artifact obeys (input shape, latent dimensionality, output is a per-atom displacement field over a specified Hierarchy scope), and the descriptor that consumes its outputs (Regime 3 latent coordinates per sample). This is the cleanest example of "black-box data" fitting the architecture, because the structure stores the *contract*, not the implementation.
+
+The data-management consequence is that the structure node and the model checkpoint co-evolve and have to be versioned together. When the decoder is retrained, the latent coordinates stored alongside the structure are no longer interpretable -- they index a different latent space. The format needs the linkage to be explicit enough that a stale latent set is detectable rather than silently misread. The wwPDB to ModelArchive split is a workable precedent: experimental structures and computational models live in linked but distinct archives, with cross-references that carry version. Generalizing this so that *any* generative artifact (decoder, basis, predicted-ensemble checkpoint) can be cross-referenced from a structure or map deposition is mostly a question of disciplined naming and content addressing, not new format machinery.
+
+## Latents and per-sample embeddings
+
+A larger and currently unhomed category. Three concrete shapes recur:
+
+- **cryoDRGN per-particle latent coordinates.** Shape `(N_particle, d)` with `d` typically 8 to 32. Scoped to the assembly, materialized as a Regime 3 descriptor whose coordinates are decoded by the operator above. Already representable under the existing architecture; the missing piece is a standard layout convention so that two cryoDRGN runs of the same dataset produce comparably-named latents.
+
+- **AF2-family embeddings.** The `single` representation `(N_res, c_s)` and the `pair` representation `(N_res, N_res, c_z)` from the evoformer. These are the most expensive intermediate objects in the AF2 pipeline and are essentially never shared -- every downstream model that wants them recomputes them, or trains around their absence. Cached as annotation overlays with provenance `(model identifier, weights hash, MSA hash, evoformer block index)`, they slot into the same machinery as a precomputed pair-feature tensor from the [ML-native chapter](08-ml-native.qmd#precomputed-features-as-cached-passes); the difference is provenance, not shape.
+
+- **Sequence-model embeddings** (ESM2, ProtT5, ProGen). Shape `(N_res, d)`. Strictly speaking these are not derived from the structure -- they are derived from the sequence, which the structure also carries -- but they are commonly co-located with structures because every structure-conditioned model uses them and recomputing them per training step is wasteful. Same overlay shape, different selector (residue-scoped, sequence-derived).
+
+All three sit in the `(selector, body, provenance)` shape from chapter 4. The novel piece is making the provenance rich enough that two depositions of the same structure with different sequence-model embeddings, or different evoformer weights, are legibly distinct rather than silently superseding each other.
+
+## Model outputs
+
+pLDDT, PAE, predicted distograms, predicted ensembles, posterior sample sets. These split along a useful axis: scalar/vector/tensor *annotations* on a single structure, versus *full ensembles* that produce another structure or set of structures.
+
+The annotation case -- per-residue pLDDT, residue-pair PAE, predicted distance distributions, model confidences -- is the easy one. They are already overlays in the AlphaFold DB and ModelArchive in everything but name; lifting them into the format's annotation machinery is mostly a relabelling exercise. Provenance is the producing model and weights hash; the body is the array; the selector is whatever Hierarchy/Groupings scope the array is keyed to.
+
+The full-ensemble case is more interesting because the predicted ensemble is itself a Heterogeneity descriptor in the sense of [chapter 2](02-architecture.qmd#heterogeneity). Diffusion-based structure samplers ([@chung2024dps], [@levy2025inverse]), cryo-EM-guided samplers like cryoBoltz ([@raghu2025cryoboltz]), and other generative methods produce posterior sample sets whose shape is exactly Regime 1 (a discrete bundle of conformers) or Regime 3 (samples from a continuous decoder). These do not need a new slot; they slot into the existing heterogeneity layer with provenance `(model identifier, weights hash, sampling temperature, conditioning data)`. The architectural payoff is that the same machinery distinguishes "experimental ensemble" from "predicted ensemble" via *provenance* rather than via separate categories. A consumer that does not care about the source treats them identically; a consumer that does (e.g. a refinement engine that should not refit against predicted ensembles) reads the provenance and filters.
+
+## Training metadata
+
+What it takes to trust a model artifact:
+
+- Training data version -- ideally a content hash of the deposition set used, with a canonical reference to a versioned snapshot of the PDB or successor archive.
+- Hyperparameters -- the configuration the artifact was produced under, in whatever serialization the producing code uses, with enough discipline that two artifacts produced under the same config are bitwise comparable.
+- Eval metrics -- held-out test set performance numbers, with the test set itself content-hashed.
+- Model lineage -- parent checkpoints, fine-tuning history, base model identifier.
+
+Most of this is structured key-value data and free text, no different in shape from any other provenance the format already needs. It is worth calling out as a separate sub-category because it is what makes the difference between weights one can ship and weights one can reason about.
+
+## Everything routes through the same overlay machinery
+
+All four categories above use exactly the same `(selector, body, provenance)` machinery the format already needs for human-curated annotations. There is no new architectural layer here. What the "next PDB" framing in the opening section asks for, taken concretely, is a discipline -- overlays rich enough, provenance disciplined enough, and naming stable enough -- that model-generated and experiment-generated annotations sit in the same namespace and remain mutually legible. The architecture from chapters 2--4 is already the thing that makes this possible; the work that remains is conventions on top of it.
 
 {{< include /_includes/_layout_end.qmd >}}

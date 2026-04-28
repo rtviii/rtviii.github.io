@@ -1,0 +1,53 @@
+---
+title: "Annotations and the artifact engine"
+order: 4
+---
+
+{{< include /_includes/_post_head.qmd >}}
+
+{{< include _glossary.qmd >}}
+
+{{< include /_includes/_post_mid.qmd >}}
+
+# {{< meta title >}}
+
+
+
+
+The previous chapters described what a deposition contains and how its descriptors compose. This chapter is about the engine that sits on top of that core: the query language that selects molecular subsets across hierarchy, composition, and ensemble dimensions; the annotation overlay where everything not in the irreducible core lives; and the ML-native featurization passes that consume the core to produce graph and equivariant inputs. The pattern recurs throughout: a small, stable core plus a wide, opinionated periphery of computed passes and external artifacts, attached by selectors and provenance rather than copied into the core.
+
+## Query language and annotations
+
+::: {.def data-term="Selector"}
+A query expression that names a molecular subset across the four core layers -- atoms, residues, chains, domains, named groupings -- and across conformational states. Selectors are the address-space of the format: every annotation, every cached pass output, every overlay attaches to a selector rather than to raw atom indices, so the binding survives renumbering.
+:::
+
+**Query language.** Need: select arbitrary molecular subsets (atoms, residues, chains, domains) at any level of hierarchy, across conformational states, composably. MolQL ([github.com/molstar/molstar](https://github.com/molstar/molstar), embedded in Mol*) is the most expressive existing molecular selection language. VMD/MDAnalysis selections are simpler but widely used. Extension needed for: state selection, cross-state predicates, annotation predicates.
+
+If storage is columnar/array-based, molecular selections can compile to predicates that a query engine (DataFusion) pushes down to the storage layer. "chain A and resid 50-80 in state 3" becomes: filter on chain_id column, range filter on res_seq column, index into state dimension -- only relevant chunks are read. Spatial predicates ("within 5A of ligand") need a stored spatial index (R-tree) and compile to a UDF call.
+
+**Annotations.** Core model: **(selector, body, provenance)** triple. The selector is a query expression. The body is arbitrary typed data (text, scalar, vector, array, structured object, reference). The provenance records author, method, software, date, confidence.
+
+::: {.def data-term="Annotation overlay"}
+A separate, additive layer of `(selector, body, provenance)` triples attached to a structure without modifying its core. Modeled after copick's overlay filesystem: the base data is read-only, overlays are writable and namespaced by their producer, and multiple annotators coexist without stepping on each other or on the underlying structure.
+:::
+
+Oli Clarke's Coot residue annotation tool ([bsky.app/olibclarke/post/3micblpuoxc2u](https://bsky.app/profile/olibclarke.bsky.social/post/3micblpuoxc2u)) demonstrates the impulse: save notes associated with the active residue, persist in mmCIF. The generalization: associate _any_ data with _any_ molecular selection, in a separate layer (copick overlay pattern) so multiple annotators coexist and annotations are decoupled from the model version.
+
+This subsumes: UniProt features, CATH domains, validation metrics, qFit conformers, ML confidence scores, manual curation notes, force-field parameters -- all are (selector, body, provenance) triples with different body types and different provenance.
+
+Key design question: how to make selectors persistent and portable across structures (use canonical identifiers like UniProt residue numbers rather than PDB-specific numbering).
+
+## ML-native operations slot into the same engine
+
+A few representative cases ground the abstraction above and corroborate the claim that the annotation overlay covers ML-pipeline workloads as readily as it covers human curation. Three short examples; the full catalog of access patterns and feature caches lives in [ML-native data](08-ml-native.qmd).
+
+- **Bond graph as a core artifact.** Covalent edges for a graph neural network are currently inferred per structure from coordinates and element types because mmCIF doesn't reliably carry bond orders. The [Hierarchy](02-architecture.qmd#containment) layer puts the bond graph in the core, so the inference step disappears.
+- **Spatial neighbour query as a cached pass.** Every E(3)-equivariant model rebuilds a $k$-d tree over coordinates for each structure at every training step. A stored spatial index sits in the annotation overlay keyed by `(producing pass, parameters, version)`; two consumers with different cutoffs produce two overlays and neither perturbs the core.
+- **Tokenization as a deterministic read.** AF3 / Boltz / Chai tokenization needs only what Hierarchy already stores -- atom types, bonds, residue membership, entity type. A format that carries this explicitly turns tokenization from an inference step into a read-and-map operation; the model-specific vocabulary is one more overlay.
+
+Each case fits the (selector, body, provenance) shape: the selector picks the molecular subset, the body is the cached array, the provenance pins down the producing function and its parameters. The discipline that keeps the core stable -- "derived information lives in passes, not in the IR" -- never precludes *caching* pass outputs; it just says the cache lives in the overlay namespace, not in the core.
+
+The full survey of ML-native access patterns, the catalogue of features worth caching, and the regime-mapped training-data shapes for distribution-predicting models are all taken up in [ML-native data](08-ml-native.qmd). The [black-box appendix](06-black-box-data.qmd) extends the same machinery to model-side artifacts -- weights, decoders, latents, training metadata.
+
+{{< include /_includes/_layout_end.qmd >}}

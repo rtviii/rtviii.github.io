@@ -1,0 +1,127 @@
+---
+title: "ML-native data: access patterns and precomputed features"
+order: 6
+---
+
+{{< include /_includes/_post_head.qmd >}}
+
+{{< include _glossary.qmd >}}
+
+{{< include /_includes/_post_mid.qmd >}}
+
+
+# {{< meta title >}}
+
+
+TODO: subsection on diffusion steering
+
+
+
+The [annotations and artifact engine](04-annotations-and-engine.qmd) chapter sketches a few representative ML-pipeline operations and shows that they all fit the (selector, body, provenance) overlay shape. This chapter does the work that sketch defers: catalogue the *features* a structural ML pipeline wants in detail, the *access patterns* into a structure file those features require, and the discipline that keeps cached pass outputs from polluting the core.
+
+The short version: the architecture from chapters 2--3 already supports the access patterns ML pipelines want, provided the storage layer is chunked and indexable (Zarr, TileDB) rather than line-oriented (mmCIF). And the discipline that keeps the core stable -- "derived information lives in passes, not in the IR" -- does not preclude *caching* pass outputs. It says the cache lives in the [annotation overlay](04-annotations-and-engine.qmd#query-language-and-annotations) namespace, with the parameters of the producing pass in the provenance, so that two consumers with different cutoffs produce two overlays and neither invalidates the other or perturbs anything else.
+
+## ML-native structural operations
+
+The fundamental pattern in all current structure ML models: **coordinates + chemistry -> graph -> message passing -> prediction**. The specifics vary but converge on shared primitives. This section catalogues those primitives and the redundant work they require under current formats, then maps the heterogeneity regime taxonomy onto the training data requirements for the next generation of distribution-predicting models.
+
+**Graph construction.** A molecular graph G = (V, E) where V are atoms or residues with feature vectors, E are edges (spatial proximity, covalent bonds, sequence connectivity) with features. Edge construction is the bottleneck:
+
+- Spatial: all pairs within cutoff r (typically 8-12A). Requires neighbor search, O(N log N) with k-d tree or O(N^2) brute force. Rebuilt for every structure at every training step.
+- Covalent: bond graph from topology. Currently inferred from coordinates + element types because mmCIF doesn't reliably carry bonds.
+- Sequence: (i, i+1) backbone edges.
+
+The Hierarchy layer proposed in [Layout § Hierarchy](02-architecture.qmd#containment) directly addresses the covalent edge problem: an explicit bond graph in the core eliminates the inference step entirely. Spatial edges remain dynamic (cutoff and metric are model choices) but a stored spatial index -- R-tree or k-d tree serialized alongside the coordinate array -- would reduce neighbor construction from O(N log N) per structure to O(k) lookups per atom, where k is the number of neighbors within the cutoff.
+
+**Equivariant features.** E(3)-equivariant models (NequIP, MACE, Allegro, eSCN) decompose features into irreducible representations of $\mathrm{SO}(3)$. The displacement vector between atoms $i$ and $j$ is expanded in spherical harmonics $Y_l^m(\mathbf{r}_{ij}/|\mathbf{r}_{ij}|)$ via e3nn ([github.com/e3nn/e3nn](https://github.com/e3nn/e3nn)). This computation is identical for every structure with the same topology and the same cutoff. If the format stored a spatial index enabling $O(k)$ neighbor lookup and precomputed spherical harmonic expansions at stored edges, feature construction would become a read operation rather than a compute operation. Whether this is actually worth storing depends on the ratio of training time to storage cost.
+
+**Pair representations.** AF2's pair representation is an $(N_{\mathrm{res}}, N_{\mathrm{res}}, 128)$ tensor updated through the evoformer. Initial pair features -- residue-residue distance bins, relative sequence position encoding, template distance and angle features -- depend only on the structure, not on model weights, and could in principle be precomputed. At 128 features and $N_{\mathrm{res}} = 1000$ this is $\sim$500MB per structure uncompressed. Feasible if compressed and chunk-read, but probably only worth precomputing for large training campaigns where the same structure is seen many times. The format should make this storable without requiring it.
+
+**Tokenization.** AF3, Boltz-1, and Chai-1 tokenize the molecular system: each standard residue is one token, ligand atoms or functional groups become tokens, nucleotide bases are tokens. The token graph has heterogeneous node types and multiple edge types. The tokenization is model-specific but the underlying information it requires -- atom types, bond connectivity, residue membership, entity type -- is the same across models and is exactly what the Hierarchy layer stores. A format that carries this information explicitly enables tokenization as a deterministic read-and-map operation rather than an inference step.
+
+**Training data for distribution-predicting models.** Current models predict single structures. The next generation will predict distributions over structures, conditioned on sequence and experimental context. The training data shape this requires is not (sequence, structure) pairs but (sequence, ensemble) pairs where the ensemble has associated populations or free energies.
+
+Mapping this onto the heterogeneity regime taxonomy:
+
+- Heterogeneity Regime 1 ensembles (NMR bundles, qFit outputs, IHM discrete state models) are already close to the right shape -- the format work needed is standardizing population and free energy annotations.
+- Heterogeneity Regime 2 trajectories are the largest existing source of ensemble data. The format work needed is efficient access to subsampled or stride-selected frames without reading the full trajectory, which is a chunking and indexing problem.
+- Heterogeneity Regime 3 representations (cryoDRGN, NMA) provide the most information-dense training signal because the latent coordinates are continuous and the decoder provides a differentiable generator. A model trained against these could in principle learn to predict latent coordinates directly rather than just Cartesian coordinates. The format work needed is standardizing the latent-plus-decoder serialization.
+- Factor graph ensembles are probably not a primary training data source for structure prediction models, but they are relevant for models that explicitly predict correlated sidechain or loop conformations.
+
+The format implication: ensemble training data packaging is not a separate problem from the heterogeneity representation. If ensembles have a native representation in the format with standard population annotations, packaging training data for distribution-predicting models is a read operation. Under current formats it requires custom pipeline code for every model and every data source.
+
+## What "ML-native" actually means
+
+The complaint behind chapter 1's pain points is rarely that mmCIF is missing a category. It is that the *access pattern* required to get any subset of the data forces a full parse. A training pipeline that wants the C-alpha trace of chain B does not get to ask for the C-alpha trace of chain B; it gets to read the whole text file, instantiate every atom, and then filter. For a 200k-atom ribosome the cost is bearable per sample but ruinous at dataloader scale, and it is exactly the cost mmCIF was not designed to optimize.
+
+It is worth being concrete about which access patterns matter. There are roughly five, in increasing order of distance from what text mmCIF supports:
+
+1. **Random subset read** -- "give me the C-alpha coordinates of residues 50--80 of chain A, in state 3, without reading anything else." Falls out of chunked array storage (Zarr, TileDB) plus the [Hierarchy](02-architecture.qmd#containment) parent-index arrays from chapter 2. The selector compiles to integer index ranges; the storage layer reads only the matching chunks.
+
+2. **Spatial neighbor query** -- "give me all atoms within 5 angstroms of atom $i$." Independent of the file format in principle, but in practice every model rebuilds a k-d tree per structure per training step because the index is not stored. Reducing this to $O(k)$ lookups requires a stored spatial index (R-tree, cell list, or sorted-Hilbert-curve order) co-located with the coordinates and updated atomically with them when the structure mutates.
+
+3. **Cross-state slice** -- "for descriptor $d$ at scope $s$, give me its values across every state in the ensemble, without materializing the other descriptors." This is the access pattern an analysis like "how does the TLS rotation correlate with altloc occupancy" wants. The architecture already gives this for free: each descriptor is independently scoped, each is independently materialized, and an ensemble is a chunked array along the state axis. Forcing every descriptor through full enumeration ([Materialization Mode A](02-architecture.qmd#materialization)) defeats it; respecting [Mode B and Mode C](02-architecture.qmd#materialization) preserves it.
+
+4. **Cross-structure batch read** -- "give me CA coordinates for these 100k structures, in chunk-aligned shards I can stream into a dataloader." Largely a packaging concern, not a per-structure format concern, but it is *enabled* or *prevented* by the per-structure layout. If the per-structure file has a stable canonical CA-coordinate array at a known path inside the Zarr group, batched reads compose; if CA coordinates are derivable only by parsing and filtering atoms, they don't.
+
+::: {.def data-term="Differentiable read"}
+An access pattern that delivers structural data directly into a tensor (numpy / torch / jax) without an intermediate parsed object. Format-level support means a Zarr or Arrow-backed array maps to a tensor in one zero-copy step; format-level *failure* means every consumer copies into its own representation between disk and tensor.
+:::
+
+5. **Differentiable read** -- "give me coordinates as a tensor, on the right device, with autograd already wired up." Strictly a Python concern, not a format concern, but the format choice affects how messy the bridge is. A Zarr array maps cleanly to a `torch.Tensor` via `torch.from_numpy(zarr_array[...])`; a parsed mmCIF requires a copy and a layout transformation per structure. The format does not need to be aware of autograd -- it just needs to deliver coordinates without forcing a non-tensor representation between disk and tensor.
+
+The first three fall out of chapters 2--4 directly, without any new format machinery, provided the storage substrate is chunked. The fourth is a packaging convention -- analogous to how OME-Zarr standardizes the multiscale path structure so any consumer knows where to look. The fifth is downstream tooling.
+
+## Precomputed features as cached passes
+
+::: {.def data-term="Cached pass"}
+The stored output of a deterministic function over the core (a neighbour graph, a backbone-dihedral table, a SASA array). Lives in an annotation overlay namespace keyed by `(producing pass id, parameters, version)` rather than in the IR itself. Two consumers with different parameters produce two overlays; neither invalidates the core or the other.
+:::
+
+The [LLVM discipline](07-modularity-examples.qmd#llvm) elaborated in the appendix says backbone dihedrals, contact maps, neighbor graphs, spherical harmonic edge features, AF2-style pair tensors, and validation scores do not belong in the core. They are derived; their parameters (cutoff, $l_\max$, distance metric) are choices; two consumers with different choices would otherwise produce inconsistent IRs.
+
+This is correct, and load-bearing for the stability argument. It is also commonly *misread* as saying these arrays should never be stored. They should be stored when storage is cheaper than recomputation -- which is essentially always for a feature reused across many training runs. The right slot for the cache is the [annotation overlay](04-annotations-and-engine.qmd#query-language-and-annotations) machinery from chapter 4: the body of the overlay is the cached array, and the provenance records the producing pass, its version, and its parameters. Two consumers with different cutoffs produce two named overlays in their own namespaces; neither invalidates the other; the core is untouched.
+
+The candidates that recur across structural ML pipelines, with rough storage cost vs reuse benefit:
+
+- **Spatial index** (R-tree, cell list, or Hilbert/Morton-sorted order on the coordinate array). Tiny -- a few bytes per atom for an order, $O(N)$ for a tree. Reused by every neighbor-based feature, which is essentially every E(3)-equivariant model and every contact-based loss. The single highest-leverage cache.
+
+- **Backbone dihedrals** (phi, psi, omega, chi). A handful of scalars per residue. Trivial to compute, but every training pipeline computes them, which means the marginal IO of caching them is dominated by the marginal CPU of recomputing. Cache anyway -- the consistency benefit (every consumer sees the same dihedral conventions) is worth more than the storage.
+
+- **SASA, DSSP secondary structure assignment**. Moderate compute, widely reused, well-defined output. Annotation overlay with provenance "(DSSP, version, parameters)".
+
+- **Spherical harmonic edge features** at fixed cutoff and $l_\max$. Genuinely heavy -- $(N_{\mathrm{edge}}, (l_\max + 1)^2)$ per structure -- and the parameters $(r_\mathrm{cut}, l_\max)$ are model-specific. Cache only when those parameters are stable across a training campaign large enough to amortize the storage. Two campaigns with different parameters get two overlays.
+
+- **Pair features** (residue-residue distance bins, relative position encoding). AF2-shape, $(N_\mathrm{res}, N_\mathrm{res}, c)$. Heavy. Probably only worth caching for very-frequently-used training subsets where the same structure is seen many times. The format should make this storable without requiring it.
+
+- **Tokenization tables** for AF3/Boltz/Chai-style heterogeneous tokens. Lookup tables keyed off the [Hierarchy](02-architecture.qmd#containment) plus a small amount of model-specific vocabulary. Tiny, deterministic given a vocab version, useful to cache because tokenization mismatches across consumers are a common bug source.
+
+- **Equivariant local frames** per residue (the orientation matrix used by E(3) and SE(3) models to express features in a residue-local basis). $9 N_\mathrm{res}$ floats. Cheap, ubiquitous in equivariant pipelines.
+
+The discipline that keeps caching from re-creating the mmCIF accretion problem is straightforward: every cached array sits in an overlay namespace keyed by `(producing pass identifier, parameters, version)`. Nothing in the core depends on the cache existing. Two depositions with the same structure but different cached features differ only in their overlay set. A reader that does not know about a particular cache silently ignores it. A reader that knows about it gets a stored result instead of a recomputation.
+
+There is a forward link worth marking. Materialization Mode C ([Layout § Materialization](02-architecture.qmd#materialization)) is already the slot for a stored *operator* whose output is regenerated on demand: a normal-mode basis, a cryoDRGN decoder, a PCA basis. A precomputed-feature overlay is the same shape with the regeneration step skipped: the operator is the producing pass, the parameters are the inputs, and the cached array is the materialized output of one specific call. The two are points on a continuum -- regenerated on demand vs cached once -- and both fit the same provenance schema.
+
+## From cached features to model-side artifacts
+
+A cached pair-feature tensor and an AF2 single-representation embedding sit on a continuum. Both are arrays produced by *something* over the structure; both attach to selectors over [Hierarchy](02-architecture.qmd#containment) or [Groupings](02-architecture.qmd#groupings); both want the same `(selector, body, provenance)` machinery. The only difference is whether the producing "something" is a deterministic function (compute pair distances and bin them) or a learned model whose weights are themselves an artifact (run the AF2 evoformer; emit `single` and `pair`).
+
+The discipline that handles the first case generalizes to the second once the provenance is rich enough to describe the model -- weights hash, architecture identifier, MSA hash, training data version. That is the substance of the [black-box appendix](06-black-box-data.qmd), which takes up weights/decoders, latents/embeddings, model outputs, and the training metadata that makes any of those worth trusting.
+
+## The dataloader concern
+
+A format that supports chunk-aligned reads, stored spatial indices, and ensemble slicing makes a fast dataloader trivial. The format itself should not ship a dataloader -- that is downstream tooling that will outlive any specific framework -- but it should also not make a fast one impossible. mmCIF currently does, in two specific ways: there is no random access to subsets, and there is no canonical layout for derived features that a dataloader could rely on across structures.
+
+The closest existing precedent is [copick](https://github.com/copick/copick), which layers an overlay filesystem on top of OME-Zarr cryo-ET data: read-only base data plus writable annotation overlays, typed annotation objects with provenance, and a CLI. The pattern is directly applicable: structures and their cached features sit in an immutable layer; per-consumer overlays (different cutoffs, different feature sets, different model embeddings) sit on top without touching the base. The dataloader reads the union of base and selected overlays.
+
+## Open questions specific to ML-native data
+
+A handful of questions that are not resolved by the architecture as it stands and should be flagged rather than papered over:
+
+- **Stable per-atom IDs across re-refinement and across releases.** UniProt residue numbering is the closest existing stable identifier and is the right anchor at residue scope, but it does not solve the atom-name problem (CCD atom names can change between dictionary versions, and refinement can add or remove atoms). Cached features keyed by per-atom IDs go stale silently when those IDs shift. Worth working out a content-hash-based atom identity that survives renumbering.
+
+- **Are equivariant local frames universal enough to belong in the core?** The argument for: every E(3)/SE(3) model needs them, the convention for picking the frame from $(N, C_\alpha, C)$ is essentially universal, and recomputation is cheap but not free. The argument against: it is derived, putting it in the core re-creates exactly the accretion failure mode the LLVM discipline is meant to prevent. Currently leaning toward keeping it as a cached pass, but worth surfacing.
+
+- **Cache versioning under structure mutation.** When a structure is re-refined and an atom moves by 0.5 angstroms, what happens to the cached pair-feature tensor that was computed against the previous coordinates? Three options: silently invalidate (force recomputation), regenerate as part of the re-refinement pipeline, or keep with a stale-version flag and let the consumer decide. None is obviously right; the format probably needs all three modes selectable in the cache provenance.
+
+{{< include /_includes/_layout_end.qmd >}}

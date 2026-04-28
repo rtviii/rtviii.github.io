@@ -1,10 +1,19 @@
+::: {.post-nav}
+
 ::: {.post-glossary}
 - [Overview](index.qmd)
 - [1. Problems with mmCIF](01-problems.qmd)
-- [2. Architecture](02-architecture.qmd)
-- [3. Composition](03-composition.qmd)
-- [4. Annotations and computed passes](04-annotations-and-passes.qmd)
-- [5. Open questions](05-open-questions.qmd)
-- [Appendix: black-box data](06-black-box-data.qmd)
+- [2. Layout](02-architecture.qmd)
+- [3. Evaluation model](03-evaluation-model.qmd)
+- [4. Annotations and the artifact engine](04-annotations-and-engine.qmd)
+- [5. Technology survey](04b-technology-survey.qmd)
+- [6. Open questions](05-open-questions.qmd)
+- [7. ML-native access patterns](08-ml-native.qmd)
+- [Appendix: black-box data and model artifacts](06-black-box-data.qmd)
 - [Appendix: modularity examples](07-modularity-examples.qmd)
+:::
+
+::: {.post-sections}
+:::
+
 :::

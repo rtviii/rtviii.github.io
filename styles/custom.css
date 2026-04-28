@@ -147,3 +147,481 @@ body[data-page-type="homepage"] .quarto-grid-item img,
 .tippy-box[data-theme~='light-border'] .tippy-arrow {
   color: #fff;
 }
+
+/* Quarto's built-in citation popovers (theme=quarto). Overrides Quarto's
+ * default boxed look so the citation hovercard reads like the link-preview
+ * popover: small serif body, hanging indent, faint hairline. */
+.tippy-box[data-theme~='quarto'] {
+  background-color: #fff;
+  border: 1px solid #e0e3e8;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  border-radius: 3px;
+  color: #1a1a1a;
+}
+
+.tippy-box[data-theme~='quarto'] .tippy-content {
+  padding: 0.7rem 0.95rem;
+  font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #1a1a1a;
+}
+
+.tippy-box[data-theme~='quarto'] .csl-entry {
+  position: static;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 0.45em;
+}
+
+.tippy-box[data-theme~='quarto'] .csl-entry::before {
+  content: none;
+}
+
+.tippy-box[data-theme~='quarto'] .csl-left-margin {
+  flex: 0 0 auto;
+  color: #6b6b6b;
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+
+.tippy-box[data-theme~='quarto'] .csl-right-inline {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.tippy-box[data-theme~='quarto'] em {
+  font-style: italic;
+}
+
+.tippy-box[data-theme~='quarto'] a {
+  color: #6b6b6b;
+  text-decoration: none;
+  border-bottom: 1px dotted #b3b3b3;
+  word-break: break-word;
+}
+
+.tippy-box[data-theme~='quarto'] a:hover {
+  color: #1a1a1a;
+  border-bottom-color: #6b6b6b;
+}
+
+.tippy-box[data-theme~='quarto'] .tippy-arrow {
+  color: #fff;
+}
+
+/* ---------------------------------------------------------------------------
+ * Inline code (site-wide).
+ *
+ * Litera + Bootstrap default to a saturated purple monospace. Override with
+ * IBM Plex Mono, a faint warm background tint, and a small inline padding so
+ * it floats inside running prose without dominating it. The selector list is
+ * intentionally redundant: each form raises specificity above different
+ * Bootstrap rules that target `code`, `code.text-primary`, etc.
+ * ------------------------------------------------------------------------- */
+:not(pre) > code,
+.right-column :not(pre) > code,
+main code:not(.sourceCode):not([class*="hljs"]),
+article code:not(.sourceCode):not([class*="hljs"]) {
+  font-family: "IBM Plex Mono", "JetBrains Mono", ui-monospace,
+               SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace !important;
+  font-size: 0.88em;
+  font-weight: 400;
+  color: #1a1a1a !important;
+  background-color: #eaeef2 !important;
+  padding: 0.06em 0.3em;
+  border-radius: 2px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  /* prevent inline code from forcing line height to grow */
+  line-height: inherit;
+  /* discourage long identifiers from overflowing */
+  word-break: normal;
+  overflow-wrap: anywhere;
+}
+
+/* Code blocks (fenced) — tone down the litera default and drop the purple. */
+pre > code,
+pre code {
+  font-family: "IBM Plex Mono", "JetBrains Mono", ui-monospace,
+               SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  color: #2a2a2a;
+  background-color: transparent;
+  font-size: 0.88em;
+  line-height: 1.5;
+}
+
+pre {
+  background-color: #f0f3f6;
+  border: 1px solid #e0e3e8;
+  border-radius: 4px;
+  padding: 0.85em 1em;
+}
+
+/* ---------------------------------------------------------------------------
+ * Tables (site-wide blog standard).
+ *
+ * Smaller than body text, modern minimal borders: a thin top + bottom rule,
+ * faint row separators, no vertical lines, no Bootstrap zebra. Header row is
+ * a small uppercase label (label-sized, not heading-sized) so it sits as a
+ * column tag rather than a tier of typography. Inline code in cells drops
+ * its inset look so cell rhythm isn't broken.
+ * ------------------------------------------------------------------------- */
+.right-column table,
+main table,
+article table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.4rem 0;
+  font-size: 0.88em;
+  line-height: 1.45;
+  color: #1a1a1a;
+}
+
+.right-column table thead th,
+main table thead th,
+article table thead th {
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.78em;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #6b6b6b;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid #1a1a1a;
+  padding: 0.5em 1.1em 0.5em 0;
+  vertical-align: bottom;
+}
+
+.right-column table tbody td,
+main table tbody td,
+article table tbody td {
+  border: 0;
+  border-bottom: 1px solid #e0e3e8;
+  padding: 0.55em 1.1em 0.55em 0;
+  vertical-align: top;
+}
+
+.right-column table tbody tr:last-child td,
+main table tbody tr:last-child td,
+article table tbody tr:last-child td {
+  border-bottom: 1px solid #1a1a1a;
+}
+
+/* Trim the right-edge padding on the last column so the table edge aligns
+ * with the running text rather than ending in a wide empty gutter. */
+.right-column table tbody td:last-child,
+.right-column table thead th:last-child,
+main table tbody td:last-child,
+main table thead th:last-child,
+article table tbody td:last-child,
+article table thead th:last-child {
+  padding-right: 0;
+}
+
+/* Inline code inside table cells — keep at body weight, drop the box so the
+ * cell rhythm isn't broken. */
+.right-column table code,
+main table code,
+article table code {
+  background-color: transparent;
+  border: 0;
+  padding: 0;
+}
+
+/* ---------------------------------------------------------------------------
+ * .def — definition inset (site-wide).
+ *
+ * Compact two-zone block. The header is a thin row with the concept name
+ * (serif italic, body-text size) on the left and a faint 'definition' tag
+ * on the right. The body sits below, separated by a hairline.
+ *
+ * Each .def is automatically tagged with `id="def-<slug-of-data-term>"`
+ * by scripts.js so the .def-stack rail can deep-link back to it.
+ *
+ *   ::: {.def data-term="Scope"}
+ *   The set of nodes in the core that a given heterogeneity descriptor
+ *   applies to ...
+ *   :::
+ * ------------------------------------------------------------------------- */
+.def {
+  margin: 1.2rem 0;
+  border: 1px solid #e0e3e8;
+  border-radius: 2px;
+  background: #fdfdfb;
+  position: relative;
+  scroll-margin-top: 5rem;
+}
+
+/* Header zone — concept name in serif italic, kept body-sized so the
+ * inset doesn't compete with h3 / h4. Single hairline divider below. */
+.def[data-term]::before {
+  content: attr(data-term);
+  display: block;
+  padding: 0.3rem 0.85rem 0.3rem;
+  border-bottom: 1px solid #e0e3e8;
+  font-family: "IBM Plex Serif", Georgia, serif;
+  font-size: 0.86rem;
+  font-weight: 500;
+  font-style: italic;
+  color: #1a1a1a;
+  background: #eaeef2;
+  line-height: 1.3;
+}
+
+/* Faint 'definition' tag, right-aligned in the header row. */
+.def[data-term]::after {
+  content: "definition";
+  position: absolute;
+  top: 0.36rem;
+  right: 0.85rem;
+  font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 0.58rem;
+  letter-spacing: 0.05em;
+  color: #b3b3b3;
+  pointer-events: none;
+}
+
+/* Body — every direct child gets the inset padding. */
+.def > * {
+  padding-left: 0.85rem;
+  padding-right: 0.85rem;
+  font-size: 0.92em;
+  line-height: 1.55;
+  color: #1a1a1a;
+}
+
+.def > *:first-child { padding-top: 0.55rem; }
+.def > *:last-child  { padding-bottom: 0.6rem; }
+
+.def > p {
+  margin: 0 0 0.5em 0;
+}
+.def > p:last-child { margin-bottom: 0; }
+
+.def > p + p {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+/* ---------------------------------------------------------------------------
+ * .def-stack — running rail of definition chips on the right side.
+ *
+ * Populated by scripts.js as the user scrolls: every .def whose top is
+ * above the viewport gets a chip in the rail. Hovering a chip pops the
+ * full definition body via Tippy (theme=light-border).
+ *
+ * Sticky-positioned, fixed at right edge so the body column keeps its
+ * width. Hidden on narrow viewports where there isn't space.
+ * ------------------------------------------------------------------------- */
+.def-stack {
+  position: fixed;
+  top: 1.5rem;
+  right: max(1rem, calc(50vw - 700px));
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  max-height: calc(100vh - 3rem);
+  overflow-y: auto;
+  scrollbar-width: none;
+  pointer-events: none;
+}
+.def-stack::-webkit-scrollbar { display: none; }
+
+.def-stack-chip {
+  pointer-events: auto;
+  display: inline-block;
+  padding: 0.18rem 0.55rem;
+  font-family: "IBM Plex Serif", Georgia, serif;
+  font-size: 0.72rem;
+  font-style: italic;
+  color: #6b6b6b;
+  background: #fdfdfb;
+  border: 1px solid #e0e3e8;
+  border-radius: 2px;
+  text-decoration: none;
+  white-space: nowrap;
+  max-width: 14rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  transition: color 0.12s ease, border-color 0.12s ease, background 0.12s ease;
+}
+
+.def-stack-chip:hover {
+  color: #1a1a1a;
+  border-color: #c4cad1;
+  background: #ffffff;
+}
+
+@media (max-width: 1500px) {
+  .def-stack { display: none; }
+}
+
+/* Tippy preview body for a stacked def chip. */
+.def-stack-preview {
+  font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #1a1a1a;
+  padding: 0.6rem 0.8rem;
+  max-width: 360px;
+}
+.def-stack-preview-title {
+  font-family: "IBM Plex Serif", Georgia, serif;
+  font-size: 0.85rem;
+  font-style: italic;
+  font-weight: 500;
+  color: #1a1a1a;
+  margin-bottom: 0.35rem;
+}
+.def-stack-preview p { margin: 0 0 0.4em 0; }
+.def-stack-preview p:last-child { margin-bottom: 0; }
+
+/* ---------------------------------------------------------------------------
+ * .fold — collapsible inline note.
+ *
+ * Use anywhere a digression / caveat / open-question shouldn't break the
+ * flow of the main argument. A small italic header is always visible; the
+ * body collapses by default (or on click) so the page can be skimmed
+ * without dwelling on every footnote-shaped paragraph.
+ *
+ *   ::: {.fold data-summary="A note on bond connectivity"}
+ *   One open question here is...
+ *   :::
+ *
+ * scripts.js wires the click handler that toggles `.is-open`. Bodies are
+ * hidden by default; opening reveals.
+ * ------------------------------------------------------------------------- */
+.fold {
+  margin: 1.1rem 0;
+  border-left: 2px solid #c4cad1;
+  padding: 0 0 0 0.85rem;
+  background: transparent;
+}
+
+.fold-summary {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4em;
+  cursor: pointer;
+  user-select: none;
+  font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 0.78rem;
+  font-style: italic;
+  color: #6b6b6b;
+  letter-spacing: 0.01em;
+}
+
+.fold-summary::before {
+  content: "";
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 0.34em;
+  height: 0.34em;
+  border-right: 1.5px solid #a8b8c6;
+  border-bottom: 1.5px solid #a8b8c6;
+  transform: rotate(-45deg);
+  transition: transform 0.15s ease, border-color 0.15s ease;
+  position: relative;
+  top: -0.12em;
+}
+
+.fold.is-open > .fold-summary::before {
+  transform: rotate(45deg);
+  top: 0;
+}
+
+.fold-summary:hover { color: #1a1a1a; }
+.fold-summary:hover::before { border-color: #5d7c93; }
+
+.fold-body {
+  display: none;
+  padding: 0.45rem 0 0 0;
+  font-size: 0.9em;
+  line-height: 1.6;
+  color: #3a3a3a;
+}
+
+.fold.is-open > .fold-body { display: block; }
+
+.fold-body > p { margin: 0 0 0.6em 0; }
+.fold-body > p:last-child { margin-bottom: 0; }
+
+/* ---------------------------------------------------------------------------
+ * Quarto callouts (.callout-note / .callout-tip / .callout-warning / etc.).
+ *
+ * The litera defaults render these as coloured boxes (green for tip / note,
+ * yellow for warning, etc.) with icons. They visually shout louder than
+ * running prose and don't match the calm typography of the rest of the post.
+ *
+ * Restyle them to look identical to .def — quiet warm tan inset with a
+ * thin umber rule. The original callout title (if Quarto generated one) is
+ * preserved as a small uppercase label, mirroring `.def[data-term]`.
+ *
+ * If a callout type ever needs a stronger visual treatment, override the
+ * specific class (e.g. `.callout-warning`) below this rule.
+ * ------------------------------------------------------------------------- */
+.callout,
+.callout-note,
+.callout-tip,
+.callout-important,
+.callout-caution,
+.callout-warning {
+  margin: 1.4rem 0;
+  padding: 0.65rem 1rem 0.75rem 1.05rem;
+  border: 0;
+  border-left: 2px solid #5d7c93;
+  background: #eaeef2;
+  border-radius: 0 3px 3px 0;
+  box-shadow: none;
+}
+
+/* Hide Quarto's coloured icon column. */
+.callout > .callout-header,
+.callout-note > .callout-header,
+.callout-tip > .callout-header,
+.callout-important > .callout-header,
+.callout-caution > .callout-header,
+.callout-warning > .callout-header {
+  background: transparent !important;
+  border: 0;
+  padding: 0;
+  margin: 0 0 0.4rem 0;
+  color: #5d7c93;
+  font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.callout .callout-icon,
+.callout .callout-icon-container {
+  display: none !important;
+}
+
+.callout > .callout-body,
+.callout-note > .callout-body,
+.callout-tip > .callout-body,
+.callout-important > .callout-body,
+.callout-caution > .callout-body,
+.callout-warning > .callout-body {
+  padding: 0;
+  margin: 0;
+  background: transparent;
+}
+
+.callout > .callout-body p,
+.callout-note > .callout-body p,
+.callout-tip > .callout-body p,
+.callout-important > .callout-body p,
+.callout-caution > .callout-body p,
+.callout-warning > .callout-body p {
+  font-size: 0.95em;
+  line-height: 1.55;
+  margin: 0;
+  color: #2a2a2a;
+}

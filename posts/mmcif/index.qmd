@@ -1,6 +1,6 @@
 ---
-title: "Toward a Modern Foundation for Structural Biology Data"
-subtitle: "Notes on mmCIF, its limits, and what an ML-native successor might look like"
+title: "Structural Bio Format"
+subtitle: "Some notes on mmCIF and what an ML-native successor might look like"
 date: "2026-04-15"
 date-modified: last-modified
 categories: [structural-biology, data-formats, mmcif]
@@ -17,19 +17,18 @@ categories: [structural-biology, data-formats, mmcif]
 [{{< meta subtitle >}}]{.post-subtitle}
 
 
-
-_Working draft -- exploratory, incomplete. A scaffold for collecting references, usecases, and tradeoffs._
-
-This is a multi-part post. Use the sidebar to jump between sections.
+_This is a draft that i'm still working on_. 
 
 ## Contents
 
-1. [Problems with mmCIF and the current ecosystem](01-problems.qmd) -- single-structure assumption, parsing fragility, missing experimental linkage, no ML-native access, pain points.
-2. [Architecture](02-architecture.qmd) -- the four layers (hierarchy, representation, heterogeneity, materialization) split into a core / ensemble halves, and what stays out of the core.
-3. [Composition](03-composition.qmd) -- how heterogeneity at multiple scopes composes; scope-local regimes and mixed materialization modes; worked examples (crystallography, protein+ligand, ribosome).
-4. [Annotations and computed passes](04-annotations-and-passes.qmd) -- Zarr/DataFusion/TileDB storage, heterogeneity regimes mapped to existing tools, query language, ML-native operations.
-5. [Open questions](05-open-questions.qmd)
-6. [Appendix: "black-box" data](06-black-box-data.qmd)
-7. [Appendix: modularity examples in software ecosystems](07-modularity-examples.qmd) -- LLVM, DataFusion, AnnData, ECS, ONNX, OpenTelemetry, CF Conventions.
+1. [Problems with mmCIF and the current ecosystem](01-problems.qmd) -- some scattered complaints about the mmcif format in no particular order of importance.. single-structure assumption, parsing fragility, missing experimental linkage, no ML-native access, pain points.
+2. [Layout](02-architecture.qmd) -- a stab at the alternative "from the ground up" format architecture. Four layers are described: two for the core data structure and two for representing various heterogeneities.
+3. [Evaluation model](03-evaluation-model.qmd) -- realistic mixing scenarios, the two-stack composition principle (discrete-nesting and continuous-additive), independence vs nesting vs provenance, sample-axis classification (aligned/broadcast/mixed), Mode C operator interfaces, cross-backend integration, open design questions.
+4. [Annotations and the artifact engine](04-annotations-and-engine.qmd) -- the engine half: query language, the (selector, body, provenance) annotation overlay, ML-native featurization passes (graphs, equivariant features, pair representations, tokenization), training data shapes for distribution-predicting models.
+5. [Technology survey](04b-technology-survey.qmd) -- the survey half: Zarr/OME-Zarr/copick/TileDB/Arrow/DataFusion as storage primitives, with the three heterogeneity regimes mapped onto existing tools (H5MD, cryoDRGN, qFit, IHM).
+6. [Open questions](05-open-questions.qmd)
+7. [ML-native data: access patterns and precomputed features](08-ml-native.qmd) -- random access, neighbor lookup, equivariant feature caches, tokenization, dataloader chunking; the discipline for caching derived data without polluting the core.
+8. [Appendix: "black-box" data and model-side artifacts](06-black-box-data.qmd) -- weights, decoders, latents, model outputs, training metadata co-located with the structure.
+9. [Appendix: modularity examples in software ecosystems](07-modularity-examples.qmd) -- LLVM, DataFusion, AnnData, ECS, ONNX, OpenTelemetry, CF Conventions.
 
 {{< include /_includes/_layout_end.qmd >}}

@@ -1,3 +1,4 @@
+
 ---
 title: "Layout"
 order: 2
@@ -45,13 +46,13 @@ Any *non-physical* hierarchy someone might want to impose on the same set of com
 What else does not belong here: backbone dihedrals, contact distances, domain assignments, validation scores, force-field parameters, TLS groupings. Those are derivable, curatorial, executable; they live in Groupings or as annotation overlays. 
 
 
-::: {.fold data-summary="A note on bond connectivity"}
-One open question here is bond connectivity. Bond orders for standard residues can be inferred from comp_id lookups against the CCD, but for ligands this inference is unreliable -- mmCIF doesn't carry bond orders inline, and the CCD is a separate dependency.
+----> NOTE
+One open question hre is bond connectivity. Bond orders for standard residues can be inferred from comp_id lookups against the CCD, but for ligands this inference is unreliable -- mmCIF doesn't carry bond orders inline, and the CCD is a separate dependency. 
 
-The case for putting an explicit bond graph in the hierarchy core (rather than treating it as a derived pass) is that bond connectivity is not computable from coordinates and element types alone for arbitrary small molecules, making it genuinely irreducible information for heterogeneous systems. This is revisited in [ML-native structural operations](08-ml-native.qmd#ml-native-structural-operations).
-:::
+The case for putting an explicit bond graph in the hierarchy core (rather than treating it as a derived pass) is that bond connectivity is not computable from coordinates and element types alone for arbitrary small molecules, making it genuinely irreducible information for heterogeneous systems. This is revisited in [ML-native structural operations](04-annotations-and-engine.qmd#ml-native-structural-operations).
+----> NOTE
 
-### 2.1.2 Groupings {#groupings}
+### 2.1.2 Composition {#composition}
 
 
 
@@ -93,11 +94,11 @@ As described here this, i find this decoupled namespace thing pretty useful even
 
 Some more examples:
 
-- **Coarse-graining mappings** project fine Hierarchy levels onto coarser labels (atom $\to$ residue is already Hierarchy; atom $\to$ backbone-bead or residue $\to$ Martini-bead is a Grouping). These are what IHM's multi-scale model attempts, and the layer where CG beads should live.
+- **Coarse-graining mappings** project fine Hierarchy levels onto coarser labels (atom $\to$ residue is already Hierarchy; atom $\to$ backbone-bead or residue $\to$ Martini-bead is Composition). These are what IHM's multi-scale model attempts, and the layer where CG beads should live.
 - **Grouping mappings** project Hierarchy levels onto curatorial labels (CATH domains, secondary-structure elements, active-site membership). These are many-to-one or many-to-many and never unique; different sources produce different mappings of the same system.
 - **Partition mappings** project Hierarchy atoms or residues onto refinement-defined groups (TLS bodies, rigid-body partitions, symmetry-equivalent copies). These are often produced by a specific piece of software and are best stored with enough provenance to reproduce.
 
-Every mapping in the Groupings layer references Hierarchy IDs as its left side and declares its own label set on the right. None of them alters Hierarchy. The storage discipline is the same as for a sparse matrix: edge arrays plus per-edge data.
+Every mapping in Composition references Hierarchy IDs as its left side and declares its own label set on the right. None of them alters Hierarchy. The storage discipline is the same as for a sparse matrix: edge arrays plus per-edge data.
 
 ## 2.2 Ensemble layers {#ensemble-layers}
 
@@ -106,16 +107,16 @@ The ensemble layers describe how the system varies across the states the data ca
 The bridge between the core and the ensemble layers is *scope*.
 
 ::: {.def data-term="Scope"}
-The set of nodes in the core that a given heterogeneity descriptor applies to. Formally, a *scope handle* is a reference into Hierarchy or Groupings -- a specific Hierarchy node (one atom, one residue, one chain, the whole assembly), a span of Hierarchy nodes (a residue range), or a label from a Groupings mapping (the atoms in a named TLS group, the residues in a CATH domain). A descriptor's scope determines (i) which atoms its displacement contribution $\Delta_i^\ell(\cdot)$ affects, and (ii) where the descriptor sits in the scope DAG when it is composed with other descriptors.
+The set of nodes in the core that a given heterogeneity descriptor applies to. Formally, a *scope handle* is a reference into Hierarchy or Composition -- a specific Hierarchy node (one atom, one residue, one chain, the whole assembly), a span of Hierarchy nodes (a residue range), or a label from a Composition mapping (the atoms in a named TLS group, the residues in a CATH domain). A descriptor's scope determines (i) which atoms its displacement contribution $\Delta_i^\ell(\cdot)$ affects, and (ii) where the descriptor sits in the scope DAG when it is composed with other descriptors.
 :::
 
-Every heterogeneity descriptor attaches to exactly one scope. A B-factor is atom-scoped (atoms are Hierarchy nodes); a TLS descriptor is scoped to a group declared in Groupings; a cryoDRGN latent is scoped to the whole assembly. The scope is what makes a descriptor legible to composition (chapter 3): it is the mechanism by which "what varies at chain level" and "what varies at residue level" can coexist in the same deposition without stepping on each other.
+Every heterogeneity descriptor attaches to exactly one scope. A B-factor is atom-scoped (atoms are Hierarchy nodes); a TLS descriptor is scoped to a group declared in Composition; a cryoDRGN latent is scoped to the whole assembly. The scope is what makes a descriptor legible to composition (chapter 3): it is the mechanism by which "what varies at chain level" and "what varies at residue level" can coexist in the same deposition without stepping on each other.
 
 ### 2.2.1 Heterogeneity {#heterogeneity}
 
 The Heterogeneity layer describes how the system varies -- both the geometric variation that matters for function and the thermodynamic variation that carries free-energy content single structures discard [@wankowicz2025entropy; @lane2023frontier]. This is the hardest layer to design because the right abstraction depends entirely on what kind of variation is being described, and different experimental and computational methods produce fundamentally different kinds of variation. Forcing them all into a single formalism -- a list of discrete states, a continuous latent space, a trajectory -- will produce something that handles each case awkwardly.
 
-We distinguish three heterogeneity regimes, because each has a different natural representation and the transitions between them are meaningful design boundaries. Orthogonal to the regime axis is scope: every heterogeneity descriptor attaches to a level of the Hierarchy tree (§2.1.1) or a grouping in Groupings (§2.1.2). A B-factor is atom-scoped; a TLS group or ECHT hierarchical disorder component [@ploscariu2021ensemble] is scoped to a Groupings entry; the compositional/conformational nesting proposed by @wankowicz2024encoding is entity-instance scope containing residue-range scope. Both axes are features of the format.
+We distinguish three heterogeneity regimes, because each has a different natural representation and the transitions between them are meaningful design boundaries. Orthogonal to the regime axis is scope: every heterogeneity descriptor attaches to a level of the Hierarchy tree (§2.1.1) or a grouping in Composition (§2.1.2). A B-factor is atom-scoped; a TLS group or ECHT hierarchical disorder component [@ploscariu2021ensemble] is scoped to a Composition grouping; the compositional/conformational nesting proposed by @wankowicz2024encoding is entity-instance scope containing residue-range scope. Both axes are features of the format.
 
 When multiple heterogeneity descriptors coexist, their couplings (where they exist at all) form the **scope DAG**: nodes are (scope, state) pairs, and edges encode whether a child-scope state is legal only under some parent-scope state (hierarchical nesting). Chapter 3 walks through how descriptors at different scopes compose through this DAG to produce full coordinates.
 
@@ -127,7 +128,7 @@ A label for the *kind* of variation a descriptor describes, independent of how i
 
 The incumbent encoding in mmCIF is the altloc field paired with refined occupancy. What is broken is semantic, not structural: the same altloc letter overloads conformational variation (different geometry, same chemistry) and compositional variation (different chemistry entirely -- ligand absent vs. present, two bound fragments in the same site) [@rosenberg2024altlocs; @wankowicz2024encoding], and most analysis software silently discards alternates beyond `A`. Treating discrete states as a distinct regime rather than absorbing them into a continuous disorder parameter is empirically grounded: controlled simulations show refined B-factors can underestimate true positional heterogeneity by up to sixfold for mobile atoms [@kuzmanic2014xray], so the information carried by discrete conformers is not something B-factors ever recover. Binding events propagate rotamer rearrangements well beyond the binding site [@wankowicz2022ligand], which is precisely the kind of coupling this regime is meant to capture.
 
-**Heterogeneity Regime 2: Trajectory.** An ordered sequence of frames sharing a fixed topology -- MD, coarse-grained simulation, time-resolved crystallography, a cryo-EM particle series treated as a time series. The Hierarchy, Groupings, and per-atom properties (atom names, residue assignments, bond graph) are the same across every frame; what varies is the coordinate array. The right representation is what H5MD already does: a dense $(N_{\mathrm{frame}}, N_{\mathrm{atom}}, 3)$ array chunked along the frame axis, with per-frame metadata (time, energy, box vectors). The format question here is not about heterogeneity representation but about chunking strategy, compression, and efficient access patterns -- and whether the coordinate array is inline or pointed to as an external artifact via Materialization Mode C (§2.2.2), which is usually the right call because trajectories dwarf everything else in the deposition.
+**Heterogeneity Regime 2: Trajectory.** An ordered sequence of frames sharing a fixed topology -- MD, coarse-grained simulation, time-resolved crystallography, a cryo-EM particle series treated as a time series. The Hierarchy, Composition, and per-atom properties (atom names, residue assignments, bond graph) are the same across every frame; what varies is the coordinate array. The right representation is what H5MD already does: a dense $(N_{\mathrm{frame}}, N_{\mathrm{atom}}, 3)$ array chunked along the frame axis, with per-frame metadata (time, energy, box vectors). The format question here is not about heterogeneity representation but about chunking strategy, compression, and efficient access patterns -- and whether the coordinate array is inline or pointed to as an external artifact via Materialization Mode C (§2.2.2), which is usually the right call because trajectories dwarf everything else in the deposition.
 
 The frame axis does not need to be interpreted as a state space, and for long trajectories it shouldn't be. But derived state decompositions can coexist alongside the raw stream: a Markov state model reduces a trajectory to a small set of metastable states with a transition rate matrix [@bozovic2020pdz], which is effectively a Heterogeneity Regime 1 ensemble with provenance pointing back to the Heterogeneity Regime 2 source. Both shapes are valid, and the format should support carrying them side by side rather than forcing a commitment to one.
 
@@ -202,7 +203,7 @@ The four layers above describe the *intermediate representation*: what a deposit
 
 The LLVM discipline -- elaborated in [Modularity examples](07-modularity-examples.qmd) -- states that the IR should contain only what cannot be derived from anything more primitive, and that derived information should live in passes rather than in the core. This is worth stating explicitly for the structural biology case because the pressure to put derived information in the core is constant and has demonstrably destabilized mmCIF through category accretion.
 
-Backbone dihedrals are a function of Cartesian coordinates. Contact maps are a function of coordinates and a cutoff. Spatial neighbor graphs are a function of coordinates, a cutoff, and a choice of distance metric. Spherical harmonic edge features are a function of neighbor graphs and a choice of $l_{\max}$. AF2-style pair representations are a function of sequence and structure. Validation scores are a function of coordinates and a reference database. Domain assignments are a function of coordinates and a domain classification algorithm. All of these are passes over Hierarchy + Groupings + Heterogeneity + Materialization. None of them belongs in the core.
+Backbone dihedrals are a function of Cartesian coordinates. Contact maps are a function of coordinates and a cutoff. Spatial neighbor graphs are a function of coordinates, a cutoff, and a choice of distance metric. Spherical harmonic edge features are a function of neighbor graphs and a choice of $l_{\max}$. AF2-style pair representations are a function of sequence and structure. Validation scores are a function of coordinates and a reference database. Domain assignments are a function of coordinates and a domain classification algorithm. All of these are passes over Hierarchy + Composition + Heterogeneity + Materialization. None of them belongs in the core.
 
 The practical payoff: a format whose core is topology, coordinates, and heterogeneity variables has no reason to grow when a new experimental method produces a new derived quantity. The new quantity becomes an annotation overlay (see [Query language and annotations](04-annotations-and-engine.qmd#query-language-and-annotations)) or a computed pass. The core is stable because it is genuinely irreducible, not because it was protected by committee inertia.
 

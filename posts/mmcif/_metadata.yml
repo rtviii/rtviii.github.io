@@ -3,6 +3,10 @@ title-block-style: none
 css:
   - /styles/homepage.css
 bibliography: references.bib
+csl: ../../styles/numeric-superscript.csl
+link-citations: true
+citations-hover: true
+crossrefs-hover: true
 toc: true
 toc-depth: 3
 toc-location: right
@@ -12,5 +16,7 @@ execute:
 format:
   html:
     link-external-newwindow: true
-# Collapsible H2/H3 behavior lives in /scripts.js (section 3),
-# scoped to /posts/mmcif/ via a path check.
+# Collapsible H2/H3 behavior + current-chapter highlight + in-page section
+# list injection live in /scripts.js, scoped to /posts/mmcif/ via a path check.
+# Inline citation styling (numeric superscript) is enforced via CSS in
+# styles/homepage.css — the CSL above only produces plain numbers.

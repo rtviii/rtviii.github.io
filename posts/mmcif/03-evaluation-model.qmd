@@ -1,0 +1,309 @@
+---
+title: "Evaluation model"
+order: 3
+---
+
+{{< include /_includes/_post_head.qmd >}}
+
+{{< include _glossary.qmd >}}
+
+{{< include /_includes/_post_mid.qmd >}}
+
+# {{< meta title >}}
+
+
+
+
+The previous chapter described heterogeneity in isolation: a regime, a scope, a materialization mode. Real depositions almost never have just one descriptor. A refined crystal carries B-factors, altlocs, and often TLS groups simultaneously; an NMR bundle carries an ensemble of models plus per-atom uncertainty estimates; an MD trajectory frequently carries a per-frame state-cluster label alongside the coordinates. This chapter is about how multiple scope-local descriptors coexist in the same file, how the assumptions about their coupling let storage stay linear in the sum of per-scope state spaces rather than blowing up to the product, and what operational contract the format has to satisfy to actually render coordinates from the resulting tangle.
+
+The previous chapter described the *intermediate representation*: what a deposition contains, schema and bytes. This chapter is about the *evaluation model* -- the contract that turns those bytes into rendered coordinates. The IR can be specified mostly by writing down a Zarr layout; the evaluation model is what gives that layout a meaning.
+
+## Realistic mixing scenarios
+
+Before introducing the formal composition rule, it is worth grounding the discussion in cases that actually exist on disk today, ordered roughly from most to least common:
+
+1. **Refined crystal structure with B-factors, altlocs, and optionally TLS.** Most of the PDB. Three descriptors at three scopes (atom, residue, chain or domain), all currently encoded in three unrelated mmCIF conventions.
+2. **NMR bundle with per-model uncertainty.** A discrete ensemble at assembly scope plus a parametric atom-scope descriptor. Two layers, cleanly aligned on the model axis.
+3. **MD trajectory with a per-frame state-cluster label.** A Regime 2 trajectory at assembly scope plus a Regime 1 discrete label per frame, sharing the frame axis. The label is a function of the trajectory; this is a provenance link, not a state-space restriction.
+4. **qFit-style multiconformer ensemble.** Regime 1 at residue scope, sparsely distributed, plus the standard atom-scope B-factors.
+5. **Cryo-EM with a discrete class assignment plus a continuous within-class motion.** Two layers at the same scope (assembly), one Regime 1 and one Regime 3, with the continuous mode commonly nested under the class label.
+
+The combinatorial multi-scale ribosome and cryo-ET workflows that earlier drafts of this chapter led with are real as capability targets but not as current practice; they belong as scaling demonstrations later, not as the motivating cases. The design slogan is "support some modes of heterogeneity some of the time" out of the box, with the structure to evolve toward more.
+
+## What an evaluation model is
+
+The architecture chapter is about the *intermediate representation*: what a deposition contains, schema and bytes. The evaluation model is the contract that turns those bytes into rendered coordinates -- it is the operational semantics of the four-layer IR. Concretely, it has to specify:
+
+- For every (regime, mode) combination, the procedure that produces a per-atom displacement contribution from a descriptor's stored payload and its state input.
+- An operator interface that every Mode C subcase satisfies, with declared input/output shapes and reference frames.
+- The order of operations when descriptors don't commute (rotations don't).
+- How residual descriptors compose with their parents.
+- How sample-aligned descriptors are co-iterated, and how broadcast descriptors are evaluated within an aligned-axis walk.
+
+This is the harder half of the design. The static schema is mostly a discipline question; the evaluation model is the design problem.
+
+## The composition principle: two parallel stacks
+
+::: {.def data-term="Reference structure"}
+$x^{\mathrm{ref}}$ is the single anchor: a per-atom Cartesian position, one set, in $\mathbb{R}^3$. It is what the deposition would render as if every heterogeneity descriptor were inactive. Every descriptor's contribution is expressed as a displacement against it.
+:::
+
+The earlier draft of this chapter used a single sum over scopes that conflated two physically and mathematically different composition rules. They behave differently and they should be split:
+
+$$
+x_i(s_{\mathrm{disc}}, s_{\mathrm{cont}}) \;=\; \mathrm{mean}_i(s_{\mathrm{disc}}) \;+\; \delta_i(s_{\mathrm{cont}})
+$$
+
+- $\mathrm{mean}_i(s_{\mathrm{disc}})$ is the *mean structure* for atom $i$ given the discrete-state assignment $s_{\mathrm{disc}}$, resolved by **hierarchical state-space nesting** through the discrete descriptors.
+- $\delta_i(s_{\mathrm{cont}})$ is the *displacement* contributed at atom $i$ by the continuous Gaussian descriptors at every scope it belongs to, resolved by **additive composition in covariance / displacement space**.
+
+Discrete states determine which mean structure is being described. Continuous Gaussian descriptors describe thermal disorder around whatever mean was selected. The two stacks act on different aspects of the structure and do not interfere with each other.
+
+### The discrete-nesting stack
+
+::: {.def data-term="Discrete-nesting stack"}
+The composition rule for Regime 1 descriptors at multiple scopes. Each child descriptor declares which parent state activates which child state set; only legal joint states exist at render time. Storage scales with the count of legal joint states, not the Cartesian product of per-scope state spaces.
+:::
+
+Discrete (Regime 1) descriptors at multiple scopes compose by state-space restriction. Each child descriptor declares which parent state activates which child state set, and only legal joint states exist at render time. The canonical published instance is Wankowicz & Fraser's hierarchical compositional/conformational nesting [@wankowicz2024encoding]: compositional state at entity-instance scope (ligand bound vs absent), conformational state at residue-range scope (loop conformations available given ligand state), rotamer state at residue scope (sidechain conformers conditional on loop state). qFit-ligand [@flowers2025qfit] implements this pattern in a working ligand-modeling pipeline.
+
+Each level produces, conditional on its parent's state, a *displacement from $x^{\mathrm{ref}}$* (or a stored coordinate set, depending on Materialization mode). The composition for the discrete stack at atom $i$ is
+
+$$
+\mathrm{mean}_i(s_{\mathrm{disc}}) \;=\; x_i^{\mathrm{ref}} \;+\; \sum_{\ell \in \mathrm{disc\ scopes}} \Delta_i^\ell\bigl(s_\ell \mid s_{\mathrm{parent}(\ell)}\bigr).
+$$
+
+Storage scales with the number of *legal* joint states, not the Cartesian product of per-scope state spaces. The acceptable parametric forms at any scope are open: altloc-style multiconformer, qFit ensembles, cryo-EM 3D classification labels, named cluster assignments, compositional flags, ligand binding modes -- any of these slot in. The composition rule cares about the conditional-state-set relationship between parent and child, not how each scope's discrete state was assigned.
+
+### The continuous-additive stack
+
+::: {.def data-term="Continuous-additive stack"}
+The composition rule for Regime 3 Gaussian descriptors at multiple scopes. Each level contributes a per-atom $3 \times 3$ covariance; the total atomic displacement covariance is the *sum* of those contributions, under the assumption that levels are uncorrelated. ECHT [@pearce2021echt] is the published instance.
+:::
+
+Continuous Regime 3 descriptors at multiple scopes that each describe distributed Gaussian variation -- thermal disorder, in particular -- compose by *adding their covariances at each atom*. Whole-molecule rocking, domain libration, secondary-structure breathing, per-atom local jitter: each at its own scope, each a parametric Gaussian, all summing linearly to give the total atomic displacement covariance. The composition for the continuous stack is
+
+$$
+U_{\mathrm{total}}(i) \;=\; \sum_{\ell \in \mathrm{cont\ scopes}} U^\ell\bigl(\text{params}_\ell, x_i^{\mathrm{ref}}\bigr),
+$$
+
+where $U^\ell(\cdot)$ is the per-atom $3 \times 3$ anisotropic covariance contributed at level $\ell$. Sampling produces displacements drawn from $\mathcal{N}(0, U_{\mathrm{total}})$. The mathematical assumption is that contributions at different levels are uncorrelated.
+
+The published precedent is ECHT -- Extensible-Component Hierarchical TLS -- from Pearce & Gros 2021 [@pearce2021echt] and its ensemble-refinement extension [@ploscariu2021ensemble]. ECHT instantiates the continuous-additive stack with TLS at every level (whole molecule at the bottom, domains and secondary-structure elements in the middle, per-atom ADPs at the top), but the composition rule is general. Acceptable parametric forms at any level include TLS, anisotropic network models, normal-mode bases (linear or learned), Gaussian processes over atoms, anisotropic per-atom ADPs, isotropic per-atom B-factors -- the format does not need to know which.
+
+A refined TLS block is worth dwelling on because the way it composes is easy to misread. It is not a deterministic transform applied to a reference structure; it parametrizes a Gaussian distribution over rigid-body poses of the group. The per-atom contribution it produces is therefore an anisotropic Gaussian covariance, not a single vector. Sampling produces a draw; taking the mean produces zero; the second moment is the propagated covariance. When TLS coexists with per-atom B-factors, both describe Gaussian thermal motion and they sum -- not as draws but as covariances -- to give the total $U$.
+
+### Where Materialization fits
+
+The materialization mode is per-scope and per-stack. A chain-scope continuous TLS descriptor is stored as parameters ([Mode C](02-architecture.qmd#materialization)). A residue-scope discrete altloc is stored as sparse deltas ([Mode B](02-architecture.qmd#materialization)). A few named system-wide snapshots can be stored as full enumerations ([Mode A](02-architecture.qmd#materialization)). Composition happens at render time, not at store time. The regime chosen at one scope does not constrain the regime at any other scope: a chain-level continuous descriptor and a residue-level discrete descriptor coexist without friction precisely because they live in different stacks.
+
+### Underdetermination of the continuous decomposition
+
+A property of the continuous-additive stack worth flagging explicitly. With multiple Gaussian levels, the experimental data only constrains the *sum* of covariances across levels; the distribution of motion across levels is determined by the fitting procedure, not by the data. Two depositors looking at the same crystal can produce different valid decompositions that differ only in how they pushed motion up or down the hierarchy. ECHT uses an elastic-net penalty to break this underdetermination and enforce parsimony (assign disorder to the largest scale that can explain it); a different regularizer would distribute the same total disorder differently. This is analogous to two compilers producing different but valid optimized assembly from the same source program -- both faithful, both legitimate.
+
+The format does not need to legislate the regularizer. It does need to record per-descriptor *fitting provenance* so a downstream consumer can know they are reading "this protein decomposed by ECHT with elastic-net $\lambda = 0.3$" rather than an unattributed pile of TLS blocks. This lands in the existing annotation/provenance slots from [chapter 4](04-annotations-and-engine.qmd#query-language-and-annotations); it does not require new architectural machinery.
+
+## Independence, nesting, and provenance
+
+Heterogeneity descriptors at different scopes are either **independent** or **hierarchically nested**. Both structures keep storage linear in the sum of per-scope state spaces. A third relationship -- **provenance** -- connects descriptors that are not coupled in the state-space sense but where one was *computed from* another; it has no consequences for legal joint states but it does change what the format needs to store and how a consumer reads it.
+
+**Independence.** The joint distribution factors: $p(s) = \prod_\ell p(s_\ell)$. The chain-level TLS parameters, residue-level altlocs, and atom-level B-factors of a typical crystal are usually treated as independent, which is exactly how crystallographic refinement produces them.
+
+**Hierarchical nesting.** The state space of a child-scope descriptor is conditional on the parent-scope descriptor. The canonical case is compositional-ligand $\supset$ conformational-loop nesting: when the ligand is bound (compositional state $X$), the loop can take conformations $\{A, B\}$; when the ligand is absent (compositional state $Y$), the loop takes conformation $\{C\}$ only. The child descriptor carries a pointer to the parent state that activates it, and invalid combinations are rejected at render time. This is a restricted Cartesian product -- a DAG of (scope, state) nodes with edges encoding which parent-child combinations are legal. The edge type is `nested_under`.
+
+**Provenance link.** Descriptor $B$ was computed as a function of descriptor $A$. The MSM-derived state-cluster labels for an MD trajectory are a function of the trajectory; the cryo-EM functional-state class labels are a function of the cryoDRGN latent. These are not state-space restrictions -- the joint $(A, B)$ space is the same as $A$ alone, because $B$ is determined by $A$. The edge type is `derived_from`, and it records the function (or a reference to the producing pipeline) that mapped $A$ to $B$. The on-disk consequence: if the function is cheap and reproducible, $B$ might not need to be stored at all.
+
+The independence-or-nesting assumption is what keeps storage scaling with the sum, not the product, of scope state spaces. Without it, the format has to fall back on storing full Cartesian state tables, which is [Heterogeneity Regime 1: Discrete Ensemble](02-architecture.qmd#heterogeneity) at the whole-system scope and defeats the point of scoping descriptors.
+
+## Sample axes: aligned, broadcast, mixed
+
+::: {.def data-term="Sample axes"}
+A descriptor's *sample axis* is the index along which the deposition stores its multiple samples (frames, models, particles, latent draws). Descriptors are **aligned** when they share a named sample axis (sample $i$ of one corresponds to sample $i$ of another), **broadcast** when they have no sample axis at all (the descriptor is parametric and renders by drawing on demand), and **mixed** when a deposition combines an aligned core with one or more broadcast satellites.
+:::
+
+The composition formula talks about a state tuple $s$, but says nothing about how those entries are stored when the deposition has many "samples". Two patterns recur and have radically different on-disk consequences.
+
+**Aligned.** Multiple descriptors share a sample axis. Sample $i$ corresponds to coordinated values across descriptors. The cleanest case is a trajectory plus a per-frame state-cluster label: the trajectory has a frame axis, the label has a frame axis, frame 47 has both a coordinate set and a class label that go together because they were computed on the same frame. On disk this is naturally a Zarr group with multiple arrays sharing a leading axis chunked together.
+
+**Broadcast.** A descriptor is parametric -- it has no sample axis. The deposition describes a probability distribution over conformations, and "sampling" only happens at render time when a consumer asks for a draw. Refined crystallographic structures with TLS, altlocs, and B-factors are pure broadcast: nothing in the file has a sample dimension; renders are independent draws across descriptors.
+
+**Mixed.** A deposition has both an aligned core and broadcast satellites. A consumer iterating the aligned axis sees the broadcast descriptors freshly evaluated at each step.
+
+Every descriptor should declare two things in its metadata:
+
+1. Whether it has a sample axis or is parametric.
+2. If it has a sample axis, which named axis (`frame`, `model`, `particle`, ...). Descriptors sharing an axis name are aligned by index on that axis.
+
+This produces a small graph of "shared sample axes" alongside the scope DAG, and the on-disk Zarr structure follows directly from it: just axis names and a parametric flag. It covers the realistic cases.
+
+## Per-descriptor reference points
+
+The composition formula assumes a single global $x^{\mathrm{ref}}$, but descriptors are fit against whatever structure was natural at fit time. Within a single experiment the references usually agree by construction -- a normal-mode basis fit on the deposition's reference trivially does -- but if a Mode C generative descriptor was fit against a slightly different reference (a higher-resolution local refinement, a consensus before symmetry expansion), there is a constant offset that has to be tracked.
+
+The fix is a single metadata field per descriptor: an offset that the evaluation model adds when composing. Realistic cases are mundane (same lab, same study, slightly different "preferred" reference structures across processing steps), so this is a one-line note rather than an architectural change. Cross-experiment reference reconciliation -- "your refined crystal plus my cryoDRGN decoder of the same protein from a different study" -- is not a current workflow and is not what this field is meant to solve.
+
+## A note on the older "residual" framing
+
+Earlier drafts of this chapter described the per-atom B-factor in standard TLS+atomic refinement as "the residual against TLS." This is how the historical Winn-Murshudov 2001 framing introduces it [@winn2001tls; @painter2006tlsmd; @urzhumtsev2013adp] and how it is implemented operationally in REFMAC, TLSMD, and phenix.refine. It is also the wrong primitive for this format.
+
+The cleaner framing is the additive-Gaussian one above. There is no asymmetric "residual" relationship between levels; all contributions are independent Gaussians, all sum linearly in covariance space, none is more fundamental than the others. The reason the per-atom term ends up looking like "what is left over after TLS" is not structural -- it is a *fitting-time* outcome of whatever regularizer the refinement procedure used. ECHT's elastic-net penalty enforces parsimony, which is why TLS at higher scopes "absorbs" disorder that would otherwise show up in atomic ADPs; a different regularizer would push the same total disorder around differently. The compositional algebra is purely additive in covariance space, and the format stores the resulting parameter values without needing a "residual against parent" structural primitive.
+
+This is also why software that is unaware of TLS gets the wrong answer when it reads only the per-atom B-factor column: it is reading one term of an additive sum and treating it as the total. The fix at the format level is the same either way -- record every contributing descriptor and let the consumer sum them -- but it is now a one-rule consequence of additive composition rather than a special asymmetric relationship that needed its own metadata field.
+
+## Mode C operator interfaces {#mode-c-operator-interfaces}
+
+::: {.def data-term="Operator interface"}
+The contract every Mode C subcase satisfies: a function with the shape `(state_input, reference) -> displacement`, plus declared input shape, output shape, atom-id ordering, and reference frame. Parametric Gaussians, basis descriptors, neural decoders, and external references all fit this surface; they differ in what `state_input` is, what backend the call lands on, and whether the output is a draw or a distribution.
+:::
+
+Each [Mode C subcase](02-architecture.qmd#materialization) needs its own operator contract. Sketches:
+
+**Parametric Gaussian (TLS, anisotropic ADP, normal-mode-derived covariance).** Inputs: parameter block (TLS: 20 numbers; ADP: 6 numbers per atom; etc.). State input: a sample index, or `mean` for the deterministic zero. Output: a per-atom $3 \times 3$ covariance contribution. Reference frame: the deposition's $x^{\mathrm{ref}}$ frame. Composition with other parametric-Gaussian descriptors at different scopes is by *covariance addition* (see [the continuous-additive stack](#the-continuous-additive-stack)). When the consumer asks for a draw rather than a distribution, the evaluation model first sums the covariances across all contributing scopes at each atom, then samples once from the resulting per-atom $\mathcal{N}(0, U_{\mathrm{total}})$ -- not once per contributing descriptor.
+
+**Basis descriptor (normal modes, PCA).** Inputs: a stored basis $(k, N_\mathrm{atom}, 3)$ and a coefficient vector $(k,)$ for the requested state. Output: a deterministic per-atom displacement field. Reference frame: same as basis frame, declared in the basis metadata.
+
+**Neural decoder.** Inputs: a stored checkpoint reference and a latent vector $(d,)$ for the requested state. Output: a deterministic per-atom displacement field, or a coordinate set if the network outputs absolute positions (in which case the evaluation model converts to displacements by subtracting $x^{\mathrm{ref}}$). Reference frame: declared per-checkpoint.
+
+**External reference (trajectory, particle stack).** Inputs: an artifact pointer (URI plus content hash) and a lookup key (frame index, particle id, etc.). Output: a coordinate set. Reference frame: declared per-artifact, with explicit alignment to $x^{\mathrm{ref}}$ if the artifact's coordinates are not in the deposition's frame.
+
+The common surface across all four is `(state_input, reference) -> displacement`. The differences are in what `state_input` looks like, what backend the call lands on, and whether the output is a draw or a distribution.
+
+## Cross-backend integration
+
+Producing a single rendered snapshot from a realistic deposition can require, simultaneously:
+
+- Reading $x^{\mathrm{ref}}$ from a Zarr array (CPU, NumPy)
+- Reading sparse altloc deltas from an Arrow-backed Mode B store
+- Running a TorchScript decoder on GPU for a Mode C learned generative descriptor
+- Seeking into an external HDF5 trajectory for a Mode C external reference
+- Evaluating a parametric TLS block in NumPy
+
+The composition formula assumes all five land as commensurable displacement vectors that add. The evaluation model has to specify what binds them. At minimum: a Mode C operator interface declaring input shape, output shape, atom-id ordering, and reference frame, satisfied identically by parametric Gaussians, basis descriptors, neural decoders, and external references; and a small render driver that knows how to schedule the calls across backends without forcing every consumer to reinvent it.
+
+Most implementation effort will go here. The static schema is mostly a discipline question; this is an engineering one.
+
+## Worked: kinase with both stacks
+
+A 300-residue kinase with bound inhibitor demonstrates both composition rules in one deposition. This is the structure of a multi-scale, multi-descriptor case decomposed cleanly along the two stacks rather than as a tangled list of simultaneously-valid heterogeneity descriptors.
+
+Discrete-nesting stack, contributing to the mean structure:
+
+| Scope | Descriptor | Regime | States |
+|---|---|---|---|
+| Entity instance (inhibitor) | bound vs absent | R1 | 2 states |
+| Residue range (binding loop, 14 residues) | open / closed / relaxed | R1, nested under inhibitor | $\{$open, closed$\}$ under "bound", $\{$relaxed$\}$ under "absent" |
+| Residue (3 sidechains) | rotamer A vs B | R1 each, nested under loop | 2 states per sidechain |
+
+Continuous-additive stack, contributing thermal disorder:
+
+| Scope | Descriptor | Regime | Form |
+|---|---|---|---|
+| Chain (N-terminal domain) | TLS | R3 parametric Gaussian | 20 parameters |
+| Chain (C-terminal domain) | TLS | R3 parametric Gaussian | 20 parameters |
+| Atom (all atoms) | isotropic ADP | R3 parametric Gaussian | 1 scalar per atom |
+
+Rendering one snapshot: pick a legal joint discrete state (one of the dozen allowed by the nesting graph), retrieve the mean coordinates for that combination, sample displacements from the additive Gaussian stack at every atom, sum. Six descriptors, two composition rules, no entanglement between them.
+
+The discrete stack is sparse in storage (only legal joint states are materialized; storage scales with the legal-state count, not with the Cartesian product). The continuous stack is parametric in storage ($\sim 40 + N_{\mathrm{atom}}$ scalars total). Provenance for the continuous stack records that ECHT-style elastic-net regularization with a particular $\lambda$ produced the level assignments, so a downstream consumer reading the deposition years later knows which decomposition they are reading.
+
+## What scope-local descriptors buy
+
+Three things, in decreasing order of concreteness:
+
+*Storage linearity.* Independence and nesting both keep total storage to the sum of per-scope costs rather than the product. An ensemble with heterogeneity at five different scopes and a few states each does not become a Cartesian product of twenty thousand conformers.
+
+*Regime independence.* Each scope picks the regime that fits its physics. A structure is not pushed into [Regime 1](02-architecture.qmd#heterogeneity) just because one of its scopes is discrete, nor into [Regime 3](02-architecture.qmd#heterogeneity) just because another is continuous. The reverse pressure is also absent: there is no incentive to collapse everything into a single uniform regime for consistency.
+
+*Semantic legibility.* Consumers -- visualization tool, ML dataloader, refinement program -- can ask "what varies at chain scope," "what varies at residue scope," "what varies at atom scope" and get back descriptors typed by scope. A PyMOL-like consumer can ignore everything above residue scope if it wants a single-model render. A training pipeline can iterate over the nested compositional/conformational combinations without flattening to fifty thousand explicit states. A refinement engine can update the chain-scope TLS parameters without touching the residue-scope altlocs.
+
+## Open design questions
+
+The list below is a TODO. Each item is something a working implementation has to decide before it can render a non-trivial deposition; none of them is resolved yet.
+
+### Multi-level Gaussian composition: rendering and consumer compatibility
+
+The [continuous-additive stack](#the-continuous-additive-stack) replaces the older "B-factor as residual against TLS" framing with covariance addition. The composition is mathematically clean; the open questions are about rendering policy and what to do for consumers that aren't aware of the multi-level structure:
+
+- The render rule for a draw is "sum covariances across all contributing scopes at each atom, then sample once." Pin this down explicitly and bake it into the spec for the parametric-Gaussian Mode C subcase.
+- A TLS-naive consumer that reads only the per-atom B-factor column today silently gets one term of an additive sum. What should the format do? Options: (i) emit a deterministic mean (every B-factor consumer gets atomic-only motion and is honest about it), (ii) emit a "collapsed" per-atom scalar that bakes the higher-scope contributions into a marginal isotropic ADP (loses the anisotropy but matches consumer expectations), or (iii) require multi-level-aware reading and fail closed otherwise. The first two preserve readability; the third preserves correctness.
+- Validation: when multiple parametric-Gaussian descriptors compose, the resulting $U_{\mathrm{total}}$ at every atom must be positive-definite. Should the format require depositors to certify this, or should the evaluation model verify it on read?
+- Frame consistency: parametric-Gaussian contributions at different scopes have to be in commensurable frames (the same $x^{\mathrm{ref}}$). For TLS the libration axis is declared per group; for normal modes the basis is declared per descriptor. Cross-stack frame mismatches need to error rather than silently miscompose.
+
+### Per-descriptor reference offsets
+
+The [per-descriptor reference points](#per-descriptor-reference-points) section says the fix is a metadata offset that the evaluation model adds when composing. Open:
+
+- What is the offset's shape -- a single rigid-body transform? A per-atom translation? Per-residue?
+- When does the format require the offset and when can it be inferred? (Auto-detection by best-fit alignment is ergonomically nice but probably underspecified.)
+- How does this interact with Mode C external references whose coordinate frames are themselves declared per-artifact?
+
+### Order of operations
+
+The composition formula adds displacement contributions. Addition commutes; rotations do not. If two descriptors both contribute *transforms* (a chain-scope TLS rigid-body draw and an assembly-scope ratcheting rigid-body draw on a sub-assembly), the order in which they are applied matters. Open:
+
+- The composition formula assumes contributions are *displacements*, not transforms, and addition is therefore commutative. Is this assumption sufficient? Or do we need to allow descriptors to declare themselves as transforms-not-displacements and specify a composition order along the Hierarchy path?
+- If we do allow transforms, the path-order is the natural choice (ancestors before descendants), but it has to be specified rather than assumed.
+
+### Sample-axis broadcasting at render time
+
+The [sample-axes](#sample-axes-aligned-broadcast-mixed) section says aligned descriptors share an axis and broadcast descriptors are parametric. Open:
+
+- A consumer iterating an aligned axis sees broadcast descriptors freshly evaluated at each step. What does "freshly evaluated" mean: a fresh sample (different draw per aligned step) or the deterministic mean (same value at every step)?
+- Probably the right answer is: every descriptor declares its evaluation policy when broadcast (`sample_per_step` or `mean`), and the format defaults to whichever is appropriate for the descriptor type (TLS to `sample_per_step`, anisotropic ADP to `mean`).
+- Reproducibility: if `sample_per_step`, the format needs a seed source declared at deposition or at consumer level.
+
+### Provenance vs constraint edges
+
+The [independence, nesting, and provenance](#independence-nesting-and-provenance) section distinguishes `nested_under` (a state-space restriction) from `derived_from` (a provenance pointer with a function reference). Open:
+
+- A `derived_from` edge can be marked as "function is materialized" (the derived descriptor is stored as data) or "function is regenerable" (the derived descriptor can be recomputed from the parent on demand). What does the format require in each case?
+- If the function is regenerable, what is the function reference -- a pure code reference (e.g. "k-means with k=5 on this trajectory")? A checkpoint? A pinned commit hash?
+- A consumer that wants the derived descriptor but only has the parent on disk: does the evaluation model know how to invoke the function?
+
+### Atom identity across descriptor frames
+
+Cached features and Mode C operators all reference atoms by ID. The [ML-native chapter](08-ml-native.qmd#open-questions-specific-to-ml-native-data) flagged that atom identity is not stable across re-refinement (CCD updates can rename atoms; refinement can add or remove atoms). For the evaluation model, the question is sharper:
+
+- A Mode C decoder fit against an earlier version of a structure has its inputs and outputs keyed to that structure's atom IDs. The current deposition has different atom IDs. What does the evaluation model do?
+- Probably: declared atom-ID stability per descriptor, with a transition table when the deposition's atom IDs are a refined-superset of the descriptor's.
+
+### Versioning
+
+Every descriptor's materialization depends on stored bytes that may have a version (TLS parameters refined under one version of a refinement program; cryoDRGN decoder trained under one set of hyperparameters). When a structure is re-deposited:
+
+- Do existing descriptors carry forward, get re-fit, or get marked as stale?
+- Is the re-fit a deposition-side process or a consumer-side process?
+
+### Physical-signal type as a descriptor metadata field
+
+The two composition rules are dispatched by the physical signal a descriptor describes -- "distributed Gaussian variation" goes through the additive-covariance stack, "categorical state" goes through the discrete-nesting stack. Today this is implicit; pinned at deposition time by the descriptor's regime and the depositor's intent. Open:
+
+- Should the format declare a `signal_type` field on every descriptor (`gaussian_disorder`, `categorical_state`, ...)?
+- A future descriptor type that fits neither stack -- a continuous categorical mixture, say, or a non-Gaussian latent over discrete cluster centers -- would need its own composition rule. The metadata field gives the validator and the render driver something to dispatch on.
+- Probably worth introducing this as a small enum with `unknown` as a permitted (legacy) value.
+
+### Composing non-Gaussian Regime 3 descriptors with the Gaussian stack
+
+A neural decoder (cryoDRGN) at a given latent vector returns a deterministic displacement field, not a Gaussian. A consumer might still want to add Gaussian thermal disorder around the decoder's output. Open:
+
+- The natural composition is in displacement space (decoder output + Gaussian draw), not in covariance space (the decoder output has no covariance). Spell this out as a separate composition rule for "deterministic-displacement" descriptors.
+- Is there a meaningful interaction with the additive-Gaussian stack -- e.g. covariances at higher scopes added to the decoder's mean? Probably yes, if the higher-scope Gaussian was fit on a residual after subtracting the decoder's contribution. Inherits all the underdetermination concerns from the continuous-additive stack.
+
+### Fitting-provenance schema
+
+The [underdetermination](#underdetermination-of-the-continuous-decomposition) section flags that multi-level continuous decompositions are intrinsically underdetermined and the format has to record per-descriptor fitting provenance. Open:
+
+- What is the minimum schema? Probably: producing software identifier and version, regularization scheme and hyperparameters, source data hash, fit-time wallclock and seed (when stochastic).
+- Is provenance per-descriptor or per-stack? A continuous-additive decomposition was usually produced by one fitting procedure that determined every level simultaneously, so per-stack provenance referencing all participating descriptors is more natural than per-descriptor.
+- Does the format require the provenance to be machine-actionable (a consumer could in principle re-fit) or is human-readable text sufficient? The first is much harder; the second covers the realistic use case.
+
+## Triage
+
+A pragmatic prioritization for filling in the questions above:
+
+- **Must have** before any first implementation: Mode C operator interfaces (without these, Mode C is just a label), the multi-level Gaussian render rule (without it, every TLS-bearing PDB entry is incorrectly rendered), and a fitting-provenance schema for the continuous-additive stack (without it, depositions are unattributed and the underdetermination is silent).
+- **Should have** before broad use: per-descriptor reference offsets, sample-axis broadcasting policy, atom-identity stability declarations, the `signal_type` metadata field.
+- **Can defer**: order-of-operations for transform-style descriptors (mostly absorbed by the displacement assumption); provenance regenerability (initially: store everything; lazy regen later); composition of non-Gaussian Regime 3 descriptors with the Gaussian stack.
+- **Will defer**: cross-experiment reference reconciliation; full versioning machinery for structure mutations.
+
+{{< include /_includes/_layout_end.qmd >}}

@@ -1,0 +1,67 @@
+---
+title: "Technology survey: storage and heterogeneity tools"
+order: 5
+---
+
+{{< include /_includes/_post_head.qmd >}}
+
+{{< include _glossary.qmd >}}
+
+{{< include /_includes/_post_mid.qmd >}}
+
+# {{< meta title >}}
+
+
+
+
+The previous chapter described the *engine* half of the format: the query language, the annotation overlay, the ML-native featurization passes. This chapter is the *survey* half: existing storage technologies adjacent to structural biology that already solve pieces of the problem, and existing heterogeneity tools mapped onto the three regimes from the Layout chapter. Both halves deliberately keep their distance from the core architecture so that the design of the IR is not contaminated by any one tool's idiosyncrasies, but neither is the design pretending these tools don't exist.
+
+## Format and storage foundations
+
+Structural biology data is fundamentally multidimensional: atoms have properties (element, charge, name), atoms belong to residues and chains (hierarchy), atoms have coordinates that vary across conformational states (ensemble dimension), and various scalar/vector/tensor fields can be associated with atoms, residues, or the entire system at any level of this hierarchy. A text file of atom records serializes this but sacrifices random access, compression, and dimensional structure.
+
+Technologies from adjacent fields that offer better primitives:
+
+**Zarr v3** -- chunked N-dimensional arrays on any storage backend. Simple (just arrays + groups + JSON metadata), cloud-native, implementations in Python/Rust/JS/C++. [github.com/zarr-developers/zarr-python](https://github.com/zarr-developers/zarr-python), [github.com/zarrs/zarrs](https://github.com/LDeakin/zarrs) (Rust).
+
+**OME-Zarr (NGFF)** -- bioimaging conventions on Zarr: multiscale pyramids (same data at multiple resolution levels, enabling zoom-dependent loading), axes labels, coordinate transforms, labels/ROIs. Used by CZ CryoET Data Portal. Community-driven RFC process. [ngff.openmicroscopy.org](https://ngff.openmicroscopy.org/0.5/), [github.com/ome/ome-zarr-py](https://github.com/ome/ome-zarr-py).
+
+**copick** -- storage-agnostic cryo-ET dataset API built on Zarr/OME-Zarr. Adds overlay filesystem (read-only data + writable annotations), typed annotation objects (picks, segmentations, meshes) with provenance, plugin CLI. [github.com/copick/copick](https://github.com/copick/copick).
+
+**TileDB** -- array database with native sparse arrays, built-in query engine, time-travel/versioning. TileDB-SOMA data model (for single-cell genomics) solved a structurally analogous problem: (cells x genes) with metadata on both axes, at scale. [github.com/TileDB-Inc/TileDB](https://github.com/TileDB-Inc/TileDB), [github.com/single-cell-data/TileDB-SOMA](https://github.com/single-cell-data/TileDB-SOMA).
+
+**Apache Arrow / DataFusion** -- columnar in-memory format + query engine (Rust). Predicate pushdown (filters pushed to storage layer), zero-copy cross-language interop. A zarr-datafusion crate already exists: [github.com/jayendra13/zarr-datafusion](https://github.com/jayendra13/zarr-datafusion). [datafusion.apache.org](https://datafusion.apache.org/).
+
+**Multiscale pyramids for molecular data.** OME-Zarr stores the same image at progressively lower resolutions (full -> 2x downsampled -> 4x -> ...) for efficient visualization. The analog for molecular structures: all-atom -> backbone-only -> domain centroids -> subunit centroids, with explicit mapping operators between levels. This is the coarse-graining hierarchy that IHM already represents in a limited way, and it maps directly onto the groupings layer described in [Layout § Groupings](02-architecture.qmd#groupings).
+
+Tradeoffs (needs benchmarking on real structural biology workloads):
+
+| Concern | Zarr + DataFusion | TileDB | HDF5 (status quo for MD) |
+| --- | --- | --- | --- |
+| Simplicity | High (just arrays) | Medium (database engine) | Medium |
+| Cloud-native | Yes (chunked objects on S3) | Yes | Poor (no chunk-level access over HTTP) |
+| Sparse arrays | No (fake with compression) | Native | No |
+| Query engine | External (DataFusion) | Built-in | None |
+| Versioning | Manual | Built-in (time-travel) | None |
+| Bioimaging precedent | OME-Zarr, copick, CZ Portal | cellxgene Census | H5MD for MD trajectories |
+| Random access to single state | O(chunk) | O(1) with index | O(N) scan |
+
+## Representing conformational heterogeneity
+
+The problem in one sentence: we need a data model that can represent everything from a two-rotamer sidechain flip to a continuous distribution over ribosome conformations, with correlations between components, thermodynamic annotations, and multi-scale descriptions -- without enumerating a full coordinate set for each distinguishable configuration of large systems.
+
+The Layout chapter proposes [three heterogeneity regimes](02-architecture.qmd#heterogeneity) with different natural representations. This section surveys the existing tools and formalisms against that taxonomy.
+
+**Existing tools by regime.**
+
+Heterogeneity Regime 1 (discrete ensemble): mmCIF alt_id is a degenerate case -- two conformers per residue, no correlations, no thermodynamics. IHM multi-state adds named discrete states with ordering and population, but states remain independent and uncorrelated. Wankowicz & Fraser [-@wankowicz2024encoding] push this as far as it goes within mmCIF -- their proposed categories handle correlated multi-conformer models and ensemble validation within the text-CIF framework. Understanding exactly where their proposal hits the wall is essential for calibrating what requires a new format vs. what can be encoded in extended mmCIF.
+
+Heterogeneity Regime 2 (trajectory): H5MD ([github.com/h5md/h5md](https://github.com/h5md/h5md)) handles this well for MD. MDTraj and MDAnalysis both read and write it. The main gap is the absence of cloud-native access: HDF5 doesn't support chunk-level HTTP range requests, so trajectory analysis in the cloud currently requires downloading the full file. A Zarr-based trajectory convention that mirrors H5MD semantics but runs on object storage is the obvious gap to fill, and it is a format convention question, not a data model question.
+
+Heterogeneity Regime 3 (continuous landscape): cryoDRGN ([github.com/ml-struct-bio/cryodrgn](https://github.com/ml-struct-bio/cryodrgn)) learns a continuous heterogeneity manifold from cryo-EM particle images and decodes conformations at arbitrary latent coordinates. There is no standard serialization for the latent-plus-decoder representation -- each cryoDRGN run produces its own checkpoint format. The right abstraction for storage is: an $(N_{\mathrm{particle}}, d)$ latent coordinate array plus a decoder reference, with named landmarks as optional cluster assignments. Normal mode analysis produces a simpler version of the same thing: a $(k, N_{\mathrm{atom}}, 3)$ mode basis plus scalar mode coefficients. Both are Materialization Mode C. Markov State Models (PyEMMA, deeptime) sit at the border between Heterogeneity Regime 2 and Heterogeneity Regime 3: they discretize a continuous trajectory into metastable states and produce a transition matrix over those states, which can be stored as a sparse $(N_{\mathrm{state}}, N_{\mathrm{state}})$ matrix with equilibrium populations -- a Heterogeneity Regime 1 coordinate set plus a kinetic annotation in the shape of a Heterogeneity Regime 3 descriptor.
+
+**Correlation and coupling.** There is a third representation worth noting for cases that sit between regimes: a sparse pairwise correlation array or graphical model specifying which residue pairs are conformationally coupled, without committing to a full joint distribution. This is useful as a compact annotation -- a summary of an MD ensemble or an NMR-derived coupling network -- without requiring that the full joint distribution be stored.
+
+**Where we are.** The existing literature covers Heterogeneity Regime 1 well (qFit, multi-conformer crystallography, IHM discrete states), Heterogeneity Regime 2 adequately (H5MD, MDTraj), and Heterogeneity Regime 3 experimentally but without standard serialization (cryoDRGN, manifold embedding methods). The gaps that need new work: a cloud-native trajectory convention (Heterogeneity Regime 2 on Zarr) and a standard serialization for latent-plus-decoder representations (Heterogeneity Regime 3).
+
+{{< include /_includes/_layout_end.qmd >}}

@@ -1,28 +1,128 @@
-/* styles/homepage.css */
+/* styles/homepage.css
+ *
+ * Post-page typography and navigation. Loaded by posts that opt in via
+ * _metadata.yml (currently only the mmcif series). Homepage / listings /
+ * papers pages do not load this file.
+ *
+ * Everything in this file is scoped to .right-column or .left-column so the
+ * rules cannot leak into pages that share the document but render different
+ * content. Site-wide concerns (inline code, tables, .def insets, callouts)
+ * live in styles/custom.css.
+ *
+ * Design tokens declared once on .right-column / .left-column so the colour
+ * and font choices have one source of truth. To shift the colour key, edit
+ * the tokens; nothing below should reference a hex literal directly.
+ * --------------------------------------------------------------------------*/
 
-/* --- Main Container --- */
+.right-column,
+.left-column,
+.def-stack {
+  --ink-900: #1a1a1a;
+  --ink-700: #3a3a3a;
+  --ink-500: #6b6b6b;
+  --ink-300: #b3b3b3;
+
+  /* Muted-Nord steel accent palette. Replaces the earlier warm-umber accents.
+   * The terminal palette inspiration: cool steel + warm cream + white. We
+   * keep the cream as page bg (paper-100) and shift every other accent to
+   * a muted slate-blue family so the umber is gone and the page reads cool
+   * but not stark. */
+  --accent-900: #44627c;  /* deep steel */
+  --accent-700: #5d7c93;  /* mid steel — links, .def label, .aside chevron */
+  --accent-300: #a8b8c6;  /* faint steel — at-rest decoration */
+
+  /* Surfaces are cool gray-blue. Page bg stays slightly warm (paper-100 in
+   * the body rule below) so the warm/cool contrast still feels alive. */
+  --paper-100: #fafaf7;
+  --paper-200: #eaeef2;   /* .def header row, inline code bg */
+  --paper-300: #e0e3e8;   /* hairlines */
+  --paper-400: #c4cad1;   /* dividers */
+
+  --cite-color:        var(--accent-700);
+  --cite-color-soft:   var(--accent-300);
+  --cite-color-strong: var(--accent-900);
+
+  --font-serif: "IBM Plex Serif", Georgia, "Times New Roman", serif;
+  --font-sans:  "IBM Plex Sans", -apple-system, BlinkMacSystemFont,
+                "Segoe UI", Roboto, sans-serif;
+  --font-mono:  "IBM Plex Mono", "JetBrains Mono", ui-monospace,
+                SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+/* ===========================================================================
+ * Sticky-friendly scroll plumbing.
+ *
+ * position:sticky descendants only work if the body and any wrapping Quarto
+ * container do NOT have their own overflow:auto scroll context. Quarto's
+ * page-layout-custom puts overflow-y:auto on #quarto-content, which makes
+ * the inner scroll the effective sticky parent and the rail scrolls with the
+ * page. Force them visible so the document body is the only scroller.
+ *
+ * Scoped via .page-layout-custom so this only affects post pages.
+ * ========================================================================*/
+html:has(.page-layout-custom),
+html:has(.page-layout-custom) body,
+#quarto-content.page-layout-custom {
+  /* Both axes must be `visible` together — CSS coerces `visible` to `auto`
+   * if the other axis is `hidden`, which would give the inner element its
+   * own scroll container and break the rail's sticky behaviour. The
+   * `* { max-width: 100% }` rule in scrollbar-fix.css already prevents
+   * horizontal overflow at the element level. */
+  overflow: visible !important;
+}
+
+/* ===========================================================================
+ * Page container.
+ *
+ * The homepage layout offsets the grid leftward so the signature column lines
+ * up with the page edge. We use margin-left, NOT transform, because transform
+ * creates a containing block that disables position:sticky on every descendant
+ * (this breaks the left-rail sticky behaviour on post pages).
+ * ========================================================================*/
 .homepage-container {
   max-width: 1100px;
   margin: 2rem auto;
+  margin-left: max(2rem, calc(50vw - 650px));
   padding: 0 2rem;
   overflow: visible;
-  transform: translateX(-100px);
 }
 
-/* On narrower viewports a 100px left shift pushes content off-screen,
-   so reset once there isn't enough room for it. */
 @media (max-width: 1300px) {
   .homepage-container {
-    transform: none;
+    margin-left: auto;
+    margin-right: auto;
   }
 }
 
-/* --- Left Column: Signature & Nav --- */
+/* ===========================================================================
+ * Left rail.
+ *
+ * One canonical rule block. position:sticky needs three things to work:
+ *   1. an explicit `top`
+ *   2. `align-self: start` so the grid item doesn't stretch to row height
+ *   3. NO transform/filter on any ancestor (see homepage-container above)
+ *
+ * Long chapter lists or long mini-TOCs scroll inside the rail rather than
+ * pushing the rail past the viewport.
+ * ========================================================================*/
 .left-column {
+  position: -webkit-sticky;
   position: sticky;
-  top: 2rem;
+  top: 1.5rem;
+  align-self: start;
   height: fit-content;
+  max-height: calc(100vh - 3rem);
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 0.5rem;
+  z-index: 5;
+  scrollbar-width: thin;
+  scrollbar-color: var(--paper-400) transparent;
 }
+
+.left-column::-webkit-scrollbar       { width: 4px; }
+.left-column::-webkit-scrollbar-thumb { background: var(--paper-400); border-radius: 2px; }
+.left-column::-webkit-scrollbar-track { background: transparent; }
 
 .left-column .signature {
   max-width: 100px;
@@ -38,16 +138,14 @@
 .left-column ul a {
   text-decoration: none;
   font-size: 12px;
-  color: #333;
+  color: var(--ink-700);
   display: block;
   margin-bottom: 0.75rem;
 }
 
-.left-column ul a:hover {
-  color: #000;
-}
+.left-column ul a:hover { color: var(--ink-900); }
 
-/* --- Social Links --- */
+/* Social-icon row at the bottom of the homepage rail. */
 .social-links {
   margin-top: 2.5rem;
   font-size: 1rem;
@@ -55,21 +153,22 @@
   flex-wrap: wrap;
   gap: 1.25rem;
 }
-
 .social-links a {
-  color: #888;
+  color: var(--ink-500);
   text-decoration: none;
   transition: color 0.2s ease-in-out;
 }
+.social-links a:hover { color: var(--ink-900); }
 
-.social-links a:hover {
-  color: #000;
-}
-
-/* --- Right Column --- */
+/* ===========================================================================
+ * Right column body — running text.
+ * ========================================================================*/
 .right-column {
   padding: 0;
   overflow: visible;
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--ink-900);
 }
 
 .right-column .main-photo {
@@ -77,35 +176,293 @@
   margin-bottom: 1.5rem;
 }
 
-.right-column p {
-  line-height: 1.6;
-  color: #444;
-  margin-bottom: 1rem;
+.right-column p,
+.right-column li {
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--ink-900);
 }
 
-/* --- Responsive --- */
-@media (max-width: 768px) {
-  .homepage-container {
-    padding: 1rem;
-  }
-  
-  .left-column {
-    position: relative;
-    top: 0;
-    margin-bottom: 2rem;
-  }
-}
 .photo-credit {
   display: block;
   font-size: 0.5rem;
-  /* font-style: italic; */
-  color: #292929;
+  color: var(--ink-700);
   margin-top: -1rem;
   margin-bottom: 1.5rem;
   text-align: right;
 }
 
-/* Post glossary (left rail on leaf blog posts) */
+/* ===========================================================================
+ * Headings — three cohesive tiers.
+ *
+ * All three are serif, weight 500, same letter-spacing. Differentiated by
+ * size and a single colour thread descending toward the umber accent:
+ *   h1  largest  ink-900     (chapter title, near-black)
+ *   h2  smaller  accent-900  (conceptual section, dark umber)
+ *   h3  smallest accent-700  (subsection, lighter umber)
+ *   h4  rare     sans, ink-500 (incidental notes inside long subsections)
+ *
+ * scroll-margin-top makes :target navigation land below the sticky rail;
+ * :target also tints the heading briefly for orientation.
+ * ========================================================================*/
+.right-column > h1:first-of-type {
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  margin: 0 0 0.45rem 0;
+  color: var(--ink-900);
+}
+
+.right-column h2,
+.right-column h3,
+.right-column h4 {
+  scroll-margin-top: 5rem;
+}
+
+.right-column h2 {
+  font-family: var(--font-serif);
+  font-size: 1.12rem;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  color: #2a2a2a;
+  margin: 2.4rem 0 0.6rem 0;
+}
+
+.right-column h3 {
+  font-family: var(--font-serif);
+  font-size: 0.98rem;
+  font-weight: 500;
+  font-style: normal;
+  letter-spacing: -0.005em;
+  color: var(--accent-700);
+  margin: 1.6rem 0 0.4rem 0;
+}
+
+.right-column h4 {
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  font-weight: 600;
+  font-style: normal;
+  color: var(--ink-500);
+  margin: 1.2rem 0 0.3rem 0;
+}
+
+/* :target highlight when arriving via fragment. */
+.right-column h2:target,
+.right-column h3:target,
+.right-column h4:target {
+  color: var(--accent-900);
+}
+
+/* Subtitle below the chapter title. */
+.post-subtitle {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--ink-500);
+  margin-bottom: 1.75rem;
+}
+.post-subtitle:empty { display: none; }
+
+/* ===========================================================================
+ * Collapsible h2 / h3 (wired by /scripts.js → installCollapsibleHeadings).
+ *
+ * Subtle chevron in a fixed-width slot to the LEFT of the heading text.
+ * Quiet at rest (low opacity, accent-300), fully visible on hover. Rotation
+ * indicates expanded vs collapsed state.
+ * ========================================================================*/
+.right-column h2.collapsible-heading,
+.right-column h3.collapsible-heading {
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: baseline;
+  gap: 0.5em;
+}
+
+.right-column h2.collapsible-heading::before,
+.right-column h3.collapsible-heading::before {
+  content: "";
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 0.4em;
+  height: 0.4em;
+  border-right: 1.5px solid var(--accent-300);
+  border-bottom: 1.5px solid var(--accent-300);
+  transform: rotate(45deg);
+  transform-origin: center;
+  opacity: 0.55;
+  transition: transform 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
+  position: relative;
+  top: -0.18em;
+}
+
+.right-column h2.collapsible-heading.is-collapsed::before,
+.right-column h3.collapsible-heading.is-collapsed::before {
+  transform: rotate(-45deg);
+  top: 0;
+}
+
+.right-column h2.collapsible-heading:hover::before,
+.right-column h3.collapsible-heading:hover::before {
+  border-color: var(--accent-700);
+  opacity: 1;
+}
+
+.right-column .collapsible-body.is-hidden { display: none; }
+
+/* ===========================================================================
+ * Heading anchor link (added by /scripts.js → installHeadingAnchors).
+ *
+ * A "#" mark that fades in on heading hover. Clicking it does NOT toggle the
+ * collapse (the JS click handler stops the propagation). Lets the user copy
+ * the section URL without disturbing layout.
+ * ========================================================================*/
+.right-column .heading-anchor {
+  display: inline-block;
+  margin-left: 0.4em;
+  font-weight: 400;
+  font-size: 0.75em;
+  color: var(--accent-300);
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity 0.15s ease, color 0.15s ease;
+  font-family: var(--font-sans);
+}
+
+.right-column h1:hover .heading-anchor,
+.right-column h2:hover .heading-anchor,
+.right-column h3:hover .heading-anchor,
+.right-column h4:hover .heading-anchor {
+  opacity: 1;
+}
+
+.right-column .heading-anchor:hover { color: var(--accent-700); }
+
+/* ===========================================================================
+ * Citations.
+ *
+ * Inline: bare numeric superscript in muted blue. No brackets — bracketed
+ * citations read like Wikipedia; bare numerics read as a magazine reference
+ * mark. The hover popover comes from Quarto's `citations-hover: true` (Tippy).
+ *
+ * Bibliography: smaller, hanging indent, separated by a thin top rule.
+ * ========================================================================*/
+.right-column .citation {
+  font-size: 0.72em;
+  vertical-align: super;
+  line-height: 0;
+  color: var(--ink-500);
+  margin: 0 0.15em;
+  padding: 0 0.1em;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+
+.right-column .citation a {
+  color: inherit !important;
+  text-decoration: none !important;
+}
+
+.right-column .citation a:hover { color: var(--ink-900) !important; }
+
+/* Bibliography (#refs) — Quarto renders this into #quarto-appendix, OUTSIDE
+ * the .right-column where the article body lives. So we have to (a) position
+ * the appendix container under the right column and (b) un-scope the typo
+ * rules. The whole appendix lives at page width by default, so we constrain
+ * it to the same column the body uses.
+ *
+ * Numbered list view: each .csl-entry has its index in a narrow left column,
+ * the entry text in a wider right column, hanging indent so wrapped lines
+ * stay aligned with the entry text.
+ *
+ * Layout strategy: explicit max-width + margin-left matched to the body
+ * column. Done with token-based numbers so the value is easy to update if
+ * the grid template ever changes. */
+/* scripts.js measures the live .right-column position and sets
+ * `--post-body-left` / `--post-body-width` on body, so the bibliography
+ * lines up exactly with the right column regardless of viewport width or
+ * grid template changes. The `auto` fallbacks keep the appendix readable
+ * if the JS hasn't run (e.g. before DOMContentLoaded). */
+#quarto-appendix.default {
+  background: transparent;
+  border: 0;
+  margin-top: 2rem;
+  padding: 0;
+}
+
+#quarto-appendix.default > section,
+#quarto-appendix.default > #quarto-bibliography {
+  width: var(--post-body-width, auto);
+  max-width: 100%;
+  margin-left: var(--post-body-left, 0);
+  margin-right: auto;
+  padding: 0;
+  border: 0;
+  box-sizing: border-box;
+}
+
+#refs,
+div.csl-bib-body {
+  font-size: 0.82em;
+  line-height: 1.55;
+  color: var(--ink-700);
+  margin-top: 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--paper-400);
+  font-family: var(--font-sans);
+}
+
+/* Quarto already emits each entry with a `.csl-left-margin` (the number)
+ * and a `.csl-right-inline` (the body) — render that as a flex row so the
+ * number sits in its own narrow gutter and wrapped lines stay aligned. */
+.csl-entry,
+#refs > div {
+  display: flex;
+  gap: 0.6em;
+  margin-bottom: 0.55rem;
+  padding: 0;
+  text-indent: 0;
+}
+
+.csl-left-margin {
+  flex: 0 0 1.8em;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-500);
+  font-weight: 500;
+}
+
+.csl-right-inline {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+#refs a,
+.csl-entry a {
+  word-break: break-word;
+}
+
+/* The "References" h2 over the bibliography: small label, not a section
+ * header, so the bibliography reads as a quiet appendix. */
+h2#refs-heading,
+#quarto-bibliography h2,
+#refs > h2:first-of-type {
+  font-family: var(--font-sans) !important;
+  font-size: 0.78rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.04em !important;
+  text-transform: uppercase !important;
+  color: var(--ink-500) !important;
+  margin: 0 0 0.9rem 0 !important;
+  border: 0 !important;
+  padding: 0 !important;
+}
+
+/* ===========================================================================
+ * Post-glossary (chapter list) — first tier of the left rail.
+ * ========================================================================*/
 .post-glossary {
   margin-top: 1.25rem;
 }
@@ -123,31 +480,218 @@
 
 .post-glossary a {
   font-size: 12px;
-  color: #333;
+  color: var(--ink-700);
   text-decoration: none;
   letter-spacing: 0.01em;
-}
-
-.post-glossary a:hover {
-  color: #000;
-}
-
-/* Long-post title + subtitle rendered inside the right column */
-.right-column > h1:first-of-type {
-  font-size: 1.6rem;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  margin: 0 0 0.25rem 0;
-  color: #111;
-}
-
-.post-subtitle {
   display: block;
-  font-size: 0.95rem;
-  color: #707070;
-  margin-bottom: 2rem;
 }
 
-.post-subtitle:empty {
-  display: none;
+.post-glossary a:hover { color: var(--ink-900); }
+
+/* Highlight the current chapter (set by scripts.js → highlightCurrentChapter). */
+.post-glossary li.is-current > a,
+.post-glossary a.is-current,
+.post-glossary a[aria-current="page"] {
+  color: var(--ink-900);
+  font-weight: 600;
+}
+
+/* Container around chapter list + per-chapter section list. */
+.post-nav {
+  margin-top: 1.25rem;
+  display: block;
+}
+
+/* ===========================================================================
+ * Per-chapter mini-TOC — second tier of the left rail.
+ *
+ * Populated dynamically by scripts.js → injectChapterSectionList using the
+ * h2 / h3 ids from the rendered article. Sits directly under the post-glossary
+ * separated by a thin dashed rule.
+ *
+ * .post-sections:empty hides the wrapper before the JS fills it (prevents an
+ * orphan rule from showing up if a chapter has no h2/h3 ids).
+ * ========================================================================*/
+.post-sections {
+  display: block;
+  margin-top: 1.25rem;
+  padding-top: 0.85rem;
+  border-top: 1px dashed var(--paper-400);
+  min-height: 0;
+}
+
+.post-sections:empty { display: none; }
+
+.post-sections-label {
+  font-size: 9.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-500);
+  margin-bottom: 0.55rem;
+}
+
+.post-sections ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.post-sections-item {
+  margin-bottom: 0.4rem;
+  line-height: 1.3;
+}
+
+.post-sections-item.is-sub {
+  padding-left: 0.9rem;
+}
+
+.post-sections-item a {
+  font-size: 11.5px;
+  color: var(--ink-700);
+  text-decoration: none;
+  display: block;
+}
+
+.post-sections-item.is-sub a {
+  font-size: 11px;
+  color: var(--ink-500);
+}
+
+.post-sections-item a:hover { color: var(--ink-900); }
+
+.post-sections-item.is-current > a {
+  color: var(--ink-900);
+  font-weight: 600;
+}
+
+/* ===========================================================================
+ * Hover-preview popover content (Gwern-style).
+ *
+ * Tippy box theming lives in custom.css (.tippy-box[light-border]). Here we
+ * style the content the JS injects: a small heading + an excerpt of one to
+ * three paragraphs from the target page or section.
+ * ========================================================================*/
+.link-preview {
+  font-family: var(--font-sans);
+  padding: 0.75rem 0.95rem 0.85rem 0.95rem;
+  max-width: 460px;
+  color: var(--ink-900);
+}
+
+.link-preview-title {
+  font-family: var(--font-serif);
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--accent-700);
+  margin-bottom: 0.45rem;
+  line-height: 1.25;
+}
+
+.link-preview-body {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--ink-700);
+}
+
+.link-preview-body > p,
+.link-preview-body > ul,
+.link-preview-body > ol,
+.link-preview-body > blockquote {
+  margin: 0 0 0.45rem 0;
+}
+
+.link-preview-body > *:last-child { margin-bottom: 0; }
+
+.link-preview-body p {
+  display: -webkit-box;
+  -webkit-line-clamp: 8;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.link-preview-body code {
+  font-size: 0.95em;
+  background: var(--paper-200);
+  padding: 0 0.25em;
+  border-radius: 2px;
+}
+
+.link-preview-body .citation { color: var(--cite-color); }
+
+.link-preview-body .def {
+  margin: 0.4rem 0;
+  padding: 0.4rem 0.55rem;
+  font-size: 0.95em;
+}
+
+.link-preview-loading,
+.link-preview-empty {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  color: var(--ink-500);
+  padding: 0.65rem 0.85rem;
+}
+
+/* Site-wide body links.
+ *
+ * Goal: make the link readable at a glance while keeping the underline
+ * almost invisible until hover. Color is the steel accent (sits between
+ * ink-900 and the new accent-700), with a barely-visible 1px underline
+ * that strengthens on hover. */
+.right-column a {
+  color: var(--accent-700);
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-color: rgba(93, 124, 147, 0.18);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.right-column a:hover {
+  color: var(--accent-900);
+  text-decoration-color: var(--accent-700);
+}
+
+/* Heading anchor "#" mark and post-glossary current-chapter keep their own
+ * treatments — undo the underline. */
+.right-column a.heading-anchor,
+.right-column a.is-current {
+  text-decoration: none;
+}
+
+/* Bibliography links inherit the same gray-on-gray, just retain the dotted
+ * underline so DOIs and external URLs still announce themselves as links. */
+.right-column #refs a,
+.right-column .csl-entry a {
+  color: var(--ink-700);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--ink-300);
+}
+
+.right-column #refs a:hover,
+.right-column .csl-entry a:hover {
+  color: var(--ink-900);
+  border-bottom-color: var(--ink-700);
+}
+
+/* ===========================================================================
+ * Mobile (≤768px).
+ *
+ * Drop the sticky rail and the negative-margin offset; let the rail flow
+ * above the article on small screens.
+ * ========================================================================*/
+@media (max-width: 768px) {
+  .homepage-container {
+    padding: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .left-column {
+    position: relative;
+    top: 0;
+    max-height: none;
+    overflow: visible;
+    margin-bottom: 2rem;
+  }
 }
