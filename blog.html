@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Blog – артём</title>
+<title>blog – артём</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -24,7 +24,6 @@ ul.task-list li input[type="checkbox"] {
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
 <link href="././img/BTNBlink.webp" rel="icon">
 <script src="site_libs/quarto-listing/list.min.js"></script>
 <script src="site_libs/quarto-listing/quarto-listing.js"></script>
@@ -56,20 +55,20 @@ ul.task-list li input[type="checkbox"] {
 <script>
 
   window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
+    const listingTargetEl = window.document.querySelector('#listing-blog-listing .list');
     if (!listingTargetEl) {
       // No listing discovered, do not attach.
       return; 
     }
 
     const options = {
-      valueNames: ['listing-date','listing-title','listing-author',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-title-sort'] }],
+      valueNames: ['listing-project','listing-website','listing-format','listing-language','listing-draft-mode','listing-page-layout','listing-title-block-style','listing-css','listing-bibliography','listing-csl','listing-link-citations','listing-citations-hover','listing-crossrefs-hover','listing-toc','listing-toc-depth','listing-toc-location','listing-page-navigation','listing-execute','listing-title','listing-subtitle','listing-date','listing-date-modified','listing-categories','listing-path','listing-outputHref','listing-author','listing-description','listing-filename','listing-file-modified','listing-reading-time','listing-word-count','listing-latex-auto-install',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-date-modified-sort'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] },{ data: ['listing-word-count-sort'] }],
       
-      searchColumns: ["listing-date","listing-title","listing-author"],
+      searchColumns: ["listing-project","listing-website","listing-format","listing-language","listing-draft-mode","listing-page-layout","listing-title-block-style","listing-css","listing-bibliography","listing-csl","listing-link-citations","listing-citations-hover","listing-crossrefs-hover","listing-toc","listing-toc-depth","listing-toc-location","listing-page-navigation","listing-execute","listing-title","listing-subtitle","listing-date","listing-date-modified","listing-categories","listing-path","listing-outputHref","listing-author","listing-description","listing-filename","listing-file-modified","listing-reading-time","listing-word-count","listing-latex-auto-install"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
+    window['quarto-listings']['listing-blog-listing'] = new List('listing-blog-listing', options);
 
     if (window['quarto-listing-loaded']) {
       window['quarto-listing-loaded']();
@@ -87,7 +86,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="https://unpkg.com/tippy.js@6"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Serif:wght@400;500;600&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
@@ -122,90 +121,79 @@ window.Quarto = {
 
 <link rel="stylesheet" href="styles/custom.css">
 <link rel="stylesheet" href="styles/scrollbar-fix.css">
-<link rel="stylesheet" href="styles/blog.css">
+<link rel="stylesheet" href="styles/listing.css">
+<link rel="stylesheet" href="styles/homepage.css">
 <link rel="alternate" type="application/rss+xml" title="артём" href="blog.xml" data-external="1"></head>
 
-<body>
+<body class="fullcontent">
 
 <div id="quarto-search-results"></div>
 <!-- content -->
-<header id="title-block-header" class="quarto-title-block default page-columns page-full">
-  <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-page-left">
-      <h1 class="title">Blog</h1>
-                      </div>
-  </div>
-    
-  
-  <div class="quarto-title-meta column-page-left">
-
-      
-    
-      
-    </div>
-    
-  
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
+<div id="quarto-content" class="quarto-container page-layout-custom">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(2)</span></div><div class="category" data-category="cryo-EM">cryo-EM <span class="quarto-category-count">(1)</span></div><div class="category" data-category="data-formats">data-formats <span class="quarto-category-count">(1)</span></div><div class="category" data-category="mmcif">mmcif <span class="quarto-category-count">(1)</span></div><div class="category" data-category="structural-biology">structural-biology <span class="quarto-category-count">(1)</span></div></div></div>
 <!-- main -->
-<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
 
 
 
 
+<div class="grid homepage-container">
+<div class="g-col-12 g-col-md-3 left-column">
+<p><a href="."><img src="./img/signature.png" class="signature img-fluid"></a></p>
+<ul>
+<li><a href="./papers/kushner_cv.pdf">CV</a></li>
+<li><a href="./papers/papers.html">Papers</a></li>
+<li><a href="./blog.html">Blog</a></li>
+<li><a href="./listings.html">Lists</a></li>
+</ul>
+<div class="social-links">
+<p><a href="https://github.com/rtviii"><i class="bi bi-github"></i></a> <a href="https://scholar.google.com/citations?user=hrPyOIsAAAAJ&amp;hl=en"><i class="ai ai-google-scholar"></i></a> <a href="https://twitter.com/rtkushner"><i class="bi bi-twitter"></i></a></p>
+</div>
+</div>
+<div class="g-col-12 g-col-md-9 right-column">
+<div id="listing-blog-listing" class="quarto-listing quarto-listing-container-custom">
+<div class="rt-blog-list">
 
+  <a class="rt-blog-row" href="./posts/mmcif/index.html">
+    <span class="rt-blog-date">
+      
+        Apr 15, 2026
+      
+    </span>
+    <span class="rt-blog-meta">
+      <span class="rt-blog-title">Structural Bio Format</span>
+      
+        <span class="rt-blog-subtitle">Some notes on mmCIF and what an ML-native successor might look like</span>
+      
+    </span>
+  </a>
 
+  <a class="rt-blog-row" href="./posts/npet-poisson-recon/index.html">
+    <span class="rt-blog-date">
+      
+        Aug 4, 2024
+      
+    </span>
+    <span class="rt-blog-meta">
+      <span class="rt-blog-title">3D tessellation of biomolecular cavities</span>
+      
+        <span class="rt-blog-subtitle">Protocol for analyzing the ribosome exit tunnel</span>
+      
+    </span>
+  </a>
 
-
-
-<div class="quarto-listing quarto-listing-container-table" id="listing-listing">
-<table class="quarto-listing-table table">
-<thead>
-<tr>
-<th>
-Date
-</th>
-<th>
-Title
-</th>
-<th>
-Author
-</th>
-</tr>
-</thead>
-<tbody class="list">
-<tr data-index="0" data-categories="structural-biology,data-formats,mmcif" data-listing-date-sort="1776204000000" data-listing-file-modified-sort="1776600313471" data-listing-date-modified-sort="1776600313000" data-listing-reading-time-sort="1" data-listing-word-count-sort="123" data-listing-title-sort="Toward a Modern Foundation for Structural Biology Data" data-listing-filename-sort="index.qmd">
-<td>
-<span class="listing-date">Apr 15, 2026</span>
-</td>
-<td>
-<a href="./posts/mmcif/index.html" class="title listing-title">Toward a Modern Foundation for Structural Biology Data</a>
-</td>
-<td>
-<span class="listing-author">&nbsp;</span>
-</td>
-</tr>
-<tr data-index="1" data-categories="cryo-EM" data-listing-date-sort="1722722400000" data-listing-file-modified-sort="1767397437300" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="16" data-listing-word-count-sort="3189" data-listing-title-sort="3D tessellation of biomolecular cavities" data-listing-filename-sort="index.qmd">
-<td>
-<span class="listing-date">Aug 4, 2024</span>
-</td>
-<td>
-<a href="./posts/npet-poisson-recon/index.html" class="title listing-title">3D tessellation of biomolecular cavities</a>
-</td>
-<td>
-<span class="listing-author">Artem Kushner, Khanh Dao Duc</span>
-</td>
-</tr>
-</tbody>
-</table>
+</div>
 <div class="listing-no-matching d-none">
 No matching items
 </div>
-</div></main> <!-- /main -->
+</div>
+</div>
+</div>
+
+
+
+
+
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

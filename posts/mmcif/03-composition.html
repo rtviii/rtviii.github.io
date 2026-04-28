@@ -24,7 +24,6 @@ ul.task-list li input[type="checkbox"] {
 
 
 <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
 <link href="../.././img/BTNBlink.webp" rel="icon">
 <script src="../../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../../site_libs/quarto-html/quarto.js"></script>
@@ -91,131 +90,46 @@ window.Quarto = {
 
 <link rel="stylesheet" href="../../styles/custom.css">
 <link rel="stylesheet" href="../../styles/scrollbar-fix.css">
+<link rel="stylesheet" href="../../styles/listing.css">
+<link rel="stylesheet" href="../../styles/homepage.css">
 </head>
 
-<body class="nav-sidebar docked">
+<body>
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-        <i class="bi bi-layout-text-sidebar-reverse"></i>
-      </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../posts/mmcif/03-composition.html">3. Composition</a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-        </a>
-    </div>
-  </nav>
-</header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<div id="quarto-content" class="quarto-container page-layout-custom">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
-    <div class="sidebar-title mb-0 py-0">
-      <a href="../../">Toward a Modern Foundation</a> 
-    </div>
-      </div>
-    <div class="sidebar-menu-container"> 
-    <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../posts/mmcif/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Overview</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../posts/mmcif/01-problems.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">1. Problems with mmCIF</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../posts/mmcif/02-architecture.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">2. Architecture</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../posts/mmcif/03-composition.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">3. Composition</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../posts/mmcif/04-annotations-and-passes.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">4. Annotations and computed passes</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../posts/mmcif/05-open-questions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">5. Open questions</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../posts/mmcif/06-black-box-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Appendix: black-box data</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../posts/mmcif/07-modularity-examples.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Appendix: modularity examples</span></a>
-  </div>
-</li>
-    </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#the-composition-principle" id="toc-the-composition-principle" class="nav-link active" data-scroll-target="#the-composition-principle">The composition principle</a></li>
-  <li><a href="#assumption-independence-or-hierarchical-nesting" id="toc-assumption-independence-or-hierarchical-nesting" class="nav-link" data-scroll-target="#assumption-independence-or-hierarchical-nesting">Assumption: independence or hierarchical nesting</a></li>
-  <li><a href="#worked-examples" id="toc-worked-examples" class="nav-link" data-scroll-target="#worked-examples">Worked examples</a>
-  <ul class="collapse">
-  <li><a href="#example-1-crystallographic-kinase-with-inhibitor-1.6-å" id="toc-example-1-crystallographic-kinase-with-inhibitor-1.6-å" class="nav-link" data-scroll-target="#example-1-crystallographic-kinase-with-inhibitor-1.6-å">Example 1: Crystallographic kinase with inhibitor, 1.6 Å</a></li>
-  <li><a href="#example-2-protein-with-ambiguous-ligand-pose-training-data-for-a-docking-model" id="toc-example-2-protein-with-ambiguous-ligand-pose-training-data-for-a-docking-model" class="nav-link" data-scroll-target="#example-2-protein-with-ambiguous-ligand-pose-training-data-for-a-docking-model">Example 2: Protein with ambiguous ligand pose, training data for a docking model</a></li>
-  <li><a href="#example-3-70s-ribosome-cryo-em-reconstruction" id="toc-example-3-70s-ribosome-cryo-em-reconstruction" class="nav-link" data-scroll-target="#example-3-70s-ribosome-cryo-em-reconstruction">Example 3: 70S ribosome cryo-EM reconstruction</a></li>
-  <li><a href="#example-4-gpcr-with-md-trajectory-and-ligand-binding-substates" id="toc-example-4-gpcr-with-md-trajectory-and-ligand-binding-substates" class="nav-link" data-scroll-target="#example-4-gpcr-with-md-trajectory-and-ligand-binding-substates">Example 4: GPCR with MD trajectory and ligand-binding substates</a></li>
-  <li><a href="#example-5-cryo-et-subtomogram-averaged-ribosome-with-multi-scale-heterogeneity" id="toc-example-5-cryo-et-subtomogram-averaged-ribosome-with-multi-scale-heterogeneity" class="nav-link" data-scroll-target="#example-5-cryo-et-subtomogram-averaged-ribosome-with-multi-scale-heterogeneity">Example 5: Cryo-ET subtomogram-averaged ribosome with multi-scale heterogeneity</a></li>
-  </ul></li>
-  <li><a href="#what-composition-buys" id="toc-what-composition-buys" class="nav-link" data-scroll-target="#what-composition-buys">What composition buys</a></li>
-  </ul>
-</nav>
-    </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Composition</h1>
-</div>
-
-
-
-<div class="quarto-title-meta">
-
-    
-  
-    
-  </div>
-  
-
+<header id="title-block-header">
+<h1 class="title display-7">Composition</h1>
 
 </header>
 
 
+<div class="grid homepage-container">
+<div class="g-col-12 g-col-md-3 left-column">
+<p><a href="../.."><img src="../../img/signature.png" class="signature img-fluid"></a></p>
+<div class="post-glossary">
+<ul>
+<li><a href="../../posts/mmcif/index.html">Overview</a></li>
+<li><a href="../../posts/mmcif/01-problems.html">1. Problems with mmCIF</a></li>
+<li><a href="../../posts/mmcif/02-architecture.html">2. Architecture</a></li>
+<li><a href="../../posts/mmcif/03-composition.html">3. Composition</a></li>
+<li><a href="../../posts/mmcif/04-annotations-and-passes.html">4. Annotations and computed passes</a></li>
+<li><a href="../../posts/mmcif/05-open-questions.html">5. Open questions</a></li>
+<li><a href="../../posts/mmcif/06-black-box-data.html">Appendix: black-box data</a></li>
+<li><a href="../../posts/mmcif/07-modularity-examples.html">Appendix: modularity examples</a></li>
+</ul>
+</div>
+</div>
+<section id="section" class="level1 g-col-12 g-col-md-9 right-column">
+<h1>Composition</h1>
 <p>The previous chapter argued that heterogeneity should be described by a regime chosen from a small taxonomy – <a href="../../posts/mmcif/02-architecture.html#heterogeneity">Heterogeneity Regime 1: Discrete Ensemble</a>, <a href="../../posts/mmcif/02-architecture.html#heterogeneity">Heterogeneity Regime 2: Trajectory</a>, <a href="../../posts/mmcif/02-architecture.html#heterogeneity">Heterogeneity Regime 3: Continuous Landscape</a>, with the factor graph regime as a sidebar – and that every descriptor attaches to a <em>scope</em>: a level of the physical <a href="../../posts/mmcif/02-architecture.html#containment">Hierarchy</a> or a grouping declared in <a href="../../posts/mmcif/02-architecture.html#representation">Representation</a>. This chapter is about the consequence: real systems almost never have just one heterogeneity descriptor. A crystallographic structure can simultaneously carry an atom-scoped B-factor, a residue-scoped altloc, and a chain-scoped TLS group; a cryo-EM reconstruction can carry an assembly-scoped ratcheting mode, a subunit-scoped rigid-body motion, and several entity-instance-scoped compositional states. The format has to support these descriptors coexisting, composing predictably, and being stored in different regimes and different materialization modes without any of them pinning the others to a particular choice.</p>
 <section id="the-composition-principle" class="level2">
-<h2 class="anchored" data-anchor-id="the-composition-principle">The composition principle</h2>
+<h2 data-anchor-id="the-composition-principle">The composition principle</h2>
 <p>The total configuration of the system in some sampled state <span class="math inline">\(s\)</span> is the reference structure plus contributions from every scope along the Hierarchy path of each atom. In the notation of the previous chapter:</p>
 <p><span class="math display">\[
 x_i(s) = x_i^{\mathrm{ref}} + \sum_{\ell \in \mathrm{path}(i)} \Delta_i^{\ell}(s_\ell)
@@ -246,7 +160,7 @@ x_i(s) = x_i^{\mathrm{ref}} + \sum_{\ell \in \mathrm{path}(i)} \Delta_i^{\ell}(s
 <p>There are two direct consequences. First, the regime chosen at one scope does not constrain the regime at any other scope: a chain-level continuous descriptor and a residue-level discrete descriptor coexist without friction. Second, the materialization mode is also per-scope: a chain-level descriptor can be stored as parameters (<a href="../../posts/mmcif/02-architecture.html#materialization">Materialization Mode C: Generative / External Reference</a>) while a residue-level descriptor is stored as sparse deltas (<a href="../../posts/mmcif/02-architecture.html#materialization">Materialization Mode B: Delta Encoding</a>) and a few named system-wide snapshots are stored as full enumerations (<a href="../../posts/mmcif/02-architecture.html#materialization">Materialization Mode A: Full Enumeration</a>). Composition happens at render time, not at store time.</p>
 </section>
 <section id="assumption-independence-or-hierarchical-nesting" class="level2">
-<h2 class="anchored" data-anchor-id="assumption-independence-or-hierarchical-nesting">Assumption: independence or hierarchical nesting</h2>
+<h2 data-anchor-id="assumption-independence-or-hierarchical-nesting">Assumption: independence or hierarchical nesting</h2>
 <p>We assume heterogeneity descriptors at different scopes are either <strong>independent</strong> or <strong>hierarchically nested</strong>, with explicit cross-scope factor potentials allowed as a rarely-used escape hatch. The two common cases:</p>
 <p><strong>Independence.</strong> The joint distribution factors: <span class="math inline">\(p(s) = \prod_\ell p(s_\ell)\)</span>. Storage is linear in the sum of per-scope state spaces, not in their product. The chain-level TLS parameters, residue-level altlocs, and atom-level jitter of a typical crystal are usually assumed independent under this model, which is exactly how crystallographic refinement treats them.</p>
 <p><strong>Hierarchical nesting.</strong> The state space of a child-scope descriptor is conditional on the parent-scope descriptor. The canonical case is a compositional-ligand <span class="math inline">\(\supset\)</span> conformational-loop nesting: when the chain has ligand bound (compositional state <span class="math inline">\(X\)</span>), the loop can take conformations <span class="math inline">\(\{A, B\}\)</span>; when the ligand is absent (compositional state <span class="math inline">\(Y\)</span>), the loop takes conformation <span class="math inline">\(\{C\}\)</span> only. The child descriptor carries a pointer to the parent state that activates it, and invalid combinations are rejected at render time. This is a restricted Cartesian product – a DAG of (scope, state) nodes with edges encoding which parent-child combinations are legal.</p>
@@ -254,10 +168,10 @@ x_i(s) = x_i^{\mathrm{ref}} + \sum_{\ell \in \mathrm{path}(i)} \Delta_i^{\ell}(s
 <p>The independence-or-nesting assumption is what makes storage scale with the sum, not the product, of scope state spaces. Without it, the format has to fall back on storing full Cartesian state tables, which is <a href="../../posts/mmcif/02-architecture.html#heterogeneity">Heterogeneity Regime 1: Discrete Ensemble</a> at the whole-system scope and defeats the point of scoping descriptors.</p>
 </section>
 <section id="worked-examples" class="level2">
-<h2 class="anchored" data-anchor-id="worked-examples">Worked examples</h2>
+<h2 data-anchor-id="worked-examples">Worked examples</h2>
 <p>Five scenarios at increasing complexity. Each lists every heterogeneity descriptor, its scope, its regime, and its materialization mode, and notes the coupling pattern. The last two are the interesting ones – they mix all three heterogeneity regimes across the Hierarchy in a single deposition.</p>
 <section id="example-1-crystallographic-kinase-with-inhibitor-1.6-å" class="level3">
-<h3 class="anchored" data-anchor-id="example-1-crystallographic-kinase-with-inhibitor-1.6-å">Example 1: Crystallographic kinase with inhibitor, 1.6 Å</h3>
+<h3 data-anchor-id="example-1-crystallographic-kinase-with-inhibitor-1.6-å">Example 1: Crystallographic kinase with inhibitor, 1.6 Å</h3>
 <p>A typical medium-resolution crystal structure. Two domains that rock relative to each other across the unit cell, sidechain rotamer flexibility in a subset of surface residues, and residual thermal motion everywhere.</p>
 <table class="caption-top table">
 <thead>
@@ -304,7 +218,7 @@ x_i(s) = x_i^{\mathrm{ref}} + \sum_{\ell \in \mathrm{path}(i)} \Delta_i^{\ell}(s
 <p>This is the most common layout and would cover a large fraction of existing PDB entries if mapped directly. Today it is deposited as a single-model multiconformer entry with an altloc column, TLS blocks, and a B-factor column – three descriptors encoded in three unrelated syntactic conventions. The architecture proposed here makes them three instances of the same abstraction.</p>
 </section>
 <section id="example-2-protein-with-ambiguous-ligand-pose-training-data-for-a-docking-model" class="level3">
-<h3 class="anchored" data-anchor-id="example-2-protein-with-ambiguous-ligand-pose-training-data-for-a-docking-model">Example 2: Protein with ambiguous ligand pose, training data for a docking model</h3>
+<h3 data-anchor-id="example-2-protein-with-ambiguous-ligand-pose-training-data-for-a-docking-model">Example 2: Protein with ambiguous ligand pose, training data for a docking model</h3>
 <p>The same binding site is observed with three distinct ligand poses across a batch of crystals, each pose associated with a different loop conformation of a nearby flexible region. This is an ML-training-data use case: the model consumer wants every valid combination as a training example, not an averaged blur.</p>
 <table class="caption-top table">
 <thead>
@@ -344,7 +258,7 @@ x_i(s) = x_i^{\mathrm{ref}} + \sum_{\ell \in \mathrm{path}(i)} \Delta_i^{\ell}(s
 <p>The nesting collapses what would naively be a <span class="math inline">\(3 \times 3 = 9\)</span>-state joint into 3 legal combinations, with storage linear in the size of the three loop conformations rather than quadratic. More importantly, an ML consumer iterating over states gets exactly the biologically meaningful combinations and no unphysical cross-products. The compositional/conformational hierarchy is visible in the data and legible at training time.</p>
 </section>
 <section id="example-3-70s-ribosome-cryo-em-reconstruction" class="level3">
-<h3 class="anchored" data-anchor-id="example-3-70s-ribosome-cryo-em-reconstruction">Example 3: 70S ribosome cryo-EM reconstruction</h3>
+<h3 data-anchor-id="example-3-70s-ribosome-cryo-em-reconstruction">Example 3: 70S ribosome cryo-EM reconstruction</h3>
 <p>Large assembly with simultaneously active heterogeneity at several scopes: global ratcheting between the small and large subunits, local rRNA helix breathing, variable tRNA occupancy at three sites, and domain-level rearrangements within each subunit.</p>
 <table class="caption-top table">
 <thead>
@@ -419,7 +333,7 @@ x_i(s) = x_i^{\mathrm{ref}} + \sum_{\ell \in \mathrm{path}(i)} \Delta_i^{\ell}(s
 <p>This layout demonstrates the payoff of the architecture at scale. A ribosome has tens of thousands of atoms and a rich, multi-scale heterogeneity that is the entire point of the biological system. Flattening it into a single-model <code>coords[state, atom, 3]</code> tensor throws away the structure; flattening it into a <a href="../../posts/mmcif/02-architecture.html#heterogeneity">Heterogeneity Regime 1: Discrete Ensemble</a> of explicit full-assembly conformers produces combinatorially many states that are not what the microscope measured. Storing each kind of variation at its natural scope, in its natural regime, with the materialization that fits, preserves both the compression and the semantic structure.</p>
 </section>
 <section id="example-4-gpcr-with-md-trajectory-and-ligand-binding-substates" class="level3">
-<h3 class="anchored" data-anchor-id="example-4-gpcr-with-md-trajectory-and-ligand-binding-substates">Example 4: GPCR with MD trajectory and ligand-binding substates</h3>
+<h3 data-anchor-id="example-4-gpcr-with-md-trajectory-and-ligand-binding-substates">Example 4: GPCR with MD trajectory and ligand-binding substates</h3>
 <p>A G-protein-coupled receptor is studied by a combination of crystallography and molecular dynamics. A reference crystal structure defines the Hierarchy; a 2 µs all-atom MD trajectory captures the local dynamics around the orthosteric binding site; and three discrete ligand-bound substates are fit to density in the MD-sampled conformational basin. This exercises all three heterogeneity regimes in a single deposition.</p>
 <table class="caption-top table">
 <thead>
@@ -473,7 +387,7 @@ x_i(s) = x_i^{\mathrm{ref}} + \sum_{\ell \in \mathrm{path}(i)} \Delta_i^{\ell}(s
 <p>A consumer reading this deposition has several legitimate views: a trajectory-only view (just the Regime 2 payload) for training an MD surrogate, an ensemble view (the 3 MSM states <span class="math inline">\(\times\)</span> the nested ligand substates) for docking studies, a single static view (pick one MSM state, one substate, one twist coefficient, fold in atom-scope ADPs as B-factors) for PyMOL. None of these views requires converting the others.</p>
 </section>
 <section id="example-5-cryo-et-subtomogram-averaged-ribosome-with-multi-scale-heterogeneity" class="level3">
-<h3 class="anchored" data-anchor-id="example-5-cryo-et-subtomogram-averaged-ribosome-with-multi-scale-heterogeneity">Example 5: Cryo-ET subtomogram-averaged ribosome with multi-scale heterogeneity</h3>
+<h3 data-anchor-id="example-5-cryo-et-subtomogram-averaged-ribosome-with-multi-scale-heterogeneity">Example 5: Cryo-ET subtomogram-averaged ribosome with multi-scale heterogeneity</h3>
 <p>A single-cell cryo-electron tomography reconstruction of bacterial ribosomes in situ: a few thousand particle instances embedded in the tomogram, each with its own rigid-body pose in the cell, each contributing to a subtomogram average that resolves the conformational landscape of translation. This is a case where the Hierarchy has an extra instance-scope axis above the assembly (the particles), and heterogeneity shows up at nearly every level.</p>
 <table class="caption-top table">
 <thead>
@@ -542,17 +456,19 @@ x_i(s) = x_i^{\mathrm{ref}} + \sum_{\ell \in \mathrm{path}(i)} \Delta_i^{\ell}(s
 </section>
 </section>
 <section id="what-composition-buys" class="level2">
-<h2 class="anchored" data-anchor-id="what-composition-buys">What composition buys</h2>
+<h2 data-anchor-id="what-composition-buys">What composition buys</h2>
 <p>Three things, in decreasing order of concreteness:</p>
 <p><em>Storage linearity.</em> Independence and nesting both keep total storage to the sum of per-scope costs rather than the product. An ensemble with heterogeneity at five different scopes and a few states each does not become a Cartesian product of twenty-thousand conformers.</p>
 <p><em>Regime independence.</em> Each scope picks the regime that fits its physics. A structure is not pushed into <a href="../../posts/mmcif/02-architecture.html#heterogeneity">Regime 1: Discrete Ensemble</a> just because one of its scopes is discrete, nor into <a href="../../posts/mmcif/02-architecture.html#heterogeneity">Regime 3: Continuous Landscape</a> just because another is continuous. The reverse pressure is also absent: there is no incentive to collapse everything into a single uniform regime for consistency.</p>
 <p><em>Semantic legibility.</em> Consumers – whether a visualization tool, an ML dataloader, or a refinement program – can ask “what varies at chain scope,” “what varies at residue scope,” “what varies at atom scope” and get back descriptors typed by scope. A PyMOL-like consumer can ignore everything above residue scope if it wants a single-model render. A training pipeline can iterate over the nested compositional/conformational combinations without flattening to 50,000 explicit states. A refinement engine can update the chain-scope TLS parameters without touching the residue-scope altlocs.</p>
 <p>The next chapter walks through the annotations and computed-pass machinery that sits on top of this layered core, and how established tools (Zarr, DataFusion, TileDB, HDF5) map onto the storage side of the four layers plus the composition rule above.</p>
-
-
 </section>
+</section>
+</div>
 
-</main> <!-- /main -->
+
+
+
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

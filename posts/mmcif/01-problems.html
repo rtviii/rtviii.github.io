@@ -24,7 +24,6 @@ ul.task-list li input[type="checkbox"] {
 
 
 <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
 <link href="../.././img/BTNBlink.webp" rel="icon">
 <script src="../../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../../site_libs/quarto-html/quarto.js"></script>
@@ -56,130 +55,58 @@ ul.task-list li input[type="checkbox"] {
 <script src="https://unpkg.com/tippy.js@6"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Serif:wght@400;500;600&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
 
 
 <link rel="stylesheet" href="../../styles/custom.css">
 <link rel="stylesheet" href="../../styles/scrollbar-fix.css">
+<link rel="stylesheet" href="../../styles/listing.css">
+<link rel="stylesheet" href="../../styles/homepage.css">
 </head>
 
-<body class="nav-sidebar docked">
+<body>
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-        <i class="bi bi-layout-text-sidebar-reverse"></i>
-      </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../posts/mmcif/01-problems.html">1. Problems with mmCIF</a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-        </a>
-    </div>
-  </nav>
-</header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<div id="quarto-content" class="quarto-container page-layout-custom">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
-    <div class="sidebar-title mb-0 py-0">
-      <a href="../../">Toward a Modern Foundation</a> 
-    </div>
-      </div>
-    <div class="sidebar-menu-container"> 
-    <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../posts/mmcif/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Overview</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../posts/mmcif/01-problems.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">1. Problems with mmCIF</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../posts/mmcif/02-architecture.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">2. Architecture</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../posts/mmcif/03-composition.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">3. Composition</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../posts/mmcif/04-annotations-and-passes.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">4. Annotations and computed passes</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../posts/mmcif/05-open-questions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">5. Open questions</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../posts/mmcif/06-black-box-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Appendix: black-box data</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../posts/mmcif/07-modularity-examples.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Appendix: modularity examples</span></a>
-  </div>
-</li>
-    </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#pain-points-enumerated" id="toc-pain-points-enumerated" class="nav-link active" data-scroll-target="#pain-points-enumerated">Pain points (enumerated)</a></li>
-  <li><a href="#the-single-structure-assumption-has-to-evolve" id="toc-the-single-structure-assumption-has-to-evolve" class="nav-link" data-scroll-target="#the-single-structure-assumption-has-to-evolve">The single-structure assumption has to evolve</a></li>
-  <li><a href="#text-format-parsing-fragility" id="toc-text-format-parsing-fragility" class="nav-link" data-scroll-target="#text-format-parsing-fragility">Text format, parsing fragility</a></li>
-  <li><a href="#implicit-information-and-missing-connections" id="toc-implicit-information-and-missing-connections" class="nav-link" data-scroll-target="#implicit-information-and-missing-connections">Implicit information and missing connections</a></li>
-  <li><a href="#no-ml-native-access-patterns" id="toc-no-ml-native-access-patterns" class="nav-link" data-scroll-target="#no-ml-native-access-patterns">No ML-native access patterns</a></li>
-  </ul>
-</nav>
-    </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Problems with mmCIF and the current ecosystem</h1>
-</div>
-
-
-
-<div class="quarto-title-meta">
-
-    
-  
-    
-  </div>
-  
-
+<header id="title-block-header">
+<h1 class="title display-7">Problems with mmCIF and the current ecosystem</h1>
 
 </header>
 
 
+<div class="grid homepage-container">
+<div class="g-col-12 g-col-md-3 left-column">
+<p><a href="../.."><img src="../../img/signature.png" class="signature img-fluid"></a></p>
+<div class="post-nav">
+<div class="post-glossary">
+<ul>
+<li><a href="../../posts/mmcif/index.html">Overview</a></li>
+<li><a href="../../posts/mmcif/01-problems.html">1. Problems with mmCIF</a></li>
+<li><a href="../../posts/mmcif/02-architecture.html">2. Layout</a></li>
+<li><a href="../../posts/mmcif/03-evaluation-model.html">3. Evaluation model</a></li>
+<li><a href="../../posts/mmcif/04-annotations-and-engine.html">4. Annotations and the artifact engine</a></li>
+<li><a href="../../posts/mmcif/04b-technology-survey.html">5. Technology survey</a></li>
+<li><a href="../../posts/mmcif/05-open-questions.html">6. Open questions</a></li>
+<li><a href="../../posts/mmcif/08-ml-native.html">7. ML-native access patterns</a></li>
+<li><a href="../../posts/mmcif/06-black-box-data.html">Appendix: black-box data and model artifacts</a></li>
+<li><a href="../../posts/mmcif/07-modularity-examples.html">Appendix: modularity examples</a></li>
+</ul>
+</div>
+<div class="post-sections">
+
+</div>
+</div>
+</div>
+<section id="section" class="level1 g-col-12 g-col-md-9 right-column">
+<h1>Problems with mmCIF and the current ecosystem</h1>
 <section id="pain-points-enumerated" class="level2">
-<h2 class="anchored" data-anchor-id="pain-points-enumerated">Pain points (enumerated)</h2>
+<h2 data-anchor-id="pain-points-enumerated">Pain points (enumerated)</h2>
 <ul>
 <li><p><strong>Parsing fragility.</strong> No reference implementation. Every parser is different. Links below.</p></li>
 <li><p><strong>No random access.</strong> Cannot read chain B without scanning chain A. For 200k+ atom structures this is a real bottleneck. Not a huge problem for a structural/comp biologist yet in practice, but already a tightening bottleneck for the ML models.</p></li>
@@ -189,12 +116,12 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 </section>
 <section id="the-single-structure-assumption-has-to-evolve" class="level2">
-<h2 class="anchored" data-anchor-id="the-single-structure-assumption-has-to-evolve">The single-structure assumption has to evolve</h2>
+<h2 data-anchor-id="the-single-structure-assumption-has-to-evolve">The single-structure assumption has to evolve</h2>
 <p>mmCIF models one experiment -&gt; one structure. Insufficient</p>
 <p>The <code>alt_id</code> mechanism is an ok tool for conformational heterogeneity: individual atoms carry a single-character label (A, B, C…) and an occupancy (summing to 1.0 within a residue). This means: each residue independently declares its own conformers; there is no way to state “alt A of residue 50 co-occurs with alt A of residue 80”; and occupancies are per-atom scalars with no associated uncertainty, free energy, or kinetic information. No way to capture continuous motion however and doesn’t yet scale to larger systems.</p>
 </section>
 <section id="text-format-parsing-fragility" class="level2">
-<h2 class="anchored" data-anchor-id="text-format-parsing-fragility">Text format, parsing fragility</h2>
+<h2 data-anchor-id="text-format-parsing-fragility">Text format, parsing fragility</h2>
 <p>mmCIF is plain text with fixed syntactic rules (CIF2 spec: <a href="https://www.iucr.org/resources/cif/cif2">iucr.org/resources/cif/cif2</a>) but no canonical reference implementation. Every consumer writes its own parser. They all handle edge cases differently:</p>
 <ul>
 <li>DeepMind’s AlphaFold mmCIF parser: <a href="https://huggingface.co/spaces/simonduerr/ProteinMPNN/blob/f969e9cfb6f11ba299c7108aadff124e9cf38b1f/alphafold/alphafold/data/mmcif_parsing.py">huggingface.co/…/mmcif_parsing.py</a></li>
@@ -214,11 +141,11 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 </section>
 <section id="implicit-information-and-missing-connections" class="level2">
-<h2 class="anchored" data-anchor-id="implicit-information-and-missing-connections">Implicit information and missing connections</h2>
+<h2 data-anchor-id="implicit-information-and-missing-connections">Implicit information and missing connections</h2>
 <p>Atomic models are largely untethered from the experimental data that produced them. Maps in EMDB, raw images in EMPIAR, models in PDB – three archives, three accession systems, cross-referenced but not structurally integrated. A tighter connection between atomic coordinates and the density/potential from which they were derived would enable validation workflows, re-refinement, and heterogeneity analysis that currently require manual assembly of data from multiple sources.</p>
 </section>
 <section id="no-ml-native-access-patterns" class="level2">
-<h2 class="anchored" data-anchor-id="no-ml-native-access-patterns">No ML-native access patterns</h2>
+<h2 data-anchor-id="no-ml-native-access-patterns">No ML-native access patterns</h2>
 <p>Every GNN-based structure model constructs a molecular graph from parsed coordinates. This graph construction is reimplemented in every codebase (Graphein, AF2 data pipeline, OpenFold, ProteinMPNN, ESM-IF) and is a major preprocessing bottleneck. Specific problems:</p>
 <ul>
 <li>No random access to subsets of atoms or residues without reading the full file</li>
@@ -229,11 +156,13 @@ ul.task-list li input[type="checkbox"] {
 <li>Tokenization for heterogeneous systems (protein + ligand + nucleic acid + ions) is done ad-hoc in AF3/Boltz/Chai with no shared vocabulary</li>
 </ul>
 <p>The <strong>IHMCIF dictionary</strong> (the IHM working group extension, <a href="https://github.com/ihmwg/IHMCIF">github.com/ihmwg/IHMCIF</a>) extends mmCIF with ~30 new categories for integrative/hybrid models. It adds: discrete multi-state models, ordered ensembles (states connected by time or other ordering), multi-scale representations (atomic + coarse-grained beads in the same model), and spatial restraint descriptions. PDB-IHM was unified with the PDB archive in August 2024 and now issues standard PDB accession codes. But: states remain discrete and independent, there is no thermodynamic annotation, no per-state uncertainty, no support for continuous distributions, and the text-file serialization doesn’t scale to large ensembles.</p>
-
-
 </section>
+</section>
+</div>
 
-</main> <!-- /main -->
+
+
+
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

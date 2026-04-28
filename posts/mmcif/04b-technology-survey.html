@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Lists – артём</title>
+<title>Technology survey: storage and heterogeneity tools – артём</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,38 +20,42 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<link href=".././img/BTNBlink.webp" rel="icon">
-<script src="../site_libs/quarto-html/quarto.js"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<link href="../.././img/BTNBlink.webp" rel="icon">
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
-  "location": "sidebar",
-  "copy-button": false,
-  "collapse-after": 3,
-  "panel-placement": "start",
-  "type": "textbox",
-  "limit": 50,
-  "keyboard-shortcut": [
-    "f",
-    "/",
-    "s"
-  ],
-  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -66,81 +70,181 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script src="../scripts.js"></script>
+<script src="../../scripts.js"></script>
 <script src="https://unpkg.com/@popperjs/core@2"></script>
 <script src="https://unpkg.com/tippy.js@6"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Serif:wght@400;500;600&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<link rel="stylesheet" href="../styles/custom.css">
-<link rel="stylesheet" href="../styles/scrollbar-fix.css">
-<link rel="stylesheet" href="./listings.css">
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles/custom.css">
+<link rel="stylesheet" href="../../styles/scrollbar-fix.css">
+<link rel="stylesheet" href="../../styles/listing.css">
+<link rel="stylesheet" href="../../styles/homepage.css">
 </head>
 
 <body>
 
 <div id="quarto-search-results"></div>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
+<div id="quarto-content" class="quarto-container page-layout-custom">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
 <!-- main -->
-<main class="content column-page" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Lists</h1>
-</div>
-
-
-
-<div class="quarto-title-meta column-page">
-
-    
-  
-    
-  </div>
-  
-
+<header id="title-block-header">
+<h1 class="title display-7">Technology survey: storage and heterogeneity tools</h1>
 
 </header>
 
 
-<div class="grid listings-container">
-<section id="movies-tv" class="level3 g-col-4">
-<h3 class="anchored" data-anchor-id="movies-tv">Movies / TV</h3>
+<div class="grid homepage-container">
+<div class="g-col-12 g-col-md-3 left-column">
+<p><a href="../.."><img src="../../img/signature.png" class="signature img-fluid"></a></p>
+<div class="post-nav">
+<div class="post-glossary">
 <ul>
-<li><a href="https://www.imdb.com/title/tt1160419/">Dune</a></li>
-<li><a href="https://www.imdb.com/title/tt12888462/">My Octopus Teacher</a></li>
-<li><a href="https://www.imdb.com/title/tt2543164/">Arrival</a></li>
-<li><a href="https://www.imdb.com/title/tt0390384/">Primer</a></li>
+<li><a href="../../posts/mmcif/index.html">Overview</a></li>
+<li><a href="../../posts/mmcif/01-problems.html">1. Problems with mmCIF</a></li>
+<li><a href="../../posts/mmcif/02-architecture.html">2. Layout</a></li>
+<li><a href="../../posts/mmcif/03-evaluation-model.html">3. Evaluation model</a></li>
+<li><a href="../../posts/mmcif/04-annotations-and-engine.html">4. Annotations and the artifact engine</a></li>
+<li><a href="../../posts/mmcif/04b-technology-survey.html">5. Technology survey</a></li>
+<li><a href="../../posts/mmcif/05-open-questions.html">6. Open questions</a></li>
+<li><a href="../../posts/mmcif/08-ml-native.html">7. ML-native access patterns</a></li>
+<li><a href="../../posts/mmcif/06-black-box-data.html">Appendix: black-box data and model artifacts</a></li>
+<li><a href="../../posts/mmcif/07-modularity-examples.html">Appendix: modularity examples</a></li>
 </ul>
+</div>
+<div class="post-sections">
+
+</div>
+</div>
+</div>
+<section id="section" class="level1 g-col-12 g-col-md-9 right-column">
+<h1>Technology survey: storage and heterogeneity tools</h1>
+<p>The previous chapter described the <em>engine</em> half of the format: the query language, the annotation overlay, the ML-native featurization passes. This chapter is the <em>survey</em> half: existing storage technologies adjacent to structural biology that already solve pieces of the problem, and existing heterogeneity tools mapped onto the three regimes from the Layout chapter. Both halves deliberately keep their distance from the core architecture so that the design of the IR is not contaminated by any one tool’s idiosyncrasies, but neither is the design pretending these tools don’t exist.</p>
+<section id="format-and-storage-foundations" class="level2">
+<h2 data-anchor-id="format-and-storage-foundations">Format and storage foundations</h2>
+<p>Structural biology data is fundamentally multidimensional: atoms have properties (element, charge, name), atoms belong to residues and chains (hierarchy), atoms have coordinates that vary across conformational states (ensemble dimension), and various scalar/vector/tensor fields can be associated with atoms, residues, or the entire system at any level of this hierarchy. A text file of atom records serializes this but sacrifices random access, compression, and dimensional structure.</p>
+<p>Technologies from adjacent fields that offer better primitives:</p>
+<p><strong>Zarr v3</strong> – chunked N-dimensional arrays on any storage backend. Simple (just arrays + groups + JSON metadata), cloud-native, implementations in Python/Rust/JS/C++. <a href="https://github.com/zarr-developers/zarr-python">github.com/zarr-developers/zarr-python</a>, <a href="https://github.com/LDeakin/zarrs">github.com/zarrs/zarrs</a> (Rust).</p>
+<p><strong>OME-Zarr (NGFF)</strong> – bioimaging conventions on Zarr: multiscale pyramids (same data at multiple resolution levels, enabling zoom-dependent loading), axes labels, coordinate transforms, labels/ROIs. Used by CZ CryoET Data Portal. Community-driven RFC process. <a href="https://ngff.openmicroscopy.org/0.5/">ngff.openmicroscopy.org</a>, <a href="https://github.com/ome/ome-zarr-py">github.com/ome/ome-zarr-py</a>.</p>
+<p><strong>copick</strong> – storage-agnostic cryo-ET dataset API built on Zarr/OME-Zarr. Adds overlay filesystem (read-only data + writable annotations), typed annotation objects (picks, segmentations, meshes) with provenance, plugin CLI. <a href="https://github.com/copick/copick">github.com/copick/copick</a>.</p>
+<p><strong>TileDB</strong> – array database with native sparse arrays, built-in query engine, time-travel/versioning. TileDB-SOMA data model (for single-cell genomics) solved a structurally analogous problem: (cells x genes) with metadata on both axes, at scale. <a href="https://github.com/TileDB-Inc/TileDB">github.com/TileDB-Inc/TileDB</a>, <a href="https://github.com/single-cell-data/TileDB-SOMA">github.com/single-cell-data/TileDB-SOMA</a>.</p>
+<p><strong>Apache Arrow / DataFusion</strong> – columnar in-memory format + query engine (Rust). Predicate pushdown (filters pushed to storage layer), zero-copy cross-language interop. A zarr-datafusion crate already exists: <a href="https://github.com/jayendra13/zarr-datafusion">github.com/jayendra13/zarr-datafusion</a>. <a href="https://datafusion.apache.org/">datafusion.apache.org</a>.</p>
+<p><strong>Multiscale pyramids for molecular data.</strong> OME-Zarr stores the same image at progressively lower resolutions (full -&gt; 2x downsampled -&gt; 4x -&gt; …) for efficient visualization. The analog for molecular structures: all-atom -&gt; backbone-only -&gt; domain centroids -&gt; subunit centroids, with explicit mapping operators between levels. This is the coarse-graining hierarchy that IHM already represents in a limited way, and it maps directly onto the groupings layer described in <a href="../../posts/mmcif/02-architecture.html#groupings">Layout § Groupings</a>.</p>
+<p>Tradeoffs (needs benchmarking on real structural biology workloads):</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Concern</th>
+<th>Zarr + DataFusion</th>
+<th>TileDB</th>
+<th>HDF5 (status quo for MD)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Simplicity</td>
+<td>High (just arrays)</td>
+<td>Medium (database engine)</td>
+<td>Medium</td>
+</tr>
+<tr class="even">
+<td>Cloud-native</td>
+<td>Yes (chunked objects on S3)</td>
+<td>Yes</td>
+<td>Poor (no chunk-level access over HTTP)</td>
+</tr>
+<tr class="odd">
+<td>Sparse arrays</td>
+<td>No (fake with compression)</td>
+<td>Native</td>
+<td>No</td>
+</tr>
+<tr class="even">
+<td>Query engine</td>
+<td>External (DataFusion)</td>
+<td>Built-in</td>
+<td>None</td>
+</tr>
+<tr class="odd">
+<td>Versioning</td>
+<td>Manual</td>
+<td>Built-in (time-travel)</td>
+<td>None</td>
+</tr>
+<tr class="even">
+<td>Bioimaging precedent</td>
+<td>OME-Zarr, copick, CZ Portal</td>
+<td>cellxgene Census</td>
+<td>H5MD for MD trajectories</td>
+</tr>
+<tr class="odd">
+<td>Random access to single state</td>
+<td>O(chunk)</td>
+<td>O(1) with index</td>
+<td>O(N) scan</td>
+</tr>
+</tbody>
+</table>
 </section>
-<section id="books" class="level3 g-col-4">
-<h3 class="anchored" data-anchor-id="books">Books</h3>
-<ul>
-<li><a href="https://www.goodreads.com/book/show/28537949-the-seventh-man">The Seventh Man</a></li>
-<li><a href="https://www.goodreads.com/book/show/24800.House_of_Leaves">House of Leaves</a></li>
-<li><a href="https://www.goodreads.com/book/show/57913339-there-is-no-antimemetics-division">There Is No Antimemetics Division</a></li>
-</ul>
+<section id="representing-conformational-heterogeneity" class="level2">
+<h2 data-anchor-id="representing-conformational-heterogeneity">Representing conformational heterogeneity</h2>
+<p>The problem in one sentence: we need a data model that can represent everything from a two-rotamer sidechain flip to a continuous distribution over ribosome conformations, with correlations between components, thermodynamic annotations, and multi-scale descriptions – without enumerating a full coordinate set for each distinguishable configuration of large systems.</p>
+<p>The Layout chapter proposes <a href="../../posts/mmcif/02-architecture.html#heterogeneity">three heterogeneity regimes</a> with different natural representations. This section surveys the existing tools and formalisms against that taxonomy.</p>
+<p><strong>Existing tools by regime.</strong></p>
+<p>Heterogeneity Regime 1 (discrete ensemble): mmCIF alt_id is a degenerate case – two conformers per residue, no correlations, no thermodynamics. IHM multi-state adds named discrete states with ordering and population, but states remain independent and uncorrelated. Wankowicz &amp; Fraser <span class="citation" data-cites="wankowicz2024encoding"><a href="#ref-wankowicz2024encoding" role="doc-biblioref">1</a></span> push this as far as it goes within mmCIF – their proposed categories handle correlated multi-conformer models and ensemble validation within the text-CIF framework. Understanding exactly where their proposal hits the wall is essential for calibrating what requires a new format vs.&nbsp;what can be encoded in extended mmCIF.</p>
+<p>Heterogeneity Regime 2 (trajectory): H5MD (<a href="https://github.com/h5md/h5md">github.com/h5md/h5md</a>) handles this well for MD. MDTraj and MDAnalysis both read and write it. The main gap is the absence of cloud-native access: HDF5 doesn’t support chunk-level HTTP range requests, so trajectory analysis in the cloud currently requires downloading the full file. A Zarr-based trajectory convention that mirrors H5MD semantics but runs on object storage is the obvious gap to fill, and it is a format convention question, not a data model question.</p>
+<p>Heterogeneity Regime 3 (continuous landscape): cryoDRGN (<a href="https://github.com/ml-struct-bio/cryodrgn">github.com/ml-struct-bio/cryodrgn</a>) learns a continuous heterogeneity manifold from cryo-EM particle images and decodes conformations at arbitrary latent coordinates. There is no standard serialization for the latent-plus-decoder representation – each cryoDRGN run produces its own checkpoint format. The right abstraction for storage is: an <span class="math inline">\((N_{\mathrm{particle}}, d)\)</span> latent coordinate array plus a decoder reference, with named landmarks as optional cluster assignments. Normal mode analysis produces a simpler version of the same thing: a <span class="math inline">\((k, N_{\mathrm{atom}}, 3)\)</span> mode basis plus scalar mode coefficients. Both are Materialization Mode C. Markov State Models (PyEMMA, deeptime) sit at the border between Heterogeneity Regime 2 and Heterogeneity Regime 3: they discretize a continuous trajectory into metastable states and produce a transition matrix over those states, which can be stored as a sparse <span class="math inline">\((N_{\mathrm{state}}, N_{\mathrm{state}})\)</span> matrix with equilibrium populations – a Heterogeneity Regime 1 coordinate set plus a kinetic annotation in the shape of a Heterogeneity Regime 3 descriptor.</p>
+<p><strong>Correlation and coupling.</strong> There is a third representation worth noting for cases that sit between regimes: a sparse pairwise correlation array or graphical model specifying which residue pairs are conformationally coupled, without committing to a full joint distribution. This is useful as a compact annotation – a summary of an MD ensemble or an NMR-derived coupling network – without requiring that the full joint distribution be stored.</p>
+<p><strong>Where we are.</strong> The existing literature covers Heterogeneity Regime 1 well (qFit, multi-conformer crystallography, IHM discrete states), Heterogeneity Regime 2 adequately (H5MD, MDTraj), and Heterogeneity Regime 3 experimentally but without standard serialization (cryoDRGN, manifold embedding methods). The gaps that need new work: a cloud-native trajectory convention (Heterogeneity Regime 2 on Zarr) and a standard serialization for latent-plus-decoder representations (Heterogeneity Regime 3).</p>
 </section>
-<section id="video-games" class="level3 g-col-4">
-<h3 class="anchored" data-anchor-id="video-games">Video Games</h3>
-<ul>
-<li><a href="https://www.mobygames.com/game/130174/outer-wilds/">Outer Wilds</a></li>
-<li><a href="https://store.steampowered.com/app/264710/Subnautica/">Subnautica</a></li>
-<li><a href="https://store.steampowered.com/app/683320/GRIS/">Gris</a></li>
-</ul>
 </section>
 </div>
 
 
 
-</main> <!-- /main -->
+
+
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -247,6 +351,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         if (link.dataset.originalHref !== undefined) {
           link.href = link.dataset.originalHref;
         }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
       }
     }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
@@ -561,7 +670,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-</div> <!-- /content -->
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" data-entry-spacing="0" role="list">
+<div id="ref-wankowicz2024encoding" class="csl-entry" role="listitem">
+<div class="csl-left-margin">1. </div><div class="csl-right-inline">Wankowicz, S. A., Fraser, J. S. Comprehensive encoding of conformational and compositional protein structural ensembles through the <span class="nocase">mmCIF</span> data structure. <em>IUCrJ</em> (2024). doi: <a href="https://doi.org/10.1107/S2052252524005098">10.1107/S2052252524005098</a></div>
+</div>
+</div></section></div></div> <!-- /content -->
 
 
 

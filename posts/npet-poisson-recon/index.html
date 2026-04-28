@@ -81,7 +81,6 @@ div.csl-indent {
 
 
 <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
 <link href="../.././img/BTNBlink.webp" rel="icon">
 <script src="../../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../../site_libs/quarto-html/quarto.js"></script>
@@ -113,7 +112,7 @@ div.csl-indent {
 <script src="https://unpkg.com/tippy.js@6"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Serif:wght@400;500;600&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
@@ -148,57 +147,31 @@ window.Quarto = {
 
 <link rel="stylesheet" href="../../styles/custom.css">
 <link rel="stylesheet" href="../../styles/scrollbar-fix.css">
+<link rel="stylesheet" href="../../styles/listing.css">
+<link rel="stylesheet" href="../../styles/homepage.css">
 </head>
 
 <body class="fullcontent">
 
 <div id="quarto-search-results"></div>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<div id="quarto-content" class="quarto-container page-layout-custom">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
 <!-- main -->
-<main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">3D tessellation of biomolecular cavities</h1>
+<header id="title-block-header">
+<h1 class="title display-7">3D tessellation of biomolecular cavities</h1>
 <p class="subtitle lead">Protocol for analyzing the ribosome exit tunnel</p>
-  <div class="quarto-categories">
-    <div class="quarto-category">cryo-EM</div>
-  </div>
-  </div>
+<p class="author">Artem Kushner</p>
+<p class="author">Khanh Dao Duc</p>
 
-
-
-<div class="quarto-title-meta">
-
-    <div>
-    <div class="quarto-title-meta-heading">Authors</div>
-    <div class="quarto-title-meta-contents">
-             <p>Artem Kushner </p>
-             <p>Khanh Dao Duc </p>
-          </div>
-  </div>
-    
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">August 4, 2024</p>
-    </div>
-  </div>
-  
-    
-  </div>
-  
-
-
+<p class="date">2024-08-04</p>
 </header>
 
 
 <section id="summary-and-background" class="level2">
-<h2 class="anchored" data-anchor-id="summary-and-background">Summary and Background</h2>
+<h2 data-anchor-id="summary-and-background">Summary and Background</h2>
 <p>We present a protocol to extract the surface of a biomolecular cavity for shape analysis and molecular simulations.</p>
 <p>We apply and illustrate the protocol on the ribosome structure, which contains a subcompartment known as the ribosome exit tunnel or “nascent polypeptide exit tunnel” (<strong>NPET</strong>). More details on the tunnel features and biological importance can be found in our previous works <span class="citation" data-cites="dao2018impact dao2019differences">(<a href="#ref-dao2018impact" role="doc-biblioref">Dao Duc and Song 2018</a>; <a href="#ref-dao2019differences" role="doc-biblioref">Dao Duc et al. 2019</a>)</span>.</p>
 <p>The protocol was designed to refine the output obtained from MOLE software <span class="citation" data-cites="sehnal2013mole">(<a href="#ref-sehnal2013mole" role="doc-biblioref">Sehnal et al. 2013</a>)</span>, but can be applied to reconstruct a mesh on any general point cloud. Hence, we take the point-cloud of atom positions surrounding the tunnel as a point of departure.</p>
@@ -230,7 +203,7 @@ Schematic representation of the protocol
 </div>
 </section>
 <section id="pointcloud-preparation-bounding-box-and-voxelization" class="level2">
-<h2 class="anchored" data-anchor-id="pointcloud-preparation-bounding-box-and-voxelization">1. Pointcloud Preparation: Bounding Box and Voxelization</h2>
+<h2 data-anchor-id="pointcloud-preparation-bounding-box-and-voxelization">1. Pointcloud Preparation: Bounding Box and Voxelization</h2>
 <div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -378,7 +351,7 @@ Schematic representation of the protocol
 <div aria-describedby="fig-cluster-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-cluster" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-ptcloud" class="quarto-float quarto-figure quarto-figure-center anchored">
+<div id="fig-ptcloud" class="quarto-float quarto-figure quarto-figure-center">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-ptcloud-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="./data/4UG0.bbox_atoms.gif" class="img-fluid figure-img" data-ref-parent="fig-cluster">
@@ -390,7 +363,7 @@ Schematic representation of the protocol
 </div>
 </div>
 <div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-cluster" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-inverted" class="quarto-float quarto-figure quarto-figure-center anchored">
+<div id="fig-inverted" class="quarto-float quarto-figure quarto-figure-center">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-inverted-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="./data/4UG0.inverted_grid.gif" class="img-fluid figure-img" data-ref-parent="fig-cluster">
@@ -410,7 +383,7 @@ Figure&nbsp;1: Pointcloud inversion via a voxel grid.
 </div>
 </section>
 <section id="subcloud-extraction" class="level2">
-<h2 class="anchored" data-anchor-id="subcloud-extraction">2. Subcloud Extraction</h2>
+<h2 data-anchor-id="subcloud-extraction">2. Subcloud Extraction</h2>
 <div id="dbscan_note" class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -538,7 +511,7 @@ Subcloud refinement
 <div aria-describedby="fig-cluster-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-cluster" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-trimmed" class="quarto-float quarto-figure quarto-figure-center anchored">
+<div id="fig-trimmed" class="quarto-float quarto-figure quarto-figure-center">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-trimmed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="./data/4UG0.ptcloud_trimmed.gif" class="img-fluid figure-img" data-ref-parent="fig-cluster">
@@ -550,7 +523,7 @@ Subcloud refinement
 </div>
 </div>
 <div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-cluster" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-trimmed-sharpened" class="quarto-float quarto-figure quarto-figure-center anchored">
+<div id="fig-trimmed-sharpened" class="quarto-float quarto-figure quarto-figure-center">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-trimmed-sharpened-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="./data/4UG0.ptcloud_trimmed_sharpened.gif" class="img-fluid figure-img" data-ref-parent="fig-cluster">
@@ -573,7 +546,7 @@ Figure&nbsp;2: Second pass of DBSCAN sharpens the cluster to peel off the outer 
 </div>
 </section>
 <section id="surface-reconstruction" class="level2">
-<h2 class="anchored" data-anchor-id="surface-reconstruction">3. Surface Reconstruction</h2>
+<h2 data-anchor-id="surface-reconstruction">3. Surface Reconstruction</h2>
 <div id="ptcloud_convex_hull_points" class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -605,7 +578,7 @@ Figure&nbsp;2: Second pass of DBSCAN sharpens the cluster to peel off the outer 
 <div aria-describedby="fig-alpha-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-alpha" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-alpha-shape" class="quarto-float quarto-figure quarto-figure-center anchored">
+<div id="fig-alpha-shape" class="quarto-float quarto-figure quarto-figure-center">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-alpha-shape-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="./data/4UG0.alphashape.gif" class="img-fluid figure-img" data-ref-parent="fig-alpha">
@@ -617,7 +590,7 @@ Figure&nbsp;2: Second pass of DBSCAN sharpens the cluster to peel off the outer 
 </div>
 </div>
 <div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-alpha" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-surf-pts" class="quarto-float quarto-figure quarto-figure-center anchored">
+<div id="fig-surf-pts" class="quarto-float quarto-figure quarto-figure-center">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-surf-pts-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="./data/4UG0.surface_pts.gif" class="img-fluid figure-img" data-ref-parent="fig-alpha">
@@ -743,7 +716,7 @@ Figure&nbsp;3: Alpha shape provides a way to identify surface points.
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>apply_poisson_recon(pointcloud, recon_depth<span class="op">=</span>PR_depth, recon_pt_weight<span class="op">=</span>PR_ptweight)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="poisson-surface-reconstruction-in-a-few-eqns" class="level3">
-<h3 class="anchored" data-anchor-id="poisson-surface-reconstruction-in-a-few-eqns">Poisson Surface Reconstruction in a few Eqns:</h3>
+<h3 data-anchor-id="poisson-surface-reconstruction-in-a-few-eqns">Poisson Surface Reconstruction in a few Eqns:</h3>
 <p>Define basis functions space. <span class="math inline">\(o.c\)</span>, <span class="math inline">\(o.w\)</span> are parameters of the octree: <span class="math display">\[
 \begin{equation*}
     F_o(q) \equiv F\left(\frac{q-o.c}{o.w}\right)\frac{1}{o.w^3}
@@ -780,7 +753,7 @@ Figure&nbsp;3: Alpha shape provides a way to identify surface points.
 </section>
 </section>
 <section id="result" class="level2">
-<h2 class="anchored" data-anchor-id="result">Result</h2>
+<h2 data-anchor-id="result">Result</h2>
 <p>What you are left with is a smooth polygonal mesh in the <code>.ply</code> format. Below is the illustration of the fidelity of the representation. Folds and depressions can clearly be seen engendered by three proteins surrounding parts of the tunnel (uL22 <em>yellow</em>, uL4 <em>light blue</em> and eL39 <em>magenta</em>). rRNA is not shown.<span class="citation" data-cites="zhou2018open3d">Sullivan and Kaszynski (<a href="#ref-sullivan2019pyvista" role="doc-biblioref">2019</a>)</span></p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -790,7 +763,7 @@ Figure&nbsp;3: Alpha shape provides a way to identify surface points.
 </div>
 </section>
 <section id="improvements-needed-for-this-protocol" class="level2">
-<h2 class="anchored" data-anchor-id="improvements-needed-for-this-protocol">Improvements needed for this protocol:</h2>
+<h2 data-anchor-id="improvements-needed-for-this-protocol">Improvements needed for this protocol:</h2>
 <ul>
 <li><p>eliminate radial plot dependency. This could be done by fitting a plane to the tunnel vestibule through a few conserved sites and aligning it to be normal to the PTC, dropping a cylinder with a liberal radius between the plane the ptc.</p></li>
 <li><p>automatic choice of cluster. for larger radii of bbox expansion the largest dbscan cluster doesnt necessarily correspond to the tunnel.</p></li>
@@ -803,26 +776,7 @@ Figure&nbsp;3: Alpha shape provides a way to identify surface points.
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
-<div id="ref-dao2019differences" class="csl-entry" role="listitem">
-Dao Duc, Khanh, Sanjit S Batra, Nicholas Bhattacharya, Jamie HD Cate, and Yun S Song. 2019. <span>“Differences in the Path to Exit the Ribosome Across the Three Domains of Life.”</span> <em>Nucleic Acids Research</em> 47 (8): 4198–4210.
-</div>
-<div id="ref-dao2018impact" class="csl-entry" role="listitem">
-Dao Duc, Khanh, and Yun S Song. 2018. <span>“The Impact of Ribosomal Interference, Codon Usage, and Exit Tunnel Interactions on Translation Elongation Rate Variation.”</span> <em>PLoS Genetics</em> 14 (1): e1007166.
-</div>
-<div id="ref-kazhdan2006poisson" class="csl-entry" role="listitem">
-Kazhdan, Michael, Matthew Bolitho, and Hugues Hoppe. 2006. <span>“Poisson Surface Reconstruction.”</span> In <em>Proceedings of the Fourth Eurographics Symposium on Geometry Processing</em>. Vol. 7. 4.
-</div>
-<div id="ref-sehnal2013mole" class="csl-entry" role="listitem">
-Sehnal, David, Radka Svobodová Vařeková, Karel Berka, Lukáš Pravda, Veronika Navrátilová, Pavel Banáš, Crina-Maria Ionescu, Michal Otyepka, and Jaroslav Koča. 2013. <span>“MOLE 2.0: Advanced Approach for Analysis of Biomacromolecular Channels.”</span> <em>Journal of Cheminformatics</em> 5: 1–13.
-</div>
-<div id="ref-sullivan2019pyvista" class="csl-entry" role="listitem">
-Sullivan, C, and Alexander Kaszynski. 2019. <span>“PyVista: 3D Plotting and Mesh Analysis Through a Streamlined Interface for the Visualization Toolkit (VTK).”</span> <em>Journal of Open Source Software</em> 4 (37): 1450.
-</div>
-<div id="ref-zhou2018open3d" class="csl-entry" role="listitem">
-Zhou, Qian-Yi, Jaesik Park, and Vladlen Koltun. 2018. <span>“Open3D: A Modern Library for 3D Data Processing.”</span> <em>arXiv Preprint arXiv:1801.09847</em>.
-</div>
-</div></section></div></main> <!-- /main -->
+
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -1243,7 +1197,26 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-</div> <!-- /content -->
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-dao2019differences" class="csl-entry" role="listitem">
+Dao Duc, Khanh, Sanjit S Batra, Nicholas Bhattacharya, Jamie HD Cate, and Yun S Song. 2019. <span>“Differences in the Path to Exit the Ribosome Across the Three Domains of Life.”</span> <em>Nucleic Acids Research</em> 47 (8): 4198–4210.
+</div>
+<div id="ref-dao2018impact" class="csl-entry" role="listitem">
+Dao Duc, Khanh, and Yun S Song. 2018. <span>“The Impact of Ribosomal Interference, Codon Usage, and Exit Tunnel Interactions on Translation Elongation Rate Variation.”</span> <em>PLoS Genetics</em> 14 (1): e1007166.
+</div>
+<div id="ref-kazhdan2006poisson" class="csl-entry" role="listitem">
+Kazhdan, Michael, Matthew Bolitho, and Hugues Hoppe. 2006. <span>“Poisson Surface Reconstruction.”</span> In <em>Proceedings of the Fourth Eurographics Symposium on Geometry Processing</em>. Vol. 7. 4.
+</div>
+<div id="ref-sehnal2013mole" class="csl-entry" role="listitem">
+Sehnal, David, Radka Svobodová Vařeková, Karel Berka, Lukáš Pravda, Veronika Navrátilová, Pavel Banáš, Crina-Maria Ionescu, Michal Otyepka, and Jaroslav Koča. 2013. <span>“MOLE 2.0: Advanced Approach for Analysis of Biomacromolecular Channels.”</span> <em>Journal of Cheminformatics</em> 5: 1–13.
+</div>
+<div id="ref-sullivan2019pyvista" class="csl-entry" role="listitem">
+Sullivan, C, and Alexander Kaszynski. 2019. <span>“PyVista: 3D Plotting and Mesh Analysis Through a Streamlined Interface for the Visualization Toolkit (VTK).”</span> <em>Journal of Open Source Software</em> 4 (37): 1450.
+</div>
+<div id="ref-zhou2018open3d" class="csl-entry" role="listitem">
+Zhou, Qian-Yi, Jaesik Park, and Vladlen Koltun. 2018. <span>“Open3D: A Modern Library for 3D Data Processing.”</span> <em>arXiv Preprint arXiv:1801.09847</em>.
+</div>
+</div></section></div></div> <!-- /content -->
 
 
 

@@ -8,7 +8,7 @@
 
 <meta name="dcterms.date" content="2026-04-15">
 
-<title>Toward a Modern Foundation for Structural Biology Data – артём</title>
+<title>Structural Bio Format – артём</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -25,7 +25,6 @@ ul.task-list li input[type="checkbox"] {
 
 
 <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
 <link href="../.././img/BTNBlink.webp" rel="icon">
 <script src="../../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../../site_libs/quarto-html/quarto.js"></script>
@@ -57,160 +56,80 @@ ul.task-list li input[type="checkbox"] {
 <script src="https://unpkg.com/tippy.js@6"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Serif:wght@400;500;600&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
 
 
 <link rel="stylesheet" href="../../styles/custom.css">
 <link rel="stylesheet" href="../../styles/scrollbar-fix.css">
+<link rel="stylesheet" href="../../styles/listing.css">
+<link rel="stylesheet" href="../../styles/homepage.css">
 </head>
 
-<body class="nav-sidebar docked">
+<body>
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-        <i class="bi bi-layout-text-sidebar-reverse"></i>
-      </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../posts/mmcif/index.html">Overview</a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-        </a>
-    </div>
-  </nav>
-</header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<div id="quarto-content" class="quarto-container page-layout-custom">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
-    <div class="sidebar-title mb-0 py-0">
-      <a href="../../">Toward a Modern Foundation</a> 
-    </div>
-      </div>
-    <div class="sidebar-menu-container"> 
-    <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../posts/mmcif/index.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Overview</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../posts/mmcif/01-problems.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">1. Problems with mmCIF</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../posts/mmcif/02-architecture.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">2. Architecture</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../posts/mmcif/03-composition.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">3. Composition</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../posts/mmcif/04-annotations-and-passes.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">4. Annotations and computed passes</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../posts/mmcif/05-open-questions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">5. Open questions</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../posts/mmcif/06-black-box-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Appendix: black-box data</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../posts/mmcif/07-modularity-examples.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Appendix: modularity examples</span></a>
-  </div>
-</li>
-    </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#contents" id="toc-contents" class="nav-link active" data-scroll-target="#contents">Contents</a></li>
-  </ul>
-</nav>
-    </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Toward a Modern Foundation for Structural Biology Data</h1>
-<p class="subtitle lead">Notes on mmCIF, its limits, and what an ML-native successor might look like</p>
-  <div class="quarto-categories">
-    <div class="quarto-category">structural-biology</div>
-    <div class="quarto-category">data-formats</div>
-    <div class="quarto-category">mmcif</div>
-  </div>
-  </div>
+<header id="title-block-header">
+<h1 class="title display-7">Structural Bio Format</h1>
+<p class="subtitle lead">Some notes on mmCIF and what an ML-native successor might look like</p>
 
-
-
-<div class="quarto-title-meta">
-
-    
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">April 15, 2026</p>
-    </div>
-  </div>
-  
-    <div>
-    <div class="quarto-title-meta-heading">Modified</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date-modified">April 19, 2026</p>
-    </div>
-  </div>
-    
-  </div>
-  
-
-
+<p class="date">2026-04-15</p>
 </header>
 
 
-<p><em>Working draft – exploratory, incomplete. A scaffold for collecting references, usecases, and tradeoffs.</em></p>
-<p>This is a multi-part post. Use the sidebar to jump between sections.</p>
+<div class="grid homepage-container">
+<div class="g-col-12 g-col-md-3 left-column">
+<p><a href="../.."><img src="../../img/signature.png" class="signature img-fluid"></a></p>
+<div class="post-nav">
+<div class="post-glossary">
+<ul>
+<li><a href="../../posts/mmcif/index.html">Overview</a></li>
+<li><a href="../../posts/mmcif/01-problems.html">1. Problems with mmCIF</a></li>
+<li><a href="../../posts/mmcif/02-architecture.html">2. Layout</a></li>
+<li><a href="../../posts/mmcif/03-evaluation-model.html">3. Evaluation model</a></li>
+<li><a href="../../posts/mmcif/04-annotations-and-engine.html">4. Annotations and the artifact engine</a></li>
+<li><a href="../../posts/mmcif/04b-technology-survey.html">5. Technology survey</a></li>
+<li><a href="../../posts/mmcif/05-open-questions.html">6. Open questions</a></li>
+<li><a href="../../posts/mmcif/08-ml-native.html">7. ML-native access patterns</a></li>
+<li><a href="../../posts/mmcif/06-black-box-data.html">Appendix: black-box data and model artifacts</a></li>
+<li><a href="../../posts/mmcif/07-modularity-examples.html">Appendix: modularity examples</a></li>
+</ul>
+</div>
+<div class="post-sections">
+
+</div>
+</div>
+</div>
+<section id="section" class="level1 g-col-12 g-col-md-9 right-column">
+<h1>Structural Bio Format</h1>
+<p><span class="post-subtitle">Some notes on mmCIF and what an ML-native successor might look like</span></p>
+<p><em>This is a draft that i’m still working on</em>.</p>
 <section id="contents" class="level2">
-<h2 class="anchored" data-anchor-id="contents">Contents</h2>
+<h2 data-anchor-id="contents">Contents</h2>
 <ol type="1">
-<li><a href="../../posts/mmcif/01-problems.html">Problems with mmCIF and the current ecosystem</a> – single-structure assumption, parsing fragility, missing experimental linkage, no ML-native access, pain points.</li>
-<li><a href="../../posts/mmcif/02-architecture.html">Architecture</a> – the four layers (hierarchy, representation, heterogeneity, materialization) split into a core / ensemble halves, and what stays out of the core.</li>
-<li><a href="../../posts/mmcif/03-composition.html">Composition</a> – how heterogeneity at multiple scopes composes; scope-local regimes and mixed materialization modes; worked examples (crystallography, protein+ligand, ribosome).</li>
-<li><a href="../../posts/mmcif/04-annotations-and-passes.html">Annotations and computed passes</a> – Zarr/DataFusion/TileDB storage, heterogeneity regimes mapped to existing tools, query language, ML-native operations.</li>
+<li><a href="../../posts/mmcif/01-problems.html">Problems with mmCIF and the current ecosystem</a> – some scattered complaints about the mmcif format in no particular order of importance.. single-structure assumption, parsing fragility, missing experimental linkage, no ML-native access, pain points.</li>
+<li><a href="../../posts/mmcif/02-architecture.html">Layout</a> – a stab at the alternative “from the ground up” format architecture. Four layers are described: two for the core data structure and two for representing various heterogeneities.</li>
+<li><a href="../../posts/mmcif/03-evaluation-model.html">Evaluation model</a> – realistic mixing scenarios, the two-stack composition principle (discrete-nesting and continuous-additive), independence vs nesting vs provenance, sample-axis classification (aligned/broadcast/mixed), Mode C operator interfaces, cross-backend integration, open design questions.</li>
+<li><a href="../../posts/mmcif/04-annotations-and-engine.html">Annotations and the artifact engine</a> – the engine half: query language, the (selector, body, provenance) annotation overlay, ML-native featurization passes (graphs, equivariant features, pair representations, tokenization), training data shapes for distribution-predicting models.</li>
+<li><a href="../../posts/mmcif/04b-technology-survey.html">Technology survey</a> – the survey half: Zarr/OME-Zarr/copick/TileDB/Arrow/DataFusion as storage primitives, with the three heterogeneity regimes mapped onto existing tools (H5MD, cryoDRGN, qFit, IHM).</li>
 <li><a href="../../posts/mmcif/05-open-questions.html">Open questions</a></li>
-<li><a href="../../posts/mmcif/06-black-box-data.html">Appendix: “black-box” data</a></li>
+<li><a href="../../posts/mmcif/08-ml-native.html">ML-native data: access patterns and precomputed features</a> – random access, neighbor lookup, equivariant feature caches, tokenization, dataloader chunking; the discipline for caching derived data without polluting the core.</li>
+<li><a href="../../posts/mmcif/06-black-box-data.html">Appendix: “black-box” data and model-side artifacts</a> – weights, decoders, latents, model outputs, training metadata co-located with the structure.</li>
 <li><a href="../../posts/mmcif/07-modularity-examples.html">Appendix: modularity examples in software ecosystems</a> – LLVM, DataFusion, AnnData, ECS, ONNX, OpenTelemetry, CF Conventions.</li>
 </ol>
-
-
 </section>
+</section>
+</div>
 
-</main> <!-- /main -->
+
+
+
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

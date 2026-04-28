@@ -7,6 +7,10 @@
     ]
   },
   {
+    "listing": "/listings.html",
+    "items": []
+  },
+  {
     "listing": "/papers/papers.html",
     "items": []
   }

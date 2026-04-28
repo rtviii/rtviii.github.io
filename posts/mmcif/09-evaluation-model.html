@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Annotations and computed passes – артём</title>
+<title>Evaluation model (working notes) – артём</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,27 +20,7 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-  margin-bottom: 0em;
-}
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+</style>
 
 
 <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -124,7 +104,7 @@ window.Quarto = {
 <!-- main -->
 
 <header id="title-block-header">
-<h1 class="title display-7">Annotations and computed passes</h1>
+<h1 class="title display-7">Evaluation model (working notes)</h1>
 
 </header>
 
@@ -155,126 +135,145 @@ window.Quarto = {
 </div>
 </div>
 <section id="section" class="level1 g-col-12 g-col-md-9 right-column">
-<h1>Annotations and computed passes</h1>
-<section id="format-and-storage-foundations" class="level2">
-<h2 data-anchor-id="format-and-storage-foundations">Format and storage foundations</h2>
-<p>Structural biology data is fundamentally multidimensional: atoms have properties (element, charge, name), atoms belong to residues and chains (hierarchy), atoms have coordinates that vary across conformational states (ensemble dimension), and various scalar/vector/tensor fields can be associated with atoms, residues, or the entire system at any level of this hierarchy. A text file of atom records serializes this but sacrifices random access, compression, and dimensional structure.</p>
-<p>Technologies from adjacent fields that offer better primitives:</p>
-<p><strong>Zarr v3</strong> – chunked N-dimensional arrays on any storage backend. Simple (just arrays + groups + JSON metadata), cloud-native, implementations in Python/Rust/JS/C++. <a href="https://github.com/zarr-developers/zarr-python">github.com/zarr-developers/zarr-python</a>, <a href="https://github.com/LDeakin/zarrs">github.com/zarrs/zarrs</a> (Rust).</p>
-<p><strong>OME-Zarr (NGFF)</strong> – bioimaging conventions on Zarr: multiscale pyramids (same data at multiple resolution levels, enabling zoom-dependent loading), axes labels, coordinate transforms, labels/ROIs. Used by CZ CryoET Data Portal. Community-driven RFC process. <a href="https://ngff.openmicroscopy.org/0.5/">ngff.openmicroscopy.org</a>, <a href="https://github.com/ome/ome-zarr-py">github.com/ome/ome-zarr-py</a>.</p>
-<p><strong>copick</strong> – storage-agnostic cryo-ET dataset API built on Zarr/OME-Zarr. Adds overlay filesystem (read-only data + writable annotations), typed annotation objects (picks, segmentations, meshes) with provenance, plugin CLI. <a href="https://github.com/copick/copick">github.com/copick/copick</a>.</p>
-<p><strong>TileDB</strong> – array database with native sparse arrays, built-in query engine, time-travel/versioning. TileDB-SOMA data model (for single-cell genomics) solved a structurally analogous problem: (cells x genes) with metadata on both axes, at scale. <a href="https://github.com/TileDB-Inc/TileDB">github.com/TileDB-Inc/TileDB</a>, <a href="https://github.com/single-cell-data/TileDB-SOMA">github.com/single-cell-data/TileDB-SOMA</a>.</p>
-<p><strong>Apache Arrow / DataFusion</strong> – columnar in-memory format + query engine (Rust). Predicate pushdown (filters pushed to storage layer), zero-copy cross-language interop. A zarr-datafusion crate already exists: <a href="https://github.com/jayendra13/zarr-datafusion">github.com/jayendra13/zarr-datafusion</a>. <a href="https://datafusion.apache.org/">datafusion.apache.org</a>.</p>
-<p><strong>Multiscale pyramids for molecular data.</strong> OME-Zarr stores the same image at progressively lower resolutions (full -&gt; 2x downsampled -&gt; 4x -&gt; …) for efficient visualization. The analog for molecular structures: all-atom -&gt; backbone-only -&gt; domain centroids -&gt; subunit centroids, with explicit mapping operators between levels. This is the coarse-graining hierarchy that IHM already represents in a limited way, and it maps directly onto the composition layer described in <a href="../../posts/mmcif/02-architecture.html#composition">Architecture § Composition</a>.</p>
-<p>Tradeoffs (needs benchmarking on real structural biology workloads):</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Concern</th>
-<th>Zarr + DataFusion</th>
-<th>TileDB</th>
-<th>HDF5 (status quo for MD)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Simplicity</td>
-<td>High (just arrays)</td>
-<td>Medium (database engine)</td>
-<td>Medium</td>
-</tr>
-<tr class="even">
-<td>Cloud-native</td>
-<td>Yes (chunked objects on S3)</td>
-<td>Yes</td>
-<td>Poor (no chunk-level access over HTTP)</td>
-</tr>
-<tr class="odd">
-<td>Sparse arrays</td>
-<td>No (fake with compression)</td>
-<td>Native</td>
-<td>No</td>
-</tr>
-<tr class="even">
-<td>Query engine</td>
-<td>External (DataFusion)</td>
-<td>Built-in</td>
-<td>None</td>
-</tr>
-<tr class="odd">
-<td>Versioning</td>
-<td>Manual</td>
-<td>Built-in (time-travel)</td>
-<td>None</td>
-</tr>
-<tr class="even">
-<td>Bioimaging precedent</td>
-<td>OME-Zarr, copick, CZ Portal</td>
-<td>cellxgene Census</td>
-<td>H5MD for MD trajectories</td>
-</tr>
-<tr class="odd">
-<td>Random access to single state</td>
-<td>O(chunk)</td>
-<td>O(1) with index</td>
-<td>O(N) scan</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="representing-conformational-heterogeneity" class="level2">
-<h2 data-anchor-id="representing-conformational-heterogeneity">Representing conformational heterogeneity</h2>
-<p>The problem in one sentence: we need a data model that can represent everything from a two-rotamer sidechain flip to a continuous distribution over ribosome conformations, with correlations between components, thermodynamic annotations, and multi-scale descriptions – without enumerating a full coordinate set for each distinguishable configuration of large systems.</p>
-<p>The architecture section proposes <a href="../../posts/mmcif/02-architecture.html#heterogeneity">three heterogeneity regimes</a> with different natural representations. This section surveys the existing tools and formalisms against that taxonomy.</p>
-<p><strong>Existing tools by regime.</strong></p>
-<p>Heterogeneity Regime 1 (discrete ensemble): mmCIF alt_id is a degenerate case – two conformers per residue, no correlations, no thermodynamics. IHM multi-state adds named discrete states with ordering and population, but states remain independent and uncorrelated. Wankowicz &amp; Fraser <span class="citation" data-cites="wankowicz2024encoding"><a href="#ref-wankowicz2024encoding" role="doc-biblioref">1</a></span> push this as far as it goes within mmCIF – their proposed categories handle correlated multi-conformer models and ensemble validation within the text-CIF framework. Understanding exactly where their proposal hits the wall is essential for calibrating what requires a new format vs.&nbsp;what can be encoded in extended mmCIF.</p>
-<p>Heterogeneity Regime 2 (trajectory): H5MD (<a href="https://github.com/h5md/h5md">github.com/h5md/h5md</a>) handles this well for MD. MDTraj and MDAnalysis both read and write it. The main gap is the absence of cloud-native access: HDF5 doesn’t support chunk-level HTTP range requests, so trajectory analysis in the cloud currently requires downloading the full file. A Zarr-based trajectory convention that mirrors H5MD semantics but runs on object storage is the obvious gap to fill, and it is a format convention question, not a data model question.</p>
-<p>Heterogeneity Regime 3 (continuous landscape): cryoDRGN (<a href="https://github.com/ml-struct-bio/cryodrgn">github.com/ml-struct-bio/cryodrgn</a>) learns a continuous heterogeneity manifold from cryo-EM particle images and decodes conformations at arbitrary latent coordinates. There is no standard serialization for the latent-plus-decoder representation – each cryoDRGN run produces its own checkpoint format. The right abstraction for storage is: an <span class="math inline">\((N_{\mathrm{particle}}, d)\)</span> latent coordinate array plus a decoder reference, with named landmarks as optional cluster assignments. Normal mode analysis produces a simpler version of the same thing: a <span class="math inline">\((k, N_{\mathrm{atom}}, 3)\)</span> mode basis plus scalar mode coefficients. Both are Materialization Mode C. Markov State Models (PyEMMA, deeptime) sit at the border between Heterogeneity Regime 2 and Heterogeneity Regime 3: they discretize a continuous trajectory into metastable states and produce a transition matrix over those states, which can be stored as a sparse <span class="math inline">\((N_{\mathrm{state}}, N_{\mathrm{state}})\)</span> matrix with equilibrium populations – a Heterogeneity Regime 1 coordinate set plus a kinetic annotation in the shape of a Heterogeneity Regime 3 descriptor.</p>
-<p><strong>Correlation and coupling.</strong> There is a third representation worth noting for cases that sit between regimes: a sparse pairwise correlation array or graphical model specifying which residue pairs are conformationally coupled, without committing to a full joint distribution. This is useful as a compact annotation – a summary of an MD ensemble or an NMR-derived coupling network – without requiring that the full joint distribution be stored.</p>
-<p><strong>Where we are.</strong> The existing literature covers Heterogeneity Regime 1 well (qFit, multi-conformer crystallography, IHM discrete states), Heterogeneity Regime 2 adequately (H5MD, MDTraj), and Heterogeneity Regime 3 experimentally but without standard serialization (cryoDRGN, manifold embedding methods). The gaps that need new work: a cloud-native trajectory convention (Heterogeneity Regime 2 on Zarr) and a standard serialization for latent-plus-decoder representations (Heterogeneity Regime 3).</p>
-</section>
-<section id="query-language-and-annotations" class="level2">
-<h2 data-anchor-id="query-language-and-annotations">Query language and annotations</h2>
-<p><strong>Query language.</strong> Need: select arbitrary molecular subsets (atoms, residues, chains, domains) at any level of hierarchy, across conformational states, composably. MolQL (<a href="https://github.com/molstar/molstar">github.com/molstar/molstar</a>, embedded in Mol*) is the most expressive existing molecular selection language. VMD/MDAnalysis selections are simpler but widely used. Extension needed for: state selection, cross-state predicates, annotation predicates.</p>
-<p>If storage is columnar/array-based, molecular selections can compile to predicates that a query engine (DataFusion) pushes down to the storage layer. “chain A and resid 50-80 in state 3” becomes: filter on chain_id column, range filter on res_seq column, index into state dimension – only relevant chunks are read. Spatial predicates (“within 5A of ligand”) need a stored spatial index (R-tree) and compile to a UDF call.</p>
-<p><strong>Annotations.</strong> Core model: <strong>(selector, body, provenance)</strong> triple. The selector is a query expression. The body is arbitrary typed data (text, scalar, vector, array, structured object, reference). The provenance records author, method, software, date, confidence.</p>
-<p>Oli Clarke’s Coot residue annotation tool (<a href="https://bsky.app/profile/olibclarke.bsky.social/post/3micblpuoxc2u">bsky.app/olibclarke/post/3micblpuoxc2u</a>) demonstrates the impulse: save notes associated with the active residue, persist in mmCIF. The generalization: associate <em>any</em> data with <em>any</em> molecular selection, in a separate layer (copick overlay pattern) so multiple annotators coexist and annotations are decoupled from the model version.</p>
-<p>This subsumes: UniProt features, CATH domains, validation metrics, qFit conformers, ML confidence scores, manual curation notes, force-field parameters – all are (selector, body, provenance) triples with different body types and different provenance.</p>
-<p>Key design question: how to make selectors persistent and portable across structures (use canonical identifiers like UniProt residue numbers rather than PDB-specific numbering).</p>
-</section>
-<section id="ml-native-structural-operations" class="level2">
-<h2 data-anchor-id="ml-native-structural-operations">ML-native structural operations</h2>
-<p>The fundamental pattern in all current structure ML models: <strong>coordinates + chemistry -&gt; graph -&gt; message passing -&gt; prediction</strong>. The specifics vary but converge on shared primitives. This section first catalogs those primitives and the redundant work they require under current formats, then maps the heterogeneity regime taxonomy onto the training data requirements for the next generation of distribution-predicting models.</p>
-<p><strong>Graph construction.</strong> A molecular graph G = (V, E) where V are atoms or residues with feature vectors, E are edges (spatial proximity, covalent bonds, sequence connectivity) with features. Edge construction is the bottleneck:</p>
+<h1>Evaluation model (working notes)</h1>
+<p>This is a working document, not a finished section. It collects the operational questions that the <a href="../../posts/mmcif/02-architecture.html#ir-and-evaluation-model">architecture</a> and <a href="../../posts/mmcif/03-coupling-and-nesting.html">coupling-and-nesting</a> chapters defer here. Each section is a slot for a specification to be filled in; each “open question” is a TODO.</p>
+<section id="what-an-evaluation-model-is" class="level2">
+<h2 data-anchor-id="what-an-evaluation-model-is">What an evaluation model is</h2>
+<p>The architecture chapter is about the <em>intermediate representation</em>: what a deposition contains, schema and bytes. The evaluation model is the contract that turns those bytes into rendered coordinates – it is the operational semantics of the four-layer IR. Concretely, it has to specify:</p>
 <ul>
-<li>Spatial: all pairs within cutoff r (typically 8-12A). Requires neighbor search, O(N log N) with k-d tree or O(N^2) brute force. Rebuilt for every structure at every training step.</li>
-<li>Covalent: bond graph from topology. Currently inferred from coordinates + element types because mmCIF doesn’t reliably carry bonds.</li>
-<li>Sequence: (i, i+1) backbone edges.</li>
+<li>For every (regime, mode) combination, the procedure that produces a per-atom displacement contribution from a descriptor’s stored payload and its state input.</li>
+<li>An operator interface that every Mode C subcase satisfies, with declared input/output shapes and reference frames.</li>
+<li>The order of operations when descriptors don’t commute (rotations don’t).</li>
+<li>How residual descriptors compose with their parents.</li>
+<li>How sample-aligned descriptors are co-iterated, and how broadcast descriptors are evaluated within an aligned-axis walk.</li>
 </ul>
-<p>The Hierarchy layer proposed in <a href="../../posts/mmcif/02-architecture.html#containment">Architecture § Hierarchy</a> directly addresses the covalent edge problem: an explicit bond graph in the core eliminates the inference step entirely. Spatial edges remain dynamic (cutoff and metric are model choices) but a stored spatial index – R-tree or k-d tree serialized alongside the coordinate array – would reduce neighbor construction from O(N log N) per structure to O(k) lookups per atom, where k is the number of neighbors within the cutoff.</p>
-<p><strong>Equivariant features.</strong> E(3)-equivariant models (NequIP, MACE, Allegro, eSCN) decompose features into irreducible representations of <span class="math inline">\(\mathrm{SO}(3)\)</span>. The displacement vector between atoms <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> is expanded in spherical harmonics <span class="math inline">\(Y_l^m(\mathbf{r}_{ij}/|\mathbf{r}_{ij}|)\)</span> via e3nn (<a href="https://github.com/e3nn/e3nn">github.com/e3nn/e3nn</a>). This computation is identical for every structure with the same topology and the same cutoff. If the format stored a spatial index enabling <span class="math inline">\(O(k)\)</span> neighbor lookup and precomputed spherical harmonic expansions at stored edges, feature construction would become a read operation rather than a compute operation. Whether this is actually worth storing depends on the ratio of training time to storage cost.</p>
-<p><strong>Pair representations.</strong> AF2’s pair representation is an <span class="math inline">\((N_{\mathrm{res}}, N_{\mathrm{res}}, 128)\)</span> tensor updated through the evoformer. Initial pair features – residue-residue distance bins, relative sequence position encoding, template distance and angle features – depend only on the structure, not on model weights, and could in principle be precomputed. At 128 features and <span class="math inline">\(N_{\mathrm{res}} = 1000\)</span> this is $$500MB per structure uncompressed. Feasible if compressed and chunk-read, but probably only worth precomputing for large training campaigns where the same structure is seen many times. The format should make this storable without requiring it.</p>
-<p><strong>Tokenization.</strong> AF3, Boltz-1, and Chai-1 tokenize the molecular system: each standard residue is one token, ligand atoms or functional groups become tokens, nucleotide bases are tokens. The token graph has heterogeneous node types and multiple edge types. The tokenization is model-specific but the underlying information it requires – atom types, bond connectivity, residue membership, entity type – is the same across models and is exactly what the Hierarchy layer stores. A format that carries this information explicitly enables tokenization as a deterministic read-and-map operation rather than an inference step.</p>
-<p><strong>Training data for distribution-predicting models.</strong> Current models predict single structures. The next generation will predict distributions over structures, conditioned on sequence and experimental context. The training data shape this requires is not (sequence, structure) pairs but (sequence, ensemble) pairs where the ensemble has associated populations or free energies.</p>
-<p>Mapping this onto the heterogeneity regime taxonomy:</p>
+<p>This is the harder half of the design. The IR can be specified mostly by writing down a Zarr layout; the evaluation model is what gives that layout a meaning.</p>
+</section>
+<section id="cross-backend-integration" class="level2">
+<h2 data-anchor-id="cross-backend-integration">Cross-backend integration</h2>
+<p>Producing a single rendered snapshot from a realistic deposition can require, simultaneously:</p>
 <ul>
-<li>Heterogeneity Regime 1 ensembles (NMR bundles, qFit outputs, IHM discrete state models) are already close to the right shape – the format work needed is standardizing population and free energy annotations.</li>
-<li>Heterogeneity Regime 2 trajectories are the largest existing source of ensemble data. The format work needed is efficient access to subsampled or stride-selected frames without reading the full trajectory, which is a chunking and indexing problem.</li>
-<li>Heterogeneity Regime 3 representations (cryoDRGN, NMA) provide the most information-dense training signal because the latent coordinates are continuous and the decoder provides a differentiable generator. A model trained against these could in principle learn to predict latent coordinates directly rather than just Cartesian coordinates. The format work needed is standardizing the latent-plus-decoder serialization.</li>
-<li>Factor graph ensembles are probably not a primary training data source for structure prediction models, but they are relevant for models that explicitly predict correlated sidechain or loop conformations.</li>
+<li>Reading <span class="math inline">\(x^{\mathrm{ref}}\)</span> from a Zarr array (CPU, NumPy)</li>
+<li>Reading sparse altloc deltas from an Arrow-backed Mode B store</li>
+<li>Running a TorchScript decoder on GPU for a Mode C learned generative descriptor</li>
+<li>Seeking into an external HDF5 trajectory for a Mode C external reference</li>
+<li>Evaluating a parametric TLS block in NumPy</li>
 </ul>
-<p>The format implication: ensemble training data packaging is not a separate problem from the heterogeneity representation. If ensembles have a native representation in the format with standard population annotations, packaging training data for distribution-predicting models is a read operation. Under current formats it requires custom pipeline code for every model and every data source.</p>
-<p>The catalog above describes the <em>features</em> a model wants. The complementary question – what an ML pipeline wants from the <em>access pattern</em>, what discipline lets cached features and learned artifacts coexist with the LLVM-style minimal core, and what model-side data is worth carrying alongside the structure – is taken up in <a href="../../posts/mmcif/08-ml-native.html">ML-native data</a> and the <a href="../../posts/mmcif/06-black-box-data.html">black-box appendix</a>.</p>
+<p>The composition formula assumes all five land as commensurable displacement vectors that add. The evaluation model has to specify what binds them. At minimum: a Mode C operator interface declaring input shape, output shape, atom-id ordering, and reference frame, satisfied identically by parametric Gaussians, basis descriptors, neural decoders, and external references; and a small render driver that knows how to schedule the calls across backends without forcing every consumer to reinvent it.</p>
+<p>Most implementation effort will go here. The static schema is mostly a discipline question; this is an engineering one.</p>
+</section>
+<section id="mode-c-operator-interfaces" class="level2">
+<h2 data-anchor-id="mode-c-operator-interfaces">Mode C operator interfaces</h2>
+<p>Each <a href="../../posts/mmcif/02-architecture.html#materialization">Mode C subcase</a> needs its own operator contract. Sketches:</p>
+<p><strong>Parametric Gaussian (TLS, anisotropic ADP, normal-mode-derived covariance).</strong> Inputs: parameter block (TLS: 20 numbers; ADP: 6 numbers per atom; etc.). State input: a sample index, or <code>mean</code> for the deterministic zero. Output: a per-atom <span class="math inline">\(3 \times 3\)</span> covariance contribution. Reference frame: the deposition’s <span class="math inline">\(x^{\mathrm{ref}}\)</span> frame. Composition with other parametric-Gaussian descriptors at different scopes is by <em>covariance addition</em> (see <a href="../../posts/mmcif/03-coupling-and-nesting.html#the-continuous-additive-stack">the continuous-additive stack</a>). When the consumer asks for a draw rather than a distribution, the evaluation model first sums the covariances across all contributing scopes at each atom, then samples once from the resulting per-atom <span class="math inline">\(\mathcal{N}(0, U_{\mathrm{total}})\)</span> – not once per contributing descriptor.</p>
+<p><strong>Basis descriptor (normal modes, PCA).</strong> Inputs: a stored basis <span class="math inline">\((k, N_\mathrm{atom}, 3)\)</span> and a coefficient vector <span class="math inline">\((k,)\)</span> for the requested state. Output: a deterministic per-atom displacement field. Reference frame: same as basis frame, declared in the basis metadata.</p>
+<p><strong>Neural decoder.</strong> Inputs: a stored checkpoint reference and a latent vector <span class="math inline">\((d,)\)</span> for the requested state. Output: a deterministic per-atom displacement field, or a coordinate set if the network outputs absolute positions (in which case the evaluation model converts to displacements by subtracting <span class="math inline">\(x^{\mathrm{ref}}\)</span>). Reference frame: declared per-checkpoint.</p>
+<p><strong>External reference (trajectory, particle stack).</strong> Inputs: an artifact pointer (URI plus content hash) and a lookup key (frame index, particle id, etc.). Output: a coordinate set. Reference frame: declared per-artifact, with explicit alignment to <span class="math inline">\(x^{\mathrm{ref}}\)</span> if the artifact’s coordinates are not in the deposition’s frame.</p>
+<p>The common surface across all four is <code>(state_input, reference) -&gt; displacement</code>. The differences are in what <code>state_input</code> looks like, what backend the call lands on, and whether the output is a draw or a distribution.</p>
+</section>
+<section id="open-design-questions" class="level2">
+<h2 data-anchor-id="open-design-questions">Open design questions</h2>
+<p>The list below is a TODO. Each item is something a working implementation has to decide before it can render a non-trivial deposition; none of them is resolved yet.</p>
+<section id="multi-level-gaussian-composition-rendering-and-consumer-compatibility" class="level3">
+<h3 data-anchor-id="multi-level-gaussian-composition-rendering-and-consumer-compatibility">Multi-level Gaussian composition: rendering and consumer compatibility</h3>
+<p>The <a href="../../posts/mmcif/03-coupling-and-nesting.html#the-continuous-additive-stack">continuous-additive stack</a> replaces the older “B-factor as residual against TLS” framing with covariance addition. The composition is mathematically clean; the open questions are about rendering policy and what to do for consumers that aren’t aware of the multi-level structure:</p>
+<ul>
+<li>The render rule for a draw is “sum covariances across all contributing scopes at each atom, then sample once.” Pin this down explicitly and bake it into the spec for the parametric-Gaussian Mode C subcase.</li>
+<li>A TLS-naive consumer that reads only the per-atom B-factor column today silently gets one term of an additive sum. What should the format do? Options: (i) emit a deterministic mean (every B-factor consumer gets atomic-only motion and is honest about it), (ii) emit a “collapsed” per-atom scalar that bakes the higher-scope contributions into a marginal isotropic ADP (loses the anisotropy but matches consumer expectations), or (iii) require multi-level-aware reading and fail closed otherwise. The first two preserve readability; the third preserves correctness.</li>
+<li>Validation: when multiple parametric-Gaussian descriptors compose, the resulting <span class="math inline">\(U_{\mathrm{total}}\)</span> at every atom must be positive-definite. Should the format require depositors to certify this, or should the evaluation model verify it on read?</li>
+<li>Frame consistency: parametric-Gaussian contributions at different scopes have to be in commensurable frames (the same <span class="math inline">\(x^{\mathrm{ref}}\)</span>). For TLS the libration axis is declared per group; for normal modes the basis is declared per descriptor. Cross-stack frame mismatches need to error rather than silently miscompose.</li>
+</ul>
+</section>
+<section id="per-descriptor-reference-offsets" class="level3">
+<h3 data-anchor-id="per-descriptor-reference-offsets">Per-descriptor reference offsets</h3>
+<p>The <a href="../../posts/mmcif/03-coupling-and-nesting.html#per-descriptor-reference-points">per-descriptor reference points</a> section says the fix is a metadata offset that the evaluation model adds when composing. Open:</p>
+<ul>
+<li>What is the offset’s shape – a single rigid-body transform? A per-atom translation? Per-residue?</li>
+<li>When does the format require the offset and when can it be inferred? (Auto-detection by best-fit alignment is ergonomically nice but probably underspecified.)</li>
+<li>How does this interact with Mode C external references whose coordinate frames are themselves declared per-artifact?</li>
+</ul>
+</section>
+<section id="order-of-operations" class="level3">
+<h3 data-anchor-id="order-of-operations">Order of operations</h3>
+<p>The composition formula adds displacement contributions. Addition commutes; rotations do not. If two descriptors both contribute <em>transforms</em> (a chain-scope TLS rigid-body draw and an assembly-scope ratcheting rigid-body draw on a sub-assembly), the order in which they are applied matters. Open:</p>
+<ul>
+<li>The composition formula assumes contributions are <em>displacements</em>, not transforms, and addition is therefore commutative. Is this assumption sufficient? Or do we need to allow descriptors to declare themselves as transforms-not-displacements and specify a composition order along the Hierarchy path?</li>
+<li>If we do allow transforms, the path-order is the natural choice (ancestors before descendants), but it has to be specified rather than assumed.</li>
+</ul>
+</section>
+<section id="sample-axis-broadcasting-at-render-time" class="level3">
+<h3 data-anchor-id="sample-axis-broadcasting-at-render-time">Sample-axis broadcasting at render time</h3>
+<p>The <a href="../../posts/mmcif/03-coupling-and-nesting.html#sample-axes-aligned-broadcast-mixed">sample-axes</a> section says aligned descriptors share an axis and broadcast descriptors are parametric. Open:</p>
+<ul>
+<li>A consumer iterating an aligned axis sees broadcast descriptors freshly evaluated at each step. What does “freshly evaluated” mean: a fresh sample (different draw per aligned step) or the deterministic mean (same value at every step)?</li>
+<li>Probably the right answer is: every descriptor declares its evaluation policy when broadcast (<code>sample_per_step</code> or <code>mean</code>), and the format defaults to whichever is appropriate for the descriptor type (TLS to <code>sample_per_step</code>, anisotropic ADP to <code>mean</code>).</li>
+<li>Reproducibility: if <code>sample_per_step</code>, the format needs a seed source declared at deposition or at consumer level.</li>
+</ul>
+</section>
+<section id="provenance-vs-constraint-edges" class="level3">
+<h3 data-anchor-id="provenance-vs-constraint-edges">Provenance vs constraint edges</h3>
+<p><a href="../../posts/mmcif/03-coupling-and-nesting.html#independence-nesting-and-provenance">Chapter 3</a> distinguishes <code>nested_under</code> (a state-space restriction) from <code>derived_from</code> (a provenance pointer with a function reference). Open:</p>
+<ul>
+<li>A <code>derived_from</code> edge can be marked as “function is materialized” (the derived descriptor is stored as data) or “function is regenerable” (the derived descriptor can be recomputed from the parent on demand). What does the format require in each case?</li>
+<li>If the function is regenerable, what is the function reference – a pure code reference (e.g.&nbsp;“k-means with k=5 on this trajectory”)? A checkpoint? A pinned commit hash?</li>
+<li>A consumer that wants the derived descriptor but only has the parent on disk: does the evaluation model know how to invoke the function?</li>
+</ul>
+</section>
+<section id="atom-identity-across-descriptor-frames" class="level3">
+<h3 data-anchor-id="atom-identity-across-descriptor-frames">Atom identity across descriptor frames</h3>
+<p>Cached features and Mode C operators all reference atoms by ID. The <a href="../../posts/mmcif/08-ml-native.html#open-questions-specific-to-ml-native-data">ML-native chapter</a> flagged that atom identity is not stable across re-refinement (CCD updates can rename atoms; refinement can add or remove atoms). For the evaluation model, the question is sharper:</p>
+<ul>
+<li>A Mode C decoder fit against an earlier version of a structure has its inputs and outputs keyed to that structure’s atom IDs. The current deposition has different atom IDs. What does the evaluation model do?</li>
+<li>Probably: declared atom-ID stability per descriptor, with a transition table when the deposition’s atom IDs are a refined-superset of the descriptor’s.</li>
+</ul>
+</section>
+<section id="versioning" class="level3">
+<h3 data-anchor-id="versioning">Versioning</h3>
+<p>Every descriptor’s materialization depends on stored bytes that may have a version (TLS parameters refined under one version of a refinement program; cryoDRGN decoder trained under one set of hyperparameters). When a structure is re-deposited:</p>
+<ul>
+<li>Do existing descriptors carry forward, get re-fit, or get marked as stale?</li>
+<li>Is the re-fit a deposition-side process or a consumer-side process?</li>
+</ul>
+</section>
+<section id="physical-signal-type-as-a-descriptor-metadata-field" class="level3">
+<h3 data-anchor-id="physical-signal-type-as-a-descriptor-metadata-field">Physical-signal type as a descriptor metadata field</h3>
+<p>The two composition rules are dispatched by the physical signal a descriptor describes – “distributed Gaussian variation” goes through the additive-covariance stack, “categorical state” goes through the discrete-nesting stack. Today this is implicit; pinned at deposition time by the descriptor’s regime and the depositor’s intent. Open:</p>
+<ul>
+<li>Should the format declare a <code>signal_type</code> field on every descriptor (<code>gaussian_disorder</code>, <code>categorical_state</code>, …)?</li>
+<li>A future descriptor type that fits neither stack – a continuous categorical mixture, say, or a non-Gaussian latent over discrete cluster centers – would need its own composition rule. The metadata field gives the validator and the render driver something to dispatch on.</li>
+<li>Probably worth introducing this as a small enum with <code>unknown</code> as a permitted (legacy) value.</li>
+</ul>
+</section>
+<section id="composing-non-gaussian-regime-3-descriptors-with-the-gaussian-stack" class="level3">
+<h3 data-anchor-id="composing-non-gaussian-regime-3-descriptors-with-the-gaussian-stack">Composing non-Gaussian Regime 3 descriptors with the Gaussian stack</h3>
+<p>A neural decoder (cryoDRGN) at a given latent vector returns a deterministic displacement field, not a Gaussian. A consumer might still want to add Gaussian thermal disorder around the decoder’s output. Open:</p>
+<ul>
+<li>The natural composition is in displacement space (decoder output + Gaussian draw), not in covariance space (the decoder output has no covariance). Spell this out as a separate composition rule for “deterministic-displacement” descriptors.</li>
+<li>Is there a meaningful interaction with the additive-Gaussian stack – e.g.&nbsp;covariances at higher scopes added to the decoder’s mean? Probably yes, if the higher-scope Gaussian was fit on a residual after subtracting the decoder’s contribution. Inherits all the underdetermination concerns from the continuous-additive stack.</li>
+</ul>
+</section>
+<section id="fitting-provenance-schema" class="level3">
+<h3 data-anchor-id="fitting-provenance-schema">Fitting-provenance schema</h3>
+<p><a href="../../posts/mmcif/03-coupling-and-nesting.html#underdetermination-of-the-continuous-decomposition">Chapter 3</a> flags that multi-level continuous decompositions are intrinsically underdetermined and the format has to record per-descriptor fitting provenance. Open:</p>
+<ul>
+<li>What is the minimum schema? Probably: producing software identifier and version, regularization scheme and hyperparameters, source data hash, fit-time wallclock and seed (when stochastic).</li>
+<li>Is provenance per-descriptor or per-stack? A continuous-additive decomposition was usually produced by one fitting procedure that determined every level simultaneously, so per-stack provenance referencing all participating descriptors is more natural than per-descriptor.</li>
+<li>Does the format require the provenance to be machine-actionable (a consumer could in principle re-fit) or is human-readable text sufficient? The first is much harder; the second covers the realistic use case.</li>
+</ul>
+</section>
+</section>
+<section id="triage" class="level2">
+<h2 data-anchor-id="triage">Triage</h2>
+<p>A pragmatic prioritization for filling in the questions above:</p>
+<ul>
+<li><strong>Must have</strong> before any first implementation: Mode C operator interfaces (without these, Mode C is just a label), the multi-level Gaussian render rule (without it, every TLS-bearing PDB entry is incorrectly rendered), and a fitting-provenance schema for the continuous-additive stack (without it, depositions are unattributed and the underdetermination is silent).</li>
+<li><strong>Should have</strong> before broad use: per-descriptor reference offsets, sample-axis broadcasting policy, atom-identity stability declarations, the <code>signal_type</code> metadata field.</li>
+<li><strong>Can defer</strong>: order-of-operations for transform-style descriptors (mostly absorbed by the displacement assumption); provenance regenerability (initially: store everything; lazy regen later); composition of non-Gaussian Regime 3 descriptors with the Gaussian stack.</li>
+<li><strong>Will defer</strong>: cross-experiment reference reconciliation; full versioning machinery for structure mutations.</li>
+</ul>
 </section>
 </section>
 </div>
-
 
 
 
@@ -704,11 +703,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" data-entry-spacing="0" role="list">
-<div id="ref-wankowicz2024encoding" class="csl-entry" role="listitem">
-<div class="csl-left-margin">1. </div><div class="csl-right-inline">Wankowicz, S. A., Fraser, J. S. Comprehensive encoding of conformational and compositional protein structural ensembles through the <span class="nocase">mmCIF</span> data structure. <em>IUCrJ</em> (2024). doi: <a href="https://doi.org/10.1107/S2052252524005098">10.1107/S2052252524005098</a></div>
-</div>
-</div></section></div></div> <!-- /content -->
+</div> <!-- /content -->
 
 
 

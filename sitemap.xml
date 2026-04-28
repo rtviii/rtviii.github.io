@@ -2,11 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://rtviii.xyz/blog.html</loc>
-    <lastmod>2026-04-16T19:39:42.569Z</lastmod>
+    <lastmod>2026-04-24T20:56:55.678Z</lastmod>
   </url>
   <url>
     <loc>https://rtviii.xyz/listings.html</loc>
-    <lastmod>2026-04-15T11:22:07.239Z</lastmod>
+    <lastmod>2026-04-24T20:56:55.678Z</lastmod>
   </url>
   <url>
     <loc>https://rtviii.xyz/q_mcif_structure.html</loc>
@@ -14,47 +14,55 @@
   </url>
   <url>
     <loc>https://rtviii.xyz/papers/papers.html</loc>
-    <lastmod>2025-10-13T00:35:11.437Z</lastmod>
+    <lastmod>2026-04-24T20:56:55.679Z</lastmod>
   </url>
   <url>
-    <loc>https://rtviii.xyz/posts/mmcif/02-architecture.html</loc>
-    <lastmod>2026-04-17T13:37:47.862Z</lastmod>
-  </url>
-  <url>
-    <loc>https://rtviii.xyz/posts/mmcif/07-modularity-examples.html</loc>
-    <lastmod>2026-04-17T09:21:02.097Z</lastmod>
-  </url>
-  <url>
-    <loc>https://rtviii.xyz/posts/mmcif/03-composition.html</loc>
-    <lastmod>2026-04-17T13:38:06.499Z</lastmod>
-  </url>
-  <url>
-    <loc>https://rtviii.xyz/posts/mmcif/04-annotations-and-passes.html</loc>
-    <lastmod>2026-04-17T13:01:08.431Z</lastmod>
-  </url>
-  <url>
-    <loc>https://rtviii.xyz/posts/mmcif/06-black-box-data.html</loc>
-    <lastmod>2026-04-17T09:20:59.177Z</lastmod>
-  </url>
-  <url>
-    <loc>https://rtviii.xyz/posts/mmcif/index.html</loc>
-    <lastmod>2026-04-19T12:05:13.471Z</lastmod>
-  </url>
-  <url>
-    <loc>https://rtviii.xyz/posts/mmcif/01-problems.html</loc>
-    <lastmod>2026-04-17T12:48:51.155Z</lastmod>
+    <loc>https://rtviii.xyz/posts/mmcif/04-annotations-and-engine.html</loc>
+    <lastmod>2026-04-28T13:06:09.104Z</lastmod>
   </url>
   <url>
     <loc>https://rtviii.xyz/posts/mmcif/05-open-questions.html</loc>
-    <lastmod>2026-04-17T13:34:23.544Z</lastmod>
+    <lastmod>2026-04-24T20:56:55.680Z</lastmod>
+  </url>
+  <url>
+    <loc>https://rtviii.xyz/posts/mmcif/07-modularity-examples.html</loc>
+    <lastmod>2026-04-24T20:56:55.680Z</lastmod>
+  </url>
+  <url>
+    <loc>https://rtviii.xyz/posts/mmcif/index.html</loc>
+    <lastmod>2026-04-28T09:58:20.359Z</lastmod>
+  </url>
+  <url>
+    <loc>https://rtviii.xyz/posts/mmcif/06-black-box-data.html</loc>
+    <lastmod>2026-04-28T13:05:59.603Z</lastmod>
+  </url>
+  <url>
+    <loc>https://rtviii.xyz/posts/mmcif/08-ml-native.html</loc>
+    <lastmod>2026-04-28T13:05:50.387Z</lastmod>
+  </url>
+  <url>
+    <loc>https://rtviii.xyz/posts/mmcif/03-evaluation-model.html</loc>
+    <lastmod>2026-04-28T10:04:45.096Z</lastmod>
+  </url>
+  <url>
+    <loc>https://rtviii.xyz/posts/mmcif/01-problems.html</loc>
+    <lastmod>2026-04-28T09:25:52.468Z</lastmod>
+  </url>
+  <url>
+    <loc>https://rtviii.xyz/posts/mmcif/04b-technology-survey.html</loc>
+    <lastmod>2026-04-28T13:05:41.522Z</lastmod>
+  </url>
+  <url>
+    <loc>https://rtviii.xyz/posts/mmcif/02-architecture.html</loc>
+    <lastmod>2026-04-28T13:34:03.355Z</lastmod>
   </url>
   <url>
     <loc>https://rtviii.xyz/posts/npet-poisson-recon/index.html</loc>
-    <lastmod>2026-01-02T23:43:57.300Z</lastmod>
+    <lastmod>2026-04-24T20:56:55.680Z</lastmod>
   </url>
   <url>
     <loc>https://rtviii.xyz/index.html</loc>
-    <lastmod>2026-01-18T22:09:43.024Z</lastmod>
+    <lastmod>2026-04-24T20:56:55.678Z</lastmod>
   </url>
   <url>
     <loc>https://rtviii.xyz/CLAUDE.html</loc>

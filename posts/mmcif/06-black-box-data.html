@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>“Black-box” data – артём</title>
+<title>“Black-box” data and model-side artifacts – артём</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,11 +20,30 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
 <link href="../.././img/BTNBlink.webp" rel="icon">
 <script src="../../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../../site_libs/quarto-html/quarto.js"></script>
@@ -56,123 +75,104 @@ ul.task-list li input[type="checkbox"] {
 <script src="https://unpkg.com/tippy.js@6"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Serif:wght@400;500;600&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
 
 
 <link rel="stylesheet" href="../../styles/custom.css">
 <link rel="stylesheet" href="../../styles/scrollbar-fix.css">
+<link rel="stylesheet" href="../../styles/listing.css">
+<link rel="stylesheet" href="../../styles/homepage.css">
 </head>
 
-<body class="nav-sidebar docked">
+<body>
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-        <i class="bi bi-layout-text-sidebar-reverse"></i>
-      </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../posts/mmcif/06-black-box-data.html">Appendix: black-box data</a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-        </a>
-    </div>
-  </nav>
-</header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<div id="quarto-content" class="quarto-container page-layout-custom">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
-    <div class="sidebar-title mb-0 py-0">
-      <a href="../../">Toward a Modern Foundation</a> 
-    </div>
-      </div>
-    <div class="sidebar-menu-container"> 
-    <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../posts/mmcif/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Overview</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../posts/mmcif/01-problems.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">1. Problems with mmCIF</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../posts/mmcif/02-architecture.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">2. Architecture</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../posts/mmcif/03-composition.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">3. Composition</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../posts/mmcif/04-annotations-and-passes.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">4. Annotations and computed passes</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../posts/mmcif/05-open-questions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">5. Open questions</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../posts/mmcif/06-black-box-data.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Appendix: black-box data</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../posts/mmcif/07-modularity-examples.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Appendix: modularity examples</span></a>
-  </div>
-</li>
-    </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
-    </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">“Black-box” data</h1>
+<header id="title-block-header">
+<h1 class="title display-7">“Black-box” data and model-side artifacts</h1>
+
+</header>
+
+
+<div class="grid homepage-container">
+<div class="g-col-12 g-col-md-3 left-column">
+<p><a href="../.."><img src="../../img/signature.png" class="signature img-fluid"></a></p>
+<div class="post-nav">
+<div class="post-glossary">
+<ul>
+<li><a href="../../posts/mmcif/index.html">Overview</a></li>
+<li><a href="../../posts/mmcif/01-problems.html">1. Problems with mmCIF</a></li>
+<li><a href="../../posts/mmcif/02-architecture.html">2. Layout</a></li>
+<li><a href="../../posts/mmcif/03-evaluation-model.html">3. Evaluation model</a></li>
+<li><a href="../../posts/mmcif/04-annotations-and-engine.html">4. Annotations and the artifact engine</a></li>
+<li><a href="../../posts/mmcif/04b-technology-survey.html">5. Technology survey</a></li>
+<li><a href="../../posts/mmcif/05-open-questions.html">6. Open questions</a></li>
+<li><a href="../../posts/mmcif/08-ml-native.html">7. ML-native access patterns</a></li>
+<li><a href="../../posts/mmcif/06-black-box-data.html">Appendix: black-box data and model artifacts</a></li>
+<li><a href="../../posts/mmcif/07-modularity-examples.html">Appendix: modularity examples</a></li>
+</ul>
+</div>
+<div class="post-sections">
+
+</div>
+</div>
+</div>
+<section id="section" class="level1 g-col-12 g-col-md-9 right-column">
+<h1>“Black-box” data and model-side artifacts</h1>
+<p>A deeper design critique of white-box formats comes from Naef and Bronstein’s recent Chemical Science perspective (2026, rsc.li/chemical-science). Their central argument is that ML models in biology have traditionally relied on data produced as a byproduct of scientific inquiry – repositories like the PDB aggregate and standardize this data, but they are not purpose-generated for ML, leading to poor standardization, limited scale, and systematic biases – and that the more critical question now is not “the next AlphaFold” but “the next PDB,” meaning new experimental data sources intentionally optimized for machine consumption rather than human intuition. The format implications are sharp: data generated to be consumed by models rather than inspected by scientists has no natural representation in mmCIF, whose entire design presupposes that a human will eventually open the file, assign meaning to the chain IDs, and judge whether the electron density fits – a constraint that should be optional, not structural.</p>
+<p>The same argument runs in the reverse direction. If models are first-class consumers of structural data, their <em>outputs</em> – weights, latents, predicted distributions, posterior samples – are first-class deposition artifacts in their own right, and the format has to carry them with the same legibility and provenance discipline it carries experimentally derived data. The categories below are the ones currently homeless: stored implicitly inside per-paper checkpoint dumps, scattered across model-specific repositories with no link back to the structure they were trained against or applied to, and reconstructed from scratch every time a downstream consumer wants to use them. All four fit the same <code>(selector, body, provenance)</code> overlay machinery from <a href="../../posts/mmcif/04-annotations-and-engine.html#query-language-and-annotations">chapter 4</a>; the appendix is a sketch of what each one looks like in that machinery.</p>
+<div class="def" data-term="Model-side artifact">
+<p>A first-class deposition object whose origin is a model rather than an experiment: stored weights, latent coordinates, decoder checkpoints, predicted ensembles, training metadata. All four route through the same <code>(selector, body, provenance)</code> overlay machinery as human-curated annotations; the difference is what the provenance has to carry to make the artifact trustable – weights hash, training data version, evaluation metrics.</p>
+</div>
+<section id="weights-and-decoders" class="level2">
+<h2 data-anchor-id="weights-and-decoders">Weights and decoders</h2>
+<p>Materialization Mode C (<a href="../../posts/mmcif/02-architecture.html#materialization">Layout § Materialization</a>) is already the slot for stored generative operators – a normal-mode basis, a PCA basis, a cryoDRGN decoder. The structure file does not contain the weights; it carries a stable pointer to the artifact (URI plus content hash), the contract the artifact obeys (input shape, latent dimensionality, output is a per-atom displacement field over a specified Hierarchy scope), and the descriptor that consumes its outputs (Regime 3 latent coordinates per sample). This is the cleanest example of “black-box data” fitting the architecture, because the structure stores the <em>contract</em>, not the implementation.</p>
+<p>The data-management consequence is that the structure node and the model checkpoint co-evolve and have to be versioned together. When the decoder is retrained, the latent coordinates stored alongside the structure are no longer interpretable – they index a different latent space. The format needs the linkage to be explicit enough that a stale latent set is detectable rather than silently misread. The wwPDB to ModelArchive split is a workable precedent: experimental structures and computational models live in linked but distinct archives, with cross-references that carry version. Generalizing this so that <em>any</em> generative artifact (decoder, basis, predicted-ensemble checkpoint) can be cross-referenced from a structure or map deposition is mostly a question of disciplined naming and content addressing, not new format machinery.</p>
+</section>
+<section id="latents-and-per-sample-embeddings" class="level2">
+<h2 data-anchor-id="latents-and-per-sample-embeddings">Latents and per-sample embeddings</h2>
+<p>A larger and currently unhomed category. Three concrete shapes recur:</p>
+<ul>
+<li><p><strong>cryoDRGN per-particle latent coordinates.</strong> Shape <code>(N_particle, d)</code> with <code>d</code> typically 8 to 32. Scoped to the assembly, materialized as a Regime 3 descriptor whose coordinates are decoded by the operator above. Already representable under the existing architecture; the missing piece is a standard layout convention so that two cryoDRGN runs of the same dataset produce comparably-named latents.</p></li>
+<li><p><strong>AF2-family embeddings.</strong> The <code>single</code> representation <code>(N_res, c_s)</code> and the <code>pair</code> representation <code>(N_res, N_res, c_z)</code> from the evoformer. These are the most expensive intermediate objects in the AF2 pipeline and are essentially never shared – every downstream model that wants them recomputes them, or trains around their absence. Cached as annotation overlays with provenance <code>(model identifier, weights hash, MSA hash, evoformer block index)</code>, they slot into the same machinery as a precomputed pair-feature tensor from the <a href="../../posts/mmcif/08-ml-native.html#precomputed-features-as-cached-passes">ML-native chapter</a>; the difference is provenance, not shape.</p></li>
+<li><p><strong>Sequence-model embeddings</strong> (ESM2, ProtT5, ProGen). Shape <code>(N_res, d)</code>. Strictly speaking these are not derived from the structure – they are derived from the sequence, which the structure also carries – but they are commonly co-located with structures because every structure-conditioned model uses them and recomputing them per training step is wasteful. Same overlay shape, different selector (residue-scoped, sequence-derived).</p></li>
+</ul>
+<p>All three sit in the <code>(selector, body, provenance)</code> shape from chapter 4. The novel piece is making the provenance rich enough that two depositions of the same structure with different sequence-model embeddings, or different evoformer weights, are legibly distinct rather than silently superseding each other.</p>
+</section>
+<section id="model-outputs" class="level2">
+<h2 data-anchor-id="model-outputs">Model outputs</h2>
+<p>pLDDT, PAE, predicted distograms, predicted ensembles, posterior sample sets. These split along a useful axis: scalar/vector/tensor <em>annotations</em> on a single structure, versus <em>full ensembles</em> that produce another structure or set of structures.</p>
+<p>The annotation case – per-residue pLDDT, residue-pair PAE, predicted distance distributions, model confidences – is the easy one. They are already overlays in the AlphaFold DB and ModelArchive in everything but name; lifting them into the format’s annotation machinery is mostly a relabelling exercise. Provenance is the producing model and weights hash; the body is the array; the selector is whatever Hierarchy/Groupings scope the array is keyed to.</p>
+<p>The full-ensemble case is more interesting because the predicted ensemble is itself a Heterogeneity descriptor in the sense of <a href="../../posts/mmcif/02-architecture.html#heterogeneity">chapter 2</a>. Diffusion-based structure samplers (<span class="citation" data-cites="chung2024dps"><a href="#ref-chung2024dps" role="doc-biblioref">1</a></span>, <span class="citation" data-cites="levy2025inverse"><a href="#ref-levy2025inverse" role="doc-biblioref">2</a></span>), cryo-EM-guided samplers like cryoBoltz (<span class="citation" data-cites="raghu2025cryoboltz"><a href="#ref-raghu2025cryoboltz" role="doc-biblioref">3</a></span>), and other generative methods produce posterior sample sets whose shape is exactly Regime 1 (a discrete bundle of conformers) or Regime 3 (samples from a continuous decoder). These do not need a new slot; they slot into the existing heterogeneity layer with provenance <code>(model identifier, weights hash, sampling temperature, conditioning data)</code>. The architectural payoff is that the same machinery distinguishes “experimental ensemble” from “predicted ensemble” via <em>provenance</em> rather than via separate categories. A consumer that does not care about the source treats them identically; a consumer that does (e.g.&nbsp;a refinement engine that should not refit against predicted ensembles) reads the provenance and filters.</p>
+</section>
+<section id="training-metadata" class="level2">
+<h2 data-anchor-id="training-metadata">Training metadata</h2>
+<p>What it takes to trust a model artifact:</p>
+<ul>
+<li>Training data version – ideally a content hash of the deposition set used, with a canonical reference to a versioned snapshot of the PDB or successor archive.</li>
+<li>Hyperparameters – the configuration the artifact was produced under, in whatever serialization the producing code uses, with enough discipline that two artifacts produced under the same config are bitwise comparable.</li>
+<li>Eval metrics – held-out test set performance numbers, with the test set itself content-hashed.</li>
+<li>Model lineage – parent checkpoints, fine-tuning history, base model identifier.</li>
+</ul>
+<p>Most of this is structured key-value data and free text, no different in shape from any other provenance the format already needs. It is worth calling out as a separate sub-category because it is what makes the difference between weights one can ship and weights one can reason about.</p>
+</section>
+<section id="everything-routes-through-the-same-overlay-machinery" class="level2">
+<h2 data-anchor-id="everything-routes-through-the-same-overlay-machinery">Everything routes through the same overlay machinery</h2>
+<p>All four categories above use exactly the same <code>(selector, body, provenance)</code> machinery the format already needs for human-curated annotations. There is no new architectural layer here. What the “next PDB” framing in the opening section asks for, taken concretely, is a discipline – overlays rich enough, provenance disciplined enough, and naming stable enough – that model-generated and experiment-generated annotations sit in the same namespace and remain mutually legible. The architecture from chapters 2–4 is already the thing that makes this possible; the work that remains is conventions on top of it.</p>
+</section>
+</section>
 </div>
 
 
 
-<div class="quarto-title-meta">
-
-    
-  
-    
-  </div>
-  
 
 
-</header>
-
-
-<p>A deeper design critique of white-box formats comes from Naef and Bronstein’s recent Chemical Science perspective (2026, rsc.li/chemical-science). Their central argument is that ML models in biology have traditionally relied on data produced as a byproduct of scientific inquiry – repositories like the PDB aggregate and standardize this data, but they are not purpose-generated for ML, leading to poor standardization, limited scale, and systematic biases – and that the more critical question now is not “the next AlphaFold” but “the next PDB,” meaning new experimental data sources intentionally optimized for machine consumption rather than human intuition. The format implications are sharp: data generated to be consumed by models rather than inspected by scientists has no natural representation in mmCIF, whose entire design presupposes that a human will eventually open the file, assign meaning to the chain IDs, and judge whether the electron density fits – a constraint that should be optional, not structural.</p>
-
-
-
-</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -598,7 +598,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-</div> <!-- /content -->
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" data-entry-spacing="0" role="list">
+<div id="ref-chung2024dps" class="csl-entry" role="listitem">
+<div class="csl-left-margin">1. </div><div class="csl-right-inline">Chung, H., Kim, J., McCann, M. T., Klasky, M. L., Ye, J. C. Diffusion posterior sampling for general noisy inverse problems. <em>arXiv</em> (2024). doi: <a href="https://doi.org/10.48550/arXiv.2209.14687">10.48550/arXiv.2209.14687</a></div>
+</div>
+<div id="ref-levy2025inverse" class="csl-entry" role="listitem">
+<div class="csl-left-margin">2. </div><div class="csl-right-inline">Levy, A., Chan, E. R., Fridovich-Keil, S., Poitevin, F., Zhong, E. D., Wetzstein, G. Solving inverse problems in protein space using diffusion-based priors. <em>arXiv</em> (2025). doi: <a href="https://doi.org/10.48550/arXiv.2406.04239">10.48550/arXiv.2406.04239</a></div>
+</div>
+<div id="ref-raghu2025cryoboltz" class="csl-entry" role="listitem">
+<div class="csl-left-margin">3. </div><div class="csl-right-inline">Raghu, R., Levy, A., Wetzstein, G., Zhong, E. D. Multiscale guidance of protein structure prediction with heterogeneous cryo-<span>EM</span> data. <em>arXiv</em> (2025). doi: <a href="https://doi.org/10.48550/arXiv.2506.04490">10.48550/arXiv.2506.04490</a></div>
+</div>
+</div></section></div></div> <!-- /content -->
 
 
 
