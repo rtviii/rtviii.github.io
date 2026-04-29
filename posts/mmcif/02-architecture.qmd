@@ -34,7 +34,11 @@ The **core layer** describes the "what": the primary physical components and the
 
 The core describes what is invariant across every conformational state the system can take: the atoms that exist, what they are called, what contains them, and what named groupings have been defined over them. A deposition with one structure and a deposition with an ensemble of ten thousand samples share the same core; the ensemble layers sit on top.
 
+![](data/figures/fig-00-overlay-bus.png){fig-alt="Annotation overlay attaches to a MolQL-style selector bus, which addresses subsets of the Hierarchy and Groupings core; the four grouping panels show parallel typed namespaces over the same atom cloud."}
+
 ### 2.1.1 Hierarchy {#containment}
+
+![](data/figures/fig-01-containment.png){fig-alt="Five-level mmCIF containment tree: Assembly contains Entities (polymer, ligand, water), each containing Chains, Residues, and finally atoms."}
 
 The Hierarchy layer addresses "what is this system made of?". Leaving aside disk layout, encoding and stuff like this -- this is exactly the component model that is used in the `.pdb` and `.mmcif` for the last 50 years. Irreducibly a tree: each atom belongs to exactly one residue, each residue to exactly one chain instance, each chain instance to one entity template, each entity to the assembly, assembly to trajectories, etc -- all of these are implicit nodes in a component tree. I'll call them component nodes or components going forward. 
 
@@ -53,63 +57,86 @@ The case for putting an explicit bond graph in the hierarchy core (rather than t
 
 ### 2.1.2 Groupings {#groupings}
 
+![](data/figures/fig-02-typed-groupings.png){fig-alt="Three typed groupings (curatorial CATH, coarse-grain bead, het-scope TLS) over the same Chain A residues; each is a sparse bipartite mapping plus a kind tag, with the het-scope grouping additionally bound to a registry-referenced operator."}
 
-
-
-
-A molecular system has many valid abstractions at different levels of granularity. Not all have a tree sturcutre and many overlap. 
+A molecular system has many valid abstractions at different levels of granularity. Not all have a tree structure and many overlap.
 
 For example, a residue simultaneously belongs to a chain (that's Hierarchy), to a CATH domain, to an active-site set, to a rigid-body partition used in refinement, to a secondary-structure element, and possibly to a pharmacophore grouping used in docking. Forcing these into one parent hierarchy creates category confusion; a residue cannot have five Hierarchy parents.
 
-The Composition layer is therefore not a tree but a collection of **named projection DAGs** -- mappings from hierarchy nodes to groupings.Three distinct DAG structures show up, one in each of three layers, and conflating them is how existing formats end up tangled. It is worth naming them once up front so we can refer to each without ambiguity later:
+So the Groupings layer is not a tree, and earlier drafts of this chapter that tried to taxonomize it into several "kinds of DAG" turned out to be the wrong move. The simpler reading is that there is **one structural primitive** -- a *typed grouping* -- and everything DAG-shaped in this layer or above it (the scope DAG of §2.2 included) is built out of it. A grouping is a sparse bipartite mapping from hierarchy nodes to a named label set, plus a `kind` tag that tells consumers and the evaluation model what the grouping carries. A curatorial CATH-domain mapping the evaluation model never has to touch; a coarse-graining mapping it lowers when someone asks for bead coordinates; a heterogeneity-descriptor scope it lowers when rendering coordinates. The differences live in what each grouping carries on top of the membership relation, not in the shape of the relation itself.
 
-- The **composition DAG**  is a mapping from hierarchy nodes to named groupings: atoms to coarse-grained beads, residues to domains, residues to TLS groups. Sparse bipartite, weighted, many per format. These are basically auxilary namespaces that practitioners [biologists, chemists, computational people, etc.] choose to conceptually partitions their data into for their work. Some are useful to all, all are useful for some. Much of this stuff currently exists as meshwork of biological resources and databases backlinking to each other in quite frankly a Borgesian tangle of APIs. I'm coming from structural bio and bioinformatics so SIFTS, Elixir resources come to mind. It's amazing that they exist and is a testament to half a century of curation and data accumulation, but i've frequently found myself in a situation where i wished that i didn't have to rubick's cube together three layers of annotations from 5 different databases' APIs over my dataset from my particular domain of biology or macromolecule before even beginning my work. This is annoying enough for a computer person and is still probably somewhat prohibitive or an upfront effort for non-computational biologists. Why not store all (or most) of this stuff alongside the deposited structure? Yes perhaps this is a bit of data duplicaton, but we are talking kilobytes per layer/namespace here. 
+The core of every grouping is small: a namespace identifier, a version, the member set, and -- when applicable -- per-member weights. Anything more lives in named annotation attachments (chapter 4's mechanism), each tagged so the evaluation model can dispatch on it and consumers that don't recognize the tag can safely ignore it.
 
-- The **scope DAG** is a state-space structure: nodes are (scope, state) pairs, edges are nesting constraints between heterogeneity descriptors (see further) at different hierarchy levels.
+These are basically auxilary namespaces that practitioners [biologists, chemists, computational people, etc.] choose to conceptually partition their data into for their work. Some are useful to all, all are useful for some. Much of this stuff currently exists as meshwork of biological resources and databases backlinking to each other in quite frankly a Borgesian tangle of APIs. I'm coming from structural bio and bioinformatics so SIFTS, Elixir resources come to mind. It's amazing that they exist and is a testament to half a century of curation and data accumulation, but i've frequently found myself in a situation where i wished that i didn't have to rubick's cube together three layers of annotations from 5 different databases' APIs over my dataset from my particular domain of biology or macromolecule before even beginning my work. This is annoying enough for a computer person and is still probably somewhat prohibitive or an upfront effort for non-computational biologists. Why not store all (or most) of this stuff alongside the deposited structure? Yes perhaps this is a bit of data duplicaton, but we are talking kilobytes per layer/namespace here.
 
-Each mapping is a sparse bipartite graph, possibly weighted. Some examples:
+Mappings are named and versioned -- there is no universal "parent" relation in this layer, only separate namespaces. Two groups using different domain partition schemes produce different mappings; neither invalidates the other or touches Hierarchy. Basically a molecular analog of OME-Zarr multiscales: the same system described at multiple resolutions with explicit, queryable operators between levels. A coarse-graining mapping and an anatomical-domain partition sit next to each other, both referencing the same atom IDs but projecting to different label sets and tagged with different `kind`s.
+
+Some examples:
 
 ```
-mapping/backbone_only:
-  child_atom_id[E], parent_bead_id[E], weight[E]
-
 mapping/domain_partition_cath_v4.3:
-  child_residue_id[E], parent_domain_id[E], weight[E]
+  kind:           curatorial
+  child_residue_id[E], parent_domain_id[E]
+
+mapping/backbone_only:
+  kind:           coarse_grain
+  child_atom_id[E], parent_bead_id[E], weight[E]    # weight role: projection_coefficient
 
 mapping/rigid_body_partition_refinement:
-  child_residue_id[E], parent_body_id[E], weight[E]
+  kind:           curatorial
+  child_residue_id[E], parent_body_id[E]
 
 mapping/tls_groups_as_refined:
-  child_atom_id[E], parent_tls_id[E], weight[E]
+  kind:           heterogeneity_descriptor.scope
+  child_atom_id[E], parent_tls_id[E]
+  # operator reference + composition-rule tag in attachments (chapter 3)
 ```
 
-Mappings are named and versioned -- there is no universal "parent" relation in this layer, only separate namespaces. Two groups using different domain partition schemes produce different mappings; neither invalidates the other or touches Hierarchy. Basically a molecular analog of OME-Zarr multiscales: the same system described at multiple resolutions with explicit, queryable operators between levels.
-A coarse-graining operator and an anatomical-domain partition sit next to each other, both referencing the same atom IDs but projecting to different label sets. The weights on edges handle non-crisp assignments: a boundary residue between two CATH domains can contribute with weight 0.5 to each; a coarse-grained bead built from four atoms stores the weights used to compute its position.
+Weights are optional and role-tagged. The default grouping is unweighted bipartite membership and that covers most curatorial mappings. When weights are present they declare a role: `projection_coefficient` for coarse-graining (a bead's position is a weighted sum of constituent atom positions, and the operator that lowers the grouping reads these weights), or `membership_probability` for soft assignment (a boundary residue between two CATH domains contributes 0.5 to each), or some other role declared by the grouping's `kind`. Making the weight column optional and role-tagged is what stops it from quietly conflating "how confident is this membership" with "what coefficient does this position-computing operator use" -- two distinct things that earlier drafts tried to fit under one column.
 
 As described here this, i find this decoupled namespace thing pretty useful even when raw. One can imagine refining each namespace to be a community-defined rule with its own ontology and arbitrariyl complicated derivation rules that in the end just has to map to a subset of a physical hierarchy. Wherever the structure is stored -- people (or agents) can send their curated annotations. The users or consumers can then opt in or out of how much of this accrued data they want to actually pull when using a structure, but by god at least it will all be in the same place and more or less in the same shape.
 
-
 ------
 
-Some more examples:
+The kinds that show up in practice today, with their evaluation-model commitments:
 
-- **Coarse-graining mappings** project fine Hierarchy levels onto coarser labels (atom $\to$ residue is already Hierarchy; atom $\to$ backbone-bead or residue $\to$ Martini-bead is a Grouping). These are what IHM's multi-scale model attempts, and the layer where CG beads should live.
-- **Grouping mappings** project Hierarchy levels onto curatorial labels (CATH domains, secondary-structure elements, active-site membership). These are many-to-one or many-to-many and never unique; different sources produce different mappings of the same system.
-- **Partition mappings** project Hierarchy atoms or residues onto refinement-defined groups (TLS bodies, rigid-body partitions, symmetry-equivalent copies). These are often produced by a specific piece of software and are best stored with enough provenance to reproduce.
+- **Curatorial.** Project Hierarchy levels onto curatorial labels (CATH domains, secondary-structure elements, active-site membership). Membership *is* the contract; the evaluation model has nothing to do. Many-to-one or many-to-many; different sources produce different mappings of the same system without conflict.
+- **Coarse-grain.** Project fine Hierarchy levels onto coarser labels with `projection_coefficient` weights (atom $\to$ backbone-bead, residue $\to$ Martini-bead). The evaluation model lowers these to bead coordinates by weighted sum. These are what IHM's multi-scale model attempts and where CG beads should live.
+- **Partition.** Project Hierarchy atoms or residues onto refinement-defined disjoint groups (TLS bodies, rigid-body partitions, symmetry-equivalent copies). Often produced by specific software, best stored with enough provenance to reproduce.
+- **Heterogeneity-descriptor scope.** A grouping that additionally carries a state space and an operator reference plus a composition-rule tag. The membership declares which atoms or hierarchy nodes the descriptor applies to; the attachments declare what the descriptor does at render time. This is the Heterogeneity layer (§2.2) expressed in the same primitive.
 
-Every mapping in the Groupings layer references Hierarchy IDs as its left side and declares its own label set on the right. None of them alters Hierarchy. The storage discipline is the same as for a sparse matrix: edge arrays plus per-edge data.
+The list is open-ended: new methods register new kinds (and where appropriate new operators in the evaluation model's [registry](03-evaluation-model.qmd#extension-surfaces)) without changing the structural primitive. Every grouping references Hierarchy IDs as its left side and declares its own label set on the right; none alters Hierarchy. Storage is sparse-bipartite: edge arrays plus per-edge data.
 
 ## 2.2 Ensemble layers {#ensemble-layers}
 
 The ensemble layers describe how the system varies across the states the data captures, and how those variations are physically laid out in storage. Heterogeneity is the abstract description of variation; Materialization is the storage strategy. They are separated because the same abstract description can be stored several ways depending on ensemble size, access pattern, and whether the data came from a method that produces samples, parameters, or a trajectory.
 
-The bridge between the core and the ensemble layers is *scope*.
+The bridge between the core and the ensemble layers is *scope* -- the same grouping primitive from §2.1.2, used here to declare which atoms or hierarchy nodes a heterogeneity descriptor binds to.
 
 ::: {.def data-term="Scope"}
-The set of nodes in the core that a given heterogeneity descriptor applies to. Formally, a *scope handle* is a reference into Hierarchy or Groupings -- a specific Hierarchy node (one atom, one residue, one chain, the whole assembly), a span of Hierarchy nodes (a residue range), or a label from a Groupings mapping (the atoms in a named TLS group, the residues in a CATH domain). A descriptor's scope determines (i) which atoms its displacement contribution $\Delta_i^\ell(\cdot)$ affects, and (ii) where the descriptor sits in the scope DAG when it is composed with other descriptors.
+The set of nodes in the core that a given heterogeneity descriptor applies to. Formally, a *scope handle* is either an inline reference into Hierarchy (one atom, one residue, one chain, the whole assembly; or a span like a residue range -- a singleton-or-span grouping) or a reference to a previously declared Groupings entry (the atoms of a named TLS partition, the residues of a CATH domain). A descriptor's scope determines (i) which atoms its displacement contribution $\Delta_i^\ell(\cdot)$ affects, and (ii) where the descriptor sits in the scope DAG when it is composed with other descriptors.
 :::
 
-Every heterogeneity descriptor attaches to exactly one scope. A B-factor is atom-scoped (atoms are Hierarchy nodes); a TLS descriptor is scoped to a group declared in Groupings; a cryoDRGN latent is scoped to the whole assembly. The scope is what makes a descriptor legible to composition (chapter 3): it is the mechanism by which "what varies at chain level" and "what varies at residue level" can coexist in the same deposition without stepping on each other.
+Every heterogeneity descriptor attaches to exactly one scope, and a heterogeneity descriptor is itself a typed grouping (`kind: heterogeneity_descriptor.scope`) carrying an operator-reference attachment and a composition-rule tag. A B-factor is atom-scoped; a TLS descriptor is scoped to a partition declared in Groupings; a cryoDRGN latent is scoped to the whole assembly. The scope plus the attachments together are what make the descriptor legible to composition (chapter 3) -- the mechanism by which "what varies at chain level" and "what varies at residue level" can coexist in the same deposition without stepping on each other.
+
+Concretely, the scope DAG for a small kinase deposition with one bound inhibitor looks like this:
+
+```
+nodes (scope, state):
+  (entity_instance:inhibitor, bound)
+  (entity_instance:inhibitor, absent)
+  (residue_range:loop, open)        nested_under (inhibitor, bound)
+  (residue_range:loop, closed)      nested_under (inhibitor, bound)
+  (residue_range:loop, relaxed)     nested_under (inhibitor, absent)
+  (chain:A, tls_chain_A)            broadcast (parametric, no sample axis)
+  (atom:*,  adp_isotropic)          broadcast
+
+edges:
+  nested_under  : state-space restriction
+  derived_from  : provenance, function reference
+```
+
+The discrete-stack descriptors form the inner spine; broadcast (parametric Gaussian) descriptors hang off it without state-space coupling. Both edge types and how they participate in rendering are unpacked in [chapter 3](03-evaluation-model.qmd).
 
 ### 2.2.1 Heterogeneity {#heterogeneity}
 
@@ -123,9 +150,13 @@ When multiple heterogeneity descriptors coexist, their couplings (where they exi
 A label for the *kind* of variation a descriptor describes, independent of how it is stored. Three regimes cover the space: **R1** (discrete ensemble), **R2** (trajectory), **R3** (continuous landscape). Each has a different natural representation; the boundaries between them are meaningful design seams.
 :::
 
+![](data/figures/fig-03-regime1-discrete.png){fig-alt="Regime 1: a residue with three discrete states, each carrying its own per-atom coordinates and a population fraction."}
+
 **Heterogeneity Regime 1: Discrete Ensemble.** A finite, enumerable set of conformers -- NMR bundles, qFit sidechain ensembles, multi-conformer crystallographic models, short MD-derived state libraries. The right representation is explicit: a state index plus coordinates or coordinate deltas per state, typically scoped to a residue or residue range. The number of states sits in the tens to low hundreds. No cleverness required.
 
 The incumbent encoding in mmCIF is the altloc field paired with refined occupancy. What is broken is semantic, not structural: the same altloc letter overloads conformational variation (different geometry, same chemistry) and compositional variation (different chemistry entirely -- ligand absent vs. present, two bound fragments in the same site) [@rosenberg2024altlocs; @wankowicz2024encoding], and most analysis software silently discards alternates beyond `A`. Treating discrete states as a distinct regime rather than absorbing them into a continuous disorder parameter is empirically grounded: controlled simulations show refined B-factors can underestimate true positional heterogeneity by up to sixfold for mobile atoms [@kuzmanic2014xray], so the information carried by discrete conformers is not something B-factors ever recover. Binding events propagate rotamer rearrangements well beyond the binding site [@wankowicz2022ligand], which is precisely the kind of coupling this regime is meant to capture.
+
+![](data/figures/fig-04-regime2-trajectory.png){fig-alt="Regime 2: a residue's atoms with the CA coordinate as a dense per-frame array along an explicit frame axis; per-frame scalars (time, energy, box) ride alongside."}
 
 **Heterogeneity Regime 2: Trajectory.** An ordered sequence of frames sharing a fixed topology -- MD, coarse-grained simulation, time-resolved crystallography, a cryo-EM particle series treated as a time series. The Hierarchy, Groupings, and per-atom properties (atom names, residue assignments, bond graph) are the same across every frame; what varies is the coordinate array. The right representation is what H5MD already does: a dense $(N_{\mathrm{frame}}, N_{\mathrm{atom}}, 3)$ array chunked along the frame axis, with per-frame metadata (time, energy, box vectors). The format question here is not about heterogeneity representation but about chunking strategy, compression, and efficient access patterns -- and whether the coordinate array is inline or pointed to as an external artifact via Materialization Mode C (§2.2.2), which is usually the right call because trajectories dwarf everything else in the deposition.
 
@@ -136,6 +167,8 @@ You don't store a few reference structures; you store one, plus deltas or raw co
 "Trajectory" is broader than MD. Any ordered sequence of frames shares this shape: a cryo-EM time-resolved dataset, a photo-activated structural series, an electron microscope tomographic tilt series reduced to atomic models. The format doesn't need to know whether the ordering is time, reaction coordinate, or experimental parameter — it just needs to carry the index.
 
 
+
+![](data/figures/fig-05-regime3-continuous.png){fig-alt="Regime 3: a low-dimensional latent z with a stored decoder phi that maps z to per-atom coordinates; named landmarks appear as clusters in z-space rather than as fundamental objects."}
 
 **Heterogeneity Regime 3: Continuous Landscape.** The heterogeneity is not a finite state list but a distribution over a low-dimensional manifold -- cryoDRGN latent spaces, normal mode deformations, rigid-body motions of domains, ribosome ratcheting. Here the critical insight is that a hundred residues moving together as a collective motion is not a hundred heterogeneity variables. It is one low-dimensional variable plus a stored mapping from that variable to the displacement field over all affected atoms:
 
@@ -156,6 +189,8 @@ Named discrete states in this regime are best understood as landmarks or cluster
 One reality check: this regime is already the output of a growing class of structure-prediction and reconstruction methods, but the field has nowhere to put it. Diffusion-based structure priors [@chung2024dps; @levy2025inverse] and cryo-EM-guided samplers [@raghu2025cryoboltz] produce either pretrained generative models usable as decoders or posterior sample sets with informative uncertainty -- outputs whose natural representation is continuous, and whose current fate is being collapsed back into a Materialization Mode A sample of explicit structures because there is no format slot for "a decoder reference" or "samples from a posterior linked to this structure." @lane2023frontier's framing of the single-structure frontier is the field-level complaint this regime is meant to answer; Materialization Mode C, below, is the materialization half of the fix.
 
 ### 2.2.2 Materialization {#materialization}
+
+![](data/figures/fig-06-materialization-modes.png){fig-alt="Three storage strategies for the coordinate leaf: Mode A enumerates every state, Mode B stores a base plus a sparse delta table, Mode C stores a compact input plus an operator that produces coordinates on demand."}
 
 Given a heterogeneity description, how are actual coordinates produced? Materialization is a separate concern from the heterogeneity model because the same abstract description can be realized by different storage strategies depending on ensemble size, composition variability, and access pattern.
 
@@ -179,7 +214,7 @@ delta_table:
   delta_xyz[K, 3]
 ```
 
-**Materialization Mode C: Generative / External Reference.** Coordinates are produced by applying a stored operator to a compact representation. Subcases: rigid-body transforms (quaternion + translation per instance per state), normal mode coefficients (linear sum over a stored basis), and learned decoders (latent vector fed to a stored TorchScript or checkpoint). The descriptor stores the operator plus its inputs; coordinates are computed on demand. This is where the **operator graph** from the architecture intro lives: a decoder or basis is a stored morphism from latents to displacements, and it can itself be versioned, referenced, and shared across depositions.
+**Materialization Mode C: Generative / External Reference.** Coordinates are produced by applying a stored operator to a compact representation. Subcases: rigid-body transforms (quaternion + translation per instance per state), normal mode coefficients (linear sum over a stored basis), and learned decoders (latent vector fed to a stored TorchScript or checkpoint). The descriptor declares an operator type and stores either the operator's body inline or a content-hashed reference (registry, or external artifact) plus the inputs that operator consumes; coordinates are computed on demand. The choice between the three storage venues is an orthogonal per-deposition decision -- see [extension surfaces](03-evaluation-model.qmd#extension-surfaces) -- so a decoder or basis is a stored morphism from latents to displacements, versioned by content hash and shareable across depositions when that makes sense.
 
 Mode C also covers the obvious-but-underformalized case of referencing an external artifact. An MD trajectory stored as H5MD or Zarr, a cryoDRGN decoder checkpoint, a normal-mode basis file -- any of these can be the heavy payload, with the structure file carrying a stable pointer (artifact identifier, producing method, version, content hash) and the coupling back to atom IDs. The structure does not need to swallow the trajectory; it needs to know where the trajectory lives and how to align its indices.
 
@@ -196,7 +231,7 @@ The key design principle is that materialization mode is a storage choice, not a
 
 ## 2.0 Static IR and evaluation model {#ir-and-evaluation-model}
 
-The four layers above describe the *intermediate representation*: what a deposition contains, schema and bytes. Every IR also has an *evaluation model* -- the contract that turns those bytes into rendered coordinates. For LLVM the evaluation model is the operational semantics of each instruction; for the structural-biology format it is the procedure that, for every (regime, mode) combination, produces a per-atom displacement contribution from a descriptor's stored payload and its state input. This is where order-of-operations questions live (rotations don't commute), where operator interfaces for [Mode C](#materialization) subcases get pinned down, where residual relationships between descriptors are resolved, and where the cross-backend integration problem lives -- a single rendered snapshot from a realistic deposition can require coordinates from a Zarr array (CPU/NumPy), sparse altloc deltas from an Arrow-backed Mode B store, a TorchScript decoder running on GPU, an external HDF5 trajectory seek, and a parametric TLS evaluation in NumPy, and the composition formula assumes all five land as commensurable displacement vectors that add. The static schema is mostly a matter of discipline; the evaluation model is the design problem. It is taken up in the [evaluation model](03-evaluation-model.qmd) chapter.
+The four layers above describe the *intermediate representation*: what a deposition contains, schema and bytes. Every IR also has an *evaluation model* -- the contract that turns those bytes into rendered coordinates. The static schema is mostly a matter of discipline; the evaluation model is the design problem, and it is taken up in the [evaluation model](03-evaluation-model.qmd) chapter.
 
 ## 2.3 What is not in the core {#what-is-not-in-the-core}
 

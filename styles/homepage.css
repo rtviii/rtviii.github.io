@@ -675,6 +675,95 @@ h2#refs-heading,
 }
 
 /* ===========================================================================
+ * Figures, images, and code blocks inside the body column.
+ *
+ * Posts include screenshot grids and animated GIFs at native resolution; we
+ * need them to behave like the rest of the body column — never overflow the
+ * track, captions in a quiet small-caps style, layout-ncol grids that wrap
+ * sensibly. Code blocks get a slightly tighter line-height and a max width
+ * matching the body so they don't push the page horizontally.
+ * ========================================================================*/
+
+/* Every image / iframe inside the post body honours the column width. */
+.right-column img,
+.right-column svg,
+.right-column iframe,
+.right-column video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Standalone figures — center, give breathing room, scale to column. */
+.right-column figure,
+.right-column .quarto-figure,
+.right-column .figure {
+  margin: 1.6rem auto;
+  max-width: 100%;
+}
+
+.right-column figure img,
+.right-column .quarto-figure img,
+.right-column .figure img {
+  margin: 0 auto;
+}
+
+.right-column figure figcaption,
+.right-column .quarto-figure figcaption,
+.right-column .figure-caption,
+.right-column .quarto-float-caption {
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--ink-500);
+  text-align: center;
+  margin: 0.55rem 0 0 0;
+  letter-spacing: 0.005em;
+}
+
+/* Quarto layout-ncol grids — make sure the wrapper and its cells stay
+ * inside the body column. */
+.right-column .quarto-layout-row,
+.right-column .quarto-layout-panel {
+  width: 100%;
+  max-width: 100%;
+  gap: 0.8rem;
+}
+
+.right-column .quarto-layout-cell {
+  min-width: 0;
+}
+
+.right-column .quarto-layout-cell img {
+  width: 100%;
+  height: auto;
+}
+
+/* Fenced code blocks inside the post body. The site-wide `pre` rules in
+ * custom.css handle the chrome; we just constrain the width and tune the
+ * inner code rendering so long identifiers wrap rather than bursting out. */
+.right-column pre,
+.right-column div.sourceCode {
+  max-width: 100%;
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+.right-column pre > code,
+.right-column div.sourceCode pre code {
+  font-size: 0.84em;
+  line-height: 1.55;
+}
+
+/* Display math should never run wider than the body. */
+.right-column .math.display,
+.right-column mjx-container[display="true"] {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* ===========================================================================
  * Mobile (≤768px).
  *
  * Drop the sticky rail and the negative-margin offset; let the rail flow

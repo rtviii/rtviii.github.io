@@ -555,6 +555,4 @@ What you are left with is a smooth polygonal mesh in the `.ply` format. Below is
 
 
 
-## References
-
 {{< include /_includes/_layout_end.qmd >}}

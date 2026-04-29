@@ -579,7 +579,9 @@ article table code {
   box-shadow: none;
 }
 
-/* Hide Quarto's coloured icon column. */
+/* Hide Quarto's coloured icon column. The header carries whatever text the
+ * author put in the callout title (often a function name in backticks);
+ * keep its original case and let inline `code` style itself naturally. */
 .callout > .callout-header,
 .callout-note > .callout-header,
 .callout-tip > .callout-header,
@@ -590,12 +592,34 @@ article table code {
   border: 0;
   padding: 0;
   margin: 0 0 0.4rem 0;
-  color: #5d7c93;
+  color: #1a1a1a;
   font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-size: 0.92rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* The actual title text Quarto puts inside `.callout-title` / `.callout-title-container`. */
+.callout .callout-title,
+.callout .callout-title-container {
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: 0;
+  text-transform: none;
+  color: inherit;
+}
+
+/* Inline code inside a callout header — small monospace, no box. */
+.callout .callout-header code,
+.callout .callout-title code {
+  background: transparent !important;
+  border: 0 !important;
+  padding: 0;
+  font-family: "IBM Plex Mono", ui-monospace, monospace !important;
+  font-size: 0.92em;
+  color: inherit !important;
 }
 
 .callout .callout-icon,
