@@ -18,7 +18,78 @@ The previous chapter described heterogeneity in isolation: a regime, a scope, a 
 
 ## Realistic mixing scenarios
 
-![](data/figures/fig-07-composition.png){fig-alt="A two-chain complex with a bound ligand: Chain A is plain containment, Chain B carries a Regime 3 hinge motion plus a Regime 1 rotamer ensemble at one residue, and the ligand is a Regime 2 trajectory."}
+```{.tikz}
+%| fig-alt: "A two-chain complex with a bound ligand: Chain A is plain containment, Chain B carries a Regime 3 hinge motion plus a Regime 1 rotamer ensemble at one residue, and the ligand is a Regime 2 trajectory."
+\begin{tikzpicture}
+
+\node[font=\sffamily\bfseries] at (0, 5)
+  {Composition — three regimes coexisting};
+
+\node[L0] (AS) at (0, 4) {Assembly};
+\node[L1] (EA) at (-7.5, 3) {Chain A\\ \footnotesize static};
+\node[L1] (EB) at ( 0,   3) {Chain B\\ \footnotesize mobile arm};
+\node[L1] (EL) at ( 7.5, 3) {Ligand L};
+\draw[contain] (AS) -- (EA);
+\draw[contain] (AS) -- (EB);
+\draw[contain] (AS) -- (EL);
+
+% Chain A
+\node[L3] (RA1) at (-8.5, 1.5) {Res 1};
+\node[L3] (RA2) at (-7.5, 1.5) {Res 2};
+\node[more] (RAx) at (-6.5, 1.5) {\ldots};
+\draw[contain] (EA) -- (RA1);
+\draw[contain] (EA) -- (RA2);
+\draw[contain] (EA) -- (RAx);
+\node[font=\sffamily\footnotesize\itshape, text=black!55, align=center]
+  at (-7.5, 0.3) {pure containment\\ no heterogeneity};
+
+% Chain B
+\node[Lgroup-het, align=center, minimum width=2cm] (D1) at (-2.5, 1.5)
+  {rigid body D1\\ \footnotesize kind: \texttt{het.\_scope}};
+\node[Lvar, minimum size=11mm] (zH) at ( 0, 1.5) {$\mathbf{z}_\text{hinge}$};
+\node[Lgroup-het, align=center, minimum width=2cm] (D2) at ( 2.5, 1.5)
+  {rigid body D2\\ \footnotesize kind: \texttt{het.\_scope}};
+\draw[bind] (zH) -- (D1);
+\draw[bind] (zH) -- (D2);
+\draw[contain, black!25] (EB) -- (zH);
+
+\node[Lop, align=center, minimum width=2.6cm] (DEC) at (-2.5, -0.4)
+  {decoder $\varphi_\text{hinge}$\\
+   \footnotesize body: inline ckpt};
+\draw[bind] (zH) to[out=-150, in=60] (DEC.north east);
+\node[font=\sffamily\footnotesize\itshape, text=accO, align=center]
+  at (-2.5, -1.3) {Regime 3 — continuous};
+
+\node[Lstate, minimum width=1.4cm] (S1) at (1.0, -0.4) {state 1\\ \tiny $p{=}.50$};
+\node[Lstate, minimum width=1.4cm] (S2) at (2.5, -0.4) {state 2\\ \tiny $p{=}.30$};
+\node[Lstate, minimum width=1.4cm] (S3) at (4.0, -0.4) {state 3\\ \tiny $p{=}.20$};
+\node[font=\sffamily\footnotesize\itshape, text=accS, align=center]
+  at (2.5, -1.3) {Regime 1 — rotamers at Res 85};
+
+% Ligand L
+\node[Lframe, align=center, minimum width=2.2cm, minimum height=1.2cm] (LT)
+  at (7.5, 1.5) {coords[$N_\text{frame}$,\\ \footnotesize $N_\text{atom}, 3$]};
+\draw[contain] (EL) -- (LT);
+\draw[axisline] (5.7, -0.1) -- (9.3, -0.1) node[anchor=west, font=\sffamily\small] {frame};
+\foreach \t/\jit in {6.0/0, 6.6/0.08, 7.2/-0.04, 7.8/0.10, 8.4/-0.02, 9.0/0.05} {
+  \draw[rule, line width=0.4pt] (\t-0.13, -0.85) -- (\t, -0.85 + \jit) -- (\t+0.13, -0.85);
+  \filldraw[rule] (\t-0.13, -0.85)        circle (0.8pt);
+  \filldraw[accT] (\t,      -0.85 + \jit) circle (1.1pt);
+  \filldraw[rule] (\t+0.13, -0.85)        circle (0.8pt);
+}
+\node[font=\sffamily\footnotesize\itshape, text=accT, align=center]
+  at (7.5, -1.3) {Regime 2 — MD trajectory};
+
+\end{tikzpicture}
+```
+
+**Figure 7 — Composition: three regimes coexisting.**
+A two-chain complex with a bound ligand. Chain A is plain containment.
+Chain B carries a Regime 3 hinge motion over two rigid-body scopes
+(decoder $\varphi_\text{hinge}$ acting on a single latent
+$\mathbf{z}_\text{hinge}$) and a Regime 1 rotamer ensemble at residue 85.
+The ligand is a Regime 2 trajectory. Three regimes, three attachment
+points in the system, one consistent vocabulary.
 
 Before introducing the formal composition rule, it is worth grounding the discussion in cases that actually exist on disk today, ordered roughly from most to least common:
 
@@ -67,7 +138,83 @@ Every operator in the registry is tagged with which algebra it composes under. T
 
 ## The composition principle: two parallel stacks
 
-![](data/figures/fig-09-discrete-plus-continuous.png){fig-alt="Two scope groupings sit in different stacks: the discrete-nesting stack picks an altloc state and looks up a sparse delta; the continuous-additive stack draws a Gaussian from per-atom B-factor covariances; the two streams meet at a single concrete atom equation."}
+```{.tikz}
+%| fig-alt: "Two scope groupings sit in different stacks: the discrete-nesting stack picks an altloc state and looks up a sparse delta; the continuous-additive stack draws a Gaussian from per-atom B-factor covariances; the two streams meet at a single concrete atom equation."
+\begin{tikzpicture}
+
+\node[font=\sffamily\small\bfseries, text=black!60, anchor=east] at (-9.5,  6.0) {scope};
+\node[font=\sffamily\small\bfseries, text=black!60, anchor=east] at (-9.5,  3.5) {state / operator};
+\node[font=\sffamily\small\bfseries, text=black!60, anchor=east] at (-9.5,  1.4) {per-stack output};
+\node[font=\sffamily\small\bfseries, text=black!60, anchor=east] at (-9.5, -0.7) {atom};
+\node[font=\sffamily\small\bfseries, text=black!60, anchor=east] at (-9.5, -3.2) {parameters};
+
+\node[font=\sffamily\footnotesize, text=accS, anchor=south]
+  at (-4.5, 6.9) {discrete-nesting stack};
+\node[font=\sffamily\footnotesize, text=accG, anchor=south]
+  at ( 4.5, 6.9) {continuous-additive stack};
+
+\node[Lgroup-het, align=center, minimum width=3.4cm, minimum height=1.6cm]
+     (Galt) at (-4.5, 6.0)
+     {\textbf{altloc / Res 128}\\[2pt]
+      \footnotesize states $\{A, B, C\}$, $\Delta_s(a)$\\[1pt]
+      \tiny populations $p_s$};
+
+\node[Lgroup-het, align=center, minimum width=3.4cm, minimum height=1.6cm]
+     (Gb)   at ( 4.5, 6.0)
+     {\textbf{bfactor / atomic}\\[2pt]
+      \footnotesize $B_a$\\[1pt]
+      \tiny per atom};
+
+\node[font=\sffamily\footnotesize, align=center, text=accS] (Salt) at (-4.5, 3.5)
+  {pick state $s \in \{A, B, C\}$\\[4pt]
+   $\Delta^{\text{alt}}(s, a) =
+     \begin{cases}\Delta_s(a) & a\in\text{Res 128}\\ 0 & \text{else}\end{cases}$};
+
+\node[font=\sffamily\footnotesize, align=center, text=accO] (Sb) at (4.5, 3.5)
+  {evaluate \texttt{iadp\_v1}\\[4pt]
+   $U^B(a) \;=\; \dfrac{B_a}{8\pi^2}\, I_3$};
+
+\draw[bind] (Galt.south) -- (Salt.north);
+\draw[bind] (Gb.south)   -- (Sb.north);
+
+\node[card, fill=H3, align=center, minimum width=5.5cm, font=\sffamily\small]
+  (mean) at (-4.5, 1.4)
+  {$\text{mean}(s, a) \;=\; x^{\text{ref}}_a + \Delta^{\text{alt}}(s, a)$};
+
+\node[card, fill=H3, align=center, minimum width=5.5cm, font=\sffamily\small]
+  (eps) at (4.5, 1.4)
+  {$\varepsilon_a \;\sim\; \mathcal{N}\!\bigl(0,\, U^B(a)\bigr)$};
+
+\draw[bind] (Salt) -- (mean);
+\draw[bind] (Sb)   -- (eps);
+
+\node[card, fill=H3, draw=accO, line width=0.9pt, align=center,
+      minimum width=7cm, font=\sffamily\small]
+  (atom) at (0, -0.7) {$x_a(s) \;=\; \text{mean}(s, a) \;+\; \varepsilon_a$};
+
+\draw[bind] (mean.south) to[out=-90, in=170] (atom.west);
+\draw[bind] (eps.south)  to[out=-90, in=10]  (atom.east);
+
+\draw[rule!45, line width=0.4pt] (-9.2, -2.4) -- (9.2, -2.4);
+
+\node[font=\sffamily\footnotesize, align=left, text width=15cm,
+      anchor=north west] at (-9, -2.9)
+  {\texttt{altloc.delta\_lookup}: $3 \times n_{\text{aff}} \times 3$ scalars
+   ($\Delta$ table for the affected atoms)\\[3pt]
+   \texttt{iadp\_v1}\hspace{4.0em}: 1 scalar per atom};
+
+\end{tikzpicture}
+```
+
+**Figure 9 — Discrete state plus continuous disorder.**
+Two scope groupings sit in different stacks of the evaluation model and
+collapse to the same concrete atom. The discrete-nesting stack picks a
+state for residue 128, looks up the sparse $\Delta$, and adds it to
+$x^{\text{ref}}$ at the affected atoms — atoms outside the residue keep
+their reference position. The continuous-additive stack evaluates the
+per-atom B-factor through `iadp_v1` and draws one Gaussian displacement
+per atom. The two streams meet at the final sum: the mean from the
+discrete side, the draw from the continuous side, every $a$ independently.
 
 ::: {.def data-term="Reference structure"}
 $x^{\mathrm{ref}}$ is the single anchor: a per-atom Cartesian position, one set, in $\mathbb{R}^3$. It is what the deposition would render as if every heterogeneity descriptor were inactive. Every descriptor's contribution is expressed as a displacement against it.
@@ -102,7 +249,118 @@ Storage scales with the number of *legal* joint states, not the Cartesian produc
 
 ### The continuous-additive stack
 
-![](data/figures/fig-08-echt-stack.png){fig-alt="ECHT applied to PDB 6vxx: five scope levels (molecule, domain, SSE, residue, atom) each carry TLS or B-factor parameters; per-level operators produce per-atom 3x3 covariance contributions which sum independently before a single Gaussian draw is added to the reference position."}
+```{.tikz}
+%| fig-alt: "ECHT applied to PDB 6vxx: five scope levels (molecule, domain, SSE, residue, atom) each carry TLS or B-factor parameters; per-level operators produce per-atom 3x3 covariance contributions which sum independently before a single Gaussian draw is added to the reference position."
+\begin{tikzpicture}
+
+\node[font=\sffamily\small\bfseries, text=black!60, anchor=east] at (-9.5,  6.4) {scope};
+\node[font=\sffamily\small\bfseries, text=black!60, anchor=east] at (-9.5,  3.4) {operator output};
+\node[font=\sffamily\small\bfseries, text=black!60, anchor=east] at (-9.5,  0.7) {compose};
+\node[font=\sffamily\small\bfseries, text=black!60, anchor=east] at (-9.5, -0.4) {draw};
+\node[font=\sffamily\small\bfseries, text=black!60, anchor=east] at (-9.5, -1.8) {atom};
+\node[font=\sffamily\small\bfseries, text=black!60, anchor=east] at (-9.5, -3.5) {storage};
+\node[font=\sffamily\small\bfseries, text=black!60, anchor=east] at (-9.5, -5.0) {symbols};
+
+\node[Lgroup-het, align=center, minimum width=2.7cm, minimum height=1.8cm]
+     (mol) at (-7, 6.4)
+     {\textbf{Molecule}\\[2pt]
+      \footnotesize $T,\, L,\, S,\, A,\, c$\\[1pt]
+      \tiny 1 group\\
+      \tiny (whole molecule)};
+
+\node[Lgroup-het, align=center, minimum width=2.7cm, minimum height=1.8cm]
+     (dom) at (-3.5, 6.4)
+     {\textbf{Domain}\\[2pt]
+      \footnotesize $T_i,\, L_i,\, S_i,\, A_i,\, c_i$\\[1pt]
+      \tiny $\sim$12 groups\\
+      \tiny (manual sub-domains)};
+
+\node[Lgroup-het, align=center, minimum width=2.7cm, minimum height=1.8cm]
+     (sse) at (0, 6.4)
+     {\textbf{SSE}\\[2pt]
+      \footnotesize $T_j,\, L_j,\, S_j,\, A_j,\, c_j$\\[1pt]
+      \tiny $\sim$600 groups\\
+      \tiny (DSSP elements)};
+
+\node[Lgroup-het, align=center, minimum width=2.7cm, minimum height=1.8cm]
+     (res) at (3.5, 6.4)
+     {\textbf{Residue}\\[2pt]
+      \footnotesize $T_k,\, L_k,\, S_k,\, A_k,\, c_k$\\[1pt]
+      \tiny $\sim$3000 groups\\
+      \tiny (one TLS per residue)};
+
+\node[Lgroup-het, align=center, minimum width=2.7cm, minimum height=1.8cm]
+     (atm) at (7, 6.4)
+     {\textbf{Atomic}\\[2pt]
+      \footnotesize $B_a$\\[1pt]
+      \tiny per atom\\
+      \tiny ($\sim$25{,}000 atoms)};
+
+\node[card, fill=H4, draw=accO!40, align=left, minimum width=15cm,
+      font=\sffamily\footnotesize, inner sep=10pt]
+     (ops) at (0, 3.4)
+     {\texttt{Mol}:\quad $U_{\text{mol}}(a) \;=\; A \cdot \text{TLS}(T,\, L,\, S;\; r_a - c)$\\[4pt]
+      \texttt{Dom}:\quad $U_{\text{dom},i}(a) \;=\; A_i \cdot \text{TLS}(T_i,\, L_i,\, S_i;\; r_a - c_i)$\\[4pt]
+      \texttt{SSE}:\quad $U_{\text{sse},j}(a) \;=\; A_j \cdot \text{TLS}(T_j,\, L_j,\, S_j;\; r_a - c_j)$\\[4pt]
+      \texttt{Res}:\quad $U_{\text{res},k}(a) \;=\; A_k \cdot \text{TLS}(T_k,\, L_k,\, S_k;\; r_a - c_k)$\\[4pt]
+      \texttt{Atm}:\quad $U_{\text{atm}}(a) \;=\; \dfrac{B_a}{8\pi^2}\, I_3$};
+
+\foreach \src in {mol, dom, sse, res, atm}
+  \draw[-Latex, accO!50, line width=0.5pt] (\src.south) -- (\src.south |- ops.north);
+
+\node[card, fill=H3, align=center, minimum width=6cm, font=\sffamily\small]
+     (sum) at (0, 0.7)
+     {$U_{\text{total}}(a) \;=\; \displaystyle\sum_\ell U_\ell(a)$};
+\draw[bind] (ops.south) -- (sum.north);
+
+\node[card, fill=H3, align=center, minimum width=6cm, font=\sffamily\small]
+     (drawn) at (0, -0.4)
+     {$\varepsilon_a \;\sim\; \mathcal{N}\!\bigl(0,\, U_{\text{total}}(a)\bigr)$};
+\draw[bind] (sum) -- (drawn);
+
+\node[card, fill=H3, draw=accO, line width=0.9pt, align=center,
+      minimum width=6cm, font=\sffamily\small]
+     (atom) at (0, -1.8) {$x_a \;=\; x^{\text{ref}}_a + \varepsilon_a$};
+\draw[bind] (drawn) -- (atom);
+
+\draw[rule!45, line width=0.4pt] (-9.2, -3.0) -- (9.2, -3.0);
+
+\node[font=\sffamily\footnotesize, align=left, text width=18cm, anchor=north west]
+     at (-9, -3.2)
+     {Per TLS group: $\;6\,(T) + 6\,(L) + 8\,(S; \text{tr}\,S{=}0) + 1\,(A) + 3\,(c) = 24$ floats. \quad
+      Per atom: $\;1$ float ($B_a$).\\[3pt]
+      Total for 6vxx: $24 \cdot (1 + 12 + 600 + 3000) + 25\,000 \approx 112{,}000$ floats
+      $\,\approx\,$ 450 KB raw float32
+      $\,\approx\,$ 200--250 KB after lossless compression.};
+
+\draw[rule!45, line width=0.4pt] (-9.2, -4.4) -- (9.2, -4.4);
+
+\node[font=\sffamily\footnotesize, align=left, text width=18cm, anchor=north west]
+     at (-9, -4.6)
+     {$T,\, L$: symmetric 3{$\times$}3 translation / libration tensors (6 unique each).
+      $S$: 3{$\times$}3 screw-coupling tensor (8 unique, $\text{tr}\,S = 0$).
+      $A$: amplitude scalar.
+      $c$: group centroid (3-vec).\\[3pt]
+      $r_a$: position of atom $a$ (3-vec).
+      $B_a$: isotropic B-factor (\AA$^2$).
+      $I_3$: 3{$\times$}3 identity.
+      $U_\ell(a)$: per-atom $3{\times}3$ covariance contribution at scope $\ell$.
+      $\varepsilon_a$: Gaussian displacement draw.};
+
+\end{tikzpicture}
+```
+
+**Figure 8 — Hierarchical continuous-additive stack (ECHT applied to PDB 6vxx).**
+Each scope card shows the parameters its groups carry plus the source of
+the group partition: the molecule level is one TLS for the whole structure;
+the domain level is one TLS per manually-defined sub-domain; the
+secondary-structure level is one TLS per DSSP-identified helix or strand;
+the residue level is one TLS per residue ($\sim$3000 in the trimer); and
+the atomic level keeps a per-atom isotropic B-factor. Five operator
+applications turn those parameters into per-atom $3{\times}3$ covariance
+contributions. The contributions sum independently at every atom; one draw
+from the resulting Gaussian, added to $x^{\text{ref}}$, gives the concrete
+atom position.
 
 ::: {.def data-term="Continuous-additive stack"}
 The composition rule for Regime 3 Gaussian descriptors at multiple scopes. Each level contributes a per-atom $3 \times 3$ covariance; the total atomic displacement covariance is the *sum* of those contributions, under the assumption that levels are uncorrelated. ECHT [@pearce2021echt] is the published instance.

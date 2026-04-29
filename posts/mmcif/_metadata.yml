@@ -16,6 +16,21 @@ execute:
 format:
   html:
     link-external-newwindow: true
+
+# TikZ figures rendered inline by pandoc-ext/diagram. The shared preamble
+# (palette + tikzset for L0..L4, Lgroup, Lop, etc.) lives here so each
+# `{.tikz}` block in the qmd files can carry just the tikzpicture body.
+# The bus figure adds its own \tikzset overrides at the top of its block.
+filters:
+  - diagram
+
+diagram:
+  cache: true
+  engine:
+    tikz:
+      execpath: pdflatex
+      preamble-file: data/_tikz-preamble.tex
+
 # Collapsible H2/H3 behavior + current-chapter highlight + in-page section
 # list injection live in /scripts.js, scoped to /posts/mmcif/ via a path check.
 # Inline citation styling (numeric superscript) is enforced via CSS in

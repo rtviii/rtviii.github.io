@@ -1,0 +1,63 @@
+% Shared TikZ preamble for the mmCIF post.
+%
+% Loaded by pandoc-ext/diagram via the `preamble-file:` option in
+% _metadata.yml. Pandoc's stringify drops multi-line LaTeX from a
+% YAML block scalar, so the file route is the reliable way.
+%
+% The bus figure adds a few extra styles (Lanno, Lbus, panel,
+% lasso-*, ...) at the top of its own block.
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath, amssymb}
+\usepackage{forest}
+\usetikzlibrary{positioning, shapes.geometric, arrows.meta,
+                fit, backgrounds, calc, decorations.pathreplacing}
+
+% --- palette ---
+\colorlet{H0}{black!16}
+\colorlet{H1}{black!11}
+\colorlet{H2}{black!7}
+\colorlet{H3}{black!4}
+\colorlet{H4}{black!1}
+\colorlet{rule}{black!50}
+\colorlet{accG}{teal!70!black}
+\colorlet{accO}{violet!70!black}
+\colorlet{accS}{orange!75!black}
+\colorlet{accT}{olive!65!black}
+
+% --- shared styles (figs 1-9) ---
+\tikzset{
+  card/.style    ={draw=rule, rounded corners=2pt, inner sep=4pt,
+                   align=center, font=\sffamily\small, line width=0.5pt},
+  L0/.style      ={card, fill=H0, minimum width=3.4cm},
+  L1/.style      ={card, fill=H1, minimum width=2.6cm},
+  L2/.style      ={card, fill=H2, minimum width=2.2cm},
+  L3/.style      ={card, fill=H3, minimum width=1.8cm},
+  L4/.style      ={card, fill=H4, minimum width=1.4cm,
+                   font=\sffamily\footnotesize},
+  more/.style    ={draw=rule!60, dashed, rounded corners=2pt, fill=white,
+                   font=\sffamily\footnotesize\itshape, text=black!55,
+                   minimum width=8mm, inner sep=2pt},
+  Lgroup/.style    ={card, fill=white, draw=accG, line width=0.7pt,
+                     minimum width=2.6cm},
+  Lgroup-cur/.style={Lgroup, dashed},
+  Lgroup-cg/.style ={Lgroup, line width=0.9pt},
+  Lgroup-het/.style={Lgroup, line width=1.1pt, fill=teal!4},
+  Lop/.style     ={card, fill=violet!4, draw=accO, line width=0.7pt,
+                   minimum width=2.8cm},
+  Lstate/.style  ={card, fill=orange!4, draw=accS, line width=0.6pt,
+                   minimum width=1.6cm, font=\sffamily\footnotesize},
+  Lvar/.style    ={draw=accS, circle, fill=orange!8, inner sep=1pt,
+                   font=\sffamily\footnotesize, minimum size=10mm,
+                   align=center, line width=0.6pt},
+  Lframe/.style  ={card, fill=olive!4, draw=accT, line width=0.6pt,
+                   minimum width=2cm, font=\sffamily\footnotesize},
+  contain/.style    ={-, rule, line width=0.5pt},
+  member/.style     ={-, accG, line width=0.55pt, dashed},
+  bind/.style       ={-Latex, accO, line width=0.7pt},
+  nestUnder/.style  ={-Latex, accS, line width=0.7pt, densely dotted},
+  derivedFrom/.style={-Latex, rule, line width=0.55pt, dash dot},
+  axisline/.style   ={-Latex, accT, line width=0.7pt},
+  legcell/.style    ={font=\sffamily\footnotesize, anchor=west},
+}
