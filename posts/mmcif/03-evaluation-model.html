@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 /* CSS for citations */
 div.csl-bib-body { }
 div.csl-entry {
@@ -154,10 +188,11 @@ window.Quarto = {
 </div>
 <section id="section" class="level1 g-col-12 g-col-md-9 right-column">
 <h1>Evaluation model</h1>
-<p>The previous chapter described heterogeneity in isolation: a regime, a scope, a materialization mode. Real depositions almost never have just one descriptor. A refined crystal carries B-factors, altlocs, and often TLS groups simultaneously; an NMR bundle carries an ensemble of models plus per-atom uncertainty estimates; an MD trajectory frequently carries a per-frame state-cluster label alongside the coordinates. This chapter is about how multiple scope-local descriptors coexist in the same file, how the assumptions about their coupling let storage stay linear in the sum of per-scope state spaces rather than blowing up to the product, and what operational contract the format has to satisfy to actually render coordinates from the resulting tangle.</p>
-<p>The previous chapter described the <em>intermediate representation</em>: what a deposition contains, schema and bytes. This chapter is about the <em>evaluation model</em> – the contract that turns those bytes into rendered coordinates. The IR can be specified mostly by writing down a Zarr layout; the evaluation model is what gives that layout a meaning.</p>
+<p>The previous chapter described heterogeneity in isolation: a regime, a scope, a materialization mode. Real depositions almost never have just one descriptor. A refined crystal carries B-factors, altlocs, and often TLS groups simultaneously; an NMR bundle carries an ensemble of models plus per-atom uncertainty estimates; an MD trajectory frequently carries a per-frame state-cluster label alongside the coordinates. This chapter is about how multiple scope-local descriptors coexist in the same file, how the assumptions about their coupling let storage stay linear in the sum of per-scope state spaces rather than blowing up to the product, and what operational contract the format has to satisfy to actually render coordinates from the resulting tangle. The IR can be specified mostly by writing down a Zarr layout; the <em>evaluation model</em> is what gives that layout a meaning.</p>
 <section id="realistic-mixing-scenarios" class="level2">
 <h2 data-anchor-id="realistic-mixing-scenarios">Realistic mixing scenarios</h2>
+<img src="03-evaluation-model_files/mediabag/f01b4fdbdf0ca5076d58bbb351c0f46f55f12ec6.svg" class="img-fluid">
+<p><strong>Figure 7 — Composition: three regimes coexisting.</strong> A two-chain complex with a bound ligand. Chain A is plain containment. Chain B carries a Regime 3 hinge motion over two rigid-body scopes (decoder <span class="math inline">\(\varphi_\text{hinge}\)</span> acting on a single latent <span class="math inline">\(\mathbf{z}_\text{hinge}\)</span>) and a Regime 1 rotamer ensemble at residue 85. The ligand is a Regime 2 trajectory. Three regimes, three attachment points in the system, one consistent vocabulary.</p>
 <p>Before introducing the formal composition rule, it is worth grounding the discussion in cases that actually exist on disk today, ordered roughly from most to least common:</p>
 <ol type="1">
 <li><strong>Refined crystal structure with B-factors, altlocs, and optionally TLS.</strong> Most of the PDB. Three descriptors at three scopes (atom, residue, chain or domain), all currently encoded in three unrelated mmCIF conventions.</li>
@@ -175,13 +210,34 @@ window.Quarto = {
 <li>For every (regime, mode) combination, the procedure that produces a per-atom displacement contribution from a descriptor’s stored payload and its state input.</li>
 <li>An operator interface that every Mode C subcase satisfies, with declared input/output shapes and reference frames.</li>
 <li>The order of operations when descriptors don’t commute (rotations don’t).</li>
-<li>How residual descriptors compose with their parents.</li>
+<li>How descriptors at different scopes compose, dispatched on a small enumerated set of composition algebras.</li>
 <li>How sample-aligned descriptors are co-iterated, and how broadcast descriptors are evaluated within an aligned-axis walk.</li>
 </ul>
 <p>This is the harder half of the design. The static schema is mostly a discipline question; the evaluation model is the design problem.</p>
 </section>
+<section id="extension-surfaces" class="level2">
+<h2 data-anchor-id="extension-surfaces">Extension surfaces</h2>
+<p>The evaluation model has two pluggable extension points.</p>
+<p>The first is a <strong>typed-operator system</strong>. Every operator declares a <em>type</em> – an interface (input/output shapes, frames; pinned down for the four current types in the <a href="#mode-c-operator-interfaces">Mode C operator interfaces</a> section), the <a href="../../posts/mmcif/02-architecture.html#materialization">Mode C subcase</a> it satisfies, and a composition-rule tag – and stores its <em>body</em> in one of three venues, picked per-deposition:</p>
+<ul>
+<li><p><strong>Inline</strong> in the deposition for bespoke implementations the deposition cannot recover from a shared spec. Examples: a trained cryoDRGN decoder checkpoint specific to this cryo-EM dataset; a per-deposition PCA basis fit on this protein only; a learned neural potential trained for a particular structure-prediction model; ad-hoc lookup tables; diffusion-sampled posterior ensembles produced by a one-shot model run; a custom attention-based decoder for this protein family; deposition-specific radiation-damage or beam-induced-motion correction operators; a per-deposition fitted Gaussian mixture model over latent space; density-modification operators tuned to a specific map. The body lives next to the inputs in the same file. The deposition is self-contained.</p></li>
+<li><p><strong>Registry-referenced</strong> by content hash for <em>standardized</em> operators whose body is recoverable from a stable spec. Examples: TLS evaluation (<code>parametric_gaussian/tls_v1</code>); isotropic ADP scaling (<code>parametric_gaussian/iadp_v1</code>); anisotropic ADP (<code>parametric_gaussian/aadp_v1</code>); classical normal-mode evaluation over a stored basis (<code>basis/nm_v1</code>); rigid-body transform application via quaternion plus translation (<code>rigid_body/quat_v1</code>); standard PCA reconstruction; occupancy-weighted averaging; standard symmetry transforms (P1, P21, …); identity / no-op. These are small, spec-defined, often a few lines of NumPy. The body is the same across every deposition that uses TLS, so duplicating it in every entry would be wasted bytes; the deposition pins by content hash, and anyone can re-implement against the spec and verify the hash matches.</p></li>
+<li><p><strong>External-artifact-referenced</strong> by URI plus content hash for payloads too large to inline. Examples: an MD trajectory in H5MD on EMPIAR or institutional storage; a multi-million-frame cryo-EM particle stack; a long-simulation energy surface; a community foundation model for protein dynamics hosted on Zenodo or HuggingFace; a precomputed feature cache shared across many depositions; raw experimental data (diffraction images, micrograph movies); large alignment files; reference homology structures. Inlining is not just impractical here, it is infeasible – the artifact is bigger than every consumer’s working set.</p></li>
+</ul>
+<p>The deposition principle is to <strong>prefer self-containment when feasible</strong>. Inline by default for anything bespoke; registry-reference for spec-stable operators where the body is recoverable from the spec; external-artifact reference only when inlining is genuinely impossible. The operator’s type is what consumers dispatch on; the body’s storage venue is an orthogonal choice. This is what earlier drafts of the architecture chapter called the “operator graph” – not a per-deposition object, but the format’s open-ended extension surface for “what kinds of computation can a Mode C descriptor invoke, and where its implementation lives.”</p>
+<p>The second is a <strong>small enumerated set of composition algebras</strong> – the rules for how descriptors at different scopes combine when more than one applies to the same atom. Today the format needs four:</p>
+<ul>
+<li><strong>Independence</strong> (default): joint distribution factors; descriptors are evaluated independently. The atom-level B-factors of a refined crystal across atoms.</li>
+<li><strong>Hierarchical nesting</strong> (<code>nested_under</code>): the state space of a child-scope descriptor is conditional on the parent-scope descriptor; storage scales with the legal-state count rather than the Cartesian product.</li>
+<li><strong>Additive in covariance space</strong>: parametric-Gaussian descriptors at different scopes combine by summing per-atom <span class="math inline">\(3 \times 3\)</span> covariances.</li>
+<li><strong>Additive in displacement space</strong>: deterministic-displacement descriptors (basis, decoder, external reference) at different scopes sum per-atom 3-vectors directly into the mean.</li>
+</ul>
+<p>Every operator in the registry is tagged with which algebra it composes under. The discrete-nesting and continuous-additive stacks of the next section are the worked-out instances of two of these four. A future descriptor type that fits none of them declares a new algebra; the format has to learn to dispatch on it, but the addition is small and named, not a structural change. Operators are open-ended; algebras are a small enumerated set.</p>
+</section>
 <section id="the-composition-principle-two-parallel-stacks" class="level2">
 <h2 data-anchor-id="the-composition-principle-two-parallel-stacks">The composition principle: two parallel stacks</h2>
+<img src="03-evaluation-model_files/mediabag/2b5611c65c84ee2337406e06eb9f559badf332b6.svg" class="img-fluid">
+<p><strong>Figure 9 — Discrete state plus continuous disorder.</strong> Two scope groupings sit in different stacks of the evaluation model and collapse to the same concrete atom. The discrete-nesting stack picks a state for residue 128, looks up the sparse <span class="math inline">\(\Delta\)</span>, and adds it to <span class="math inline">\(x^{\text{ref}}\)</span> at the affected atoms — atoms outside the residue keep their reference position. The continuous-additive stack evaluates the per-atom B-factor through <code>iadp_v1</code> and draws one Gaussian displacement per atom. The two streams meet at the final sum: the mean from the discrete side, the draw from the continuous side, every <span class="math inline">\(a\)</span> independently.</p>
 <div class="def" data-term="Reference structure">
 <p><span class="math inline">\(x^{\mathrm{ref}}\)</span> is the single anchor: a per-atom Cartesian position, one set, in <span class="math inline">\(\mathbb{R}^3\)</span>. It is what the deposition would render as if every heterogeneity descriptor were inactive. Every descriptor’s contribution is expressed as a displacement against it.</p>
 </div>
@@ -208,6 +264,8 @@ x_i(s_{\mathrm{disc}}, s_{\mathrm{cont}}) \;=\; \mathrm{mean}_i(s_{\mathrm{disc}
 </section>
 <section id="the-continuous-additive-stack" class="level3">
 <h3 data-anchor-id="the-continuous-additive-stack">The continuous-additive stack</h3>
+<img src="03-evaluation-model_files/mediabag/71b018616301373f65f2ea34ea7ab81f181818b7.svg" class="img-fluid">
+<p><strong>Figure 8 — Hierarchical continuous-additive stack (ECHT applied to PDB 6vxx).</strong> Each scope card shows the parameters its groups carry plus the source of the group partition: the molecule level is one TLS for the whole structure; the domain level is one TLS per manually-defined sub-domain; the secondary-structure level is one TLS per DSSP-identified helix or strand; the residue level is one TLS per residue ($$3000 in the trimer); and the atomic level keeps a per-atom isotropic B-factor. Five operator applications turn those parameters into per-atom <span class="math inline">\(3{\times}3\)</span> covariance contributions. The contributions sum independently at every atom; one draw from the resulting Gaussian, added to <span class="math inline">\(x^{\text{ref}}\)</span>, gives the concrete atom position.</p>
 <div class="def" data-term="Continuous-additive stack">
 <p>The composition rule for Regime 3 Gaussian descriptors at multiple scopes. Each level contributes a per-atom <span class="math inline">\(3 \times 3\)</span> covariance; the total atomic displacement covariance is the <em>sum</em> of those contributions, under the assumption that levels are uncorrelated. ECHT <span class="citation" data-cites="pearce2021echt"><a href="#ref-pearce2021echt" role="doc-biblioref">3</a></span> is the published instance.</p>
 </div>
@@ -269,105 +327,298 @@ U_{\mathrm{total}}(i) \;=\; \sum_{\ell \in \mathrm{cont\ scopes}} U^\ell\bigl(\t
 <div class="def" data-term="Operator interface">
 <p>The contract every Mode C subcase satisfies: a function with the shape <code>(state_input, reference) -&gt; displacement</code>, plus declared input shape, output shape, atom-id ordering, and reference frame. Parametric Gaussians, basis descriptors, neural decoders, and external references all fit this surface; they differ in what <code>state_input</code> is, what backend the call lands on, and whether the output is a draw or a distribution.</p>
 </div>
-<p>Each <a href="../../posts/mmcif/02-architecture.html#materialization">Mode C subcase</a> needs its own operator contract. Sketches:</p>
-<p><strong>Parametric Gaussian (TLS, anisotropic ADP, normal-mode-derived covariance).</strong> Inputs: parameter block (TLS: 20 numbers; ADP: 6 numbers per atom; etc.). State input: a sample index, or <code>mean</code> for the deterministic zero. Output: a per-atom <span class="math inline">\(3 \times 3\)</span> covariance contribution. Reference frame: the deposition’s <span class="math inline">\(x^{\mathrm{ref}}\)</span> frame. Composition with other parametric-Gaussian descriptors at different scopes is by <em>covariance addition</em> (see <a href="#the-continuous-additive-stack">the continuous-additive stack</a>). When the consumer asks for a draw rather than a distribution, the evaluation model first sums the covariances across all contributing scopes at each atom, then samples once from the resulting per-atom <span class="math inline">\(\mathcal{N}(0, U_{\mathrm{total}})\)</span> – not once per contributing descriptor.</p>
-<p><strong>Basis descriptor (normal modes, PCA).</strong> Inputs: a stored basis <span class="math inline">\((k, N_\mathrm{atom}, 3)\)</span> and a coefficient vector <span class="math inline">\((k,)\)</span> for the requested state. Output: a deterministic per-atom displacement field. Reference frame: same as basis frame, declared in the basis metadata.</p>
-<p><strong>Neural decoder.</strong> Inputs: a stored checkpoint reference and a latent vector <span class="math inline">\((d,)\)</span> for the requested state. Output: a deterministic per-atom displacement field, or a coordinate set if the network outputs absolute positions (in which case the evaluation model converts to displacements by subtracting <span class="math inline">\(x^{\mathrm{ref}}\)</span>). Reference frame: declared per-checkpoint.</p>
-<p><strong>External reference (trajectory, particle stack).</strong> Inputs: an artifact pointer (URI plus content hash) and a lookup key (frame index, particle id, etc.). Output: a coordinate set. Reference frame: declared per-artifact, with explicit alignment to <span class="math inline">\(x^{\mathrm{ref}}\)</span> if the artifact’s coordinates are not in the deposition’s frame.</p>
-<p>The common surface across all four is <code>(state_input, reference) -&gt; displacement</code>. The differences are in what <code>state_input</code> looks like, what backend the call lands on, and whether the output is a draw or a distribution.</p>
+<p>Each <a href="../../posts/mmcif/02-architecture.html#materialization">Mode C subcase</a> needs its own operator contract. The four contracts side by side:</p>
+<pre><code>ParametricGaussian:                          # TLS, anisotropic ADP, NM-derived covariance
+  params:        ndarray                       # TLS: (20,);  aniso ADP: (N_atom, 6); iso B: (N_atom,)
+  state_input:   "mean" | int                  # sample index, or mean-only (deterministic zero)
+  reference:     ndarray (N_atom, 3)           # x_ref
+  output:        ndarray (N_atom, 3, 3)        # per-atom 3x3 covariance contribution
+  frame:         x_ref frame
+  composition:   covariance addition across scopes (continuous-additive stack)
+
+Basis:                                       # normal modes, PCA
+  basis:         ndarray (k, N_atom, 3)
+  coeffs:        ndarray (k,)                  # state input
+  output:        ndarray (N_atom, 3)           # deterministic displacement
+  frame:         declared per-basis
+
+NeuralDecoder:                               # cryoDRGN-style
+  checkpoint:    artifact_ref                  # TorchScript blob or training checkpoint
+  latent:        ndarray (d,)                  # state input
+  output:        ndarray (N_atom, 3)           # displacement (or absolute coords minus x_ref)
+  frame:         declared per-checkpoint
+
+ExternalReference:                           # H5MD trajectory, particle stack
+  artifact:      uri + content_hash
+  key:           int | str                     # frame index, particle id
+  output:        ndarray (N_atom, 3)           # coordinate set
+  frame:         declared per-artifact, with alignment to x_ref</code></pre>
+<p>The common surface across all four is <code>(state_input, reference) -&gt; displacement</code>. The differences are in what <code>state_input</code> looks like, what backend the call lands on, and whether the output is a draw, a distribution, or a deterministic vector.</p>
+<p>Two subcase asymmetries are worth making explicit. First, <code>ParametricGaussian</code> returns a <em>covariance</em>, not a displacement – composition with other parametric-Gaussian descriptors at different scopes is by <a href="#the-continuous-additive-stack">covariance addition</a>, and when the consumer asks for a draw the evaluation model sums covariances across contributing scopes first and samples once from the resulting per-atom <span class="math inline">\(\mathcal{N}(0, U_{\mathrm{total}})\)</span>, not once per descriptor. Second, <code>NeuralDecoder</code> may emit absolute coordinates rather than displacements depending on the network’s output convention; the evaluation model normalizes to displacement by subtracting <span class="math inline">\(x^{\mathrm{ref}}\)</span> on read.</p>
 </section>
 <section id="cross-backend-integration" class="level2">
 <h2 data-anchor-id="cross-backend-integration">Cross-backend integration</h2>
-<p>Producing a single rendered snapshot from a realistic deposition can require, simultaneously:</p>
-<ul>
-<li>Reading <span class="math inline">\(x^{\mathrm{ref}}\)</span> from a Zarr array (CPU, NumPy)</li>
-<li>Reading sparse altloc deltas from an Arrow-backed Mode B store</li>
-<li>Running a TorchScript decoder on GPU for a Mode C learned generative descriptor</li>
-<li>Seeking into an external HDF5 trajectory for a Mode C external reference</li>
-<li>Evaluating a parametric TLS block in NumPy</li>
-</ul>
-<p>The composition formula assumes all five land as commensurable displacement vectors that add. The evaluation model has to specify what binds them. At minimum: a Mode C operator interface declaring input shape, output shape, atom-id ordering, and reference frame, satisfied identically by parametric Gaussians, basis descriptors, neural decoders, and external references; and a small render driver that knows how to schedule the calls across backends without forcing every consumer to reinvent it.</p>
-<p>Most implementation effort will go here. The static schema is mostly a discipline question; this is an engineering one.</p>
+<p>Producing a single rendered snapshot from a realistic deposition can require reads against several backends simultaneously: <span class="math inline">\(x^{\mathrm{ref}}\)</span> from a Zarr array (CPU/NumPy), sparse altloc deltas from an Arrow-backed Mode B store, a TorchScript decoder running on GPU for a Mode C learned descriptor, an external HDF5 trajectory seek, and a parametric TLS block evaluated in NumPy. The composition formula assumes all five land as commensurable displacement vectors that add. The evaluation model has to specify what binds them: a render driver that knows how to schedule the calls across backends without forcing every consumer to reinvent it.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> render_snapshot(deposition, joint_state, rng):</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    x_ref <span class="op">=</span> read_zarr(deposition.x_ref)                       <span class="co"># Zarr / NumPy</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Discrete-nesting stack: build the mean structure for this joint state</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    mean <span class="op">=</span> x_ref.copy()</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> scope, state <span class="kw">in</span> joint_state:                          <span class="co"># legal joint state from scope DAG</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        delta <span class="op">=</span> read_arrow_deltas(deposition, scope, state)   <span class="co"># Arrow / Mode B</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>        mean[delta.atom_id] <span class="op">+=</span> delta.xyz                      <span class="co"># or: replace, if Mode A</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Continuous-additive stack: per-atom covariance, plus deterministic-displacement subcases</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    U_total <span class="op">=</span> zeros((N_atom, <span class="dv">3</span>, <span class="dv">3</span>))</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> desc <span class="kw">in</span> deposition.continuous_descriptors:</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> desc.kind <span class="op">==</span> <span class="st">"parametric_gaussian"</span>:</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>            U_total <span class="op">+=</span> eval_param_gaussian(desc, x_ref)       <span class="co"># NumPy</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> desc.kind <span class="op">==</span> <span class="st">"basis"</span>:</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>            mean <span class="op">+=</span> eval_basis(desc, desc.coeffs)             <span class="co"># deterministic displacement</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> desc.kind <span class="op">==</span> <span class="st">"neural_decoder"</span>:</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>            mean <span class="op">+=</span> run_decoder(desc, desc.latent,            <span class="co"># TorchScript / GPU</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>                                device<span class="op">=</span><span class="st">"cuda"</span>)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> desc.kind <span class="op">==</span> <span class="st">"external_reference"</span>:</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>            mean <span class="op">=</span> read_hdf5_frame(desc.uri, desc.key)        <span class="co"># HDF5 seek; replaces mean</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    draw <span class="op">=</span> sample_gaussian_per_atom(U_total, rng)             <span class="co"># one draw per atom from N(0, U_total)</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> mean <span class="op">+</span> draw</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Two things are worth pointing at in this driver. First, sampling from the continuous-additive stack happens <em>once</em>, after all parametric-Gaussian contributions have been summed – not once per descriptor. Second, the deterministic-displacement Mode C subcases (basis, decoder) compose into <code>mean</code>, not into <code>U_total</code>; an external reference is the one subcase that <em>replaces</em> <code>mean</code> rather than adding to it (the artifact carries absolute coordinates).</p>
+<p>Most implementation effort will go here. The static schema is mostly a discipline question; this is an engineering one, and every “open question” later in this chapter is, more or less, a hole in this driver.</p>
 </section>
-<section id="worked-kinase-with-both-stacks" class="level2">
-<h2 data-anchor-id="worked-kinase-with-both-stacks">Worked: kinase with both stacks</h2>
-<p>A 300-residue kinase with bound inhibitor demonstrates both composition rules in one deposition. This is the structure of a multi-scale, multi-descriptor case decomposed cleanly along the two stacks rather than as a tangled list of simultaneously-valid heterogeneity descriptors.</p>
-<p>Discrete-nesting stack, contributing to the mean structure:</p>
+<section id="worked-example-echt-decomposition-of-the-sars-cov-2-spike-6vxx" class="level2">
+<h2 data-anchor-id="worked-example-echt-decomposition-of-the-sars-cov-2-spike-6vxx">Worked example: ECHT decomposition of the SARS-CoV-2 spike (6vxx)</h2>
+<div class="example">
+<p><span class="citation" data-cites="pearce2021echt"><a href="#ref-pearce2021echt" role="doc-biblioref">3</a></span> fits an Extensible-Component Hierarchical TLS model to the SARS-CoV-2 spike trimer in the closed conformation (PDB 6vxx, 2.8 Å, refined with one isotropic ADP per atom). The decomposition produces five levels of disorder – molecule, domain, secondary-structure element, residue, atomic – composing additively at each atom under the rule of equation (2) of the paper:</p>
+<p><span class="math display">\[
+\mathbf{U}^{\text{total}}_a \;=\; \sum_{l=1}^{n_{\text{tls}}} \mathbf{U}^{\text{tls}}_{l,a} \;+\; \mathbf{U}^{\text{atomic}}_a.
+\]</span></p>
+<div class="figure-placeholder">
+<p><em>Figure 8 (forthcoming) — hierarchical continuous-additive stack visualizing the five scope groupings, per-scope operator applications, and the compose / draw / atom cascade. Symbol legend and storage breakdown at the bottom.</em></p>
+</div>
+<p>Reading 6vxx into our format produces the following.</p>
+<section id="what-goes-into-the-groupings-layer" class="level3">
+<h3 data-anchor-id="what-goes-into-the-groupings-layer">What goes into the Groupings layer</h3>
+<p>Each ECHT level is one typed grouping. Five total, all with <code>kind: heterogeneity_descriptor.scope</code>, all unweighted bipartite membership tables.</p>
+<pre><code>groupings/echt.molecule/v1
+  kind:        heterogeneity_descriptor.scope
+  members:     1 group; all heavy atoms of the trimer
+  attachments: operator_ref → parametric_gaussian/tls_v1
+               composition  → additive_covariance
+
+groupings/echt.domain/v1
+  kind:        heterogeneity_descriptor.scope
+  members:     ~12 groups (4-5 sub-domains × 3 protomers);
+               domains manually defined per Pearce &amp; Gros Supp. Fig. 11
+  attachments: operator_ref → parametric_gaussian/tls_v1
+               composition  → additive_covariance
+
+groupings/echt.secondary_structure/v1
+  kind:        heterogeneity_descriptor.scope
+  members:     ~600 groups; auto-identified from DSSP via cctbx
+  attachments: operator_ref → parametric_gaussian/tls_v1
+               composition  → additive_covariance
+
+groupings/echt.residue/v1
+  kind:        heterogeneity_descriptor.scope
+  members:     ~3000 groups; one per residue (excl. Gly/Ala/Pro per ECHT)
+  attachments: operator_ref → parametric_gaussian/tls_v1
+               composition  → additive_covariance
+
+groupings/echt.atomic/v1
+  kind:        heterogeneity_descriptor.scope
+  members:     ~25 000 singletons; one per heavy atom
+  attachments: operator_ref → parametric_gaussian/iadp_v1
+               composition  → additive_covariance</code></pre>
+<p>These five groupings cover the same atoms at five different granularities. Their member sets overlap completely (every atom appears in every level), but the partition structure differs – one giant group at molecule level, ~12 disjoint groups at domain level, and so on down to singletons at atomic level.</p>
+</section>
+<section id="what-the-scope-dag-looks-like" class="level3">
+<h3 data-anchor-id="what-the-scope-dag-looks-like">What the scope DAG looks like</h3>
+<p>Five broadcast (parametric, no sample axis) nodes, all parallel – none nested under another – all tagged with the <code>additive_covariance</code> composition algebra. No <code>nested_under</code> edges, no <code>derived_from</code> edges. The scope DAG for an ECHT deposition is flat:</p>
+<pre><code>nodes:
+  (echt.molecule,                tls_params_1)        broadcast, additive_covariance
+  (echt.domain[i],               tls_params_per_i)    broadcast, additive_covariance
+  (echt.secondary_structure[j],  tls_params_per_j)    broadcast, additive_covariance
+  (echt.residue[k],              tls_params_per_k)    broadcast, additive_covariance
+  (echt.atomic[a],               B_per_a)             broadcast, additive_covariance
+
+edges: none</code></pre>
+<p>This is the format’s pure-continuous-additive case – no discrete states, no nesting, no sample axis. 6vxx has no altloc, no compositional disorder, no discrete heterogeneity. The discrete-nesting stack is empty; the continuous-additive stack carries everything.</p>
+</section>
+<section id="what-the-materialization-layer-stores-per-group" class="level3">
+<h3 data-anchor-id="what-the-materialization-layer-stores-per-group">What the Materialization layer stores per group</h3>
+<p>Mode C, parametric Gaussian (TLS subcase) for the four TLS levels, parametric Gaussian (i-ADP subcase) for the atomic level. Per ECHT’s parameterization (paper eqs. 7-9):</p>
+<pre><code>TLS group payload (each of the four upper levels):
+  shape: U_hat_tls   ndarray (6+6+8) = 20 params      # T, L, S; normalized
+  amp:   A_tls       float                            # A=1 Å² ↔ mean B ≈ 72 Å² in group
+
+i-ADP atomic payload:
+  amp:   A_atom      float per atom                   # = (1/3) Tr(U_atom)</code></pre>
+<p>Per-group total: 21 scalars at the TLS levels; 1 scalar per atom at the atomic level.</p>
+</section>
+<section id="operator-registry-entries" class="level3">
+<h3 data-anchor-id="operator-registry-entries">Operator registry entries</h3>
+<p>Three content-hashed entries in the format’s <a href="#extension-surfaces">operator registry</a> get referenced by the deposition; they are not stored inside it (they are spec-defined and shareable):</p>
+<pre><code>parametric_gaussian/tls_v1
+  signature:   (params: (20,), amp: float, atoms_in_group: ndarray (n,3), x_ref) → (n, 3, 3)
+  semantics:   evaluate normalized TLS matrix at each atom's position offset from group
+               centroid; multiply by amplitude; return per-atom 3×3 covariance
+  composition: additive_covariance
+
+parametric_gaussian/iadp_v1
+  signature:   (B: float, x_ref_a: (3,)) → (3, 3)
+  semantics:   B/(8π²) · I₃; return isotropic 3×3 covariance
+  composition: additive_covariance
+
+parametric_gaussian/aadp_v1                       # used by Mpro 7k3t and other a-ADP cases
+  signature:   (U: (6,), x_ref_a: (3,)) → (3, 3)
+  semantics:   reshape symmetric U into 3×3; return as covariance
+  composition: additive_covariance</code></pre>
+<p>The deposition stores references to these by content hash, not the implementations. New methods register new entries the same way.</p>
+</section>
+<section id="fitting-provenance-one-block-per-stack" class="level3">
+<h3 data-anchor-id="fitting-provenance-one-block-per-stack">Fitting provenance (one block per stack)</h3>
+<p>Per the <a href="#underdetermination-of-the-continuous-decomposition">underdetermination</a> discussion: ECHT’s level decomposition is one valid solution among many, so the deposition records <em>how</em> this solution was produced. One block, attached to the continuous-additive stack:</p>
+<pre><code>provenance/echt_fit/v1
+  producing_software:   pandemic.adp (PanDEMIC project)
+  target:               least-squares against U^input (paper eq. 3)
+  weights:              ω_a ∝ 1 / (5·Tr(U_a^input))           (paper eq. 5)
+  regularizer:          elastic-net (paper eqs. 10-12)
+  mixing_parameter:     γ = 0.9                               (lasso-leaning, parsimony)
+  decay_factor:         δ = 0.8                               (per-macrocycle penalty decay)
+  level_partitioning:   default (chain / SSE / residue / bb+sc / atom),
+                        with custom domain level from manual definition
+  input_structure_hash: sha256(deposited 6vxx mmcif)
+  convergence:          ΔA_g &lt; 1% over fraction of total cycles</code></pre>
+<p>A consumer reading this block can tell that they are looking at a parsimonious decomposition with <span class="math inline">\(\gamma = 0.9\)</span> – not the unique answer, but a specific reproducible one.</p>
+</section>
+<section id="rendering-one-atom" class="level3">
+<h3 data-anchor-id="rendering-one-atom">Rendering one atom</h3>
+<p>Pick an atom <span class="math inline">\(a\)</span> in chain A’s RBD. The render driver from earlier in this chapter walks the continuous-additive stack and sums per-atom covariances:</p>
+<pre><code>U_molecule(a)   = tls_v1(U_hat_mol,    A_mol,    x_ref_a, centroid_mol)
+U_domain(a)     = tls_v1(U_hat_dom_i,  A_dom_i,  x_ref_a, centroid_dom_i)     # i = RBD-A
+U_SSE(a)        = tls_v1(U_hat_sse_j,  A_sse_j,  x_ref_a, centroid_sse_j)
+U_residue(a)    = tls_v1(U_hat_res_k,  A_res_k,  x_ref_a, centroid_res_k)
+U_atomic(a)     = iadp_v1(B_a, x_ref_a)
+U_total(a)      = sum of the five</code></pre>
+<p>Plugging in the deposition-wide average B-factors per level from Table 1 of the paper to give a sense of magnitude:</p>
 <table class="caption-top table">
-<colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-</colgroup>
 <thead>
 <tr class="header">
-<th>Scope</th>
-<th>Descriptor</th>
-<th>Regime</th>
-<th>States</th>
+<th>Level</th>
+<th style="text-align: right;">Avg B (Å²)</th>
+<th style="text-align: right;">% of total</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Entity instance (inhibitor)</td>
-<td>bound vs absent</td>
-<td>R1</td>
-<td>2 states</td>
+<td>Molecule</td>
+<td style="text-align: right;">12.4</td>
+<td style="text-align: right;">43.1</td>
 </tr>
 <tr class="even">
-<td>Residue range (binding loop, 14 residues)</td>
-<td>open / closed / relaxed</td>
-<td>R1, nested under inhibitor</td>
-<td><span class="math inline">\(\{\)</span>open, closed<span class="math inline">\(\}\)</span> under “bound”, <span class="math inline">\(\{\)</span>relaxed<span class="math inline">\(\}\)</span> under “absent”</td>
+<td>Domain</td>
+<td style="text-align: right;">10.3</td>
+<td style="text-align: right;">36.0</td>
 </tr>
 <tr class="odd">
-<td>Residue (3 sidechains)</td>
-<td>rotamer A vs B</td>
-<td>R1 each, nested under loop</td>
-<td>2 states per sidechain</td>
+<td>Secondary str.</td>
+<td style="text-align: right;">3.9</td>
+<td style="text-align: right;">13.4</td>
+</tr>
+<tr class="even">
+<td>Residue</td>
+<td style="text-align: right;">1.7</td>
+<td style="text-align: right;">5.8</td>
+</tr>
+<tr class="odd">
+<td>Atomic</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">1.7</td>
+</tr>
+<tr class="even">
+<td><strong>Total</strong></td>
+<td style="text-align: right;"><strong>28.8</strong></td>
+<td style="text-align: right;"><strong>100.0</strong></td>
 </tr>
 </tbody>
 </table>
-<p>Continuous-additive stack, contributing thermal disorder:</p>
+<p>For an RBD atom in chain A, the per-level contributions skew higher than average – closed-spike RBDs are hinge-flexible, so domain-level B dominates there, which is exactly the figure-3-style observation of the paper. The point in our format is mechanical: five <code>parametric_gaussian/tls_v1</code> (and one <code>parametric_gaussian/iadp_v1</code>) calls, all returning per-atom <span class="math inline">\(3\times3\)</span> covariances, summed once. No interaction between levels at render time; the only coupling is the elastic-net regularization that determined the level amplitudes during fitting.</p>
+</section>
+<section id="storage" class="level3">
+<h3 data-anchor-id="storage">Storage</h3>
+<p>Per TLS group: <span class="math inline">\(6\,(T) + 6\,(L) + 8\,(S; \text{tr}\,S = 0) + 1\,(A) + 3\,(c) = 24\)</span> floats – the symmetric translation and libration tensors, the screw-coupling tensor (8 unique components because the trace is constrained to zero), the amplitude, and the centroid. Per atom: 1 scalar (the isotropic B-factor <span class="math inline">\(B_a\)</span>).</p>
+<p>For 6vxx (~3000 residues across the trimer, ~25 000 heavy atoms):</p>
 <table class="caption-top table">
-<colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-</colgroup>
 <thead>
 <tr class="header">
-<th>Scope</th>
-<th>Descriptor</th>
-<th>Regime</th>
-<th>Form</th>
+<th>Level</th>
+<th style="text-align: right;">Groups</th>
+<th style="text-align: right;">Scalars/group</th>
+<th style="text-align: right;">Total scalars</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Chain (N-terminal domain)</td>
-<td>TLS</td>
-<td>R3 parametric Gaussian</td>
-<td>20 parameters</td>
+<td>Molecule</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">24</td>
 </tr>
 <tr class="even">
-<td>Chain (C-terminal domain)</td>
-<td>TLS</td>
-<td>R3 parametric Gaussian</td>
-<td>20 parameters</td>
+<td>Domain</td>
+<td style="text-align: right;">~12</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">~290</td>
 </tr>
 <tr class="odd">
-<td>Atom (all atoms)</td>
-<td>isotropic ADP</td>
-<td>R3 parametric Gaussian</td>
-<td>1 scalar per atom</td>
+<td>Secondary str.</td>
+<td style="text-align: right;">~600</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">~14 400</td>
+</tr>
+<tr class="even">
+<td>Residue</td>
+<td style="text-align: right;">~3 000</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">~72 000</td>
+</tr>
+<tr class="odd">
+<td>Atomic (i-ADP)</td>
+<td style="text-align: right;">~25 000</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">~25 000</td>
+</tr>
+<tr class="even">
+<td><strong>Total</strong></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"><strong>~112 000</strong></td>
 </tr>
 </tbody>
 </table>
-<p>Rendering one snapshot: pick a legal joint discrete state (one of the dozen allowed by the nesting graph), retrieve the mean coordinates for that combination, sample displacements from the additive Gaussian stack at every atom, sum. Six descriptors, two composition rules, no entanglement between them.</p>
-<p>The discrete stack is sparse in storage (only legal joint states are materialized; storage scales with the legal-state count, not with the Cartesian product). The continuous stack is parametric in storage (<span class="math inline">\(\sim 40 + N_{\mathrm{atom}}\)</span> scalars total). Provenance for the continuous stack records that ECHT-style elastic-net regularization with a particular <span class="math inline">\(\lambda\)</span> produced the level assignments, so a downstream consumer reading the deposition years later knows which decomposition they are reading.</p>
+<p>That is ~450 KB at float32 raw, ~200–250 KB after lossless compression, against ~600 KB for the equivalent per-atom anisotropic ADPs (no compression). ECHT is not a compression scheme – the parameter count is comparable – but the additive-covariance decomposition lets a consumer see at which scale each disorder component lives, and the Groupings layer makes that decomposition queryable: “give me the residues whose residue-level amplitude is in the top 10%” is a query against <code>groupings/echt.residue</code> and its amplitude column, which is exactly the analysis Pearce &amp; Gros do by hand to identify the P5 loop and the P2 helix in Mpro.</p>
+<div class="fold" data-summary="A note on isotropic ADPs">
+<p>The atomic level stores one scalar per atom – the isotropic B-factor <span class="math inline">\(B_a\)</span> in Å² – because isotropic motion has only one degree of freedom: <span class="math inline">\(\mathbf{U}_{\text{iso}}(a) = (B_a / 8\pi^2)\,\mathbf{I}_3\)</span>. Five of the six unique components of a general <span class="math inline">\(3{\times}3\)</span> covariance are forced to zero (the off-diagonals) or made redundant (the diagonals are all equal) by the isotropy assumption, leaving just <span class="math inline">\(B_a\)</span>. The factor <span class="math inline">\(8\pi^2\)</span> comes from the Debye-Waller convention historical to crystallography; it is not deep, just unit bookkeeping.</p>
+<p>ECHT’s elastic-net regularizer pushes anisotropy <em>up</em> into the TLS levels, where it is interpretable as rigid-body motion of a group, and leaves only isotropic residual at the atomic level – regardless of whether the input refinement was isotropic or anisotropic ADPs.</p>
+</div>
+<div class="fold" data-summary="A note on compute cost">
+<p>Despite the “nested” framing, evaluating the stack is cheap. The levels are independent at evaluation time – <code>additive_covariance</code> means each scope’s covariance is computed in parallel and the results summed, with no sequential dependency between scopes – and a single TLS evaluation per atom is roughly a hundred floating-point operations: the vector subtraction <span class="math inline">\(r_a - c_g\)</span>, building the skew-symmetric matrix from that 3-vector, three small <span class="math inline">\(3{\times}3\)</span> matrix products to assemble <span class="math inline">\(T + \mathbf{A}\mathbf{L}\mathbf{A}^\top + \mathbf{A}\mathbf{S} + \mathbf{S}^\top \mathbf{A}^\top\)</span>, and a final scaling by the amplitude.</p>
+<p>For 6vxx the worst case is an atom that belongs to one group at each of the four TLS levels, so <span class="math inline">\(4 \times 100 \approx 400\)</span> FLOPs per atom across all TLS scopes, plus a few FLOPs for the iADP evaluation. Multiplied by ~25 000 atoms, rendering the entire trimer’s covariance field is ~10 MFLOPs – about 1 ms on a single CPU core, less with SIMD, trivial on a GPU. Even producing thousands of independent draws for a sampled ensemble takes seconds for the whole structure.</p>
+<p>The expensive part is <em>fitting</em>, not evaluation. The elastic-net optimization alternates between a simplex search over the TLS parameters per group and an LBFGS pass over all amplitudes simultaneously, for tens of macrocycles – minutes to hours of compute on a real protein. That is a one-time cost paid at deposition; once the parameters are stored, every consumer rendering or sampling from the deposition runs in the millisecond regime.</p>
+</div>
+</section>
+<section id="what-is-notably-absent" class="level3">
+<h3 data-anchor-id="what-is-notably-absent">What is notably absent</h3>
+<ul>
+<li>No discrete-nesting stack. ECHT depositions for purely continuously-disordered structures are pure broadcast.</li>
+<li>No <code>derived_from</code> edges. The atomic-level i-ADPs are <em>not</em> “derived from” the higher levels in our provenance sense – they are co-fit by the elastic-net, not computed from a parent. Provenance lives in the fit-block, not in scope-DAG edges.</li>
+<li>No state space anywhere. None of the five levels has a sample axis; all are parametric. A consumer asking for a draw samples once from <span class="math inline">\(\mathcal{N}(0, U_{\text{total}})\)</span> at each atom, after summing.</li>
+<li>No Mode A or Mode B storage. Everything is Mode C parametric Gaussian. The deposition is small precisely because there are no enumerated states.</li>
+</ul>
+<p>This is the empirically simplest case for the format – one stack, one algebra, all parametric – and it should be the easiest to render. If we cannot get this case right end-to-end, we cannot get any case right.</p>
+</section>
+</div>
 </section>
 <section id="what-scope-local-descriptors-buy" class="level2">
 <h2 data-anchor-id="what-scope-local-descriptors-buy">What scope-local descriptors buy</h2>

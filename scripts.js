@@ -98,9 +98,15 @@ document.addEventListener("DOMContentLoaded", function () {
     installLinkPreviews();
     expandTargetIfCollapsed();
     installScrollSpy();
-    alignAppendixToBody();
     wireAsideToggles();
     installDefStack();
+  }
+
+  // Post pages outside the mmcif series still need the appendix alignment
+  // and current-chapter highlight in their own .post-glossary.
+  if (document.querySelector(".right-column") && document.querySelector(".post-glossary")) {
+    alignAppendixToBody();
+    highlightCurrentChapter();
   }
 });
 
