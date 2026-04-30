@@ -13,7 +13,7 @@ order: 2
 
 
 
-One problem with forcing heterogeneous molecular data into a single abstraction is that the data actually contains several distinct kinds of structure, each with different algebra and different storage requirements. Conflating them will produce a format that handles each badly.
+The problem with forcing heterogeneous molecular data into a single abstraction is that the data actually contains several distinct kinds of structure, each with different algebra and different storage requirements. Conflating them will produce a format that handles each badly.
 
 Let's split this into two halves roughly: the core layer and the ensembling layer. The **core layer** describes the "what", the  primary physical components of the system and their functional groupings. The **ensembling layers** describe what distinct states characterize these primitive (if any) and how these states differ from each other. The core is stable under heterogeneity; the ensemble layers are the ones that earn the format its keep for modern use cases.
 
@@ -53,8 +53,8 @@ The core describes what is invariant across every conformational state the syste
                    anchor=south},
   panelkind/.style={font=\sffamily\footnotesize\ttfamily,
                     text=accG!85!black, anchor=north},
-  cloud-dot/.style={circle, fill=black!58, draw=none, inner sep=0pt,
-                    minimum size=2.2pt},
+  cloud-dot/.style={circle, fill=black!75, draw=none, inner sep=0pt,
+                    minimum size=3pt},
   lasso-A/.style={draw=accG, line width=0.7pt, rounded corners=2pt,
                   fill=teal!4, fill opacity=0.55},
   lasso-B/.style={draw=accG, line width=0.7pt, dashed, rounded corners=2pt,
@@ -142,82 +142,85 @@ The core describes what is invariant across every conformational state the syste
   \def\pxC{1.9}
   \def\pxD{5.65}
 
+  % Per-panel order: panel bg -> lassos (translucent fills) -> dots
+  % (so they sit on top, not buried under stacked lasso fills) -> labels.
+
   % Panel 1: cath_v4.3 (curatorial)
   \node[panel] (P1) at (\pxA, \py) {};
-  \foreach \i/\dx/\dy in \cloudpts {
-    \node[cloud-dot] at ($(\pxA,\py) + (\dx,\dy)$) {};
-  }
   \draw[lasso-A] plot[smooth cycle, tension=0.7] coordinates {
     ($(\pxA,\py) + (-1.55, 0.78)$) ($(\pxA,\py) + (-0.05, 0.78)$)
     ($(\pxA,\py) + (-0.05, 0.30)$) ($(\pxA,\py) + (-0.45,-0.30)$)
     ($(\pxA,\py) + (-0.30,-0.78)$) ($(\pxA,\py) + (-1.30,-0.80)$)
     ($(\pxA,\py) + (-1.55, 0.10)$)
   };
-  \node[lassolbl] at ($(\pxA,\py) + (-1.30, 0.55)$) {D1};
   \draw[lasso-B] plot[smooth cycle, tension=0.7] coordinates {
     ($(\pxA,\py) + (0.05, 0.78)$) ($(\pxA,\py) + (1.55, 0.78)$)
     ($(\pxA,\py) + (1.55,-0.78)$) ($(\pxA,\py) + (-0.20,-0.78)$)
     ($(\pxA,\py) + (0.10,-0.20)$) ($(\pxA,\py) + (0.05, 0.30)$)
   };
+  \foreach \i/\dx/\dy in \cloudpts {
+    \node[cloud-dot] at ($(\pxA,\py) + (\dx,\dy)$) {};
+  }
+  \node[lassolbl] at ($(\pxA,\py) + (-1.30, 0.55)$) {D1};
   \node[lassolbl] at ($(\pxA,\py) + (1.30, 0.55)$) {D2};
 
   % Panel 2: backbone_only (coarse_grain)
   \node[panel] (P2) at (\pxB, \py) {};
-  \foreach \i/\dx/\dy in \cloudpts {
-    \node[cloud-dot] at ($(\pxB,\py) + (\dx,\dy)$) {};
-  }
   \draw[lasso-A] plot[smooth cycle, tension=0.7] coordinates {
     ($(\pxB,\py) + (-1.55, 0.78)$) ($(\pxB,\py) + (-0.40, 0.78)$)
     ($(\pxB,\py) + (-0.30, 0.20)$) ($(\pxB,\py) + (-0.90,-0.20)$)
     ($(\pxB,\py) + (-1.55, 0.10)$)
   };
-  \node[lassolbl] at ($(\pxB,\py) + (-1.30, 0.62)$) {B1};
   \draw[lasso-B] plot[smooth cycle, tension=0.7] coordinates {
     ($(\pxB,\py) + (-0.30, 0.78)$) ($(\pxB,\py) + ( 0.50, 0.78)$)
     ($(\pxB,\py) + ( 0.50,-0.20)$) ($(\pxB,\py) + (-0.20,-0.30)$)
     ($(\pxB,\py) + (-0.30, 0.20)$)
   };
-  \node[lassolbl] at ($(\pxB,\py) + (0.10, 0.62)$) {B2};
   \draw[lasso-C] plot[smooth cycle, tension=0.7] coordinates {
     ($(\pxB,\py) + (0.55, 0.78)$) ($(\pxB,\py) + (1.55, 0.78)$)
     ($(\pxB,\py) + (1.55,-0.30)$) ($(\pxB,\py) + (0.55,-0.30)$)
   };
+  \foreach \i/\dx/\dy in \cloudpts {
+    \node[cloud-dot] at ($(\pxB,\py) + (\dx,\dy)$) {};
+  }
+  \node[lassolbl] at ($(\pxB,\py) + (-1.30, 0.62)$) {B1};
+  \node[lassolbl] at ($(\pxB,\py) + (0.10, 0.62)$) {B2};
   \node[lassolbl] at ($(\pxB,\py) + (1.30, 0.62)$) {B3};
 
   % Panel 3: rigid_body_partition (partition)
   \node[panel] (P3) at (\pxC, \py) {};
-  \foreach \i/\dx/\dy in \cloudpts {
-    \node[cloud-dot] at ($(\pxC,\py) + (\dx,\dy)$) {};
-  }
   \draw[lasso-A] plot[smooth cycle, tension=0.7] coordinates {
     ($(\pxC,\py) + (-1.55, 0.78)$) ($(\pxC,\py) + ( 0.00, 0.85)$)
     ($(\pxC,\py) + ( 0.05, 0.18)$) ($(\pxC,\py) + ( 0.05,-0.30)$)
     ($(\pxC,\py) + ( 0.00,-0.78)$) ($(\pxC,\py) + (-1.55,-0.78)$)
   };
-  \node[lassolbl] at ($(\pxC,\py) + (-1.30, 0.62)$) {R1};
   \draw[lasso-B] plot[smooth cycle, tension=0.7] coordinates {
     ($(\pxC,\py) + ( 0.10, 0.85)$) ($(\pxC,\py) + ( 1.55, 0.78)$)
     ($(\pxC,\py) + ( 1.55,-0.78)$) ($(\pxC,\py) + ( 0.10,-0.78)$)
     ($(\pxC,\py) + ( 0.10, 0.18)$)
   };
+  \foreach \i/\dx/\dy in \cloudpts {
+    \node[cloud-dot] at ($(\pxC,\py) + (\dx,\dy)$) {};
+  }
+  \node[lassolbl] at ($(\pxC,\py) + (-1.30, 0.62)$) {R1};
   \node[lassolbl] at ($(\pxC,\py) + (1.30, 0.62)$) {R2};
 
   % Panel 4: tls_groups_as_refined (heterogeneity_descriptor.scope)
   \node[panel] (P4) at (\pxD, \py) {};
-  \foreach \i/\dx/\dy in \cloudpts {
-    \node[cloud-dot] at ($(\pxD,\py) + (\dx,\dy)$) {};
-  }
   \draw[lasso-A] plot[smooth cycle, tension=0.7] coordinates {
     ($(\pxD,\py) + (-1.55, 0.78)$) ($(\pxD,\py) + (-0.55, 0.78)$)
     ($(\pxD,\py) + (-0.55, 0.20)$) ($(\pxD,\py) + (-0.30,-0.30)$)
     ($(\pxD,\py) + (-0.30,-0.78)$) ($(\pxD,\py) + (-1.55,-0.78)$)
   };
-  \node[lassolbl] at ($(\pxD,\py) + (-1.30, 0.62)$) {T1};
   \draw[lasso-B] plot[smooth cycle, tension=0.7] coordinates {
     ($(\pxD,\py) + ( 0.55, 0.78)$) ($(\pxD,\py) + ( 1.55, 0.78)$)
     ($(\pxD,\py) + ( 1.55,-0.78)$) ($(\pxD,\py) + ( 0.55,-0.30)$)
     ($(\pxD,\py) + ( 0.55, 0.20)$)
   };
+  \foreach \i/\dx/\dy in \cloudpts {
+    \node[cloud-dot] at ($(\pxD,\py) + (\dx,\dy)$) {};
+  }
+  \node[lassolbl] at ($(\pxD,\py) + (-1.30, 0.62)$) {T1};
   \node[lassolbl] at ($(\pxD,\py) + (1.30, 0.62)$) {T2};
 
   % Panel headers
@@ -399,7 +402,7 @@ A molecular system has many valid abstractions at different levels of granularit
 
 For example, a residue simultaneously belongs to a chain (that's Hierarchy), to a CATH domain, to an active-site set, to a rigid-body partition used in refinement, to a secondary-structure element, and possibly to a pharmacophore grouping used in docking. Forcing these into one parent hierarchy creates category confusion; a residue cannot have five Hierarchy parents.
 
-So the Groupings layer is not a tree, and earlier drafts of this chapter that tried to taxonomize it into several "kinds of DAG" turned out to be the wrong move. The simpler reading is that there is **one structural primitive** -- a *typed grouping* -- and everything DAG-shaped in this layer or above it (the scope DAG of §2.2 included) is built out of it. A grouping is a sparse bipartite mapping from hierarchy nodes to a named label set, plus a `kind` tag that tells consumers and the evaluation model what the grouping carries. A curatorial CATH-domain mapping the evaluation model never has to touch; a coarse-graining mapping it lowers when someone asks for bead coordinates; a heterogeneity-descriptor scope it lowers when rendering coordinates. The differences live in what each grouping carries on top of the membership relation, not in the shape of the relation itself.
+There is **one structural primitive** -- a *typed grouping* -- and everything DAG-shaped in this layer or above it (the scope DAG of §2.2 included) is built out of it. A grouping is a sparse bipartite mapping from hierarchy nodes to a named label set, plus a `kind` tag that tells consumers and the evaluation model what the grouping carries. A curatorial CATH-domain mapping the evaluation model never has to touch; a coarse-graining mapping it lowers when someone asks for bead coordinates; a heterogeneity-descriptor scope it lowers when rendering coordinates. The differences live in what each grouping carries on top of the membership relation, not in the shape of the relation itself.
 
 The core of every grouping is small: a namespace identifier, a version, the member set, and -- when applicable -- per-member weights. Anything more lives in named annotation attachments (chapter 4's mechanism), each tagged so the evaluation model can dispatch on it and consumers that don't recognize the tag can safely ignore it.
 
