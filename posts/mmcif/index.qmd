@@ -19,9 +19,15 @@ categories: [structural-biology, data-formats, mmcif]
 
 _This is a very early draft that's still coalescing. The only worthwhile chapters are 2 and 3 for now. Figures are shit, refs are missing, lots of assumptions and koolaid._ 
 
+
+
+
 I'm trying to sketch here a kernel of idealized infrastructure for structural bio in 2026 and beyond that is not a meshwork of disparate databases and resources, is not bursting at the seams from the influx of new datatypes and data volume, is not constrained in its evolution by obsolete conventions, accommodates the new computational fabric well.
 
 This is not a proposal or a concrete plan or an attack on anyone. There are motifs from database, compiler and ML literature here so it's not exactly obvious where the "format" ends and auxilary software (from parser to the backend to storage to exchange platform) begins for now.
+
+TODO: 
+add a survey of operations across pdbtbx, ccp4, coot, isolde, chimerax
 
 ## Contents
 

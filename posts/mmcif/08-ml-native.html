@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="quarto-1.5.54" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+
+
+<title>ML-native data: access patterns and precomputed features – артём</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+<!-- htmldependencies:E3FAD763 -->
+<script id="quarto-search-options" type="application/json">{
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="/scripts.js"></script>
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/tippy.js@6"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Serif:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles/custom.css" />
+<link rel="stylesheet" href="../../styles/scrollbar-fix.css" />
+<link rel="stylesheet" href="../../styles/listing.css" />
+<link rel="stylesheet" href="/styles/homepage.css" />
+</head>
+
+<body>
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-layout-custom">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+<!-- main -->
+
+<header id="title-block-header">
+<h1 class="title">ML-native data: access patterns and precomputed features</h1>
+
+</header>
+
+
+<div class="grid homepage-container">
+<div class="g-col-12 g-col-md-3 left-column">
+<p><a href="../.."><img src="../../img/signature.png" class="signature img-fluid" /></a></p>
+<div class="post-nav">
+<div class="post-glossary">
+<ul>
+<li><a href="index.qmd">Overview</a></li>
+<li><a href="01-problems.qmd">1. Problems with mmCIF</a></li>
+<li><a href="02-architecture.qmd">2. Layout</a></li>
+<li><a href="03-evaluation-model.qmd">3. Evaluation model</a></li>
+<li><a href="04-annotations-and-engine.qmd">4. Annotations and the artifact engine</a></li>
+<li><a href="04b-technology-survey.qmd">5. Technology survey</a></li>
+<li><a href="05-open-questions.qmd">6. Open questions</a></li>
+<li><a href="08-ml-native.qmd">7. ML-native access patterns</a></li>
+<li><a href="06-black-box-data.qmd">Appendix: black-box data and model artifacts</a></li>
+<li><a href="07-modularity-examples.qmd">Appendix: modularity examples</a></li>
+</ul>
+</div>
+<div class="post-sections">
+
+</div>
+</div>
+</div>
+<section id="section" class="level1 g-col-12 g-col-md-9 right-column">
+<h1>ML-native data: access patterns and precomputed features</h1>
+<p>TODO: subsection on diffusion steering</p>
+<p>The <a href="04-annotations-and-engine.qmd">annotations and artifact engine</a> chapter sketches a few representative ML-pipeline operations and shows that they all fit the (selector, body, provenance) overlay shape. This chapter does the work that sketch defers: catalogue the <em>features</em> a structural ML pipeline wants in detail, the <em>access patterns</em> into a structure file those features require, and the discipline that keeps cached pass outputs from polluting the core.</p>
+<p>The short version: the architecture from chapters 2–3 already supports the access patterns ML pipelines want, provided the storage layer is chunked and indexable (Zarr, TileDB) rather than line-oriented (mmCIF). And the discipline that keeps the core stable – “derived information lives in passes, not in the IR” – does not preclude <em>caching</em> pass outputs. It says the cache lives in the <a href="04-annotations-and-engine.qmd#query-language-and-annotations">annotation overlay</a> namespace, with the parameters of the producing pass in the provenance, so that two consumers with different cutoffs produce two overlays and neither invalidates the other or perturbs anything else.</p>
+<section id="ml-native-structural-operations" class="level2">
+<h2>ML-native structural operations</h2>
+<p>The fundamental pattern in all current structure ML models: <strong>coordinates + chemistry -&gt; graph -&gt; message passing -&gt; prediction</strong>. The specifics vary but converge on shared primitives. This section catalogues those primitives and the redundant work they require under current formats, then maps the heterogeneity regime taxonomy onto the training data requirements for the next generation of distribution-predicting models.</p>
+<p><strong>Graph construction.</strong> A molecular graph G = (V, E) where V are atoms or residues with feature vectors, E are edges (spatial proximity, covalent bonds, sequence connectivity) with features. Edge construction is the bottleneck:</p>
+<ul>
+<li>Spatial: all pairs within cutoff r (typically 8-12A). Requires neighbor search, O(N log N) with k-d tree or O(N^2) brute force. Rebuilt for every structure at every training step.</li>
+<li>Covalent: bond graph from topology. Currently inferred from coordinates + element types because mmCIF doesn’t reliably carry bonds.</li>
+<li>Sequence: (i, i+1) backbone edges.</li>
+</ul>
+<p>The Hierarchy layer proposed in <a href="02-architecture.qmd#containment">Layout § Hierarchy</a> directly addresses the covalent edge problem: an explicit bond graph in the core eliminates the inference step entirely. Spatial edges remain dynamic (cutoff and metric are model choices) but a stored spatial index – R-tree or k-d tree serialized alongside the coordinate array – would reduce neighbor construction from O(N log N) per structure to O(k) lookups per atom, where k is the number of neighbors within the cutoff.</p>
+<p><strong>Equivariant features.</strong> E(3)-equivariant models (NequIP, MACE, Allegro, eSCN) decompose features into irreducible representations of <span class="math inline">\(\mathrm{SO}(3)\)</span>. The displacement vector between atoms <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> is expanded in spherical harmonics <span class="math inline">\(Y_l^m(\mathbf{r}_{ij}/|\mathbf{r}_{ij}|)\)</span> via e3nn (<a href="https://github.com/e3nn/e3nn">github.com/e3nn/e3nn</a>). This computation is identical for every structure with the same topology and the same cutoff. If the format stored a spatial index enabling <span class="math inline">\(O(k)\)</span> neighbor lookup and precomputed spherical harmonic expansions at stored edges, feature construction would become a read operation rather than a compute operation. Whether this is actually worth storing depends on the ratio of training time to storage cost.</p>
+<p><strong>Pair representations.</strong> AF2’s pair representation is an <span class="math inline">\((N_{\mathrm{res}}, N_{\mathrm{res}}, 128)\)</span> tensor updated through the evoformer. Initial pair features – residue-residue distance bins, relative sequence position encoding, template distance and angle features – depend only on the structure, not on model weights, and could in principle be precomputed. At 128 features and <span class="math inline">\(N_{\mathrm{res}} = 1000\)</span> this is $$500MB per structure uncompressed. Feasible if compressed and chunk-read, but probably only worth precomputing for large training campaigns where the same structure is seen many times. The format should make this storable without requiring it.</p>
+<p><strong>Tokenization.</strong> AF3, Boltz-1, and Chai-1 tokenize the molecular system: each standard residue is one token, ligand atoms or functional groups become tokens, nucleotide bases are tokens. The token graph has heterogeneous node types and multiple edge types. The tokenization is model-specific but the underlying information it requires – atom types, bond connectivity, residue membership, entity type – is the same across models and is exactly what the Hierarchy layer stores. A format that carries this information explicitly enables tokenization as a deterministic read-and-map operation rather than an inference step.</p>
+<p><strong>Training data for distribution-predicting models.</strong> Current models predict single structures. The next generation will predict distributions over structures, conditioned on sequence and experimental context. The training data shape this requires is not (sequence, structure) pairs but (sequence, ensemble) pairs where the ensemble has associated populations or free energies.</p>
+<p>Mapping this onto the heterogeneity regime taxonomy:</p>
+<ul>
+<li>Heterogeneity Regime 1 ensembles (NMR bundles, qFit outputs, IHM discrete state models) are already close to the right shape – the format work needed is standardizing population and free energy annotations.</li>
+<li>Heterogeneity Regime 2 trajectories are the largest existing source of ensemble data. The format work needed is efficient access to subsampled or stride-selected frames without reading the full trajectory, which is a chunking and indexing problem.</li>
+<li>Heterogeneity Regime 3 representations (cryoDRGN, NMA) provide the most information-dense training signal because the latent coordinates are continuous and the decoder provides a differentiable generator. A model trained against these could in principle learn to predict latent coordinates directly rather than just Cartesian coordinates. The format work needed is standardizing the latent-plus-decoder serialization.</li>
+<li>Factor graph ensembles are probably not a primary training data source for structure prediction models, but they are relevant for models that explicitly predict correlated sidechain or loop conformations.</li>
+</ul>
+<p>The format implication: ensemble training data packaging is not a separate problem from the heterogeneity representation. If ensembles have a native representation in the format with standard population annotations, packaging training data for distribution-predicting models is a read operation. Under current formats it requires custom pipeline code for every model and every data source.</p>
+</section>
+<section id="what-ml-native-actually-means" class="level2">
+<h2>What “ML-native” actually means</h2>
+<p>The complaint behind chapter 1’s pain points is rarely that mmCIF is missing a category. It is that the <em>access pattern</em> required to get any subset of the data forces a full parse. A training pipeline that wants the C-alpha trace of chain B does not get to ask for the C-alpha trace of chain B; it gets to read the whole text file, instantiate every atom, and then filter. For a 200k-atom ribosome the cost is bearable per sample but ruinous at dataloader scale, and it is exactly the cost mmCIF was not designed to optimize.</p>
+<p>It is worth being concrete about which access patterns matter. There are roughly five, in increasing order of distance from what text mmCIF supports:</p>
+<ol type="1">
+<li><p><strong>Random subset read</strong> – “give me the C-alpha coordinates of residues 50–80 of chain A, in state 3, without reading anything else.” Falls out of chunked array storage (Zarr, TileDB) plus the <a href="02-architecture.qmd#containment">Hierarchy</a> parent-index arrays from chapter 2. The selector compiles to integer index ranges; the storage layer reads only the matching chunks.</p></li>
+<li><p><strong>Spatial neighbor query</strong> – “give me all atoms within 5 angstroms of atom <span class="math inline">\(i\)</span>.” Independent of the file format in principle, but in practice every model rebuilds a k-d tree per structure per training step because the index is not stored. Reducing this to <span class="math inline">\(O(k)\)</span> lookups requires a stored spatial index (R-tree, cell list, or sorted-Hilbert-curve order) co-located with the coordinates and updated atomically with them when the structure mutates.</p></li>
+<li><p><strong>Cross-state slice</strong> – “for descriptor <span class="math inline">\(d\)</span> at scope <span class="math inline">\(s\)</span>, give me its values across every state in the ensemble, without materializing the other descriptors.” This is the access pattern an analysis like “how does the TLS rotation correlate with altloc occupancy” wants. The architecture already gives this for free: each descriptor is independently scoped, each is independently materialized, and an ensemble is a chunked array along the state axis. Forcing every descriptor through full enumeration (<a href="02-architecture.qmd#materialization">Materialization Mode A</a>) defeats it; respecting <a href="02-architecture.qmd#materialization">Mode B and Mode C</a> preserves it.</p></li>
+<li><p><strong>Cross-structure batch read</strong> – “give me CA coordinates for these 100k structures, in chunk-aligned shards I can stream into a dataloader.” Largely a packaging concern, not a per-structure format concern, but it is <em>enabled</em> or <em>prevented</em> by the per-structure layout. If the per-structure file has a stable canonical CA-coordinate array at a known path inside the Zarr group, batched reads compose; if CA coordinates are derivable only by parsing and filtering atoms, they don’t.</p></li>
+</ol>
+<div class="def" data-term="Differentiable read">
+<p>An access pattern that delivers structural data directly into a tensor (numpy / torch / jax) without an intermediate parsed object. Format-level support means a Zarr or Arrow-backed array maps to a tensor in one zero-copy step; format-level <em>failure</em> means every consumer copies into its own representation between disk and tensor.</p>
+</div>
+<ol start="5" type="1">
+<li><strong>Differentiable read</strong> – “give me coordinates as a tensor, on the right device, with autograd already wired up.” Strictly a Python concern, not a format concern, but the format choice affects how messy the bridge is. A Zarr array maps cleanly to a <code>torch.Tensor</code> via <code>torch.from_numpy(zarr_array[...])</code>; a parsed mmCIF requires a copy and a layout transformation per structure. The format does not need to be aware of autograd – it just needs to deliver coordinates without forcing a non-tensor representation between disk and tensor.</li>
+</ol>
+<p>The first three fall out of chapters 2–4 directly, without any new format machinery, provided the storage substrate is chunked. The fourth is a packaging convention – analogous to how OME-Zarr standardizes the multiscale path structure so any consumer knows where to look. The fifth is downstream tooling.</p>
+</section>
+<section id="precomputed-features-as-cached-passes" class="level2">
+<h2>Precomputed features as cached passes</h2>
+<div class="def" data-term="Cached pass">
+<p>The stored output of a deterministic function over the core (a neighbour graph, a backbone-dihedral table, a SASA array). Lives in an annotation overlay namespace keyed by <code>(producing pass id, parameters, version)</code> rather than in the IR itself. Two consumers with different parameters produce two overlays; neither invalidates the core or the other.</p>
+</div>
+<p>The <a href="07-modularity-examples.qmd#llvm">LLVM discipline</a> elaborated in the appendix says backbone dihedrals, contact maps, neighbor graphs, spherical harmonic edge features, AF2-style pair tensors, and validation scores do not belong in the core. They are derived; their parameters (cutoff, <span class="math inline">\(l_\max\)</span>, distance metric) are choices; two consumers with different choices would otherwise produce inconsistent IRs.</p>
+<p>This is correct, and load-bearing for the stability argument. It is also commonly <em>misread</em> as saying these arrays should never be stored. They should be stored when storage is cheaper than recomputation – which is essentially always for a feature reused across many training runs. The right slot for the cache is the <a href="04-annotations-and-engine.qmd#query-language-and-annotations">annotation overlay</a> machinery from chapter 4: the body of the overlay is the cached array, and the provenance records the producing pass, its version, and its parameters. Two consumers with different cutoffs produce two named overlays in their own namespaces; neither invalidates the other; the core is untouched.</p>
+<p>The candidates that recur across structural ML pipelines, with rough storage cost vs reuse benefit:</p>
+<ul>
+<li><p><strong>Spatial index</strong> (R-tree, cell list, or Hilbert/Morton-sorted order on the coordinate array). Tiny – a few bytes per atom for an order, <span class="math inline">\(O(N)\)</span> for a tree. Reused by every neighbor-based feature, which is essentially every E(3)-equivariant model and every contact-based loss. The single highest-leverage cache.</p></li>
+<li><p><strong>Backbone dihedrals</strong> (phi, psi, omega, chi). A handful of scalars per residue. Trivial to compute, but every training pipeline computes them, which means the marginal IO of caching them is dominated by the marginal CPU of recomputing. Cache anyway – the consistency benefit (every consumer sees the same dihedral conventions) is worth more than the storage.</p></li>
+<li><p><strong>SASA, DSSP secondary structure assignment</strong>. Moderate compute, widely reused, well-defined output. Annotation overlay with provenance “(DSSP, version, parameters)”.</p></li>
+<li><p><strong>Spherical harmonic edge features</strong> at fixed cutoff and <span class="math inline">\(l_\max\)</span>. Genuinely heavy – <span class="math inline">\((N_{\mathrm{edge}}, (l_\max + 1)^2)\)</span> per structure – and the parameters <span class="math inline">\((r_\mathrm{cut}, l_\max)\)</span> are model-specific. Cache only when those parameters are stable across a training campaign large enough to amortize the storage. Two campaigns with different parameters get two overlays.</p></li>
+<li><p><strong>Pair features</strong> (residue-residue distance bins, relative position encoding). AF2-shape, <span class="math inline">\((N_\mathrm{res}, N_\mathrm{res}, c)\)</span>. Heavy. Probably only worth caching for very-frequently-used training subsets where the same structure is seen many times. The format should make this storable without requiring it.</p></li>
+<li><p><strong>Tokenization tables</strong> for AF3/Boltz/Chai-style heterogeneous tokens. Lookup tables keyed off the <a href="02-architecture.qmd#containment">Hierarchy</a> plus a small amount of model-specific vocabulary. Tiny, deterministic given a vocab version, useful to cache because tokenization mismatches across consumers are a common bug source.</p></li>
+<li><p><strong>Equivariant local frames</strong> per residue (the orientation matrix used by E(3) and SE(3) models to express features in a residue-local basis). <span class="math inline">\(9 N_\mathrm{res}\)</span> floats. Cheap, ubiquitous in equivariant pipelines.</p></li>
+</ul>
+<p>The discipline that keeps caching from re-creating the mmCIF accretion problem is straightforward: every cached array sits in an overlay namespace keyed by <code>(producing pass identifier, parameters, version)</code>. Nothing in the core depends on the cache existing. Two depositions with the same structure but different cached features differ only in their overlay set. A reader that does not know about a particular cache silently ignores it. A reader that knows about it gets a stored result instead of a recomputation.</p>
+<p>There is a forward link worth marking. Materialization Mode C (<a href="02-architecture.qmd#materialization">Layout § Materialization</a>) is already the slot for a stored <em>operator</em> whose output is regenerated on demand: a normal-mode basis, a cryoDRGN decoder, a PCA basis. A precomputed-feature overlay is the same shape with the regeneration step skipped: the operator is the producing pass, the parameters are the inputs, and the cached array is the materialized output of one specific call. The two are points on a continuum – regenerated on demand vs cached once – and both fit the same provenance schema.</p>
+</section>
+<section id="from-cached-features-to-model-side-artifacts" class="level2">
+<h2>From cached features to model-side artifacts</h2>
+<p>A cached pair-feature tensor and an AF2 single-representation embedding sit on a continuum. Both are arrays produced by <em>something</em> over the structure; both attach to selectors over <a href="02-architecture.qmd#containment">Hierarchy</a> or <a href="02-architecture.qmd#groupings">Groupings</a>; both want the same <code>(selector, body, provenance)</code> machinery. The only difference is whether the producing “something” is a deterministic function (compute pair distances and bin them) or a learned model whose weights are themselves an artifact (run the AF2 evoformer; emit <code>single</code> and <code>pair</code>).</p>
+<p>The discipline that handles the first case generalizes to the second once the provenance is rich enough to describe the model – weights hash, architecture identifier, MSA hash, training data version. That is the substance of the <a href="06-black-box-data.qmd">black-box appendix</a>, which takes up weights/decoders, latents/embeddings, model outputs, and the training metadata that makes any of those worth trusting.</p>
+</section>
+<section id="the-dataloader-concern" class="level2">
+<h2>The dataloader concern</h2>
+<p>A format that supports chunk-aligned reads, stored spatial indices, and ensemble slicing makes a fast dataloader trivial. The format itself should not ship a dataloader – that is downstream tooling that will outlive any specific framework – but it should also not make a fast one impossible. mmCIF currently does, in two specific ways: there is no random access to subsets, and there is no canonical layout for derived features that a dataloader could rely on across structures.</p>
+<p>The closest existing precedent is <a href="https://github.com/copick/copick">copick</a>, which layers an overlay filesystem on top of OME-Zarr cryo-ET data: read-only base data plus writable annotation overlays, typed annotation objects with provenance, and a CLI. The pattern is directly applicable: structures and their cached features sit in an immutable layer; per-consumer overlays (different cutoffs, different feature sets, different model embeddings) sit on top without touching the base. The dataloader reads the union of base and selected overlays.</p>
+</section>
+<section id="open-questions-specific-to-ml-native-data" class="level2">
+<h2>Open questions specific to ML-native data</h2>
+<p>A handful of questions that are not resolved by the architecture as it stands and should be flagged rather than papered over:</p>
+<ul>
+<li><p><strong>Stable per-atom IDs across re-refinement and across releases.</strong> UniProt residue numbering is the closest existing stable identifier and is the right anchor at residue scope, but it does not solve the atom-name problem (CCD atom names can change between dictionary versions, and refinement can add or remove atoms). Cached features keyed by per-atom IDs go stale silently when those IDs shift. Worth working out a content-hash-based atom identity that survives renumbering.</p></li>
+<li><p><strong>Are equivariant local frames universal enough to belong in the core?</strong> The argument for: every E(3)/SE(3) model needs them, the convention for picking the frame from <span class="math inline">\((N, C_\alpha, C)\)</span> is essentially universal, and recomputation is cheap but not free. The argument against: it is derived, putting it in the core re-creates exactly the accretion failure mode the LLVM discipline is meant to prevent. Currently leaning toward keeping it as a cached pass, but worth surfacing.</p></li>
+<li><p><strong>Cache versioning under structure mutation.</strong> When a structure is re-refined and an atom moves by 0.5 angstroms, what happens to the cached pair-feature tensor that was computed against the previous coordinates? Three options: silently invalidate (force recomputation), regenerate as part of the re-refinement pipeline, or keep with a stale-version flag and let the consumer decide. None is obviously right; the format probably needs all three modes selectable in the cache provenance.</p></li>
+</ul>
+</section>
+</section>
+</div>
+<div id="quarto-navigation-envelope" class="hidden">
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="quarto-int-sidebar-title">артём</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="quarto-int-navbar-title">артём</span></p>
+</div>
+<div id="quarto-meta-markdown" class="hidden">
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="quarto-metatitle">ML-native data: access patterns and precomputed features – артём</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="quarto-twittercardtitle">ML-native data: access patterns and precomputed features – артём</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="quarto-ogcardtitle">ML-native data: access patterns and precomputed features – артём</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="quarto-metasitename">артём</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="quarto-twittercarddesc"></span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="quarto-ogcardddesc"></span></p>
+</div>
+
+
+<script id = "quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/rtviii\.xyz");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+</body>
+
+</html>
