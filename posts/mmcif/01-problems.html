@@ -105,8 +105,8 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <section id="section" class="level1 g-col-12 g-col-md-9 right-column">
 <h1>Problems with mmCIF and the current ecosystem</h1>
-<section id="pain-points-enumerated" class="level2">
-<h2 data-anchor-id="pain-points-enumerated">Pain points (enumerated)</h2>
+<section id="some-pain-points-in-no-particular-order" class="level2">
+<h2 data-anchor-id="some-pain-points-in-no-particular-order">Some pain points in no particular order</h2>
 <ul>
 <li><p><strong>Parsing fragility.</strong> No reference implementation. Every parser is different. Links below.</p></li>
 <li><p><strong>No random access.</strong> Cannot read chain B without scanning chain A. For 200k+ atom structures this is a real bottleneck. Not a huge problem for a structural/comp biologist yet in practice, but already a tightening bottleneck for the ML models.</p></li>
@@ -122,23 +122,23 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="text-format-parsing-fragility" class="level2">
 <h2 data-anchor-id="text-format-parsing-fragility">Text format, parsing fragility</h2>
-<p>mmCIF is plain text with fixed syntactic rules (CIF2 spec: <a href="https://www.iucr.org/resources/cif/cif2">iucr.org/resources/cif/cif2</a>) but no canonical reference implementation. Every consumer writes its own parser. They all handle edge cases differently:</p>
 <ul>
-<li>DeepMind’s AlphaFold mmCIF parser: <a href="https://huggingface.co/spaces/simonduerr/ProteinMPNN/blob/f969e9cfb6f11ba299c7108aadff124e9cf38b1f/alphafold/alphafold/data/mmcif_parsing.py">huggingface.co/…/mmcif_parsing.py</a></li>
-<li>model-angelo (GNN model building) fixing parsing: <a href="https://github.com/3dem/model-angelo/issues/51">github.com/3dem/model-angelo/issues/51</a></li>
+<li>DeepMind’s AlphaFold rolls its own (non-biopython/gemmi/etc) mmCIF parser: <a href="https://huggingface.co/spaces/simonduerr/ProteinMPNN/blob/f969e9cfb6f11ba299c7108aadff124e9cf38b1f/alphafold/alphafold/data/mmcif_parsing.py">huggingface.co/…/mmcif_parsing.py</a></li>
+<li>model-angelo (GNN model building) parsing issue: <a href="https://github.com/3dem/model-angelo/issues/51">github.com/3dem/model-angelo/issues/51</a></li>
 <li>gemmi/ChimeraX interop friction: <a href="https://mail.cgl.ucsf.edu/mailman/archives/list/chimerax-users@cgl.ucsf.edu/thread/XOO3G5MUOHLQBHSVF2NENWYNG3SOUF2O/">chimerax-users mailing list thread</a></li>
-<li>Biopython developer calling the format spec ugly: <a href="https://stackoverflow.com/a/11686524">stackoverflow.com/a/11686524</a></li>
-<li>AlphaFold GitHub issues on mmCIF: <a href="https://github.com/google-deepmind/alphafold/issues/252">github.com/google-deepmind/alphafold/issues/252</a></li>
+<li>Biopython developer complaints: <a href="https://stackoverflow.com/a/11686524">stackoverflow.com/a/11686524</a></li>
+<li>AF issue: <a href="https://github.com/google-deepmind/alphafold/issues/252">github.com/google-deepmind/alphafold/issues/252</a></li>
 <li>wwPDB dictionary issues: <a href="https://github.com/wwpdb-dictionaries/mmcif_pdbx/issues">github.com/wwpdb-dictionaries/mmcif_pdbx/issues</a></li>
 <li>Residue numbering chaos: <a href="https://bioinformatics.stackexchange.com/questions/14210/pdb-residue-numbering">bioinformatics.stackexchange.com/questions/14210</a>, <a href="https://proteopedia.org/wiki/index.php/Unusual_sequence_numbering">proteopedia unusual numbering</a></li>
 </ul>
-<p><strong>BinaryCIF</strong> (David Sehnal / Mol* team, <a href="https://github.com/molstar/BinaryCIF">github.com/molstar/BinaryCIF</a>) addresses the performance problem: binary-encoded mmCIF with column-wise compression, significantly smaller files and faster parsing than text mmCIF. Used by the PDB for Mol* visualization. But it’s a serialization optimization, not a data model change – it encodes the same categories and the same single-structure assumption.</p>
 <p>The CIF dictionary itself lacks conditionals and has no automatic schema validation. <code>entity_poly_seq</code> can’t be mandatory for files containing polymers because the dictionary language cannot express “if a polymer entity exists, require this category.” Documentation is scattered across IUCr, CCP4, and wwPDB sites with inconsistent coverage.</p>
+<div class="fold" data-summary="Some cif specs">
 <ul>
 <li>CIF formal specs: <a href="https://www.iucr.org/resources/cif">iucr.org/resources/cif</a>, <a href="https://www.iucr.org/resources/cif/cif2">CIF2 spec</a></li>
 <li>CCP4 harvesting/history: <a href="https://legacy.ccp4.ac.uk/newsletters/newsletter37/13_harvest.html">legacy.ccp4.ac.uk</a>, <a href="https://www.ccp4.ac.uk/html/mmcifformat.html">ccp4.ac.uk mmcif format</a></li>
 <li>C API: <a href="http://comcifs.github.io/cif_api/index.html">comcifs.github.io/cif_api</a></li>
 </ul>
+</div>
 </section>
 <section id="implicit-information-and-missing-connections" class="level2">
 <h2 data-anchor-id="implicit-information-and-missing-connections">Implicit information and missing connections</h2>
@@ -155,7 +155,10 @@ ul.task-list li input[type="checkbox"] {
 <li>No convention for packaging ensembles as training data for ensemble-aware models</li>
 <li>Tokenization for heterogeneous systems (protein + ligand + nucleic acid + ions) is done ad-hoc in AF3/Boltz/Chai with no shared vocabulary</li>
 </ul>
-<p>The <strong>IHMCIF dictionary</strong> (the IHM working group extension, <a href="https://github.com/ihmwg/IHMCIF">github.com/ihmwg/IHMCIF</a>) extends mmCIF with ~30 new categories for integrative/hybrid models. It adds: discrete multi-state models, ordered ensembles (states connected by time or other ordering), multi-scale representations (atomic + coarse-grained beads in the same model), and spatial restraint descriptions. PDB-IHM was unified with the PDB archive in August 2024 and now issues standard PDB accession codes. But: states remain discrete and independent, there is no thermodynamic annotation, no per-state uncertainty, no support for continuous distributions, and the text-file serialization doesn’t scale to large ensembles.</p>
+<div class="fold" data-summary="Some extensions in important directions">
+<p><strong>BinaryCIF</strong> (David Sehnal / Mol* team, <a href="https://github.com/molstar/BinaryCIF">github.com/molstar/BinaryCIF</a>) addresses the performance problem: binary-encoded mmCIF with column-wise compression, significantly smaller files and faster parsing than text mmCIF. Used by the PDB for Mol* visualization. But it’s a serialization optimization, not a data model change – it encodes the same categories and the same single-structure assumption.</p>
+<p>The <strong>IHMCIF dictionary</strong> (the IHM working group extension, <a href="https://github.com/ihmwg/IHMCIF">github.com/ihmwg/IHMCIF</a>). This adds: discrete multi-state models, ordered ensembles (states connected by time or other ordering), multi-scale representations (atomic + coarse-grained beads in the same model), and spatial restraint descriptions. But: states remain discrete and independent, there is no thermodynamic annotation (or other flexible heterogeneity annotations either), no per-state uncertainty, no support for continuous distributions, and the text-file serialization doesn’t scale to large ensembles.</p>
+</div>
 </section>
 </section>
 </div>
