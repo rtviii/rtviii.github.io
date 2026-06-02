@@ -11,6 +11,11 @@
 \usepackage{lmodern}
 \usepackage{amsmath, amssymb}
 \usepackage{forest}
+% hyperref enables \href inside nodes (clickable concept maps / cross-figure
+% links). `hidelinks` keeps existing figures visually unchanged — link styling
+% is applied per-node where wanted. Whether links survive into the rendered SVG
+% depends on the diagram backend (dvisvgm preserves them; pdf2svg may not).
+\usepackage[hidelinks]{hyperref}
 \usetikzlibrary{positioning, shapes.geometric, arrows.meta,
                 fit, backgrounds, calc, decorations.pathreplacing}
 

@@ -11,26 +11,15 @@ order: 4
 
 # {{< meta title >}}
 
-
-
-
-The previous chapters described what a deposition contains and how its descriptors compose. This chapter is about the engine that sits on top of that core: the query language that selects molecular subsets across hierarchy, composition, and ensemble dimensions; the annotation overlay where everything not in the irreducible core lives; and the ML-native featurization passes that consume the core to produce graph and equivariant inputs. The pattern recurs throughout: a small, stable core plus a wide, opinionated periphery of computed passes and external artifacts, attached by selectors and provenance rather than copied into the core.
+The previous chapters described what a deposition contains and how its descriptors compose. This chapter is about the engine that sits on top of that core: the query language that selects molecular subsets across hierarchy, composition, and ensemble dimensions; the [**annotation overlay**](../glossary/index.qmd#gloss-annotation-overlay) where everything not in the irreducible core lives; and the ML-native featurization passes that consume the core to produce graph and equivariant inputs. The pattern recurs throughout: a small, stable core plus a wide, opinionated periphery of computed passes and external artifacts, attached by selectors and provenance rather than copied into the core.
 
 ## Query language and annotations
 
-::: {.def data-term="Selector"}
-A query expression that names a molecular subset across the four core layers -- atoms, residues, chains, domains, named groupings -- and across conformational states. Selectors are the address-space of the format: every annotation, every cached pass output, every overlay attaches to a selector rather than to raw atom indices, so the binding survives renumbering.
-:::
+**Query language.** Need: select arbitrary molecular subsets (atoms, residues, chains, domains) at any level of hierarchy, across conformational states, composably. MolQL [@sehnal2021molstar] (the selection language embedded in Mol*) is the most expressive existing molecular selection language. VMD/MDAnalysis selections are simpler but widely used. Extension needed for: state selection, cross-state predicates, annotation predicates.
 
-**Query language.** Need: select arbitrary molecular subsets (atoms, residues, chains, domains) at any level of hierarchy, across conformational states, composably. MolQL ([github.com/molstar/molstar](https://github.com/molstar/molstar), embedded in Mol*) is the most expressive existing molecular selection language. VMD/MDAnalysis selections are simpler but widely used. Extension needed for: state selection, cross-state predicates, annotation predicates.
+If storage is columnar/array-based, molecular selections can compile to predicates that a query engine (DataFusion [@datafusion]) pushes down to the storage layer. "chain A and resid 50-80 in state 3" becomes: filter on chain_id column, range filter on res_seq column, index into state dimension -- only relevant chunks are read. Spatial predicates ("within 5A of ligand") need a stored spatial index (R-tree) and compile to a UDF call.
 
-If storage is columnar/array-based, molecular selections can compile to predicates that a query engine (DataFusion) pushes down to the storage layer. "chain A and resid 50-80 in state 3" becomes: filter on chain_id column, range filter on res_seq column, index into state dimension -- only relevant chunks are read. Spatial predicates ("within 5A of ligand") need a stored spatial index (R-tree) and compile to a UDF call.
-
-**Annotations.** Core model: **(selector, body, provenance)** triple. The selector is a query expression. The body is arbitrary typed data (text, scalar, vector, array, structured object, reference). The provenance records author, method, software, date, confidence.
-
-::: {.def data-term="Annotation overlay"}
-A separate, additive layer of `(selector, body, provenance)` triples attached to a structure without modifying its core. Modeled after copick's overlay filesystem: the base data is read-only, overlays are writable and namespaced by their producer, and multiple annotators coexist without stepping on each other or on the underlying structure.
-:::
+**Annotations.** Core model: **(selector, body, provenance)** triple. The [**selector**](../glossary/index.qmd#gloss-selector) is a query expression. The body is arbitrary typed data (text, scalar, vector, array, structured object, reference). The provenance records author, method, software, date, confidence.
 
 Oli Clarke's Coot residue annotation tool ([bsky.app/olibclarke/post/3micblpuoxc2u](https://bsky.app/profile/olibclarke.bsky.social/post/3micblpuoxc2u)) demonstrates the impulse: save notes associated with the active residue, persist in mmCIF. The generalization: associate _any_ data with _any_ molecular selection, in a separate layer (copick overlay pattern) so multiple annotators coexist and annotations are decoupled from the model version.
 

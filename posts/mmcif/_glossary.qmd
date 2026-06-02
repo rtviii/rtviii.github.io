@@ -2,14 +2,28 @@
 
 ::: {.post-glossary}
 - [Overview](index.qmd)
-- [1. Problems with mmCIF](01-problems.qmd)
-- [2. Layout](02-architecture.qmd)
-- [3. Evaluation model](03-evaluation-model.qmd)
-- [4. Annotations and the artifact engine](04-annotations-and-engine.qmd)
-- [5. Technology survey](04b-technology-survey.qmd)
-- [6. Open questions](05-open-questions.qmd)
-- [7. ML-native access patterns](08-ml-native.qmd)
-- [Appendix: black-box data and model artifacts](06-black-box-data.qmd)
+- [Concept map](concept-map.qmd){.nav-concept-map}
+
+[Core]{.post-nav-group}
+
+- [Layout — Track A](02-architecture.qmd)
+- [Forward operators — Track B](forward-operators.qmd)
+- [Evaluation model](03-evaluation-model.qmd)
+
+[Prerequisite]{.post-nav-group}
+
+- [Primer](primer.qmd)
+- [Glossary](../glossary/index.qmd)
+- [References](references.qmd)
+
+[Secondary]{.post-nav-group}
+
+- [Problems with mmCIF](01-problems.qmd)
+- [Annotations & the artifact engine](04-annotations-and-engine.qmd)
+- [Technology survey](04b-technology-survey.qmd)
+- [Open questions](05-open-questions.qmd)
+- [ML-native access patterns](08-ml-native.qmd)
+- [Appendix: black-box data](06-black-box-data.qmd)
 - [Appendix: modularity examples](07-modularity-examples.qmd)
 :::
 

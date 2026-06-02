@@ -1,0 +1,89 @@
+---
+title: "Forward-operator infrastructure"
+order: 3
+---
+
+{{< include /_includes/_post_head.qmd >}}
+
+{{< include _glossary.qmd >}}
+
+{{< include /_includes/_post_mid.qmd >}}
+
+# {{< meta title >}}
+
+[Track B: the standardized bridge from an ensemble to an experimental likelihood.]{.post-subtitle}
+
+_Track A — the ensemble representation — is the [Layout](02-architecture.qmd) and [Evaluation model](03-evaluation-model.qmd) chapters. This chapter is Track B: the forward-operator records that turn an ensemble into a likelihood any inference engine can consume. The conceptual background — forward models, noise models, Bayesian posterior sampling — lives in the [Primer](primer.qmd)._
+
+## 1. What the format actually needs to encode {#two-tracks}
+
+The synthesis of the [statistical-mechanical](primer.qmd#category-error) and [Bayesian-inference](primer.qmd#bayesian-substrate) pictures in the [Primer](primer.qmd) is that the format has to do two distinct things, which it is useful to keep cleanly separate even though they compose in deployment.
+
+These are related but not the same thing. You could in principle have [**Track A**](../glossary/index.qmd#gloss-track-a) without [**Track B**](../glossary/index.qmd#gloss-track-b) (rich ensembles deposited without their operator-and-observation provenance) or Track B without Track A (single-conformer models with rich operator records, which is essentially what mmCIF + EMDB + BMRB cross-references provide today, but in a unified shape). The architectural argument is that both are needed: Track A provides the ensemble representation that diffusion priors can learn from and that ensemble-aware downstream tools can consume; Track B provides the standardized likelihood substrate that lets any prior be conditioned on any subset of experimental modalities at inference time.
+
+The interaction between them that makes the architecture worth its complexity is *differentiability*. Track A's R3 (continuous latent + stored decoder) and Track B's forward operators are both naturally implemented as PyTorch-or-JAX-compatible differentiable functions. If the format commits to differentiability across both tracks, the multi-modal posterior-sampling pipeline of @levy2025inverse becomes a direct composition: gradients flow from observed data through forward operators into the ensemble's coordinate output, and back through the diffusion-prior decoder. Without differentiability you can still do everything via FK Steering's particle-filter approach, but it's substantially more expensive in compute. With differentiability, the two tracks compose into one PyTorch-graph-shaped object that runs end-to-end.
+
+A schematic for the Track B record shape:
+
+```
+forward_operator_record:
+  operator_ref:          # "noe_v1@1.0.0" or "structure_factor_v1@1.0.0" or content hash
+  scope:                 # selector or grouping ref — which atoms the operator addresses
+  parameters:            # typed bag, technique-specific (atom pairs, CTF parameters, ...)
+  observation:           # tensor or table in the technique's native shape
+  noise_model_ref:       # "gaussian_v1@1.0.0" or "log_normal_v1@1.0.0" etc.
+  noise_parameters:      # sigma, per-position variance, ...
+  provenance:            # experiment id, instrument, calibration, software version, date
+```
+
+The same record shape works across techniques even though the contents vary dramatically. An X-ray record has Miller-indexed structure factors as the observation; a cryo-EM record has a 3D voxel array; an NOE record has a vector of intensities indexed by atom pairs; a SAXS record has a 1D scattering curve. The format does *not* try to unify observation shapes. The atomic ensemble is what is unified; observations are technique-native and connected through the operator.
+
+This is a deliberate scope decision. Forcing observations into a common shape would either lose information or impose arbitrary structure that doesn't match the underlying physics. Letting them stay native means the format has to declare an interface contract for each operator — what shape it consumes and what shape it produces — but does not have to translate between technique-specific physical representations.
+
+For the operator body itself, three storage venues at increasing levels of specificity. *Registry-referenced* operators (`noe_v1@1.0.0`) carry only a name and version in the deposition; the executable body lives in a community-maintained library, the same way ONNX defines an extensible opset spec or the way ARM defines its ISA. This is the right answer for community-canonicalized operators and the discipline that lets cross-deposition comparison and lowering passes work. *Embedded computational graphs* (TorchScript, ONNX, MLIR blobs) are the fallback for novel operators that no one has standardized yet — content-hashed blobs referenced from the operator record, with the same interface contract surface as registry-referenced operators. *External artifact references* are the venue for heavyweight objects (pretrained diffusion model checkpoints, force-field parameter tables, learned CTF models) that don't fit inline; the format stores a content-hashed pointer plus the interface contract. The discipline across all three venues is identical: interface declared in the deposition, body wherever it best lives.
+
+A natural pairing with [Materialization Mode C](02-architecture.qmd#materialization) is worth noting. Mode C in chapter 2 is for coordinate-producing operators (basis decompositions, neural decoders, parametric Gaussian descriptors). The forward-operator dialect is for observable-producing operators. They share the same storage discipline, the same registry mechanism, and the same differentiability convention; they differ in what they consume and produce. A consumer that has implemented the runtime for Mode C operators is most of the way to implementing the runtime for forward operators.
+
+## 2. The value vs three files from EMDB, PDB, and BMRB {#three-files}
+
+A fair question from a skeptical reader: what does Duino actually add over the existing practice of cross-referencing EMDB for the cryo-EM map, PDB for the atomic model, and BMRB for the NMR restraints? The data is, in principle, already there.
+
+The honest answer is that at the *file-content* level, the difference is small. The same physical observables and the same atomic coordinates would appear in either organization. The value-add is at the *interface* level, and the interface level is where almost all the cross-technique-integration cost currently lives.
+
+Concretely, building a tool today that ingests cryo-EM + X-ray + NMR data on the same protein requires:
+
+- Parsing three different file formats with three different metadata conventions. EMDB ships `.map` or `.mrc` with associated XML; PDB ships mmCIF with structure factors as a separate `.mtz`; BMRB ships NMR-STAR with chemical shifts and NOE restraints in technique-specific tables.
+- Reconciling atom numbering, residue numbering, and chain identifier conventions across the three sources. This is a notorious nightmare; the same atom in the same protein routinely has different IDs in the three databases.
+- Re-implementing each forward model. The cryo-EM forward operator (Gaussian-form-factor placement, B-factor smearing, CTF) gets re-written in every project that scores predictions against EMDB maps; tools like RELION provide a reference but the contract is not standardized. Structure-factor calculation lives in cctbx and Refmac and Phenix and is implemented slightly differently in each. NOE forward calculation varies on whether spin-diffusion corrections are applied, on what mixing-time scaling is used, and on a dozen smaller conventions.
+- Writing a noise model for each, often without a principled choice — the defaults in the canonical software are sane but not always documented; researchers often fall back on plain Gaussian even when a heteroskedastic or log-normal model would be more appropriate.
+- Composing all of this into a multi-modal likelihood and validating that the math is right.
+
+Every team doing this writes essentially the same code, slightly differently. The slight differences compound: two independent implementations of "the cryo-EM map likelihood" give numerically different scores for the same ensemble against the same map. Cross-paper benchmarks become impossible because what `R-factor` or `NOE violation count` means is implicitly tied to which codebase computed it. Reproducing someone else's multi-modal posterior-sampling result requires reading their code in detail.
+
+The format-level intervention changes this by making forward operators *registry-referenced* and *versioned*. `noe_v1@1.0.0` means the same thing in every deposition. `cryo_em_map_v1@1.0.0` is one canonical implementation that every consumer uses. Two different labs computing the likelihood of the same ensemble against the same map get the same number. Cross-paper benchmarks become mechanical. Multi-modal posterior sampling is a `for` loop over operator records rather than a six-month engineering project. Provenance lineage makes silent miscalibration traceable rather than invisible.
+
+This is the same value pattern HTTP captured over FTP: the bytes exchanged are similar, but the standardized request-response contract is what made the web possible. Same for LLVM over per-language toolchains: the compiled output is similar, but the standardized IR is what enabled cross-language optimization, instrumentation, debugging, profiling, and binary analysis. Same for ONNX over per-framework checkpoints: the weights are equivalent, but the standardized graph format is what enabled cross-framework deployment. The format itself is not magical; the standardized contract around it is what makes everything cheap.
+
+The diffusion-model deployment pattern is the most concrete payoff. With Duino, a pretrained protein-structure diffusion model becomes a one-time-trained asset that any user can deploy against any deposition that has forward-operator records, by selecting the records they want to condition on and plugging them into the model's likelihood term. The model code does not change between targets or between techniques. This is exactly the architecture @levy2025inverse demonstrates the feasibility of in a one-off research codebase — and what nobody has yet built as infrastructure because the format does not exist. The value proposition lands cleanly: Duino is the format that makes ADP-3D-style multi-modal posterior sampling a deployable workflow, not a per-paper research effort.
+
+## 3. Honest limits {#limits}
+
+A few things the format does not do, and should not pretend to.
+
+*The Bayesian linker step is not a format-level concern.* Combining likelihoods from techniques that sample different physical Hamiltonians — X-ray sees crystal-packed cryo-temperature ensembles, cryo-EM sees vitrified-ice ensembles, NMR sees in-solution near-physiological ensembles, MD sees force-field-simulated ensembles — requires a modeling assumption about how those ensembles relate to a common underlying object. This is a *modeling* layer, not a *format* layer. The format provides condition tags, scope-DAG primitives for parametric reweighting, and provenance for tracking what was sampled under what conditions. Downstream inference engines do the actual reconciliation. The format should not encode one particular reconciliation theory as if it were canon.
+
+*The format does not auto-fuse ensembles.* Storing two ensembles from different techniques in the same file does not produce a third "merged" ensemble for free. Tools have to do that work explicitly, and the result depends on assumptions that should travel with the merge as provenance, not be baked into the format.
+
+*Operator registry adoption is a sociological problem, not a technical one.* The format provides the infrastructure for a registry — versioning, content hashes, dialect declarations, interface contracts, embedded-graph fallback. It does not substitute for the community work of agreeing on canonical definitions for `noe_v1`, `structure_factor_v1`, `cryo_em_map_v1`, etc. The hardest part of bringing this into existence is the inter-community coordination among IUCr, EMDB, BMRB, the NMR community, the MD community, and the ML-side stakeholders. The technical pieces are well-understood; the organizational alignment is the binding constraint.
+
+*Derived quantities stay out of the core.* R-factors, fit residuals, validation scores, FSC curves, half-map correlations are *recomputable* by running the operator on the ensemble against the observation, and per the [LLVM discipline](02-architecture.qmd#what-is-not-in-the-core) of chapter 2 they should not be stored. The format stores the operator, the observation, and the noise model; the metrics derive from these. This keeps the format from growing every time a new validation metric is invented.
+
+*Single-structure use cases remain valid.* MAP estimation against a sharply-peaked posterior produces a single conformation, which is what classical PDB depositions are. The format supports this as the limiting case of an ensemble — one state with weight one, no scope DAG, no heterogeneity descriptors. Backwards compatibility is preserved because the static case is a degenerate special case of the ensemble case, not a different format.
+
+## 4. Where this leaves the format-design chapters {#summary}
+
+The Core chapters take this conceptual picture as given. [Chapter 1](01-problems.qmd) catalogues the concrete failure modes of mmCIF that the new design has to address. [Chapter 2](02-architecture.qmd) lays out the four-layer architecture — Hierarchy, Groupings, Heterogeneity, Materialization — that handles Track A. The forward-operator dialect that Track B requires is a natural fifth layer that sits between Materialization and the [Evaluation model](03-evaluation-model.qmd), reusing the same scope-DAG, registry, and differentiability discipline that the lower layers establish. The [Annotations and the artifact engine](04-annotations-and-engine.qmd) chapter generalizes the selector-bus pattern under which all of this composes. [Technology survey](04b-technology-survey.qmd) maps the abstract design onto extant tools (Zarr, OME-Zarr, copick, TileDB, Arrow, DataFusion, H5MD, cryoDRGN, qFit, IHM). The [ML-native data](08-ml-native.qmd) chapter handles the access-pattern and feature-cache discipline that lets the differentiable evaluation model integrate with PyTorch / JAX dataloaders.
+
+The pithy summary: mmCIF was designed to hold a structure. Duino is designed to hold an ensemble *and* the experimental constraints that produced it, both in a form that ML training and posterior-sampling pipelines can consume directly. The first half of that is a richer representation problem; the second half is a forward-operator interface problem. Together they form the substrate for differentiable, multi-modal, posterior-sampling-shaped structural biology — which is where the field is headed regardless of what any format committee does, and where Duino is meant to be useful.
+
+{{< include /_includes/_layout_end.qmd >}}

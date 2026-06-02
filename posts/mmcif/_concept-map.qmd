@@ -1,0 +1,110 @@
+<!-- Reusable Duino concept-map figure. Included by index.qmd (overview)
+     and concept-map.qmd. The static render data/concept-map.svg (used by
+     the per-page hover) is generated from this same block. -->
+
+```{.tikz}
+%| label: fig-duino-map
+%| fig-cap: "**The Duino core at a glance.** Track A is the ensemble representation: a four-layer spine (Hierarchy and Groupings are the invariant core; Heterogeneity and Materialization are the ensemble layers, carrying the three regimes and three storage modes). Track B is the forward-operator infrastructure that turns an ensemble into a likelihood. The evaluation model renders coordinates by composing descriptors through two stacks. Box labels link to their chapters."
+%| fig-alt: "High-level map of the Duino format. Track A spine: Hierarchy to Groupings (core, invariant) to Heterogeneity to Materialization (ensemble). Heterogeneity carries regimes R1 discrete, R2 trajectory, R3 continuous; Materialization carries Mode A enumerate, Mode B delta, Mode C operator. Track B: forward operator to likelihood, fed by the ensemble. Evaluation model composes a discrete-nesting stack and a continuous-additive stack into rendered coordinates."
+
+% ---------------------------------------------------------------------------
+% Map-specific styles. Extraction-ready: once the style settles these `map*`
+% keys + \maplink can move into data/_tikz-preamble.tex for reuse by other
+% overview figures. Colours are inherited from the shared palette so the map
+% stays consistent with figures 1-9 (teal=groupings, orange=discrete,
+% olive=trajectory, violet=operators, grey=hierarchy).
+% ---------------------------------------------------------------------------
+\colorlet{maplink}{blue!55!black}
+\newcommand{\maplink}[2]{\href{#1}{\textcolor{maplink}{#2}}}
+\tikzset{
+  spine/.style   ={card, minimum width=2.4cm, minimum height=9mm,
+                   font=\sffamily\small\bfseries},
+  chip/.style    ={card, minimum width=2.7cm, minimum height=7mm,
+                   font=\sffamily\footnotesize},
+  trackrule/.style={rounded corners=5pt, draw=black!22, line width=0.6pt,
+                    dashed},
+  tracklbl/.style ={font=\sffamily\footnotesize\bfseries, text=black!55},
+  flow/.style    ={-Latex, rule, line width=0.9pt},
+  feed/.style    ={-Latex, black!35, line width=0.6pt, densely dashed},
+}
+
+\begin{tikzpicture}
+
+  % ---- title ----
+  \node[font=\sffamily\Large\bfseries] (t) at (0, 5.2) {Duino};
+  \node[font=\sffamily\footnotesize\itshape, text=black!55, below=0.4mm of t]
+    {an ensemble-native structural format $+$ its evaluation model};
+
+  % ===================== TRACK A: ensemble representation ==================
+  \draw[trackrule] (-8.7, -1.15) rectangle (4.3, 3.55);
+  \node[tracklbl, anchor=north west] at (-8.6, 3.48)
+    {Track A \;·\; ensemble representation};
+
+  % spine: core (grey) -> ensemble (white)
+  \node[spine, fill=H2] (hier)  at (-6.6, 2.4)
+    {\maplink{02-architecture.qmd\#containment}{Hierarchy}};
+  \node[spine, fill=white, draw=accG, line width=0.9pt] (grp) at (-3.6, 2.4)
+    {\maplink{02-architecture.qmd\#groupings}{Groupings}};
+  \node[spine, fill=white] (het)  at (-0.4, 2.4)
+    {\maplink{02-architecture.qmd\#heterogeneity}{Heterogeneity}};
+  \node[spine, fill=white] (mat)  at (2.7, 2.4)
+    {\maplink{02-architecture.qmd\#materialization}{Materialization}};
+  \draw[flow] (hier) -- (grp);
+  \draw[flow] (grp)  -- (het);
+  \draw[flow] (het)  -- (mat);
+
+  \node[font=\sffamily\scriptsize\itshape, text=black!45] at (-5.1, 1.55)
+    {core — invariant};
+  \node[font=\sffamily\scriptsize\itshape, text=black!45] at (1.15, 1.55)
+    {ensemble — what varies};
+
+  % regimes under Heterogeneity
+  \node[chip, fill=orange!8, draw=accS] (r1) at (-0.4, 0.55) {R1 · discrete};
+  \node[chip, fill=olive!8, draw=accT, below=1.5mm of r1] (r2) {R2 · trajectory};
+  \node[chip, fill=orange!8, draw=accS, below=1.5mm of r2] (r3) {R3 · continuous};
+  \draw[feed] (het.south) -- (r1.north);
+
+  % modes under Materialization
+  \node[chip, fill=H3] (mA) at (2.7, 0.55) {Mode A · enumerate};
+  \node[chip, fill=H3, below=1.5mm of mA] (mB) {Mode B · delta};
+  \node[chip, fill=violet!7, draw=accO, below=1.5mm of mB] (mC)
+    {\maplink{02-architecture.qmd\#materialization}{Mode C · operator}};
+  \draw[feed] (mat.south) -- (mA.north);
+
+  % ===================== TRACK B: forward operators ========================
+  \draw[trackrule] (4.7, -1.15) rectangle (8.9, 3.55);
+  \node[tracklbl, anchor=north west, text width=3.9cm, align=left]
+    at (4.8, 3.48) {Track B \;·\; forward-operator infrastructure};
+
+  \node[chip, fill=violet!7, draw=accO, minimum height=1.0cm, align=center]
+    (op) at (6.8, 1.7)
+    {\maplink{forward-operators.qmd\#two-tracks}{forward operator}\\
+     \tiny op · scope · obs · noise};
+  \node[chip, fill=white, draw=accO, align=center] (lik) at (6.8, 0.25)
+    {likelihood $p(y\!\mid\!x)$};
+  \draw[flow] (op) -- (lik);
+  \draw[feed] (mat.east) to[out=0, in=180] (op.west);
+
+  % ===================== evaluation model (renders coords) =================
+  \draw[trackrule, draw=accO!45] (-8.7, -3.7) rectangle (8.9, -1.55);
+  \node[tracklbl, text=accO!75!black, anchor=north west] at (-8.6, -1.62)
+    {\maplink{03-evaluation-model.qmd}{evaluation model} \;·\; renders coordinates};
+
+  \node[chip, fill=orange!8, draw=accS, minimum width=3.7cm] (dn) at (-4.7, -2.5)
+    {\maplink{03-evaluation-model.qmd\#the-discrete-nesting-stack}{discrete-nesting stack}};
+  \node[chip, fill=teal!6, draw=accG, minimum width=3.7cm] (ca) at (-4.7, -3.3)
+    {\maplink{03-evaluation-model.qmd\#the-continuous-additive-stack}{continuous-additive stack}};
+  \node[draw=rule, circle, inner sep=1.2pt, fill=white, font=\sffamily\small]
+    (plus) at (-0.4, -2.9) {$+$};
+  \node[spine, fill=H1, minimum width=2.6cm] (xyz) at (3.9, -2.9) {coordinates};
+  \draw[flow] (dn.east) to[out=0, in=120] (plus.north west);
+  \draw[flow] (ca.east) to[out=0, in=240] (plus.south west);
+  \draw[flow] (plus.east) -- (xyz.west);
+
+  \draw[feed] (r1.south) to[out=-90, in=90] (dn.north);
+  \draw[feed] (r3.south) to[out=-90, in=20] (ca.east);
+  \node[font=\sffamily\scriptsize\itshape, text=black!45]
+    at (1.0, -2.0) {composed via the \maplink{02-architecture.qmd\#ensemble-layers}{scope DAG}};
+
+\end{tikzpicture}
+```

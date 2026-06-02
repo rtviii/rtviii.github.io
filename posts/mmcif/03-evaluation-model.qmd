@@ -11,19 +11,25 @@ order: 3
 
 # {{< meta title >}}
 
+This chapter is about how multiple scope-local descriptors coexist in the same file, how the assumptions about their coupling let storage stay linear in the sum of per-scope state spaces rather than blowing up to the product, and what operational contract the format has to satisfy to actually render coordinates from the resulting tangle. The IR can be specified mostly by writing down a Zarr layout; the *evaluation model* is what gives that layout a meaning.
 
+The previous chapter described heterogeneity in isolation: a regime, a scope, a materialization mode. Real depositions almost never have just one descriptor. A refined crystal carries B-factors, altlocs, and often TLS groups simultaneously; an NMR bundle carries an ensemble of models plus per-atom uncertainty estimates; an MD trajectory frequently carries a per-frame state-cluster label alongside the coordinates.
 
+## Mixing scenarios
 
-The previous chapter described heterogeneity in isolation: a regime, a scope, a materialization mode. Real depositions almost never have just one descriptor. A refined crystal carries B-factors, altlocs, and often TLS groups simultaneously; an NMR bundle carries an ensemble of models plus per-atom uncertainty estimates; an MD trajectory frequently carries a per-frame state-cluster label alongside the coordinates. This chapter is about how multiple scope-local descriptors coexist in the same file, how the assumptions about their coupling let storage stay linear in the sum of per-scope state spaces rather than blowing up to the product, and what operational contract the format has to satisfy to actually render coordinates from the resulting tangle. The IR can be specified mostly by writing down a Zarr layout; the *evaluation model* is what gives that layout a meaning.
+Before introducing the formal composition rule, it is worth grounding the discussion in cases that actually exist on disk today, ordered roughly from most to least common:
 
-## Realistic mixing scenarios
+1. **Refined crystal structure with B-factors, altlocs, and optionally TLS.** Most of the PDB. Three descriptors at three scopes (atom, residue, chain or domain), all currently encoded in three unrelated mmCIF conventions.
+2. **NMR bundle with per-model uncertainty.** A discrete ensemble at assembly scope plus a parametric atom-scope descriptor. Two layers, cleanly aligned on the model axis.
+3. **MD trajectory with a per-frame state-cluster label.** A Regime 2 trajectory at assembly scope plus a Regime 1 discrete label per frame, sharing the frame axis. The label is a function of the trajectory; this is a provenance link, not a state-space restriction.
+4. **qFit-style multiconformer ensemble.** Regime 1 at residue scope, sparsely distributed, plus the standard atom-scope B-factors.
+5. **Cryo-EM with a discrete class assignment plus a continuous within-class motion.** Two layers at the same scope (assembly), one Regime 1 and one Regime 3, with the continuous mode commonly nested under the class label.
 
 ```{.tikz}
 %| fig-alt: "A two-chain complex with a bound ligand: Chain A is plain containment, Chain B carries a Regime 3 hinge motion plus a Regime 1 rotamer ensemble at one residue, and the ligand is a Regime 2 trajectory."
+%| label: fig-composition
+%| fig-cap: **Composition: three regimes coexisting.** A two-chain complex with a bound ligand. Chain A is plain containment. Chain B carries a Regime 3 hinge motion over two rigid-body scopes (decoder $\varphi_\text{hinge}$ acting on a single latent $\mathbf{z}_\text{hinge}$) and a Regime 1 rotamer ensemble at residue 85. The ligand is a Regime 2 trajectory. Three regimes, three attachment points in the system, one consistent vocabulary.
 \begin{tikzpicture}
-
-\node[font=\sffamily\bfseries] at (0, 5)
-  {Composition — three regimes coexisting};
 
 \node[L0] (AS) at (0, 4) {Assembly};
 \node[L1] (EA) at (-7.5, 3) {Chain A\\ \footnotesize static};
@@ -83,24 +89,6 @@ The previous chapter described heterogeneity in isolation: a regime, a scope, a 
 \end{tikzpicture}
 ```
 
-**Figure 7 — Composition: three regimes coexisting.**
-A two-chain complex with a bound ligand. Chain A is plain containment.
-Chain B carries a Regime 3 hinge motion over two rigid-body scopes
-(decoder $\varphi_\text{hinge}$ acting on a single latent
-$\mathbf{z}_\text{hinge}$) and a Regime 1 rotamer ensemble at residue 85.
-The ligand is a Regime 2 trajectory. Three regimes, three attachment
-points in the system, one consistent vocabulary.
-
-Before introducing the formal composition rule, it is worth grounding the discussion in cases that actually exist on disk today, ordered roughly from most to least common:
-
-1. **Refined crystal structure with B-factors, altlocs, and optionally TLS.** Most of the PDB. Three descriptors at three scopes (atom, residue, chain or domain), all currently encoded in three unrelated mmCIF conventions.
-2. **NMR bundle with per-model uncertainty.** A discrete ensemble at assembly scope plus a parametric atom-scope descriptor. Two layers, cleanly aligned on the model axis.
-3. **MD trajectory with a per-frame state-cluster label.** A Regime 2 trajectory at assembly scope plus a Regime 1 discrete label per frame, sharing the frame axis. The label is a function of the trajectory; this is a provenance link, not a state-space restriction.
-4. **qFit-style multiconformer ensemble.** Regime 1 at residue scope, sparsely distributed, plus the standard atom-scope B-factors.
-5. **Cryo-EM with a discrete class assignment plus a continuous within-class motion.** Two layers at the same scope (assembly), one Regime 1 and one Regime 3, with the continuous mode commonly nested under the class label.
-
-The combinatorial multi-scale ribosome and cryo-ET workflows that earlier drafts of this chapter led with are real as capability targets but not as current practice; they belong as scaling demonstrations later, not as the motivating cases. The design slogan is "support some modes of heterogeneity some of the time" out of the box, with the structure to evolve toward more.
-
 ## What an evaluation model is
 
 The architecture chapter is about the *intermediate representation*: what a deposition contains, schema and bytes. The evaluation model is the contract that turns those bytes into rendered coordinates -- it is the operational semantics of the four-layer IR. Concretely, it has to specify:
@@ -115,31 +103,33 @@ This is the harder half of the design. The static schema is mostly a discipline 
 
 ## Extension surfaces {#extension-surfaces}
 
-The evaluation model has two pluggable extension points.
+Two extension points: *operators* and *algebras* to combine them.
 
-The first is a **typed-operator system**. Every operator declares a *type* -- an interface (input/output shapes, frames; pinned down for the four current types in the [Mode C operator interfaces](#mode-c-operator-interfaces) section), the [Mode C subcase](02-architecture.qmd#materialization) it satisfies, and a composition-rule tag -- and stores its *body* in one of three venues, picked per-deposition:
-
-- **Inline** in the deposition for bespoke implementations the deposition cannot recover from a shared spec. Examples: a trained cryoDRGN decoder checkpoint specific to this cryo-EM dataset; a per-deposition PCA basis fit on this protein only; a learned neural potential trained for a particular structure-prediction model; ad-hoc lookup tables; diffusion-sampled posterior ensembles produced by a one-shot model run; a custom attention-based decoder for this protein family; deposition-specific radiation-damage or beam-induced-motion correction operators; a per-deposition fitted Gaussian mixture model over latent space; density-modification operators tuned to a specific map. The body lives next to the inputs in the same file. The deposition is self-contained.
+**Tjyped-operator system**. Every operator declares a *type* -- an interface (input/output shapes, frames; pinned down for the four current types in the [Mode C operator interfaces](#mode-c-operator-interfaces) section), the [Mode C subcase](02-architecture.qmd#materialization) it satisfies, and a composition-rule tag -- and stores its *body* in one of three venues, picked per-deposition:
 
 - **Registry-referenced** by content hash for *standardized* operators whose body is recoverable from a stable spec. Examples: TLS evaluation (`parametric_gaussian/tls_v1`); isotropic ADP scaling (`parametric_gaussian/iadp_v1`); anisotropic ADP (`parametric_gaussian/aadp_v1`); classical normal-mode evaluation over a stored basis (`basis/nm_v1`); rigid-body transform application via quaternion plus translation (`rigid_body/quat_v1`); standard PCA reconstruction; occupancy-weighted averaging; standard symmetry transforms (P1, P21, ...); identity / no-op. These are small, spec-defined, often a few lines of NumPy. The body is the same across every deposition that uses TLS, so duplicating it in every entry would be wasted bytes; the deposition pins by content hash, and anyone can re-implement against the spec and verify the hash matches.
+
+- **Inline** in the deposition for bespoke implementations the deposition cannot recover from a shared spec. Examples: a trained cryoDRGN decoder checkpoint specific to this cryo-EM dataset; a per-deposition PCA basis fit on this protein only; a learned neural potential trained for a particular structure-prediction model; ad-hoc lookup tables; diffusion-sampled posterior ensembles produced by a one-shot model run; a custom attention-based decoder for this protein family; deposition-specific radiation-damage or beam-induced-motion correction operators; a per-deposition fitted Gaussian mixture model over latent space; density-modification operators tuned to a specific map. The body lives next to the inputs in the same file. The deposition is self-contained.
 
 - **External-artifact-referenced** by URI plus content hash for payloads too large to inline. Examples: an MD trajectory in H5MD on EMPIAR or institutional storage; a multi-million-frame cryo-EM particle stack; a long-simulation energy surface; a community foundation model for protein dynamics hosted on Zenodo or HuggingFace; a precomputed feature cache shared across many depositions; raw experimental data (diffraction images, micrograph movies); large alignment files; reference homology structures. Inlining is not just impractical here, it is infeasible -- the artifact is bigger than every consumer's working set.
 
 The deposition principle is to **prefer self-containment when feasible**. Inline by default for anything bespoke; registry-reference for spec-stable operators where the body is recoverable from the spec; external-artifact reference only when inlining is genuinely impossible. The operator's type is what consumers dispatch on; the body's storage venue is an orthogonal choice. This is what earlier drafts of the architecture chapter called the "operator graph" -- not a per-deposition object, but the format's open-ended extension surface for "what kinds of computation can a Mode C descriptor invoke, and where its implementation lives."
 
-The second is a **small enumerated set of composition algebras** -- the rules for how descriptors at different scopes combine when more than one applies to the same atom. Today the format needs four:
+Small enumerated set of **composition algebras** -- the rules for how descriptors at different scopes combine when more than one applies to the same atom:
 
 - **Independence** (default): joint distribution factors; descriptors are evaluated independently. The atom-level B-factors of a refined crystal across atoms.
 - **Hierarchical nesting** (`nested_under`): the state space of a child-scope descriptor is conditional on the parent-scope descriptor; storage scales with the legal-state count rather than the Cartesian product.
 - **Additive in covariance space**: parametric-Gaussian descriptors at different scopes combine by summing per-atom $3 \times 3$ covariances.
 - **Additive in displacement space**: deterministic-displacement descriptors (basis, decoder, external reference) at different scopes sum per-atom 3-vectors directly into the mean.
 
-Every operator in the registry is tagged with which algebra it composes under. The discrete-nesting and continuous-additive stacks of the next section are the worked-out instances of two of these four. A future descriptor type that fits none of them declares a new algebra; the format has to learn to dispatch on it, but the addition is small and named, not a structural change. Operators are open-ended; algebras are a small enumerated set.
+Every operator in the registry is tagged with which algebra it composes under. ~~The discrete-nesting and continuous-additive stacks of the next section are the worked-out instances of two of these four.~~ A future descriptor type that fits none of them declares a new algebra; the format has to learn to dispatch on it, but the addition is small and named, not a structural change. Operators are open-ended; algebras are a small enumerated set.
 
 ## The composition principle: two parallel stacks
 
 ```{.tikz}
 %| fig-alt: "Two scope groupings sit in different stacks: the discrete-nesting stack picks an altloc state and looks up a sparse delta; the continuous-additive stack draws a Gaussian from per-atom B-factor covariances; the two streams meet at a single concrete atom equation."
+%| label: fig-discrete-plus-continuous
+%| fig-cap: **Discrete state plus continuous disorder: a toy example.** How do two descriptors at different scopes collapse to the same concrete atom? The discrete-nesting stack picks a state for residue 128, looks up the sparse $\Delta$, and adds it to $x^{\text{ref}}$ at the affected atoms — atoms outside the residue keep their reference position. The continuous-additive stack evaluates the per-atom B-factor through `iadp_v1` and draws one Gaussian displacement per atom. The two streams meet at the final sum: the mean from the discrete side, the draw from the continuous side, every $a$ independently.
 \begin{tikzpicture}
 
 \node[font=\sffamily\small\bfseries, text=black!60, anchor=east] at (-9.5,  6.0) {scope};
@@ -206,21 +196,7 @@ Every operator in the registry is tagged with which algebra it composes under. T
 \end{tikzpicture}
 ```
 
-**Figure 9 — Discrete state plus continuous disorder.**
-Two scope groupings sit in different stacks of the evaluation model and
-collapse to the same concrete atom. The discrete-nesting stack picks a
-state for residue 128, looks up the sparse $\Delta$, and adds it to
-$x^{\text{ref}}$ at the affected atoms — atoms outside the residue keep
-their reference position. The continuous-additive stack evaluates the
-per-atom B-factor through `iadp_v1` and draws one Gaussian displacement
-per atom. The two streams meet at the final sum: the mean from the
-discrete side, the draw from the continuous side, every $a$ independently.
-
-::: {.def data-term="Reference structure"}
-$x^{\mathrm{ref}}$ is the single anchor: a per-atom Cartesian position, one set, in $\mathbb{R}^3$. It is what the deposition would render as if every heterogeneity descriptor were inactive. Every descriptor's contribution is expressed as a displacement against it.
-:::
-
-The earlier draft of this chapter used a single sum over scopes that conflated two physically and mathematically different composition rules. They behave differently and they should be split:
+At every level of the hierachy inside ever y scope, the two stacks behave differently but combine according to composition algebras:
 
 $$
 x_i(s_{\mathrm{disc}}, s_{\mathrm{cont}}) \;=\; \mathrm{mean}_i(s_{\mathrm{disc}}) \;+\; \delta_i(s_{\mathrm{cont}})
@@ -229,13 +205,9 @@ $$
 - $\mathrm{mean}_i(s_{\mathrm{disc}})$ is the *mean structure* for atom $i$ given the discrete-state assignment $s_{\mathrm{disc}}$, resolved by **hierarchical state-space nesting** through the discrete descriptors.
 - $\delta_i(s_{\mathrm{cont}})$ is the *displacement* contributed at atom $i$ by the continuous Gaussian descriptors at every scope it belongs to, resolved by **additive composition in covariance / displacement space**.
 
-Discrete states determine which mean structure is being described. Continuous Gaussian descriptors describe thermal disorder around whatever mean was selected. The two stacks act on different aspects of the structure and do not interfere with each other.
+Discrete states determine which mean structure is being described. Continuous  descriptors describe [ex. Gaussian/thermal] disorder around whatever mean was selected. The two stacks act on different aspects of the structure and do not interfere with each other.
 
 ### The discrete-nesting stack
-
-::: {.def data-term="Discrete-nesting stack"}
-The composition rule for Regime 1 descriptors at multiple scopes. Each child descriptor declares which parent state activates which child state set; only legal joint states exist at render time. Storage scales with the count of legal joint states, not the Cartesian product of per-scope state spaces.
-:::
 
 Discrete (Regime 1) descriptors at multiple scopes compose by state-space restriction. Each child descriptor declares which parent state activates which child state set, and only legal joint states exist at render time. The canonical published instance is Wankowicz & Fraser's hierarchical compositional/conformational nesting [@wankowicz2024encoding]: compositional state at entity-instance scope (ligand bound vs absent), conformational state at residue-range scope (loop conformations available given ligand state), rotamer state at residue scope (sidechain conformers conditional on loop state). qFit-ligand [@flowers2025qfit] implements this pattern in a working ligand-modeling pipeline.
 
@@ -251,6 +223,8 @@ Storage scales with the number of *legal* joint states, not the Cartesian produc
 
 ```{.tikz}
 %| fig-alt: "ECHT applied to PDB 6vxx: five scope levels (molecule, domain, SSE, residue, atom) each carry TLS or B-factor parameters; per-level operators produce per-atom 3x3 covariance contributions which sum independently before a single Gaussian draw is added to the reference position."
+%| label: fig-echt-stack
+%| fig-cap: **Hierarchical continuous-additive stack (ECHT applied to PDB 6vxx).** Each scope card shows the parameters its groups carry plus the source of the group partition: the molecule level is one TLS for the whole structure; the domain level is one TLS per manually-defined sub-domain; the secondary-structure level is one TLS per DSSP-identified helix or strand; the residue level is one TLS per residue ($3000$ in the trimer); and the atomic level keeps a per-atom isotropic B-factor. Five operator applications turn those parameters into per-atom $3{\times}3$ covariance contributions. The contributions sum independently at every atom; one draw from the resulting Gaussian, added to $x^{\text{ref}}$, gives the concrete atom position.
 \begin{tikzpicture}
 
 \node[font=\sffamily\small\bfseries, text=black!60, anchor=east] at (-9.5,  6.4) {scope};
@@ -350,22 +324,6 @@ Storage scales with the number of *legal* joint states, not the Cartesian produc
 \end{tikzpicture}
 ```
 
-**Figure 8 — Hierarchical continuous-additive stack (ECHT applied to PDB 6vxx).**
-Each scope card shows the parameters its groups carry plus the source of
-the group partition: the molecule level is one TLS for the whole structure;
-the domain level is one TLS per manually-defined sub-domain; the
-secondary-structure level is one TLS per DSSP-identified helix or strand;
-the residue level is one TLS per residue ($\sim$3000 in the trimer); and
-the atomic level keeps a per-atom isotropic B-factor. Five operator
-applications turn those parameters into per-atom $3{\times}3$ covariance
-contributions. The contributions sum independently at every atom; one draw
-from the resulting Gaussian, added to $x^{\text{ref}}$, gives the concrete
-atom position.
-
-::: {.def data-term="Continuous-additive stack"}
-The composition rule for Regime 3 Gaussian descriptors at multiple scopes. Each level contributes a per-atom $3 \times 3$ covariance; the total atomic displacement covariance is the *sum* of those contributions, under the assumption that levels are uncorrelated. ECHT [@pearce2021echt] is the published instance.
-:::
-
 Continuous Regime 3 descriptors at multiple scopes that each describe distributed Gaussian variation -- thermal disorder, in particular -- compose by *adding their covariances at each atom*. Whole-molecule rocking, domain libration, secondary-structure breathing, per-atom local jitter: each at its own scope, each a parametric Gaussian, all summing linearly to give the total atomic displacement covariance. The composition for the continuous stack is
 
 $$
@@ -402,10 +360,6 @@ The independence-or-nesting assumption is what keeps storage scaling with the su
 
 ## Sample axes: aligned, broadcast, mixed
 
-::: {.def data-term="Sample axes"}
-A descriptor's *sample axis* is the index along which the deposition stores its multiple samples (frames, models, particles, latent draws). Descriptors are **aligned** when they share a named sample axis (sample $i$ of one corresponds to sample $i$ of another), **broadcast** when they have no sample axis at all (the descriptor is parametric and renders by drawing on demand), and **mixed** when a deposition combines an aligned core with one or more broadcast satellites.
-:::
-
 The composition formula talks about a state tuple $s$, but says nothing about how those entries are stored when the deposition has many "samples". Two patterns recur and have radically different on-disk consequences.
 
 **Aligned.** Multiple descriptors share a sample axis. Sample $i$ corresponds to coordinated values across descriptors. The cleanest case is a trajectory plus a per-frame state-cluster label: the trajectory has a frame axis, the label has a frame axis, frame 47 has both a coordinate set and a class label that go together because they were computed on the same frame. On disk this is naturally a Zarr group with multiple arrays sharing a leading axis chunked together.
@@ -436,10 +390,6 @@ The cleaner framing is the additive-Gaussian one above. There is no asymmetric "
 This is also why software that is unaware of TLS gets the wrong answer when it reads only the per-atom B-factor column: it is reading one term of an additive sum and treating it as the total. The fix at the format level is the same either way -- record every contributing descriptor and let the consumer sum them -- but it is now a one-rule consequence of additive composition rather than a special asymmetric relationship that needed its own metadata field.
 
 ## Mode C operator interfaces {#mode-c-operator-interfaces}
-
-::: {.def data-term="Operator interface"}
-The contract every Mode C subcase satisfies: a function with the shape `(state_input, reference) -> displacement`, plus declared input shape, output shape, atom-id ordering, and reference frame. Parametric Gaussians, basis descriptors, neural decoders, and external references all fit this surface; they differ in what `state_input` is, what backend the call lands on, and whether the output is a draw or a distribution.
-:::
 
 Each [Mode C subcase](02-architecture.qmd#materialization) needs its own operator contract. The four contracts side by side:
 
@@ -520,9 +470,7 @@ $$
 \mathbf{U}^{\text{total}}_a \;=\; \sum_{l=1}^{n_{\text{tls}}} \mathbf{U}^{\text{tls}}_{l,a} \;+\; \mathbf{U}^{\text{atomic}}_a.
 $$
 
-::: {.figure-placeholder}
-*Figure 8 (forthcoming) — hierarchical continuous-additive stack visualizing the five scope groupings, per-scope operator applications, and the compose / draw / atom cascade. Symbol legend and storage breakdown at the bottom.*
-:::
+The five-level stack for this decomposition is shown in @fig-echt-stack.
 
 Reading 6vxx into our format produces the following.
 

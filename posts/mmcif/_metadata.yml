@@ -5,7 +5,15 @@ css:
 bibliography: references.bib
 csl: ../../styles/numeric-superscript.csl
 link-citations: true
-citations-hover: true
+# Per-chapter reference lists are suppressed: every chapter links into the
+# single references page (references.qmd) instead. citenum.lua rewrites each
+# in-text citation to its GLOBAL number (key position in references.bib) and
+# repoints it at that page. references.qmd overrides suppress-bibliography back
+# to false so the one consolidated list renders there.
+suppress-bibliography: true
+# On-page citation hover is off because the bibliography no longer lives on the
+# chapter pages; clicking a citation goes to the references page.
+citations-hover: false
 crossrefs-hover: true
 toc: true
 toc-depth: 3
@@ -23,6 +31,11 @@ format:
 # The bus figure adds its own \tikzset overrides at the top of its block.
 filters:
   - diagram
+  # citenum.lua runs before Quarto's built-in citeproc: it resolves every
+  # [@key] into a global-numbered link to the references page, so citeproc then
+  # emits no per-chapter bibliography. The references page builds its list from
+  # `nocite` instead.
+  - citenum.lua
 
 diagram:
   cache: true

@@ -16,29 +16,38 @@ categories: [structural-biology, data-formats, mmcif]
 
 [{{< meta subtitle >}}]{.post-subtitle}
 
-
-_This is a very early draft that's still coalescing. The only worthwhile chapters are 2 and 3 for now. Figures are shit, refs are missing, lots of assumptions and koolaid._ 
-
-
-
+_Early draft, still coalescing. The Core — Layout, Forward operators, Evaluation model — is where the real content lives; the Primer and the Secondary chapters are rougher. Refs are still patchy and there's plenty of koolaid._
 
 I'm trying to sketch here a kernel of idealized infrastructure for structural bio in 2026 and beyond that is not a meshwork of disparate databases and resources, is not bursting at the seams from the influx of new datatypes and data volume, is not constrained in its evolution by obsolete conventions, accommodates the new computational fabric well.
 
 This is not a proposal or a concrete plan or an attack on anyone. There are motifs from database, compiler and ML literature here so it's not exactly obvious where the "format" ends and auxilary software (from parser to the backend to storage to exchange platform) begins for now.
 
-TODO: 
-add a survey of operations across pdbtbx, ccp4, coot, isolde, chimerax
+<!-- TODO: add a survey of operations across pdbtbx, ccp4, coot, isolde, chimerax -->
+
+The map below orients the Core; every box links to its chapter.
+
+{{< include _concept-map.qmd >}}
 
 ## Contents
 
-1. [Problems with mmCIF and the current ecosystem](01-problems.qmd) -- some scattered complaints about the mmcif format in no particular order of importance.. single-structure assumption, parsing fragility, missing experimental linkage, no ML-native access, pain points.
-2. [Layout](02-architecture.qmd) -- a stab at the alternative "from the ground up" format architecture. Four layers are described: two for the core data structure and two for representing various heterogeneities.
-3. [Evaluation model](03-evaluation-model.qmd) -- realistic mixing scenarios, the two-stack composition principle (discrete-nesting and continuous-additive), independence vs nesting vs provenance, sample-axis classification (aligned/broadcast/mixed), Mode C operator interfaces, cross-backend integration, open design questions.
-4. [Annotations and the artifact engine](04-annotations-and-engine.qmd) -- the engine half: query language, the (selector, body, provenance) annotation overlay, ML-native featurization passes (graphs, equivariant features, pair representations, tokenization), training data shapes for distribution-predicting models.
-5. [Technology survey](04b-technology-survey.qmd) -- the survey half: Zarr/OME-Zarr/copick/TileDB/Arrow/DataFusion as storage primitives, with the three heterogeneity regimes mapped onto existing tools (H5MD, cryoDRGN, qFit, IHM).
-6. [Open questions](05-open-questions.qmd)
-7. [ML-native data: access patterns and precomputed features](08-ml-native.qmd) -- random access, neighbor lookup, equivariant feature caches, tokenization, dataloader chunking; the discipline for caching derived data without polluting the core.
-8. [Appendix: "black-box" data and model-side artifacts](06-black-box-data.qmd) -- weights, decoders, latents, model outputs, training metadata co-located with the structure.
-9. [Appendix: modularity examples in software ecosystems](07-modularity-examples.qmd) -- LLVM, DataFusion, AnnData, ECS, ONNX, OpenTelemetry, CF Conventions.
+The **Core** is Duino itself — read these in order:
+
+- [Layout](02-architecture.qmd) — Track A, the ensemble representation. Four layers: Hierarchy and Groupings (the invariant core), Heterogeneity (the three regimes R1/R2/R3) and Materialization (the three storage modes A/B/C).
+- [Forward-operator infrastructure](forward-operators.qmd) — Track B. The operator records that turn an ensemble into an experimental likelihood, and the registry/storage discipline around them.
+- [Evaluation model](03-evaluation-model.qmd) — how scope-local descriptors compose into rendered coordinates: the discrete-nesting and continuous-additive stacks, independence vs nesting vs provenance, sample-axis classification, Mode C operator interfaces, cross-backend integration.
+
+**Prerequisite:**
+
+- [Primer](primer.qmd) — Boltzmann ensembles, marginals vs joints, qFit, forward models, and the Bayesian posterior-sampling picture the Core takes as given. Start here if the conformational-ensemble framing is new.
+
+**Secondary** — equally part of the mission, but supporting the Core rather than constituting it:
+
+- [Problems with mmCIF and the current ecosystem](01-problems.qmd) -- single-structure assumption, parsing fragility, missing experimental linkage, no ML-native access.
+- [Annotations and the artifact engine](04-annotations-and-engine.qmd) -- query language, the (selector, body, provenance) annotation overlay, ML-native featurization passes, training-data shapes.
+- [Technology survey](04b-technology-survey.qmd) -- Zarr/OME-Zarr/copick/TileDB/Arrow/DataFusion as storage primitives, the three heterogeneity regimes mapped onto existing tools (H5MD, cryoDRGN, qFit, IHM).
+- [Open questions](05-open-questions.qmd)
+- [ML-native data: access patterns and precomputed features](08-ml-native.qmd) -- random access, neighbor lookup, equivariant feature caches, tokenization, dataloader chunking.
+- [Appendix: "black-box" data and model-side artifacts](06-black-box-data.qmd) -- weights, decoders, latents, model outputs, training metadata co-located with the structure.
+- [Appendix: modularity examples in software ecosystems](07-modularity-examples.qmd) -- LLVM, DataFusion, AnnData, ECS, ONNX, OpenTelemetry, CF Conventions.
 
 {{< include /_includes/_layout_end.qmd >}}

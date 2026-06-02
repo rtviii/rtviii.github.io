@@ -3,7 +3,9 @@ page-layout: custom
 css:
   - styles/homepage.css
 listing:
-  contents: "posts/*/index.qmd"
+  contents:
+    - "posts/*/index.qmd"
+    - "!posts/glossary/index.qmd"
   template: _templates/blog-listing.ejs
   sort: "date desc"
   feed: true

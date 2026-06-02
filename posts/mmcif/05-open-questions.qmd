@@ -11,9 +11,6 @@ order: 5
 
 # {{< meta title >}}
 
-
-
-
 - Is this a format, a library, a type system, a database, or all of the above? The answer probably depends on use case: a format for archival/sharing, a library for access/manipulation, a type system for validation, a database for querying.
 - What is the minimum viable subset that is useful? Probably: a Zarr-based layout with conventions for topology + coordinates + ensemble dimension + annotation overlays, a Python library for read/write, and converters to/from mmCIF.
 - Who adopts first? ML practitioners (who have the most acute pain from current formats)? cryo-ET groups (who are already on Zarr via copick/CZ Portal)? Crystallographers (who have the deepest investment in mmCIF)?

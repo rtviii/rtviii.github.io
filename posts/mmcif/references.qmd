@@ -1,0 +1,43 @@
+---
+title: "References"
+order: 98
+# Override the series default (suppress-bibliography: true): this is the one
+# page where the consolidated list renders.
+suppress-bibliography: false
+citations-hover: false
+# Force every entry to appear, in references.bib order, so the global numbering
+# (1..N by file position) matches what citenum.lua stamps into the chapters.
+# Keep this list in the SAME order as references.bib; regenerate alongside the
+# `order` table in citenum.lua when the bib changes.
+nocite: |
+  @wankowicz2024encoding @rosenberg2024altlocs @kuzmanic2014xray
+  @wankowicz2022ligand @ploscariu2021ensemble @pearce2021echt
+  @lane2023frontier @raghu2025cryoboltz @levy2025inverse
+  @chung2024dps @flowers2025qfit @wankowicz2025entropy
+  @bozovic2020pdz @winn2001tls @painter2006tlsmd
+  @urzhumtsev2013adp @wankowicz2026possibility @wankowicz2024automated
+  @riley2021qfit @singhal2025fk @ingraham2023illuminating
+  @venkatakrishnan2013plug @vandenbedem2015integrative @hilser2007statistical
+  @wojdyr2022gemmi @emsley2010coot @williams2018molprobity
+  @liebschner2019phenix @joosten2014pdbredo @pettersen2021chimerax
+  @zhong2021cryodrgn @sehnal2021molstar @zarr
+  @omezarr @copick @tiledb
+  @datafusion @llvm @onnx
+  @h5md @ihmcif @naef2026blackbox
+---
+
+{{< include /_includes/_post_head.qmd >}}
+
+{{< include _glossary.qmd >}}
+
+{{< include /_includes/_post_mid.qmd >}}
+
+# References
+
+Every work cited across the series, numbered globally. In-text citations in the
+chapters link here by number.
+
+::: {#refs}
+:::
+
+{{< include /_includes/_layout_end.qmd >}}

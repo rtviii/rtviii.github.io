@@ -11,14 +11,11 @@ order: 7
 
 # {{< meta title >}}
 
-
-
-
 The LLVM/DataFusion pattern -- stable core IR, pluggable frontends and backends, passes as the unit of extension -- recurs across enough mature systems that it is probably the right general shape for any data infrastructure problem with heterogeneous consumers and evolving annotation types.
 
 ## LLVM
 
-[llvm.org](https://llvm.org). The canonical example, and worth dwelling on because the design choices are unusually explicit and documented. LLVM's central insight was that compiler infrastructure had been rebuilt from scratch for every new language and every new target architecture because each compiler was a direct language-to-machine-code pipeline with no shared intermediate layer. The solution was to define a typed, static single-assignment intermediate representation (LLVM IR) that is rich enough to express the semantics of any language a frontend might compile from, and general enough that any backend can lower it to machine code. The IR is the contract. Frontends (Clang for C/C++, rustc for Rust, swiftc for Swift) are entirely independent of each other and of any backend; backends (x86, ARM, WebAssembly, RISC-V) are entirely independent of any frontend. Analyses and transformations -- dead code elimination, loop unrolling, inlining, alias analysis -- are passes over the IR that any frontend-backend pair inherits automatically.
+[llvm.org](https://llvm.org) [@llvm]. The canonical example, and worth dwelling on because the design choices are unusually explicit and documented. LLVM's central insight was that compiler infrastructure had been rebuilt from scratch for every new language and every new target architecture because each compiler was a direct language-to-machine-code pipeline with no shared intermediate layer. The solution was to define a typed, static single-assignment intermediate representation (LLVM IR) that is rich enough to express the semantics of any language a frontend might compile from, and general enough that any backend can lower it to machine code. The IR is the contract. Frontends (Clang for C/C++, rustc for Rust, swiftc for Swift) are entirely independent of each other and of any backend; backends (x86, ARM, WebAssembly, RISC-V) are entirely independent of any frontend. Analyses and transformations -- dead code elimination, loop unrolling, inlining, alias analysis -- are passes over the IR that any frontend-backend pair inherits automatically.
 
 The critical design discipline is what stays out of the IR. LLVM IR does not contain alias analysis results, inlining decisions, or loop trip counts -- these are derived by passes that run over it. This is not accidental parsimony; it is a hard-won lesson that putting derived information in the core creates consistency and versioning problems. If alias analysis results are in the IR, two tools that compute them differently produce incompatible IRs. If they are a pass, each tool runs its own pass and the IR remains a shared ground truth. The IR contains only what cannot be derived from anything more primitive: the program's type system, its dataflow graph, its control flow structure.
 
@@ -26,7 +23,7 @@ Translated to structural biology: LLVM IR is topology + coordinates + heterogene
 
 ## Apache DataFusion
 
-[datafusion.apache.org](https://datafusion.apache.org). Where LLVM is a compiler infrastructure, DataFusion is a query engine infrastructure -- and the distinction matters for the structural biology use case because querying is the access pattern we actually need. DataFusion is a modular execution engine written in Rust, built on Apache Arrow's columnar in-memory format. Its architecture separates: a logical plan (what the query asks for, as a tree of relational operators), a physical plan (how to execute it, with concrete algorithms chosen by an optimizer), and data sources that implement a `TableProvider` trait exposing a schema, a scan method, and optional predicate and projection pushdown.
+[datafusion.apache.org](https://datafusion.apache.org) [@datafusion]. Where LLVM is a compiler infrastructure, DataFusion is a query engine infrastructure -- and the distinction matters for the structural biology use case because querying is the access pattern we actually need. DataFusion is a modular execution engine written in Rust, built on Apache Arrow's columnar in-memory format. Its architecture separates: a logical plan (what the query asks for, as a tree of relational operators), a physical plan (how to execute it, with concrete algorithms chosen by an optimizer), and data sources that implement a `TableProvider` trait exposing a schema, a scan method, and optional predicate and projection pushdown.
 
 The pushdown mechanism is the key practical payoff. When a query asks for atoms within 5Å of a ligand where pLDDT > 70, DataFusion's optimizer pushes the pLDDT predicate down into the confidence annotation store and the spatial predicate down into the neighbor index, so only matching chunks are read from either source. The query engine doesn't need to know that one source is a Zarr array and the other is an R-tree index; it only needs the `TableProvider` interface. Adding a new annotation source -- a UniProt feature API, a CATH domain store, a custom validation database -- means implementing `TableProvider` for that source. All existing queries that don't touch it continue to work; queries that join against it automatically get predicate pushdown if the source supports it.
 
@@ -42,7 +39,7 @@ For structural biology, the implication is that molecular selectors should compi
 
 ## ONNX
 
-[onnx.ai](https://onnx.ai). The ML world's LLVM IR: a stable graph representation that PyTorch, TensorFlow, and JAX can export to and that TensorRT and ONNX Runtime execute. Useful here primarily as a cautionary tale: ONNX accumulated versioning problems because the field kept pushing new operator semantics into the core spec, requiring an explicit opset versioning system as a patch. The lesson is that growth pressure will always push toward expanding the core, and resisting that pressure is an active design discipline, not a default outcome.
+[onnx.ai](https://onnx.ai) [@onnx]. The ML world's LLVM IR: a stable graph representation that PyTorch, TensorFlow, and JAX can export to and that TensorRT and ONNX Runtime execute. Useful here primarily as a cautionary tale: ONNX accumulated versioning problems because the field kept pushing new operator semantics into the core spec, requiring an explicit opset versioning system as a patch. The lesson is that growth pressure will always push toward expanding the core, and resisting that pressure is an active design discipline, not a default outcome.
 
 ## OpenTelemetry
 

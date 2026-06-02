@@ -649,3 +649,70 @@ article table code {
   margin: 0;
   color: #2a2a2a;
 }
+
+/* -----------------------------------------------------------------------------
+ * .sidenote — secondary elaboration rendered as an in-flow Tufte-style margin
+ * note. The note is ALWAYS visible and scrolls with the body text like any
+ * other block; it is never pinned, never collapsed behind a marker, never a
+ * popover. Authored as `::: {.sidenote} ... :::` immediately after the meat it
+ * elaborates, with an optional `[phrase]{.sn-anchor}` to place the "+" cue.
+ *
+ * Placement is pure CSS:
+ *   - base (narrower viewports): an in-flow indented block in the reading
+ *     column, set off by a left hairline.
+ *   - wide viewports (>= 1500px, where the outer gap holds a column): the block
+ *     floats into the right gap via a negative right margin and stacks with
+ *     `clear: right`, so hefty notes never overlap — they push each other down.
+ *
+ * The marker is a "+" (not a number) so it never reads as a numeric-superscript
+ * citation.
+ * ---------------------------------------------------------------------------*/
+.sidenote {
+  font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: #555;
+  text-align: left;
+  margin: 0.6rem 0 1rem 1.25rem;
+  padding-left: 0.9rem;
+  border-left: 2px solid #e0e3e8;
+}
+.sidenote > :first-child { margin-top: 0; }
+.sidenote > :last-child { margin-bottom: 0; }
+.sidenote p { margin: 0 0 0.5em 0; }
+.sidenote p:last-child { margin-bottom: 0; }
+
+/* Wide viewports: float the note into the right gap. The negative right margin
+ * (width + gutter) pushes the whole box past the content column's right edge so
+ * body text keeps its full width and does not wrap around it. `clear: right`
+ * stacks consecutive notes downward. */
+@media (min-width: 1500px) {
+  .sidenote {
+    float: right;
+    clear: right;
+    width: 15rem;
+    margin: 0.3rem -16.5rem 1.1rem 0;
+    padding-left: 0.9rem;
+    border-left: 1px solid #d9dde2;
+    font-size: 0.78rem;
+    line-height: 1.5;
+  }
+}
+
+.sidenote-marker {
+  vertical-align: super;
+  font-size: 0.7em;
+  line-height: 0;
+  color: #5d7c93;
+  padding: 0 0.1em 0 0.15em;
+  user-select: none;
+}
+.sidenote-marker::before { content: "+"; font-weight: 600; }
+
+/* Concept-map hover popover (nav .nav-concept-map). */
+.concept-map-pop img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 560px;
+}

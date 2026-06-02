@@ -9,15 +9,13 @@ order: 6
 
 {{< include /_includes/_post_mid.qmd >}}
 
-
 # {{< meta title >}}
 
+<!-- TODO: subsection on diffusion steering -->
 
-TODO: subsection on diffusion steering
+_Draft chapter — rougher than the Core, and the data-structure specifics here are still being worked out._
 
-
-
-The [annotations and artifact engine](04-annotations-and-engine.qmd) chapter sketches a few representative ML-pipeline operations and shows that they all fit the (selector, body, provenance) overlay shape. This chapter does the work that sketch defers: catalogue the *features* a structural ML pipeline wants in detail, the *access patterns* into a structure file those features require, and the discipline that keeps cached pass outputs from polluting the core.
+The [annotations and artifact engine](04-annotations-and-engine.qmd) chapter sketches a few representative ML-pipeline operations and shows that they roughly fit the (selector, body, provenance) overlay shape. This catalogues the *features* a structural ML pipeline might want in detail, the *access patterns* into a structure file those features require.
 
 The short version: the architecture from chapters 2--3 already supports the access patterns ML pipelines want, provided the storage layer is chunked and indexable (Zarr, TileDB) rather than line-oriented (mmCIF). And the discipline that keeps the core stable -- "derived information lives in passes, not in the IR" -- does not preclude *caching* pass outputs. It says the cache lives in the [annotation overlay](04-annotations-and-engine.qmd#query-language-and-annotations) namespace, with the parameters of the producing pass in the provenance, so that two consumers with different cutoffs produce two overlays and neither invalidates the other or perturbs anything else.
 
@@ -64,19 +62,11 @@ It is worth being concrete about which access patterns matter. There are roughly
 
 4. **Cross-structure batch read** -- "give me CA coordinates for these 100k structures, in chunk-aligned shards I can stream into a dataloader." Largely a packaging concern, not a per-structure format concern, but it is *enabled* or *prevented* by the per-structure layout. If the per-structure file has a stable canonical CA-coordinate array at a known path inside the Zarr group, batched reads compose; if CA coordinates are derivable only by parsing and filtering atoms, they don't.
 
-::: {.def data-term="Differentiable read"}
-An access pattern that delivers structural data directly into a tensor (numpy / torch / jax) without an intermediate parsed object. Format-level support means a Zarr or Arrow-backed array maps to a tensor in one zero-copy step; format-level *failure* means every consumer copies into its own representation between disk and tensor.
-:::
-
-5. **Differentiable read** -- "give me coordinates as a tensor, on the right device, with autograd already wired up." Strictly a Python concern, not a format concern, but the format choice affects how messy the bridge is. A Zarr array maps cleanly to a `torch.Tensor` via `torch.from_numpy(zarr_array[...])`; a parsed mmCIF requires a copy and a layout transformation per structure. The format does not need to be aware of autograd -- it just needs to deliver coordinates without forcing a non-tensor representation between disk and tensor.
+5. [**Differentiable read**](../glossary/index.qmd#gloss-differentiable-read) -- "give me coordinates as a tensor, on the right device, with autograd already wired up." Strictly a Python concern, not a format concern, but the format choice affects how messy the bridge is. A Zarr array maps cleanly to a `torch.Tensor` via `torch.from_numpy(zarr_array[...])`; a parsed mmCIF requires a copy and a layout transformation per structure. The format does not need to be aware of autograd -- it just needs to deliver coordinates without forcing a non-tensor representation between disk and tensor.
 
 The first three fall out of chapters 2--4 directly, without any new format machinery, provided the storage substrate is chunked. The fourth is a packaging convention -- analogous to how OME-Zarr standardizes the multiscale path structure so any consumer knows where to look. The fifth is downstream tooling.
 
 ## Precomputed features as cached passes
-
-::: {.def data-term="Cached pass"}
-The stored output of a deterministic function over the core (a neighbour graph, a backbone-dihedral table, a SASA array). Lives in an annotation overlay namespace keyed by `(producing pass id, parameters, version)` rather than in the IR itself. Two consumers with different parameters produce two overlays; neither invalidates the core or the other.
-:::
 
 The [LLVM discipline](07-modularity-examples.qmd#llvm) elaborated in the appendix says backbone dihedrals, contact maps, neighbor graphs, spherical harmonic edge features, AF2-style pair tensors, and validation scores do not belong in the core. They are derived; their parameters (cutoff, $l_\max$, distance metric) are choices; two consumers with different choices would otherwise produce inconsistent IRs.
 
@@ -112,7 +102,7 @@ The discipline that handles the first case generalizes to the second once the pr
 
 A format that supports chunk-aligned reads, stored spatial indices, and ensemble slicing makes a fast dataloader trivial. The format itself should not ship a dataloader -- that is downstream tooling that will outlive any specific framework -- but it should also not make a fast one impossible. mmCIF currently does, in two specific ways: there is no random access to subsets, and there is no canonical layout for derived features that a dataloader could rely on across structures.
 
-The closest existing precedent is [copick](https://github.com/copick/copick), which layers an overlay filesystem on top of OME-Zarr cryo-ET data: read-only base data plus writable annotation overlays, typed annotation objects with provenance, and a CLI. The pattern is directly applicable: structures and their cached features sit in an immutable layer; per-consumer overlays (different cutoffs, different feature sets, different model embeddings) sit on top without touching the base. The dataloader reads the union of base and selected overlays.
+The closest existing precedent is copick [@copick], which layers an overlay filesystem on top of OME-Zarr cryo-ET data: read-only base data plus writable annotation overlays, typed annotation objects with provenance, and a CLI. The pattern is directly applicable: structures and their cached features sit in an immutable layer; per-consumer overlays (different cutoffs, different feature sets, different model embeddings) sit on top without touching the base. The dataloader reads the union of base and selected overlays.
 
 ## Open questions specific to ML-native data
 

@@ -11,16 +11,9 @@ order: 6
 
 # {{< meta title >}}
 
-
-
-
-A deeper design critique of white-box formats comes from Naef and Bronstein's recent Chemical Science perspective (2026, rsc.li/chemical-science). Their central argument is that ML models in biology have traditionally relied on data produced as a byproduct of scientific inquiry -- repositories like the PDB aggregate and standardize this data, but they are not purpose-generated for ML, leading to poor standardization, limited scale, and systematic biases -- and that the more critical question now is not "the next AlphaFold" but "the next PDB," meaning new experimental data sources intentionally optimized for machine consumption rather than human intuition. The format implications are sharp: data generated to be consumed by models rather than inspected by scientists has no natural representation in mmCIF, whose entire design presupposes that a human will eventually open the file, assign meaning to the chain IDs, and judge whether the electron density fits -- a constraint that should be optional, not structural.
+A deeper design critique of white-box formats comes from a recent Chemical Science perspective [@naef2026blackbox]. Its central argument is that ML models in biology have traditionally relied on data produced as a byproduct of scientific inquiry -- repositories like the PDB aggregate and standardize this data, but they are not purpose-generated for ML, leading to poor standardization, limited scale, and systematic biases -- and that the more critical question now is not "the next AlphaFold" but "the next PDB," meaning new experimental data sources intentionally optimized for machine consumption rather than human intuition. The format implications are sharp: data generated to be consumed by models rather than inspected by scientists has no natural representation in mmCIF, whose entire design presupposes that a human will eventually open the file, assign meaning to the chain IDs, and judge whether the electron density fits -- a constraint that should be optional, not structural.
 
 The same argument runs in the reverse direction. If models are first-class consumers of structural data, their *outputs* -- weights, latents, predicted distributions, posterior samples -- are first-class deposition artifacts in their own right, and the format has to carry them with the same legibility and provenance discipline it carries experimentally derived data. The categories below are the ones currently homeless: stored implicitly inside per-paper checkpoint dumps, scattered across model-specific repositories with no link back to the structure they were trained against or applied to, and reconstructed from scratch every time a downstream consumer wants to use them. All four fit the same `(selector, body, provenance)` overlay machinery from [chapter 4](04-annotations-and-engine.qmd#query-language-and-annotations); the appendix is a sketch of what each one looks like in that machinery.
-
-::: {.def data-term="Model-side artifact"}
-A first-class deposition object whose origin is a model rather than an experiment: stored weights, latent coordinates, decoder checkpoints, predicted ensembles, training metadata. All four route through the same `(selector, body, provenance)` overlay machinery as human-curated annotations; the difference is what the provenance has to carry to make the artifact trustable -- weights hash, training data version, evaluation metrics.
-:::
 
 ## Weights and decoders
 

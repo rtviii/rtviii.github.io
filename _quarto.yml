@@ -5,6 +5,7 @@ project:
     - scripts.js
     - resources
     - img/
+    - posts/mmcif/data/concept-map.svg
 
 website:
   title: "артём"
