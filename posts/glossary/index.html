@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.54">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-05-22">
+
+<title>Glossary: conformational ensembles, statistical mechanics, mmCIF encoding – артём</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<link href="../.././img/BTNBlink.webp" rel="icon">
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="../../scripts.js"></script>
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/tippy.js@6"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Serif:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles/custom.css">
+<link rel="stylesheet" href="../../styles/scrollbar-fix.css">
+<link rel="stylesheet" href="../../styles/listing.css">
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Glossary: conformational ensembles, statistical mechanics, mmCIF encoding</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">May 22, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>A working glossary of terms that come up when reading the Wankowicz–Bonomi 2026 <em>Nature Methods</em> perspective and adjacent literature on macromolecular conformational ensembles. Organized thematically rather than alphabetically because most of these concepts build on each other.</p>
+<section id="the-boltzmann-framework" class="level2">
+<h2 class="anchored" data-anchor-id="the-boltzmann-framework">The Boltzmann framework</h2>
+<p><strong>Microstate.</strong> One specific atomic configuration of a molecule — every atom in some position, every dihedral angle at some value. A microstate is the most fine-grained description a structural biologist talks about. A protein in solution is not in one microstate; it is constantly hopping between many of them. The list of all accessible microstates is the <em>state space</em> of the molecule.</p>
+<p><strong>Energy of a microstate, <span class="math inline">\(E_i\)</span>.</strong> Each microstate has an associated energy that depends on the geometry — bond stretches, angle distortions, electrostatic interactions, hydrogen bonds, solvent contacts. Low-energy microstates are “stable”; high-energy ones are strained.</p>
+<p><strong>Boltzmann factor, <span class="math inline">\(e^{-\beta E_i}\)</span>.</strong> A microstate’s <em>relative</em> statistical weight at temperature <span class="math inline">\(T\)</span>, where <span class="math inline">\(\beta \equiv 1/(k_B T)\)</span> and <span class="math inline">\(k_B\)</span> is Boltzmann’s constant. A state at energy 0 has weight 1; a state at energy <span class="math inline">\(k_B T\)</span> has weight <span class="math inline">\(\approx 0.37\)</span>; a state at <span class="math inline">\(3 k_B T\)</span> has weight <span class="math inline">\(\approx 0.05\)</span>. Boltzmann factors are not yet probabilities — they don’t sum to 1 — they’re the raw weights before normalization.</p>
+<p><strong>Partition function, <span class="math inline">\(Z\)</span>.</strong> The sum of Boltzmann factors over all microstates: <span class="math display">\[Z \;=\; \sum_i e^{-\beta E_i}.\]</span> Its operational role is to be the normalizing constant that turns weights into probabilities. The name is a (somewhat awkward) English translation of the German <em>Zustandssumme</em>, “sum over states.” What is “partitioned” is the total probability mass of 1, which gets split across all microstates in proportion to their Boltzmann factors. <span class="math inline">\(Z\)</span> is also the central object of statistical mechanics — it determines the system’s free energy via <span class="math inline">\(F = -k_B T \ln Z\)</span>, and every macroscopic thermodynamic quantity (average energy, entropy, heat capacity, equilibrium constants) is derivable from <span class="math inline">\(Z\)</span> or its derivatives. A key consequence: every microstate contributes a term to <span class="math inline">\(Z\)</span>, so dropping a state from the sum miscomputes the populations of <em>every</em> state, not just the one you missed.</p>
+<p><span id="gloss-boltzmann-ensemble"></span><strong>Boltzmann-weighted ensemble.</strong> The collection of all accessible microstates, each present with probability <span class="math inline">\(p_i = e^{-\beta E_i} / Z\)</span>. This is the statistically correct description of a molecule in thermal equilibrium with its environment. It is the underlying object that every structural-biology measurement is some lossy projection of.</p>
+<p><strong>Ensemble average, <span class="math inline">\(\langle O \rangle\)</span>.</strong> Any observable quantity <span class="math inline">\(O\)</span> measured experimentally is in general an average over the ensemble: <span class="math display">\[\langle O \rangle \;=\; \sum_i p_i \, O_i \;=\; \frac{1}{Z} \sum_i O_i \, e^{-\beta E_i}.\]</span> This is the equation that fundamentally connects structural ensembles to experimental data. Different techniques measure different observables <span class="math inline">\(O_i\)</span>, so each technique is sensitive to a different functional of the ensemble.</p>
+<p><strong>Free energy landscape.</strong> A surface (in some abstract conformational coordinate) whose height at each point is the free energy of that microstate, <span class="math inline">\(F_i = -k_B T \ln p_i + \text{const}\)</span>. Wells correspond to populated states, barriers to transition states. Figure 1 of the paper is exactly this picture: the protein “lives” in the wells, with the populations dictated by Boltzmann weighting.</p>
+</section>
+<section id="probability-and-statistics" class="level2">
+<h2 class="anchored" data-anchor-id="probability-and-statistics">Probability and statistics</h2>
+<p><strong>Joint distribution, <span class="math inline">\(P(X, Y)\)</span>.</strong> The probability of two (or more) random variables taking specific values <em>together</em>. For two binary variables this is a 2×2 table summing to 1. The joint contains the complete information about how the two variables relate.</p>
+<p><strong>Marginal distribution, <span class="math inline">\(P(X)\)</span>.</strong> The distribution of one variable on its own, obtained by summing the joint over the other variable: <span class="math inline">\(P(X = x) = \sum_y P(X = x, Y = y)\)</span>. The name comes from old probability tables where row-sums and column-sums went in the margins. Marginalizing throws away correlation information. <em>Many different joints share the same marginals</em>, so you cannot reconstruct a joint from marginals alone — this is a recurring theme when discussing how experimental data (which often delivers marginals) constrains conformational ensembles (which are joint distributions over many coupled degrees of freedom).</p>
+<p><strong>Conditional probability, <span class="math inline">\(P(Y \mid X)\)</span>.</strong> “Given that <span class="math inline">\(X\)</span> took some value, what’s the distribution of <span class="math inline">\(Y\)</span>?” Definition: <span class="math inline">\(P(Y = y \mid X = x) = P(X = x, Y = y) / P(X = x)\)</span>. Conditional probabilities are where the correlation information that marginals lose is actually visible. For independent variables, <span class="math inline">\(P(Y \mid X) = P(Y)\)</span> — knowing <span class="math inline">\(X\)</span> tells you nothing about <span class="math inline">\(Y\)</span>. For perfectly correlated variables, <span class="math inline">\(P(Y \mid X)\)</span> is deterministic.</p>
+<p><strong>Independence.</strong> Two variables are independent if <span class="math inline">\(P(X, Y) = P(X) \cdot P(Y)\)</span>. Equivalently: the joint is fully determined by the marginals, no extra information to find. In structural biology, treating residues’ altlocs as independent is the implicit assumption made by the mmCIF format, and it’s almost always wrong.</p>
+<p><strong>Covariance and correlation coefficient.</strong> Numerical summaries of how two variables co-vary. Covariance <span class="math inline">\(\mathrm{Cov}(X, Y) = \langle XY \rangle - \langle X \rangle \langle Y \rangle\)</span> is positive when <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> rise together, negative when they trade off, zero when independent. The correlation coefficient <span class="math inline">\(\rho = \mathrm{Cov}(X, Y) / (\sigma_X \sigma_Y)\)</span> normalizes covariance to the range <span class="math inline">\([-1, +1]\)</span>. Both are scalar summaries — they reduce the joint to a single number and lose detail, but they’re enough to spot dependence.</p>
+</section>
+<section id="experimental-techniques-acronyms-spelled-out" class="level2">
+<h2 class="anchored" data-anchor-id="experimental-techniques-acronyms-spelled-out">Experimental techniques (acronyms spelled out)</h2>
+<p><strong>Nuclear Magnetic Resonance (NMR).</strong> A spectroscopy that probes nuclei (most often <span class="math inline">\(^1\text{H}\)</span>, <span class="math inline">\(^{13}\text{C}\)</span>, <span class="math inline">\(^{15}\text{N}\)</span>) by exposing them to strong magnetic fields and radiofrequency pulses. Sensitive to the local chemical environment of each nucleus and to through-space and through-bond interactions between nuclei. Inherently an ensemble- and time-averaging technique on the millisecond–nanosecond range.</p>
+<p><strong>Nuclear Overhauser Effect (NOE).</strong> An NMR observable where the spin of one nucleus affects another through <em>space</em> (via dipole-dipole coupling). Crucially, the signal scales as <span class="math inline">\(1/r^6\)</span> where <span class="math inline">\(r\)</span> is the distance between the two nuclei. The sixth-power dependence means a small fraction of molecules at short distance contributes vastly more signal than the bulk at longer distance — so NOE-derived “distances” are heavily skewed toward rare, short-distance conformers, which is a major issue for ensemble fitting.</p>
+<p><strong>Förster Resonance Energy Transfer (FRET).</strong> Optical analog of the NOE: energy transfer between a donor and acceptor fluorescent dye attached to two sites on the protein. Same <span class="math inline">\(1/r^6\)</span> dependence, same sensitivity to rare close-distance states. Distance range ≈ 1–10 nm.</p>
+<p><strong>Double Electron–Electron Resonance (DEER), also called Pulsed Electron–Electron Double Resonance (PELDOR).</strong> Like NMR but using unpaired electron spins on attached spin labels (small molecules with a stable radical, usually a nitroxide). Measures distances between two labels in the range ≈ 2–8 nm. Less biased toward short distances than NOE/FRET (the coupling falls off as <span class="math inline">\(1/r^3\)</span> rather than <span class="math inline">\(1/r^6\)</span>).</p>
+<p><strong>Small-Angle X-ray Scattering (SAXS).</strong> Solution-state X-ray scattering at low angles, giving a low-resolution overall shape/size. Ensemble-averaged over all conformations in the sample.</p>
+<p><strong>Hydrogen–Deuterium Exchange (HDX).</strong> Place the protein in heavy water; protons in exposed/floppy regions exchange with deuterium quickly, protected/structured ones slowly. Usually read out by mass spectrometry. A coarse but powerful probe of which parts of the protein are structured.</p>
+<p><strong>Atomic Force Microscopy (AFM).</strong> Physical-probe imaging where a tiny cantilever tip drags across a surface or pulls on a single molecule. Used for single-molecule mechanics.</p>
+<p><strong>Cryogenic Electron Microscopy (cryo-EM).</strong> Imaging frozen-hydrated samples by transmission electron microscopy. Single-particle cryo-EM reconstructs 3D maps from thousands of individual particle images, each frozen in some microstate — so the dataset is, in principle, a sample of the ensemble.</p>
+<p><strong>X-ray crystallography.</strong> Diffraction from a crystal of the molecule. The observed electron density is a time- and space-average over all unit cells in the crystal, so it’s an ensemble average under crystal-packing constraints (which may distort the in-solution ensemble).</p>
+<p><strong>Multi-temperature crystallography.</strong> Collecting crystallographic data at multiple temperatures to disentangle thermal motion from static disorder, and to see which conformations are “frozen out” at low temperature versus populated at room temperature.</p>
+<p><strong>Diffuse scattering.</strong> The non-Bragg part of an X-ray diffraction pattern (the “noise” between the sharp spots) that arises from correlated motions in the crystal. Historically discarded; recently being mined for ensemble information.</p>
+<p><strong>Molecular Dynamics (MD).</strong> Simulation of molecular motion by numerically integrating Newton’s equations under an empirical <em>force field</em> (a parameterized energy function). Produces a trajectory of microstates that, in principle, samples the Boltzmann ensemble — in practice limited by force-field accuracy and by the (short) timescales reachable.</p>
+<p><strong>Maximum entropy reweighting.</strong> A class of methods that adjust an initial ensemble’s weights to fit experimental data while perturbing the distribution as little as possible (in the sense of Shannon entropy). Used to make MD trajectories or candidate ensembles consistent with NMR, NOE, SAXS, or cryo-EM data.</p>
+</section>
+<section id="cross-cutting-acronyms" class="level2">
+<h2 class="anchored" data-anchor-id="cross-cutting-acronyms">Cross-cutting acronyms</h2>
+<p><strong>Root Mean Square Deviation (RMSD).</strong> Standard structural-similarity metric. Align two structures, compute the average squared per-atom displacement, take the square root. Bad at comparing distributions because it collapses everything to a single scalar.</p>
+<p><strong>Protein Data Bank (PDB).</strong> Global repository of macromolecular structural models. The “single static structure” is the unit of PDB content.</p>
+<p><strong>Protein Data Bank Exchange / macromolecular Crystallographic Information File (PDBx/mmCIF).</strong> The modern file format used by the PDB. Supersedes the legacy fixed-width PDB format. A text format encoding atomic coordinates, occupancies, B-factors, alternative location indicators, and a large amount of metadata.</p>
+<p><strong>Critical Assessment of protein Structure Prediction (CASP).</strong> Biennial blind-prediction competition that has historically driven progress in static structure prediction (and culminated in AlphaFold’s CASP14 result). The ensemble field lacks a CASP-equivalent — one of the gaps Wankowicz–Bonomi argue must be filled.</p>
+<p><strong>Probability Density Function (PDF).</strong> In the paper’s context, a continuous probability distribution over conformations (not the file format). Used in metrics like Jensen–Shannon divergence to compare ensembles.</p>
+</section>
+<section id="mmcif-ensemble-encoding-terms" class="level2">
+<h2 class="anchored" data-anchor-id="mmcif-ensemble-encoding-terms">mmCIF ensemble-encoding terms</h2>
+<p><strong>Alternative location indicator (altloc).</strong> A field in PDBx/mmCIF that allows each atom to be listed in multiple positions with associated <em>occupancies</em> (fractional populations summing to 1 for each atom). The standard way to record per-residue structural heterogeneity from crystallography. Critically: altloc occupancies are <em>per residue marginals</em>. The format has no mechanism to record correlations between altlocs on different residues, so the joint distribution over global conformations cannot be expressed.</p>
+<p><strong>Occupancy.</strong> The fractional weight of a particular altloc for an atom, between 0 and 1. Treated as a marginal probability for that atom’s position.</p>
+<p><strong>B-factor (atomic displacement parameter, ADP).</strong> A scalar per atom that captures the magnitude of positional fluctuation. Conventionally interpreted as proportional to the mean squared displacement of the atom from its modeled position. In practice, B-factors mix several physically distinct contributions: true thermal motion, lattice disorder, refinement uncertainty, radiation damage, conformational heterogeneity not modeled by altlocs. Because of this mixing, B-factors are not a clean window onto the thermodynamic probability density.</p>
+<p><strong>Anisotropic Displacement Parameter (ADP).</strong> A more detailed version of the B-factor that captures directional anisotropy of atomic motion via a 3×3 tensor per atom. Still has the same physical-mixing problem.</p>
+<p><strong>Multimodal encoding (NMR-style multi-model files).</strong> Putting multiple complete coordinate sets in a single mmCIF file (each is a “model”). Common practice for NMR ensembles. The format has no field for the <em>relative population</em> of each model, so the Boltzmann weights <span class="math inline">\(p_i\)</span> — the entire point of an ensemble — are absent.</p>
+<p><strong>Maximum parsimony principle.</strong> An encoding strategy that aims to explain the observed data using the fewest model parameters. Multiconformer modeling tools (like qFit) follow this principle: produce a small list of discrete altloc conformers that explain the electron density. Interpretable but tends to miss small-amplitude anharmonic motion.</p>
+<p><strong>Maximum entropy principle.</strong> An encoding strategy that aims to produce the broadest (highest-entropy) distribution consistent with the data. Tends to capture small-amplitude motions well but produces large, hard-to-interpret ensembles.</p>
+</section>
+<section id="compiler-ir-vocabulary" class="level2">
+<h2 class="anchored" data-anchor-id="compiler-ir-vocabulary">Compiler / IR vocabulary</h2>
+<p><span id="gloss-forward-model"></span><strong>Forward model / forward operator (a.k.a. measurement operator, projection function, imaging operator).</strong> A function that takes a candidate state of the system and predicts what you would observe if that state were true. The name marks the direction: “forward” goes from cause to effect; “inverse” goes from observation back to cause. The pattern is pan-disciplinary. In weather forecasting the forward model integrates the atmosphere from today’s state to tomorrow’s; the inverse is data assimilation from satellite observations. In CT imaging the forward model is the Radon transform from tissue density to detector counts; the inverse is reconstruction. In astronomy the forward model maps galaxy parameters to telescope images; the inverse is parameter estimation. In computer graphics the forward model is rendering; the inverse is “inverse rendering” (NeRF, structure-from-motion). In structural biology each experimental technique has its own forward operator on the ensemble: NOE has <span class="math inline">\(f_\text{NOE}(\{(x_i, w_i)\}) = \langle 1/r_{ab}^6 \rangle\)</span>; SAXS has <span class="math inline">\(f_\text{SAXS}(\text{ensemble}, q) = \langle |F(q)|^2 \rangle\)</span> ; X-ray crystallography has <span class="math inline">\(f_\text{xray}(\text{ensemble}) = \langle \rho(x) \rangle\)</span> convolved with point-spread function and noise; cryo-EM has <span class="math inline">\(f_\text{cryoEM}(\text{ensemble}) = \mathcal{B}(\Gamma(\text{ensemble}))\)</span> where <span class="math inline">\(\Gamma\)</span> places Gaussians per atom and <span class="math inline">\(\mathcal{B}\)</span> convolves with the microscope’s CTF (literally equation 11 in Levy et al.&nbsp;2025). The unifying property is <em>computability</em>: forward problems are usually a single function evaluation, while inverse problems are hard because the mapping is many-to-one and noisy. Treating forward operators as first-class IR objects (with scope, projector function, noise model, and value) is the design move that makes cross-technique integration tractable: given an ensemble and the operator, anyone can compute the predicted observable for likelihood-based inference, gradient-based fitting, or model comparison.</p>
+<p><strong>Projection in relational algebra (<span class="math inline">\(\pi\)</span>).</strong> The relational-algebra operator that picks a subset of columns from a table, discarding the rest. In SQL, <code>SELECT name, city FROM people</code> is the projection <span class="math inline">\(\pi_{\text{name}, \text{city}}(\text{People})\)</span>. Projection is information-lossy — many different source tables can produce the same projection — which is why “what was the original table?” is an inverse problem. By analogy, an experimental observable is a projection of the joint conformational ensemble onto an observable subspace, and recovering the ensemble from its observables is the structural-biology inverse problem.</p>
+<p><span id="gloss-bayes"></span><strong>Bayes’ rule and its named pieces.</strong> The single formula that organizes everything in posterior-based inference: <span class="math inline">\(P(x \mid y) = P(y \mid x) P(x) / P(y)\)</span>. The <em>prior</em> <span class="math inline">\(P(x)\)</span> is what you believed about the hypothesis <span class="math inline">\(x\)</span> before seeing data — in our setting, “what protein structures look like in general” (encoded by geometry restraints or a pretrained diffusion model). The <em>likelihood</em> <span class="math inline">\(P(y \mid x)\)</span> is the probability of observing <span class="math inline">\(y\)</span> assuming <span class="math inline">\(x\)</span> is true — produced by the forward model plus a noise model: if <span class="math inline">\(y = f(x) + \epsilon\)</span> with Gaussian <span class="math inline">\(\epsilon\)</span>, then <span class="math inline">\(P(y \mid x) \propto \exp(-\tfrac{1}{2\sigma^2}\lVert y - f(x) \rVert^2)\)</span>. Critically, for fixed <span class="math inline">\(y\)</span> the likelihood is a <em>function</em> of <span class="math inline">\(x\)</span> but not a normalized probability distribution over <span class="math inline">\(x\)</span> — it doesn’t integrate to 1. The <em>posterior</em> <span class="math inline">\(P(x \mid y)\)</span> <em>is</em> a normalized distribution over <span class="math inline">\(x\)</span>, and it’s usually what you want. The <em>evidence</em> <span class="math inline">\(P(y) = \int P(y \mid x) P(x) \, dx\)</span> is the normalizer; in high-dimensional structural problems it is intractable to compute, which is why almost all Bayesian methods work by sampling rather than by direct evaluation.</p>
+<p><strong>Log-likelihood.</strong> The logarithm of the likelihood, used pervasively for numerical reasons. Likelihoods for high-dimensional models are typically vanishingly small numbers (think <span class="math inline">\(10^{-1000}\)</span>) that underflow floating-point arithmetic; taking the log brings them into a representable range, turns products into sums (so independent measurements give additive contributions), and gives cleaner gradients. Maximizing the log-posterior is equivalent to maximizing the posterior because log is monotonic — that is why MAP estimation is phrased in log space and why multi-modal data fitting is written as <span class="math inline">\(\sum_i \log p(y_i \mid x) + \log p(x)\)</span>.</p>
+<p><strong>Sampling vs computing a posterior.</strong> The reason structural-biology and ML papers say “sample the posterior” rather than “compute it”: the posterior is known only up to the intractable evidence <span class="math inline">\(P(y)\)</span>, so you can’t generally write down its density and integrate against it. What you <em>can</em> do is draw concrete realizations <span class="math inline">\(x^{(1)}, \ldots, x^{(K)}\)</span> distributed according to the posterior, using methods like Markov Chain Monte Carlo (MCMC), Sequential Monte Carlo (SMC), Hamiltonian Monte Carlo, variational inference, or diffusion-based posterior sampling. From samples you can estimate ensemble averages, modes, credible intervals — anything you’d want from the distribution itself. “Sample the posterior” is precise jargon for “produce concrete instances from a distribution we can’t otherwise compute against.”</p>
+<p><strong>Maximum a Posteriori (MAP) estimation.</strong> Instead of drawing many samples from the posterior, find the single most probable <span class="math inline">\(x\)</span>: <span class="math inline">\(x^\ast = \arg\max_x \log p(x \mid y) = \arg\max_x \big[\log p(y \mid x) + \log p(x)\big]\)</span>. Sharper than mode-finding because the prior is included. Used by ADP-3D when the data is informative enough that the posterior is tightly peaked and a point estimate is what you want. Compared to full posterior sampling: faster, gives one structure instead of an ensemble, throws away uncertainty.</p>
+<p><strong>Diffusion model.</strong> A generative model that learns the data distribution by <em>reversing a noising process</em>. The forward (noising) process gradually adds Gaussian noise to data over many time steps until the signal is destroyed; the model is trained to undo this — given a noisy sample, predict the clean version (or equivalently, predict the noise to be subtracted). Sampling is iterative denoising: start from pure noise, run the trained model many times to progressively denoise toward a sample from the data distribution. Diffusion models are extremely effective as <em>priors</em> for structural data because they learn the manifold of valid structures implicitly. Protein-structure diffusion models include Chroma, RFdiffusion, AlphaFlow, AlphaFold3, Boltz, Chai.</p>
+<p><strong>Tweedie’s formula.</strong> A result from empirical Bayes that gives a closed-form expression for the posterior mean of the clean signal given a noisy observation: <span class="math inline">\(\hat{x}_0 := \mathbb{E}[x_0 \mid x_t]\)</span>. For Gaussian-noised diffusion processes this works out to <span class="math inline">\(\hat{x}_0 = (x_t + (1 - \bar{\alpha}_t)\nabla_{x_t} \log p_t(x_t))/\sqrt{\bar{\alpha}_t}\)</span>, which the diffusion model gives you for free at every denoising step. This is the trick that makes Diffusion Posterior Sampling (Chung et al.&nbsp;2023) work: the likelihood <span class="math inline">\(p(y \mid x_t)\)</span> at noisy intermediate states <span class="math inline">\(x_t\)</span> is hard to evaluate directly, but <span class="math inline">\(p(y \mid \hat{x}_0)\)</span> at the <em>denoised estimate</em> is tractable, and the gradient <span class="math inline">\(\nabla_{x_t} \log p(y \mid \hat{x}_0)\)</span> flows through the denoiser via backprop.</p>
+<p><strong>Diffusion Posterior Sampling (DPS).</strong> A method (Chung et al.&nbsp;2023) for using a pretrained diffusion model as a prior in inverse problems. At each denoising step, in addition to the standard denoising update, take a gradient step on <span class="math inline">\(\log p(y \mid \hat{x}_0)\)</span> where <span class="math inline">\(\hat{x}_0\)</span> is the Tweedie-formula posterior mean estimate. Handles both Gaussian and Poisson noise and both linear and nonlinear forward operators. Requires the forward operator to be differentiable.</p>
+<p><strong>Feynman-Kac (FK) Steering.</strong> A method (Singhal et al.&nbsp;2025) for steering diffusion models with <em>arbitrary</em> reward functions, including non-differentiable ones and discrete-state diffusion. Replaces DPS’s gradient step with a Sequential Monte Carlo procedure: run <span class="math inline">\(K\)</span> parallel denoising trajectories called <em>particles</em>, score them at intermediate steps with <em>potentials</em> (defined using intermediate rewards), and resample so that high-scoring particles are duplicated and low-scoring ones discarded. Targets the tilted distribution <span class="math inline">\(p_\theta(x) \exp(\lambda r(x))\)</span>, which equals the posterior up to normalization when <span class="math inline">\(r = \log p(y \mid x)\)</span>. Strictly more general than DPS (handles non-differentiable rewards, discrete diffusion, arbitrary scoring functions), at the cost of running multiple parallel trajectories.</p>
+<p><strong>Plug-and-play (PnP) framework.</strong> A class of methods (originally Venkatakrishnan et al.&nbsp;2013, later applied to diffusion priors as DiffPIR / ADP-3D) for solving inverse problems using an off-the-shelf denoiser as a prior. The objective <span class="math inline">\(f(x) + g(x)\)</span> is split via Half-Quadratic Splitting (HQS) into a likelihood term and a denoising term; the denoiser (which can be any pretrained model, including a diffusion model) acts as the proximal operator for the prior. ADP-3D (Levy et al.&nbsp;2025) applies this to protein structure determination with Chroma or RFdiffusion as the prior and explicit cryo-EM / distance / substructure forward operators as the likelihood.</p>
+<p><strong>Posterior sampling vs MAP, for ensembles.</strong> Full posterior sampling produces a sample-based representation of the posterior — many candidate structures distributed according to <span class="math inline">\(p(x \mid y)\)</span>. This is naturally a Boltzmann-weighted ensemble in your terminology (R1 in the heterogeneity taxonomy), with samples acting as the discrete states. MAP gives you a single structure — the mode of the posterior — which is the modern equivalent of the classical “single deposited structure.” The same forward operators serve both; the difference is whether the downstream consumer wants uncertainty or a point estimate.</p>
+<p><strong>Noise model.</strong> A probability distribution <span class="math inline">\(p(y_\text{observed} \mid y_\text{predicted})\)</span> describing how the observed value relates to what the forward operator predicts. Common forms: <em>Gaussian</em> (continuous symmetric errors, log-likelihood <span class="math inline">\(\propto -\lVert y_\text{obs} - y_\text{pred} \rVert^2 / \sigma^2\)</span>); <em>Poisson</em> (photon-counting); <em>log-normal</em> (multiplicative errors, used for NOE and SAXS); <em>Student-<span class="math inline">\(t\)</span></em> (heavy-tailed, robust to outliers); <em>heteroskedastic Gaussian</em> (variance depends on signal magnitude or measurement position, e.g.&nbsp;per-Miller-index <span class="math inline">\(\sigma\)</span> for X-ray, per-voxel <span class="math inline">\(\sigma\)</span> for cryo-EM). Stored as a separate registry reference from the forward operator so the same operator can be used with different noise models.</p>
+<p><strong>Observation tensor.</strong> The actual experimental data attached to a forward-operator record, stored in whatever shape is native to the technique: a table of <span class="math inline">\((h, k, l, F_\text{obs}, \sigma_F)\)</span> for X-ray; a 3D voxel array for cryo-EM maps; a vector of intensities indexed by atom pairs for NOE; a 1D scattering curve for SAXS. The format does <em>not</em> try to unify observation shapes across techniques — the unifying object is the atomic ensemble, and observations sit beside it in technique-specific shapes connected by the forward operator.</p>
+<p><strong>Computation-graph serialization formats.</strong> <em>TorchScript</em> (<code>torch.jit.save</code>, <code>.pt</code> files): zip archive containing graph IR, parameter tensors, and metadata; executable by any PyTorch installation; carries autograd metadata. <em>ONNX</em>: protobuf-based representation with a versioned operator spec (the “opset”); cross-framework via ONNX Runtime; the most portable. <em>MLIR</em>: text or binary representation of typed operations grouped into dialects; most extensible, used in compiler/accelerator stacks. For embedding novel forward operators in a deposition, all three are viable as content-hashed blobs referenced from the operator record; the format-level interface contract (input/output shapes, dtypes, differentiability) is declared separately from the blob body so consumers that can’t execute the blob can still read the contract.</p>
+<p><strong>Mixed-Integer Quadratic Program (MIQP).</strong> An optimization problem with a quadratic objective function (e.g.&nbsp;a squared residual <span class="math inline">\(\lVert y - Aw \rVert^2\)</span>) and a mix of continuous and integer (typically binary 0/1) decision variables. The continuous part is a standard convex quadratic program (QP). The integer part — usually binary indicator variables that enforce “at most <span class="math inline">\(N\)</span> items are selected” or “either this or that, not both” — makes the problem combinatorial and in general NP-hard, though small instances (small <span class="math inline">\(N\)</span>, sparse structure) are routinely solvable in seconds. Solvers use branch-and-bound or branch-and-cut: solve continuous QP relaxations at nodes of a search tree, prune branches by bounds. Common solvers: Gurobi and CPLEX (commercial), CBC and SCIP (open-source). CVXPY is a Python frontend that compiles a high-level problem description into the solver’s native form. In qFit, the MIQP picks at most ~4 conformers (binary indicators) with continuous occupancies, minimizing the squared electron-density residual.</p>
+</section>
+<section id="modeling-tools" class="level2">
+<h2 class="anchored" data-anchor-id="modeling-tools">Modeling tools</h2>
+<p><strong>qFit.</strong> A multiconformer modeling tool (ExcitedStates lab, Fraser/Keedy/van den Bedem/Wankowicz) that fits a small ensemble of discrete conformers to local electron density rather than a single conformer. Three algorithmic stages: (1) <em>sample</em> — generate thousands of candidate conformers per residue by systematically rotating <span class="math inline">\(\chi\)</span> angles, perturbing backbones, and enumerating ligand conformers; (2) <em>score</em> — compute each candidate’s predicted electron density and compare to the observed map; (3) <em>select</em> — solve a mixed-integer quadratic program (via CVXPY) that picks at most ~4 conformers with occupancies <span class="math inline">\(w_k\)</span> minimizing <span class="math inline">\(\lVert \rho_\text{obs} - \sum_k w_k \rho_k^\text{pred} \rVert^2\)</span> subject to <span class="math inline">\(w_k \ge 0\)</span>, <span class="math inline">\(\sum_k w_k \le 1\)</span>. Output is a standard mmCIF/PDB file with altlocs and occupancies, refined with Phenix as a final step. Works for X-ray crystallography and cryo-EM (via <code>qfit_protein</code>) and for ligands (via <code>qfit_ligand</code>). Lives squarely in the <em>maximum-parsimony</em> school of ensemble representation: discrete, interpretable conformers with explicit weights. Operates per-residue, so its output is fundamentally a <em>marginal</em> representation — there is no joint distribution across residues, and the mmCIF format it writes to cannot encode one. Key papers: van den Bedem et al.&nbsp;2009 (original idea), Keedy et al.&nbsp;2015 PLoS Comput Biol (backbone alternatives), Riley et al.&nbsp;2021 Protein Sci (qFit 3.0 codebase, ligands, cryo-EM), Wankowicz et al.&nbsp;2024 eLife (automated multiconformer modeling for X-ray and cryo-EM). Repo: <a href="https://github.com/ExcitedStates/qfit-3.0" class="uri">https://github.com/ExcitedStates/qfit-3.0</a>.</p>
+<p><strong>Composite omit map.</strong> A specially-computed electron density map where systematic regions of the model are excluded (“omitted”) during map calculation and the map is reassembled from the omitted patches. The result is largely free of model bias — i.e., the map doesn’t just reflect what was in the input model. qFit takes a composite omit map as input (generated by Phenix’s <code>phenix.composite_omit_map</code>) so that the conformers it identifies are supported by the data, not echoes of the starting structure.</p>
+<p><strong>Mixed-integer quadratic program (MIQP).</strong> A convex optimization problem with a quadratic objective and both continuous and integer (typically binary) decision variables. qFit’s selection step is an MIQP: the continuous variables are the occupancies <span class="math inline">\(w_k\)</span>, the binary variables enforce “at most <span class="math inline">\(N\)</span> nonzero <span class="math inline">\(w_k\)</span>,” and the objective is the squared map-fit residual. Solved with CVXPY.</p>
+</section>
+<section id="duino-format-terms" class="level2">
+<h2 class="anchored" data-anchor-id="duino-format-terms">Duino format terms</h2>
+<p>Concepts specific to the Duino format. Linked from first use in the chapters.</p>
+<p><span id="gloss-core-ensemble"></span><strong>Core layer / ensemble layers.</strong> The <strong>core layer</strong> describes the “what”: the primary physical components and their named groupings, invariant across every conformational state the deposition encodes. The <strong>ensemble layers</strong> describe how those primitives vary – which states are representable and how they are stored. A deposition with one structure and one with ten thousand samples share the same core; the ensemble layers are what differ.</p>
+<p><span id="gloss-scope"></span><strong>Scope.</strong> The set of nodes in the core that a given heterogeneity descriptor applies to. Formally, a <em>scope handle</em> is either an inline reference into Hierarchy (one atom, one residue, one chain, the whole assembly; or a span like a residue range – a singleton-or-span grouping) or a reference to a previously declared Groupings entry (the atoms of a named TLS partition, the residues of a CATH domain). A descriptor’s scope determines (i) which atoms its displacement contribution <span class="math inline">\(\Delta_i^\ell(\cdot)\)</span> affects, and (ii) where the descriptor sits in the scope DAG when it is composed with other descriptors.</p>
+<p><span id="gloss-regime"></span><strong>Heterogeneity regime.</strong> A label for the <em>kind</em> of variation a descriptor describes, independent of how it is stored. Three regimes cover the space: <strong>R1</strong> (discrete ensemble), <strong>R2</strong> (trajectory), <strong>R3</strong> (continuous landscape). Each has a different natural representation; the boundaries between them are meaningful design seams.</p>
+<p><span id="gloss-materialization-mode"></span><strong>Materialization mode.</strong> A <em>storage strategy</em> for a heterogeneity descriptor: <strong>Mode A</strong> stores every state explicitly, <strong>Mode B</strong> stores a base plus sparse per-state deltas, <strong>Mode C</strong> stores an operator (parametric Gaussian, basis, neural decoder, or external reference) plus its inputs. The mode is independent of the regime; the same descriptor can be re-materialized between modes without changing its meaning.</p>
+<p><span id="gloss-reference-structure"></span><strong>Reference structure.</strong> <span class="math inline">\(x^{\mathrm{ref}}\)</span> is the single anchor: a per-atom Cartesian position, one set, in <span class="math inline">\(\mathbb{R}^3\)</span>. It is what the deposition would render as if every heterogeneity descriptor were inactive. Every descriptor’s contribution is expressed as a displacement against it.</p>
+<p><span id="gloss-discrete-nesting"></span><strong>Discrete-nesting stack.</strong> The composition rule for Regime 1 descriptors at multiple scopes. Each child descriptor declares which parent state activates which child state set; only legal joint states exist at render time. Storage scales with the count of legal joint states, not the Cartesian product of per-scope state spaces.</p>
+<p><span id="gloss-continuous-additive"></span><strong>Continuous-additive stack.</strong> The composition rule for Regime 3 Gaussian descriptors at multiple scopes. Each level contributes a per-atom <span class="math inline">\(3 \times 3\)</span> covariance; the total atomic displacement covariance is the <em>sum</em> of those contributions, under the assumption that levels are uncorrelated. ECHT <span class="citation" data-cites="pearce2021echt">[@pearce2021echt]</span> is the published instance.</p>
+<p><span id="gloss-sample-axes"></span><strong>Sample axes.</strong> A descriptor’s <em>sample axis</em> is the index along which the deposition stores its multiple samples (frames, models, particles, latent draws). Descriptors are <strong>aligned</strong> when they share a named sample axis (sample <span class="math inline">\(i\)</span> of one corresponds to sample <span class="math inline">\(i\)</span> of another), <strong>broadcast</strong> when they have no sample axis at all (the descriptor is parametric and renders by drawing on demand), and <strong>mixed</strong> when a deposition combines an aligned core with one or more broadcast satellites.</p>
+<p><span id="gloss-operator-interface"></span><strong>Operator interface.</strong> The contract every Mode C subcase satisfies: a function with the shape <code>(state_input, reference) -&gt; displacement</code>, plus declared input shape, output shape, atom-id ordering, and reference frame. Parametric Gaussians, basis descriptors, neural decoders, and external references all fit this surface; they differ in what <code>state_input</code> is, what backend the call lands on, and whether the output is a draw or a distribution.</p>
+<p><span id="gloss-selector"></span><strong>Selector.</strong> A query expression that names a molecular subset across the four core layers – atoms, residues, chains, domains, named groupings – and across conformational states. Selectors are the address-space of the format: every annotation, every cached pass output, every overlay attaches to a selector rather than to raw atom indices, so the binding survives renumbering.</p>
+<p><span id="gloss-annotation-overlay"></span><strong>Annotation overlay.</strong> A separate, additive layer of <code>(selector, body, provenance)</code> triples attached to a structure without modifying its core. Modeled after copick’s overlay filesystem: the base data is read-only, overlays are writable and namespaced by their producer, and multiple annotators coexist without stepping on each other or on the underlying structure.</p>
+<p><span id="gloss-model-side-artifact"></span><strong>Model-side artifact.</strong> A first-class deposition object whose origin is a model rather than an experiment: stored weights, latent coordinates, decoder checkpoints, predicted ensembles, training metadata. All four route through the same <code>(selector, body, provenance)</code> overlay machinery as human-curated annotations; the difference is what the provenance has to carry to make the artifact trustable – weights hash, training data version, evaluation metrics.</p>
+<p><span id="gloss-differentiable-read"></span><strong>Differentiable read.</strong> An access pattern that delivers structural data directly into a tensor (numpy / torch / jax) without an intermediate parsed object. Format-level support means a Zarr or Arrow-backed array maps to a tensor in one zero-copy step; format-level <em>failure</em> means every consumer copies into its own representation between disk and tensor.</p>
+<p><span id="gloss-cached-pass"></span><strong>Cached pass.</strong> The stored output of a deterministic function over the core (a neighbour graph, a backbone-dihedral table, a SASA array). Lives in an annotation overlay namespace keyed by <code>(producing pass id, parameters, version)</code> rather than in the IR itself. Two consumers with different parameters produce two overlays; neither invalidates the core or the other.</p>
+<p><span id="gloss-track-a"></span><strong>Track A — ensemble representation.</strong> The deposition itself becomes a Boltzmann-weighted ensemble rather than a single conformation. The format provides explicit machinery for storing <span class="math inline">\(\{(x_i, w_i)\}\)</span>-shaped objects: discrete states with weights (R1), trajectories (R2), continuous latent landscapes with stored decoders (R3), with composition rules that handle nested heterogeneity descriptors across scales. This is the <a href="../../posts/mmcif/02-architecture.html#ensemble-layers">Heterogeneity and Materialization</a> work in chapter 2.</p>
+<p><span id="gloss-track-b"></span><strong>Track B — forward-operator infrastructure.</strong> The deposition standardizes the bridge between ensemble and experimental data. Each measurement modality contributes a uniform record: <code>(operator_ref, scope, parameters, observation, noise_model_ref, provenance)</code>. The operator is a registry-referenced (or, for novel measurements, embedded-graph-referenced) function that computes a predicted observation from the ensemble. The noise model is a separately-referenced distribution describing measurement uncertainty. Together they produce the likelihood term <span class="math inline">\(\log p(y \mid \text{ensemble})\)</span> that downstream inference engines consume.</p>
+</section>
+<section id="things-still-to-add" class="level2">
+<h2 class="anchored" data-anchor-id="things-still-to-add">Things still to add</h2>
+<ul>
+<li>FLEXR (electron-density-map sampling) — Stachowicz &amp; Fischer 2023.</li>
+<li>cryoENsemble (Bonomi’s Bayesian reweighting of MD against cryo-EM maps).</li>
+<li>AlphaFlow / AlphaFold2 ensemble manipulations.</li>
+<li>Boltzmann generators (Noé et al., normalizing flows for sampling Boltzmann distributions).</li>
+<li>Diffuse scattering ensemble methods.</li>
+<li>Three-dimensional variability analysis (3DVA) in cryo-EM.</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/rtviii\.xyz");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

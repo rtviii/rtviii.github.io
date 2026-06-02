@@ -87,14 +87,28 @@ ul.task-list li input[type="checkbox"] {
 <div class="post-glossary">
 <ul>
 <li><a href="../../posts/mmcif/index.html">Overview</a></li>
-<li><a href="../../posts/mmcif/01-problems.html">1. Problems with mmCIF</a></li>
-<li><a href="../../posts/mmcif/02-architecture.html">2. Layout</a></li>
-<li><a href="../../posts/mmcif/03-evaluation-model.html">3. Evaluation model</a></li>
-<li><a href="../../posts/mmcif/04-annotations-and-engine.html">4. Annotations and the artifact engine</a></li>
-<li><a href="../../posts/mmcif/04b-technology-survey.html">5. Technology survey</a></li>
-<li><a href="../../posts/mmcif/05-open-questions.html">6. Open questions</a></li>
-<li><a href="../../posts/mmcif/08-ml-native.html">7. ML-native access patterns</a></li>
-<li><a href="../../posts/mmcif/06-black-box-data.html">Appendix: black-box data and model artifacts</a></li>
+<li>Concept map</li>
+</ul>
+<p><span class="post-nav-group">Core</span></p>
+<ul>
+<li><a href="../../posts/mmcif/02-architecture.html">Layout — Track A</a></li>
+<li><a href="../../posts/mmcif/forward-operators.html">Forward operators — Track B</a></li>
+<li><a href="../../posts/mmcif/03-evaluation-model.html">Evaluation model</a></li>
+</ul>
+<p><span class="post-nav-group">Prerequisite</span></p>
+<ul>
+<li><a href="../../posts/mmcif/primer.html">Primer</a></li>
+<li><a href="../../posts/glossary/index.html">Glossary</a></li>
+<li><a href="../../posts/mmcif/references.html">References</a></li>
+</ul>
+<p><span class="post-nav-group">Secondary</span></p>
+<ul>
+<li><a href="../../posts/mmcif/01-problems.html">Problems with mmCIF</a></li>
+<li><a href="../../posts/mmcif/04-annotations-and-engine.html">Annotations &amp; the artifact engine</a></li>
+<li><a href="../../posts/mmcif/04b-technology-survey.html">Technology survey</a></li>
+<li><a href="../../posts/mmcif/05-open-questions.html">Open questions</a></li>
+<li><a href="../../posts/mmcif/08-ml-native.html">ML-native access patterns</a></li>
+<li><a href="../../posts/mmcif/06-black-box-data.html">Appendix: black-box data</a></li>
 <li><a href="../../posts/mmcif/07-modularity-examples.html">Appendix: modularity examples</a></li>
 </ul>
 </div>
@@ -140,6 +154,39 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 </div>
 </section>
+<section id="round-trip-and-edge-case-damage" class="level2">
+<h2 data-anchor-id="round-trip-and-edge-case-damage">Round-trip and edge-case damage</h2>
+<p>The legacy PDB &lt;-&gt; mmCIF round-trip silently mangles information. Chain IDs longer than one character get truncated. The 99,999-atom limit forces hex hacks. Residue numbers above 9999 break. Insertion codes vanish in some pipelines. Encoding and line-ending bugs cause half-loaded structures whose symptoms surface downstream in the viewer, not at parse time. gemmi <span class="citation" data-cites="wojdyr2022gemmi"><a href="references.html#ref-wojdyr2022gemmi" role="doc-biblioref">25</a></span> is the strictest modern mmCIF library and flags edge cases other parsers swallow.</p>
+</section>
+<section id="content-level-errors-that-survive-deposition" class="level2">
+<h2 data-anchor-id="content-level-errors-that-survive-deposition">Content-level errors that survive deposition</h2>
+<p>Even files that parse cleanly carry content-level errors that wwPDB validation does not catch. PDB-REDO <span class="citation" data-cites="joosten2014pdbredo"><a href="references.html#ref-joosten2014pdbredo" role="doc-biblioref">29</a></span> systematically re-refines the X-ray archive and finds measurable improvements often enough to be a standing critique of the deposited model. Recurring categories:</p>
+<ul>
+<li>Missing or extra atoms per residue; atom names that do not match the CCD; modified residues mis-typed.</li>
+<li>Geometric outliers: bond length, angle, clash, cis/trans peptide, chirality. MolProbity <span class="citation" data-cites="williams2018molprobity"><a href="references.html#ref-williams2018molprobity" role="doc-biblioref">27</a></span> for protein geometry; Mogul for ligand geometry.</li>
+<li>Connectivity gaps: missing LINK / <code>_struct_conn</code> records for disulfides, covalent ligands, glycosidic bonds, modified-residue linkages.</li>
+<li>Composition errors: wrong CCD ligand identifier; protonation/tautomer guesses baked in silently; Mg<sup>2+</sup> modelled as water at low resolution. CheckMyMetal and CheckMyBlob are dedicated checks.</li>
+<li>Numerical inconsistencies: altloc occupancies not summing to 1.0; negative B-factors; coordinates outside the unit cell.</li>
+</ul>
+<p>Each error class has a tool that catches it; the tool’s output does not travel with the deposition.</p>
+</section>
+<section id="validation-tooling-is-fragmented" class="level2">
+<h2 data-anchor-id="validation-tooling-is-fragmented">Validation tooling is fragmented</h2>
+<p>Coverage is broad and outputs do not aggregate.</p>
+<ul>
+<li><strong>MolProbity</strong> <span class="citation" data-cites="williams2018molprobity"><a href="references.html#ref-williams2018molprobity" role="doc-biblioref">27</a></span> – Ramachandran, rotamer, clash, geometry Z-scores.</li>
+<li><strong>Coot</strong> <span class="citation" data-cites="emsley2010coot"><a href="references.html#ref-emsley2010coot" role="doc-biblioref">26</a></span> – interactive density-and-geometry validation during refinement.</li>
+<li><strong>Phenix</strong> <span class="citation" data-cites="liebschner2019phenix"><a href="references.html#ref-liebschner2019phenix" role="doc-biblioref">28</a></span> – <code>phenix.molprobity</code>, <code>phenix.validate_geometry</code>, <code>phenix.real_space_correlation</code>.</li>
+<li><strong>WHAT_CHECK / WHATIF</strong> – broad stereochemistry and packing checks, the original of the genre.</li>
+<li><strong>Mogul</strong> – ligand bond/angle distributions from the CSD.</li>
+<li><strong>gemmi</strong> <span class="citation" data-cites="wojdyr2022gemmi"><a href="references.html#ref-wojdyr2022gemmi" role="doc-biblioref">25</a></span> – parser-level diagnostics.</li>
+<li><strong>PDB-REDO</strong> <span class="citation" data-cites="joosten2014pdbredo"><a href="references.html#ref-joosten2014pdbredo" role="doc-biblioref">29</a></span> – systematic re-refinement of the X-ray archive.</li>
+<li><strong>wwPDB Validation Report</strong> – the deposition-time bundle; PDF plus machine-readable XML.</li>
+<li><strong>EDS</strong> – experimental maps for visual re-inspection.</li>
+<li><strong>ChimeraX</strong> <span class="citation" data-cites="pettersen2021chimerax"><a href="references.html#ref-pettersen2021chimerax" role="doc-biblioref">30</a></span> – bundled validation panels and a Python API for custom checks.</li>
+</ul>
+<p>Each tool runs separately and produces its own report. The end user assembles validation themselves, the same shape as the SIFTS / CATH / UniProt integration burden in the annotation layer. ML-based validators (AF2 pLDDT repurposed as a suspicion signal, learned rotamer libraries, ML-assisted ligand identification) are research-grade; the obstacle is less the modelling than the absence of an archive linking errors back to the structures they appeared in.</p>
+</section>
 <section id="implicit-information-and-missing-connections" class="level2">
 <h2 data-anchor-id="implicit-information-and-missing-connections">Implicit information and missing connections</h2>
 <p>Atomic models are largely untethered from the experimental data that produced them. Maps in EMDB, raw images in EMPIAR, models in PDB – three archives, three accession systems, cross-referenced but not structurally integrated. A tighter connection between atomic coordinates and the density/potential from which they were derived would enable validation workflows, re-refinement, and heterogeneity analysis that currently require manual assembly of data from multiple sources.</p>
@@ -156,8 +203,8 @@ ul.task-list li input[type="checkbox"] {
 <li>Tokenization for heterogeneous systems (protein + ligand + nucleic acid + ions) is done ad-hoc in AF3/Boltz/Chai with no shared vocabulary</li>
 </ul>
 <div class="fold" data-summary="Some extensions in important directions">
-<p><strong>BinaryCIF</strong> (David Sehnal / Mol* team, <a href="https://github.com/molstar/BinaryCIF">github.com/molstar/BinaryCIF</a>) addresses the performance problem: binary-encoded mmCIF with column-wise compression, significantly smaller files and faster parsing than text mmCIF. Used by the PDB for Mol* visualization. But it’s a serialization optimization, not a data model change – it encodes the same categories and the same single-structure assumption.</p>
-<p>The <strong>IHMCIF dictionary</strong> (the IHM working group extension, <a href="https://github.com/ihmwg/IHMCIF">github.com/ihmwg/IHMCIF</a>). This adds: discrete multi-state models, ordered ensembles (states connected by time or other ordering), multi-scale representations (atomic + coarse-grained beads in the same model), and spatial restraint descriptions. But: states remain discrete and independent, there is no thermodynamic annotation (or other flexible heterogeneity annotations either), no per-state uncertainty, no support for continuous distributions, and the text-file serialization doesn’t scale to large ensembles.</p>
+<p><strong>BinaryCIF</strong> (<a href="https://github.com/molstar/BinaryCIF">github.com/molstar/BinaryCIF</a>) addresses the performance problem: binary-encoded mmCIF with column-wise compression, significantly smaller files and faster parsing than text mmCIF. Used by the PDB for Mol* visualization. But it’s a serialization optimization, not a data model change – it encodes the same categories and the same single-structure assumption.</p>
+<p>The <strong>IHMCIF dictionary</strong> <span class="citation" data-cites="ihmcif"><a href="references.html#ref-ihmcif" role="doc-biblioref">41</a></span> (the IHM working group extension). This adds: discrete multi-state models, ordered ensembles (states connected by time or other ordering), multi-scale representations (atomic + coarse-grained beads in the same model), and spatial restraint descriptions. But: states remain discrete and independent, there is no thermodynamic annotation (or other flexible heterogeneity annotations either), no per-state uncertainty, no support for continuous distributions, and the text-file serialization doesn’t scale to large ensembles.</p>
 </div>
 </section>
 </section>
@@ -552,43 +599,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
           }
         });
       }
-  const findCites = (el) => {
-    const parentEl = el.parentElement;
-    if (parentEl) {
-      const cites = parentEl.dataset.cites;
-      if (cites) {
-        return {
-          el,
-          cites: cites.split(' ')
-        };
-      } else {
-        return findCites(el.parentElement)
-      }
-    } else {
-      return undefined;
-    }
-  };
-  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-  for (var i=0; i<bibliorefs.length; i++) {
-    const ref = bibliorefs[i];
-    const citeInfo = findCites(ref);
-    if (citeInfo) {
-      tippyHover(citeInfo.el, function() {
-        var popup = window.document.createElement('div');
-        citeInfo.cites.forEach(function(cite) {
-          var citeDiv = window.document.createElement('div');
-          citeDiv.classList.add('hanging-indent');
-          citeDiv.classList.add('csl-entry');
-          var biblioDiv = window.document.getElementById('ref-' + cite);
-          if (biblioDiv) {
-            citeDiv.innerHTML = biblioDiv.innerHTML;
-          }
-          popup.appendChild(citeDiv);
-        });
-        return popup.innerHTML;
-      });
-    }
-  }
 });
 </script>
 </div> <!-- /content -->

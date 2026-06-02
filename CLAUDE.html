@@ -116,8 +116,56 @@ ul.task-list li input[type="checkbox"] {
 <li>To publish a new post: create <code>posts/&lt;slug&gt;/index.qmd</code> with YAML frontmatter including <code>title</code>, <code>date</code>, <code>categories</code>, and (if cited) <code>bibliography: references.bib</code>. Use <code>_wip/&lt;slug&gt;/</code> while drafting. For WIP posts inside <code>posts/</code> (e.g.&nbsp;published slug but not ready), add <code>draft: true</code> to the frontmatter.</li>
 <li>Do not introduce a Node toolchain — the empty <code>package-lock.json</code> is deliberate.</li>
 </ul>
+</section>
+<section id="blog-authoring-conventions-duino-structural-bio-series" class="level2">
+<h2 class="anchored" data-anchor-id="blog-authoring-conventions-duino-structural-bio-series">Blog authoring conventions (Duino / structural-bio series)</h2>
+<p>Conventions agreed with Artem for the Duino series, and the default for new posts. (The two short rules in <code>.claude/CLAUDE.md</code> — no last-name citations, math symbol dropdowns — are the seed of this and are expanded below.)</p>
+<section id="structure-two-tiers" class="level3">
+<h3 class="anchored" data-anchor-id="structure-two-tiers">Structure: two tiers</h3>
+<p>The material splits into a <strong>Core</strong> and a <strong>Secondary</strong> tier. The Core is the foremost citizen; Secondary chapters matter to the mission but are secondary to the Core in their capacity to address the heterogeneity problem. Core prose may link out to Secondary chapters to call out problems, motivate choices, or elaborate — but Secondary material never pollutes the Core text.</p>
+<ul>
+<li>Core — the Duino fundamentals, as two tracks: Track A (ensemble representation: Hierarchy, Groupings, Heterogeneity with the three regimes R1/R2/R3, Materialization with the three modes A/B/C) and Track B (forward-operator infrastructure: operator records and the likelihood substrate), plus the evaluation model that composes descriptors into rendered coordinates.</li>
+<li>Secondary — problems with mmCIF, annotations / the artifact engine, the technology survey, ML-native access patterns, and the appendices.</li>
+</ul>
+<p>Chapter 0 splits: the forward-operator material becomes the Track B Core chapter; the statistical-mechanics / Bayesian background becomes a linked prerequisite Primer page (not inlined into the Core).</p>
+<p>The series stays a multi-page Quarto website (no book conversion). Global continuous figure numbering across pages is not a priority; per-page cross-references are enough.</p>
+</section>
+<section id="figures" class="level3">
+<h3 class="anchored" data-anchor-id="figures">Figures</h3>
+<p>Use Quarto cross-references, never hand-typed “Figure N”. Each figure block carries <code>%| label: fig-&lt;slug&gt;</code> and is referenced with <code>@fig-&lt;slug&gt;</code>, so numbers and links stay correct automatically (per-page numbering is fine; we are not converting to a Quarto book for global numbering).</p>
+<p>The Duino concept map (<code>posts/mmcif/concept-map.qmd</code>) is the orientation figure: it goes on the series overview page and is reachable as a hover/tooltip from every chapter.</p>
+<p>Every figure carries <code>%| fig-alt:</code> and a <code>%| fig-cap:</code> of the form “<strong>Title.</strong> one or two sentences.”</p>
+<p>TikZ figures share <code>posts/mmcif/data/_tikz-preamble.tex</code>. The palette is semantic and fixed; every new figure reuses it: grey (H0–H4) = hierarchy, teal (accG) = groupings, orange (accS) = discrete states / Regime 1, olive (accT) = trajectory / Regime 2, violet (accO) = operators / Mode C. Reusable styles live in the preamble; figure-specific styles sit atop the block and migrate into the preamble once stable, so the visual language stays continuous.</p>
+</section>
+<section id="citations" class="level3">
+<h3 class="anchored" data-anchor-id="citations">Citations</h3>
+<p>Papers always go in <code>references.bib</code>, cited <code>[@key]</code> (numeric superscript). Never cite a paper by last name (no “the Wankowicz-Bonomi line”, no “gemmi (Wojdyr)”) — always link to the bibliography. Software/tools mentioned more than once also get a bib entry (<code>@misc</code>/<code>@software</code>) for a consistent link; a genuine one-off link to a tool’s docs/repo may stay a plain inline link.</p>
+</section>
+<section id="mathematics" class="level3">
+<h3 class="anchored" data-anchor-id="mathematics">Mathematics</h3>
+<p>Every non-trivial formula is presented the same way: the inline/display math as usual, plus a subtle, unstyled, collapsed-by-default dropdown directly beneath it spelling out each symbol and index. Keep operational symbol-prose out of the running text (it lives in the dropdown) but keep the mathematics lucid. Exempt the elementary cases (definition of covariance, a simple integral, etc.).</p>
+</section>
+<section id="definitions-and-the-glossary" class="level3">
+<h3 class="anchored" data-anchor-id="definitions-and-the-glossary">Definitions and the glossary</h3>
+<p>No <code>.def</code> insets in the prose. Canonical concept definitions live in the Glossary (<code>posts/glossary/</code>), organised thematically. The first use of a term in a post is bolded and links to its glossary anchor. The glossary is a first-class part of the series — the single place concepts are defined.</p>
+<p>Glossary entries carry explicit <code>{#gloss-&lt;slug&gt;}</code> anchors (e.g. <code>[]{#gloss-scope}**Scope.** ...</code>); link first use as <code>[**Term**](../glossary/index.qmd#gloss-&lt;slug&gt;)</code>. The chapter nav (<code>_glossary.qmd</code>) links to the glossary so it is always reachable.</p>
+</section>
+<section id="main-prose-vs.-side-content-the-meat-context-split" class="level3">
+<h3 class="anchored" data-anchor-id="main-prose-vs.-side-content-the-meat-context-split">Main prose vs.&nbsp;side content (the meat / context split)</h3>
+<p>The main column carries only load-bearing content: the claims and definitions that actually constitute the format. It is condensed and informative — never vague rambling, and never the residue of an exploratory session (tangents, clarifying back-and-forth, restated context).</p>
+<p>Secondary material — elaboration, examples, motivating asides, extra context — does not sit in the main column. It goes into a sidenote: an in-flow Tufte-style margin note that is ALWAYS visible and scrolls with the body text like any other block — never pinned, never collapsed behind a marker, never a popover. Keep this distinct from links and their hover previews, which are a separate mechanism (the Gwern-style link-preview tooltips stay). The <code>.def-stack</code> right-rail machinery is kept but unused in this series; <code>.fold</code> remains for inline collapsibles. Do not remove the right-rail infrastructure. Apply this split when drafting new posts and when reorganising existing ones.</p>
+<p>Sidenote syntax: place <code>::: {.sidenote} ... :::</code> immediately after the paragraph it elaborates. Placement is pure CSS: on wide viewports (&gt;= 1500px, where the outer gap holds a column) the note floats into the right gap and consecutive notes stack via <code>clear: right</code> so hefty notes push each other down rather than overlap; on narrower viewports it falls back to an in-flow indented block in the reading column. Either way it is always shown and scrolls normally. A small <code>+</code> cue is dropped at the anchor to tie note to sentence; it is a <code>+</code>, not a number, so it never reads as a numeric-superscript citation. To place the cue on a specific phrase instead of the paragraph end, wrap that phrase as <code>[phrase]{.sn-anchor}</code>. The marker injection lives in <code>installSidenotes()</code> (<code>scripts.js</code>); all placement is in the <code>.sidenote*</code> rules in <code>styles/custom.css</code>. Canonical definitions go to the glossary, not a sidenote; sidenotes are for elaboration, examples, and motivating asides.</p>
+</section>
+<section id="voice" class="level3">
+<h3 class="anchored" data-anchor-id="voice">Voice</h3>
+<p>Blog-style first person is welcome, but disciplined: keep the voice, drop the solipsistic rambling. Opinion and motivation worth keeping go into a sidenote, not the load-bearing prose.</p>
+</section>
+<section id="naming" class="level3">
+<h3 class="anchored" data-anchor-id="naming">Naming</h3>
+<p>The format is “Duino”. Introduce the name once, then use it consistently (not “the new format”).</p>
 
 
+</section>
 </section>
 </section>
 

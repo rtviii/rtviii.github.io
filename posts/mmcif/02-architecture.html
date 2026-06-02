@@ -20,27 +20,7 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-  margin-bottom: 0em;
-}
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+</style>
 
 
 <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -136,14 +116,28 @@ window.Quarto = {
 <div class="post-glossary">
 <ul>
 <li><a href="../../posts/mmcif/index.html">Overview</a></li>
-<li><a href="../../posts/mmcif/01-problems.html">1. Problems with mmCIF</a></li>
-<li><a href="../../posts/mmcif/02-architecture.html">2. Layout</a></li>
-<li><a href="../../posts/mmcif/03-evaluation-model.html">3. Evaluation model</a></li>
-<li><a href="../../posts/mmcif/04-annotations-and-engine.html">4. Annotations and the artifact engine</a></li>
-<li><a href="../../posts/mmcif/04b-technology-survey.html">5. Technology survey</a></li>
-<li><a href="../../posts/mmcif/05-open-questions.html">6. Open questions</a></li>
-<li><a href="../../posts/mmcif/08-ml-native.html">7. ML-native access patterns</a></li>
-<li><a href="../../posts/mmcif/06-black-box-data.html">Appendix: black-box data and model artifacts</a></li>
+<li>Concept map</li>
+</ul>
+<p><span class="post-nav-group">Core</span></p>
+<ul>
+<li><a href="../../posts/mmcif/02-architecture.html">Layout — Track A</a></li>
+<li><a href="../../posts/mmcif/forward-operators.html">Forward operators — Track B</a></li>
+<li><a href="../../posts/mmcif/03-evaluation-model.html">Evaluation model</a></li>
+</ul>
+<p><span class="post-nav-group">Prerequisite</span></p>
+<ul>
+<li><a href="../../posts/mmcif/primer.html">Primer</a></li>
+<li><a href="../../posts/glossary/index.html">Glossary</a></li>
+<li><a href="../../posts/mmcif/references.html">References</a></li>
+</ul>
+<p><span class="post-nav-group">Secondary</span></p>
+<ul>
+<li><a href="../../posts/mmcif/01-problems.html">Problems with mmCIF</a></li>
+<li><a href="../../posts/mmcif/04-annotations-and-engine.html">Annotations &amp; the artifact engine</a></li>
+<li><a href="../../posts/mmcif/04b-technology-survey.html">Technology survey</a></li>
+<li><a href="../../posts/mmcif/05-open-questions.html">Open questions</a></li>
+<li><a href="../../posts/mmcif/08-ml-native.html">ML-native access patterns</a></li>
+<li><a href="../../posts/mmcif/06-black-box-data.html">Appendix: black-box data</a></li>
 <li><a href="../../posts/mmcif/07-modularity-examples.html">Appendix: modularity examples</a></li>
 </ul>
 </div>
@@ -155,7 +149,7 @@ window.Quarto = {
 <section id="section" class="level1 g-col-12 g-col-md-9 right-column">
 <h1>Layout</h1>
 <p>The problem with forcing heterogeneous molecular data into a single abstraction is that the data actually contains several distinct kinds of structure, each with different algebra and different storage requirements. Conflating them will produce a format that handles each badly.</p>
-<p>Let’s split this into two halves roughly: the core layer and the ensembling layer. The <strong>core layer</strong> describes the “what”, the primary physical components of the system and their functional groupings. The <strong>ensembling layers</strong> describe what distinct states characterize these primitive (if any) and how these states differ from each other. The core is stable under heterogeneity; the ensemble layers are the ones that earn the format its keep for modern use cases.</p>
+<p>Let’s split this into two halves roughly: the core layer and the ensembling layer. The <a href="../../posts/glossary/index.html#gloss-core-ensemble"><strong>core layer</strong></a> describes the “what”, the primary physical components of the system and their functional groupings. The <strong>ensembling layers</strong> describe what distinct states characterize these primitive (if any) and how these states differ from each other. The core is stable under heterogeneity; the ensemble layers are the ones that earn the format its keep for modern use cases.</p>
 <p>For ease of addressing these concepts, let’s name these layers thusly:</p>
 <ul>
 <li><strong>Core: Hierarchy</strong> – the primary physical data (tree): which atom is in which residue, which residue is in which chain, and so on. The vanilla cif mental model.</li>
@@ -165,16 +159,11 @@ window.Quarto = {
 </ul>
 <section id="core-layers" class="level2">
 <h2 data-anchor-id="core-layers">2.1 Core layers: Hierarchy and Groupings</h2>
-<div class="def" data-term="Core / Ensemble">
-<p>The <strong>core layer</strong> describes the “what”: the primary physical components and their named groupings, invariant across every conformational state the deposition encodes. The <strong>ensemble layers</strong> describe how those primitives vary – which states are representable and how they are stored. A deposition with one structure and one with ten thousand samples share the same core; the ensemble layers are what differ.</p>
-</div>
 <p>The core describes what is invariant across every conformational state the system can take: the atoms that exist, what they are called, what contains them, and what named groupings have been defined over them. A deposition with one structure and a deposition with an ensemble of ten thousand samples share the same core; the ensemble layers sit on top.</p>
-<img src="02-architecture_files/mediabag/3e612ef8dc3cc3356b27ea7ab944905871ca8d26.svg" class="img-fluid">
-<p><strong>Figure 0 — Overlay, bus, and core.</strong> The selector bus is the only contact surface between overlay and core. Annotations and heterogeneity descriptors plug onto it the same way: a selector picks a subset across Hierarchy <span class="math inline">\(\cup\)</span> Groupings <span class="math inline">\(\cup\)</span> states; a body or operator rides on top. Lassos overlap and may leave atoms unmapped — membership is sparse and namespaces are independent.</p>
+<img src="02-architecture_files/mediabag/1f4667ef9aedcdf7394b67e2dceafe88d0dfc7cc.svg" class="img-fluid">
 <section id="containment" class="level3">
 <h3 data-anchor-id="containment">2.1.1 Hierarchy</h3>
-<img src="02-architecture_files/mediabag/f8f96a3e9fd16a95dfbcf67f5885eb76799a83d9.svg" class="img-fluid">
-<p><strong>Figure 1 — Containment.</strong> The hierarchy layer: five nested levels with one parent each, exactly as in mmCIF. Dashed <code>...</code> cards mark elided multiplicity. Everything else in this post sits on top of this base.</p>
+<img src="02-architecture_files/mediabag/540819f3f08f0d6cde78af515dc969898a265836.svg" class="img-fluid">
 <p>The Hierarchy layer addresses “what is this system made of?”. Leaving aside disk layout, encoding and stuff like this – this is exactly the component model that is used in the <code>.pdb</code> and <code>.mmcif</code> for the last 50 years. Irreducibly a tree: each atom belongs to exactly one residue, each residue to exactly one chain instance, each chain instance to one entity template, each entity to the assembly, assembly to trajectories, etc – all of these are implicit nodes in a component tree. I’ll call them component nodes or components going forward.</p>
 <p>Hierarchy should be as minimal as possible. What belongs here: atom element, atom name, residue comp_id, chain type, entity type. This provides us with a stable base index (in database terms) that all the other layers can refer to.</p>
 <p>Any <em>non-physical</em> hierarchy someone might want to impose on the same set of components – CATH domain within chain, rigid-body groups within the domain, secondary-structure element within chain – is to some extent a non-physical curatorial choice and should live in some other data-structure (Groupings), not here.</p>
@@ -186,8 +175,7 @@ window.Quarto = {
 </section>
 <section id="groupings" class="level3">
 <h3 data-anchor-id="groupings">2.1.2 Groupings</h3>
-<img src="02-architecture_files/mediabag/b0c9120408ac04811a342e3e2b8538987a68bfe6.svg" class="img-fluid">
-<p><strong>Figure 2 — Typed groupings.</strong> The Groupings layer is one structural primitive — a sparse bipartite mapping from hierarchy nodes to a named label set, plus a <code>kind</code> tag — used three different ways. <code>cath / D1</code> is <code>curatorial</code>: membership is the contract, the evaluation model never has to touch it. <code>bead / B1</code> is <code>coarse_grain</code>: membership plus per-edge weights, with an operator that lowers it to bead positions. <code>tls / G1</code> is <code>heterogeneity_descriptor.scope</code>: membership plus an operator reference plus a composition tag, lowered when rendering disorder. The operator (<code>tls_v1</code>) is registry-referenced — body recoverable from the spec, shareable across depositions. Coverage zones are drawn non-overlapping for clarity; in practice a residue can belong to many groupings simultaneously.</p>
+<img src="02-architecture_files/mediabag/2bc01563d0685f2d0b3827447de86b95a9c1a303.svg" class="img-fluid">
 <p>A molecular system has many valid abstractions at different levels of granularity. Not all have a tree structure and many overlap.</p>
 <p>For example, a residue simultaneously belongs to a chain (that’s Hierarchy), to a CATH domain, to an active-site set, to a rigid-body partition used in refinement, to a secondary-structure element, and possibly to a pharmacophore grouping used in docking. Forcing these into one parent hierarchy creates category confusion; a residue cannot have five Hierarchy parents.</p>
 <p>There is <strong>one structural primitive</strong> – a <em>typed grouping</em> – and everything DAG-shaped in this layer or above it (the scope DAG of §2.2 included) is built out of it. A grouping is a sparse bipartite mapping from hierarchy nodes to a named label set, plus a <code>kind</code> tag that tells consumers and the evaluation model what the grouping carries. A curatorial CATH-domain mapping the evaluation model never has to touch; a coarse-graining mapping it lowers when someone asks for bead coordinates; a heterogeneity-descriptor scope it lowers when rendering coordinates. The differences live in what each grouping carries on top of the membership relation, not in the shape of the relation itself.</p>
@@ -212,7 +200,9 @@ mapping/tls_groups_as_refined:
   child_atom_id[E], parent_tls_id[E]
   # operator reference + composition-rule tag in attachments (chapter 3)</code></pre>
 <p>Weights are optional and role-tagged. The default grouping is unweighted bipartite membership and that covers most curatorial mappings. When weights are present they declare a role: <code>projection_coefficient</code> for coarse-graining (a bead’s position is a weighted sum of constituent atom positions, and the operator that lowers the grouping reads these weights), or <code>membership_probability</code> for soft assignment (a boundary residue between two CATH domains contributes 0.5 to each), or some other role declared by the grouping’s <code>kind</code>. Making the weight column optional and role-tagged is what stops it from quietly conflating “how confident is this membership” with “what coefficient does this position-computing operator use” – two distinct things that earlier drafts tried to fit under one column.</p>
-<p>As described here this, i find this decoupled namespace thing pretty useful even when raw. One can imagine refining each namespace to be a community-defined rule with its own ontology and arbitrariyl complicated derivation rules that in the end just has to map to a subset of a physical hierarchy. Wherever the structure is stored – people (or agents) can send their curated annotations. The users or consumers can then opt in or out of how much of this accrued data they want to actually pull when using a structure, but by god at least it will all be in the same place and more or less in the same shape.</p>
+<div class="sidenote">
+<p>Described this way, I find this decoupled-namespace idea useful even when raw. One can imagine refining each namespace into a community-defined rule with its own ontology and arbitrarily complicated derivation logic that in the end just maps to a subset of a physical hierarchy. Wherever the structure is stored, people (or agents) can send their curated annotations, and consumers opt in or out of how much of this accrued data they pull — but at least it all lives in the same place and in more or less the same shape.</p>
+</div>
 <hr>
 <p>The kinds that show up in practice today, with their evaluation-model commitments:</p>
 <ul>
@@ -226,11 +216,8 @@ mapping/tls_groups_as_refined:
 </section>
 <section id="ensemble-layers" class="level2">
 <h2 data-anchor-id="ensemble-layers">2.2 Ensemble layers</h2>
-<p>The ensemble layers describe how the system varies across the states the data captures, and how those variations are physically laid out in storage. Heterogeneity is the abstract description of variation; Materialization is the storage strategy. They are separated because the same abstract description can be stored several ways depending on ensemble size, access pattern, and whether the data came from a method that produces samples, parameters, or a trajectory.</p>
-<p>The bridge between the core and the ensemble layers is <em>scope</em> – the same grouping primitive from §2.1.2, used here to declare which atoms or hierarchy nodes a heterogeneity descriptor binds to.</p>
-<div class="def" data-term="Scope">
-<p>The set of nodes in the core that a given heterogeneity descriptor applies to. Formally, a <em>scope handle</em> is either an inline reference into Hierarchy (one atom, one residue, one chain, the whole assembly; or a span like a residue range – a singleton-or-span grouping) or a reference to a previously declared Groupings entry (the atoms of a named TLS partition, the residues of a CATH domain). A descriptor’s scope determines (i) which atoms its displacement contribution <span class="math inline">\(\Delta_i^\ell(\cdot)\)</span> affects, and (ii) where the descriptor sits in the scope DAG when it is composed with other descriptors.</p>
-</div>
+<p>The ensemble layers describe how the system varies across the states the data captures, and how those variations are physically laid out in storage. Heterogeneity is the abstract description of variation; <a href="../../posts/glossary/index.html#gloss-materialization-mode"><strong>Materialization</strong></a> is the storage strategy. They are separated because the same abstract description can be stored several ways depending on ensemble size, access pattern, and whether the data came from a method that produces samples, parameters, or a trajectory.</p>
+<p>The bridge between the core and the ensemble layers is <a href="../../posts/glossary/index.html#gloss-scope"><strong>scope</strong></a> – the same grouping primitive from §2.1.2, used here to declare which atoms or hierarchy nodes a heterogeneity descriptor binds to.</p>
 <p>Every heterogeneity descriptor attaches to exactly one scope, and a heterogeneity descriptor is itself a typed grouping (<code>kind: heterogeneity_descriptor.scope</code>) carrying an operator-reference attachment and a composition-rule tag. A B-factor is atom-scoped; a TLS descriptor is scoped to a partition declared in Groupings; a cryoDRGN latent is scoped to the whole assembly. The scope plus the attachments together are what make the descriptor legible to composition (chapter 3) – the mechanism by which “what varies at chain level” and “what varies at residue level” can coexist in the same deposition without stepping on each other.</p>
 <p>Concretely, the scope DAG for a small kinase deposition with one bound inhibitor looks like this:</p>
 <pre><code>nodes (scope, state):
@@ -248,24 +235,18 @@ edges:
 <p>The discrete-stack descriptors form the inner spine; broadcast (parametric Gaussian) descriptors hang off it without state-space coupling. Both edge types and how they participate in rendering are unpacked in <a href="../../posts/mmcif/03-evaluation-model.html">chapter 3</a>.</p>
 <section id="heterogeneity" class="level3">
 <h3 data-anchor-id="heterogeneity">2.2.1 Heterogeneity</h3>
-<p>The Heterogeneity layer describes how the system varies – both the geometric variation that matters for function and the thermodynamic variation that carries free-energy content single structures discard <span class="citation" data-cites="wankowicz2025entropy lane2023frontier"><a href="#ref-wankowicz2025entropy" role="doc-biblioref">1</a>,<a href="#ref-lane2023frontier" role="doc-biblioref">2</a></span>. This is the hardest layer to design because the right abstraction depends entirely on what kind of variation is being described, and different experimental and computational methods produce fundamentally different kinds of variation. Forcing them all into a single formalism – a list of discrete states, a continuous latent space, a trajectory – will produce something that handles each case awkwardly.</p>
-<p>We distinguish three heterogeneity regimes, because each has a different natural representation and the transitions between them are meaningful design boundaries. Orthogonal to the regime axis is scope: every heterogeneity descriptor attaches to a level of the Hierarchy tree (§2.1.1) or a grouping in Groupings (§2.1.2). A B-factor is atom-scoped; a TLS group or ECHT hierarchical disorder component <span class="citation" data-cites="ploscariu2021ensemble"><a href="#ref-ploscariu2021ensemble" role="doc-biblioref">3</a></span> is scoped to a Groupings entry; the compositional/conformational nesting proposed by <span class="citation" data-cites="wankowicz2024encoding"><a href="#ref-wankowicz2024encoding" role="doc-biblioref">4</a></span> is entity-instance scope containing residue-range scope. Both axes are features of the format.</p>
+<p>The Heterogeneity layer describes how the system varies – both the geometric variation that matters for function and the thermodynamic variation that carries free-energy content single structures discard <span class="citation" data-cites="wankowicz2025entropy lane2023frontier"><a href="references.html#ref-wankowicz2025entropy" role="doc-biblioref">12</a>,<a href="references.html#ref-lane2023frontier" role="doc-biblioref">7</a></span>. This is the hardest layer to design because the right abstraction depends entirely on what kind of variation is being described, and different experimental and computational methods produce fundamentally different kinds of variation. Forcing them all into a single formalism – a list of discrete states, a continuous latent space, a trajectory – will produce something that handles each case awkwardly.</p>
+<p>We distinguish three <a href="../../posts/glossary/index.html#gloss-regime"><strong>heterogeneity regimes</strong></a>, because each has a different natural representation and the transitions between them are meaningful design boundaries. Orthogonal to the regime axis is scope: every heterogeneity descriptor attaches to a level of the Hierarchy tree (§2.1.1) or a grouping in Groupings (§2.1.2). A B-factor is atom-scoped; a TLS group or ECHT hierarchical disorder component <span class="citation" data-cites="ploscariu2021ensemble"><a href="references.html#ref-ploscariu2021ensemble" role="doc-biblioref">5</a></span> is scoped to a Groupings entry; the compositional/conformational nesting proposed by <span class="citation" data-cites="wankowicz2024encoding"><a href="references.html#ref-wankowicz2024encoding" role="doc-biblioref">1</a></span> is entity-instance scope containing residue-range scope. Both axes are features of the format.</p>
 <p>When multiple heterogeneity descriptors coexist, their couplings (where they exist at all) form the <strong>scope DAG</strong>: nodes are (scope, state) pairs, and edges encode whether a child-scope state is legal only under some parent-scope state (hierarchical nesting). Chapter 3 walks through how descriptors at different scopes compose through this DAG to produce full coordinates.</p>
-<div class="def" data-term="Heterogeneity Regime">
-<p>A label for the <em>kind</em> of variation a descriptor describes, independent of how it is stored. Three regimes cover the space: <strong>R1</strong> (discrete ensemble), <strong>R2</strong> (trajectory), <strong>R3</strong> (continuous landscape). Each has a different natural representation; the boundaries between them are meaningful design seams.</p>
-</div>
-<img src="02-architecture_files/mediabag/7932abfde0d19e5a2a9d33c36bf47f2d415a11f2.svg" class="img-fluid">
-<p><strong>Figure 3 — Regime 1: discrete ensemble.</strong> A finite, enumerable set of named states, each with its own coords and a population. NMR bundles, qFit sidechain ensembles, IHM multi-state models. State count in the tens to low hundreds.</p>
+<img src="02-architecture_files/mediabag/4c4319280b809156ed4452507c6a668ef02f23e7.svg" class="img-fluid">
 <p><strong>Heterogeneity Regime 1: Discrete Ensemble.</strong> A finite, enumerable set of conformers – NMR bundles, qFit sidechain ensembles, multi-conformer crystallographic models, short MD-derived state libraries. The right representation is explicit: a state index plus coordinates or coordinate deltas per state, typically scoped to a residue or residue range. The number of states sits in the tens to low hundreds. No cleverness required.</p>
-<p>The incumbent encoding in mmCIF is the altloc field paired with refined occupancy. What is broken is semantic, not structural: the same altloc letter overloads conformational variation (different geometry, same chemistry) and compositional variation (different chemistry entirely – ligand absent vs.&nbsp;present, two bound fragments in the same site) <span class="citation" data-cites="rosenberg2024altlocs wankowicz2024encoding"><a href="#ref-wankowicz2024encoding" role="doc-biblioref">4</a>,<a href="#ref-rosenberg2024altlocs" role="doc-biblioref">5</a></span>, and most analysis software silently discards alternates beyond <code>A</code>. Treating discrete states as a distinct regime rather than absorbing them into a continuous disorder parameter is empirically grounded: controlled simulations show refined B-factors can underestimate true positional heterogeneity by up to sixfold for mobile atoms <span class="citation" data-cites="kuzmanic2014xray"><a href="#ref-kuzmanic2014xray" role="doc-biblioref">6</a></span>, so the information carried by discrete conformers is not something B-factors ever recover. Binding events propagate rotamer rearrangements well beyond the binding site <span class="citation" data-cites="wankowicz2022ligand"><a href="#ref-wankowicz2022ligand" role="doc-biblioref">7</a></span>, which is precisely the kind of coupling this regime is meant to capture.</p>
-<img src="02-architecture_files/mediabag/577a2179d5d7c2d35d609ff37ab71c2ce4783f9f.svg" class="img-fluid">
-<p><strong>Figure 4 — Regime 2: trajectory.</strong> Composition is fixed; the coordinate leaf becomes a dense <span class="math inline">\((N_\text{frame}, N_\text{atom}, 3)\)</span> array chunked along the frame axis, with per-frame scalars riding along. H5MD already specifies the on-disk shape; the open question is cloud-native chunking.</p>
+<p>The incumbent encoding in mmCIF is the altloc field paired with refined occupancy. What is broken is semantic, not structural: the same altloc letter overloads conformational variation (different geometry, same chemistry) and compositional variation (different chemistry entirely – ligand absent vs.&nbsp;present, two bound fragments in the same site) <span class="citation" data-cites="rosenberg2024altlocs wankowicz2024encoding"><a href="references.html#ref-rosenberg2024altlocs" role="doc-biblioref">2</a>,<a href="references.html#ref-wankowicz2024encoding" role="doc-biblioref">1</a></span>, and most analysis software silently discards alternates beyond <code>A</code>. Treating discrete states as a distinct regime rather than absorbing them into a continuous disorder parameter is empirically grounded: controlled simulations show refined B-factors can underestimate true positional heterogeneity by up to sixfold for mobile atoms <span class="citation" data-cites="kuzmanic2014xray"><a href="references.html#ref-kuzmanic2014xray" role="doc-biblioref">3</a></span>, so the information carried by discrete conformers is not something B-factors ever recover. Binding events propagate rotamer rearrangements well beyond the binding site <span class="citation" data-cites="wankowicz2022ligand"><a href="references.html#ref-wankowicz2022ligand" role="doc-biblioref">4</a></span>, which is precisely the kind of coupling this regime is meant to capture.</p>
+<img src="02-architecture_files/mediabag/88037c6f859d1dd66d7e3ed1dce9db50a8822a1e.svg" class="img-fluid">
 <p><strong>Heterogeneity Regime 2: Trajectory.</strong> An ordered sequence of frames sharing a fixed topology – MD, coarse-grained simulation, time-resolved crystallography, a cryo-EM particle series treated as a time series. The Hierarchy, Groupings, and per-atom properties (atom names, residue assignments, bond graph) are the same across every frame; what varies is the coordinate array. The right representation is what H5MD already does: a dense <span class="math inline">\((N_{\mathrm{frame}}, N_{\mathrm{atom}}, 3)\)</span> array chunked along the frame axis, with per-frame metadata (time, energy, box vectors). The format question here is not about heterogeneity representation but about chunking strategy, compression, and efficient access patterns – and whether the coordinate array is inline or pointed to as an external artifact via Materialization Mode C (§2.2.2), which is usually the right call because trajectories dwarf everything else in the deposition.</p>
-<p>The frame axis does not need to be interpreted as a state space, and for long trajectories it shouldn’t be. But derived state decompositions can coexist alongside the raw stream: a Markov state model reduces a trajectory to a small set of metastable states with a transition rate matrix <span class="citation" data-cites="bozovic2020pdz"><a href="#ref-bozovic2020pdz" role="doc-biblioref">8</a></span>, which is effectively a Heterogeneity Regime 1 ensemble with provenance pointing back to the Heterogeneity Regime 2 source. Both shapes are valid, and the format should support carrying them side by side rather than forcing a commitment to one.</p>
+<p>The frame axis does not need to be interpreted as a state space, and for long trajectories it shouldn’t be. But derived state decompositions can coexist alongside the raw stream: a Markov state model reduces a trajectory to a small set of metastable states with a transition rate matrix <span class="citation" data-cites="bozovic2020pdz"><a href="references.html#ref-bozovic2020pdz" role="doc-biblioref">13</a></span>, which is effectively a Heterogeneity Regime 1 ensemble with provenance pointing back to the Heterogeneity Regime 2 source. Both shapes are valid, and the format should support carrying them side by side rather than forcing a commitment to one.</p>
 <p>You don’t store a few reference structures; you store one, plus deltas or raw coordinates for every frame.</p>
 <p>“Trajectory” is broader than MD. Any ordered sequence of frames shares this shape: a cryo-EM time-resolved dataset, a photo-activated structural series, an electron microscope tomographic tilt series reduced to atomic models. The format doesn’t need to know whether the ordering is time, reaction coordinate, or experimental parameter — it just needs to carry the index.</p>
-<img src="02-architecture_files/mediabag/a0b09efc3347dd9860f98d5216a3ad572f24a930.svg" class="img-fluid">
-<p><strong>Figure 5 — Regime 3: continuous landscape.</strong> A collective motion over hundreds of atoms is one low-dimensional <span class="math inline">\(\mathbf{z}\)</span> plus a stored decoder <span class="math inline">\(\varphi\)</span> (cryoDRGN checkpoint, normal-mode basis, PCA). Named discrete states become landmarks in <span class="math inline">\(\mathbf{z}\)</span>-space, not fundamental objects. Mode C materialization by construction; the decoder body lives inline, registry, or external.</p>
+<img src="02-architecture_files/mediabag/db695c8c846bffd0e18702755f5567567c344706.svg" class="img-fluid">
 <p><strong>Heterogeneity Regime 3: Continuous Landscape.</strong> The heterogeneity is not a finite state list but a distribution over a low-dimensional manifold – cryoDRGN latent spaces, normal mode deformations, rigid-body motions of domains, ribosome ratcheting. Here the critical insight is that a hundred residues moving together as a collective motion is not a hundred heterogeneity variables. It is one low-dimensional variable plus a stored mapping from that variable to the displacement field over all affected atoms:</p>
 <pre><code>mode_basis[k, N_atom, 3]      # k basis vectors
 mode_coeff[N_sample, k]        # sample coordinates in latent space</code></pre>
@@ -273,17 +254,13 @@ mode_coeff[N_sample, k]        # sample coordinates in latent space</code></pre>
 <pre><code>latent_z[N_sample, d]
 decoder_ref                    # TorchScript blob or checkpoint reference</code></pre>
 <p>Named discrete states in this regime are best understood as landmarks or clusters in the continuous space – selected by a human or a clustering algorithm after the fact – rather than fundamental objects in the data model. The format stores both: the continuous representation (latent coordinates per sample) and any named landmarks, with provenance recording how the landmarks were defined.</p>
-<p>One reality check: this regime is already the output of a growing class of structure-prediction and reconstruction methods, but the field has nowhere to put it. Diffusion-based structure priors <span class="citation" data-cites="chung2024dps levy2025inverse"><a href="#ref-chung2024dps" role="doc-biblioref">9</a>,<a href="#ref-levy2025inverse" role="doc-biblioref">10</a></span> and cryo-EM-guided samplers <span class="citation" data-cites="raghu2025cryoboltz"><a href="#ref-raghu2025cryoboltz" role="doc-biblioref">11</a></span> produce either pretrained generative models usable as decoders or posterior sample sets with informative uncertainty – outputs whose natural representation is continuous, and whose current fate is being collapsed back into a Materialization Mode A sample of explicit structures because there is no format slot for “a decoder reference” or “samples from a posterior linked to this structure.” <span class="citation" data-cites="lane2023frontier"><a href="#ref-lane2023frontier" role="doc-biblioref">2</a></span>’s framing of the single-structure frontier is the field-level complaint this regime is meant to answer; Materialization Mode C, below, is the materialization half of the fix.</p>
+<p>One reality check: this regime is already the output of a growing class of structure-prediction and reconstruction methods, but the field has nowhere to put it. Diffusion-based structure priors <span class="citation" data-cites="chung2024dps levy2025inverse"><a href="references.html#ref-chung2024dps" role="doc-biblioref">10</a>,<a href="references.html#ref-levy2025inverse" role="doc-biblioref">9</a></span> and cryo-EM-guided samplers <span class="citation" data-cites="raghu2025cryoboltz"><a href="references.html#ref-raghu2025cryoboltz" role="doc-biblioref">8</a></span> produce either pretrained generative models usable as decoders or posterior sample sets with informative uncertainty – outputs whose natural representation is continuous, and whose current fate is being collapsed back into a Materialization Mode A sample of explicit structures because there is no format slot for “a decoder reference” or “samples from a posterior linked to this structure.” <span class="citation" data-cites="lane2023frontier"><a href="references.html#ref-lane2023frontier" role="doc-biblioref">7</a></span>’s framing of the single-structure frontier is the field-level complaint this regime is meant to answer; Materialization Mode C, below, is the materialization half of the fix.</p>
 </section>
 <section id="materialization" class="level3">
 <h3 data-anchor-id="materialization">2.2.2 Materialization</h3>
-<img src="02-architecture_files/mediabag/99b4ac2d7385dc23e76251f0b5e199127865bc19.svg" class="img-fluid">
-<p><strong>Figure 6 — Materialization Modes A / B / C.</strong> Same containment, three storage strategies for the coordinate leaf. <strong>A</strong> stores every state, <strong>B</strong> stores a base plus sparse <span class="math inline">\(\Delta\)</span>s, <strong>C</strong> stores an operator applied to a compact input. Materialization is a per-scope storage choice, independent of the heterogeneity regime.</p>
+<img src="02-architecture_files/mediabag/a6096436d524da8eaafbb083eae15da2f775eb72.svg" class="img-fluid">
 <p>Given a heterogeneity description, how are actual coordinates produced? Materialization is a separate concern from the heterogeneity model because the same abstract description can be realized by different storage strategies depending on ensemble size, composition variability, and access pattern.</p>
 <p>Three modes cover the space. They are mutually substitutable for a given heterogeneity descriptor – switching from one to another is a storage choice that does not change what the descriptor means.</p>
-<div class="def" data-term="Materialization Mode">
-<p>A <em>storage strategy</em> for a heterogeneity descriptor: <strong>Mode A</strong> stores every state explicitly, <strong>Mode B</strong> stores a base plus sparse per-state deltas, <strong>Mode C</strong> stores an operator (parametric Gaussian, basis, neural decoder, or external reference) plus its inputs. The mode is independent of the regime; the same descriptor can be re-materialized between modes without changing its meaning.</p>
-</div>
 <p><strong>Materialization Mode A: Full Enumeration.</strong> <code>coords[N_state, N_atom, 3]</code> with per-state metadata (population, free energy, latent vector). Appropriate for Heterogeneity Regime 1 and for any case where the joint assignment space is small enough to enumerate. Simple consumers – visualization tools, PDB depositions – only need to handle this mode.</p>
 <p><strong>Materialization Mode B: Delta Encoding.</strong> A base conformation plus sparse per-state or per-variable-assignment coordinate deltas. Appropriate when most states differ only locally – qFit-like sidechain ensembles where the backbone is unchanged, loop substates where the rest of the chain is unaffected. Far more compact than Materialization Mode A for large sparse ensembles.</p>
 <pre><code>base_coords[N_atom, 3]
@@ -297,7 +274,7 @@ delta_table:
 <p>Mode C also covers the obvious-but-underformalized case of referencing an external artifact. An MD trajectory stored as H5MD or Zarr, a cryoDRGN decoder checkpoint, a normal-mode basis file – any of these can be the heavy payload, with the structure file carrying a stable pointer (artifact identifier, producing method, version, content hash) and the coupling back to atom IDs. The structure does not need to swallow the trajectory; it needs to know where the trajectory lives and how to align its indices.</p>
 <p>The Mode C subcases share a label but their <em>operator semantics</em> differ, and the <a href="../../posts/mmcif/03-evaluation-model.html">evaluation model</a> has to specify each one explicitly:</p>
 <ul>
-<li>A <strong>parametric Gaussian</strong> descriptor (TLS, anisotropic ADP, normal-mode-derived covariance) takes its parameters and an atom position and returns a probability distribution over displacements; sampling produces a draw, the mean is zero, the second moment is the propagated covariance. Multiple parametric Gaussians at different scopes that describe the same physical signal (thermal motion) compose by <a href="../../posts/mmcif/03-evaluation-model.html#the-continuous-additive-stack">additive covariance</a>, not as a residual relationship – this is the half of the composition rule that the ECHT precedent <span class="citation" data-cites="pearce2021echt"><a href="#ref-pearce2021echt" role="doc-biblioref">12</a></span> vindicates.</li>
+<li>A <strong>parametric Gaussian</strong> descriptor (TLS, anisotropic ADP, normal-mode-derived covariance) takes its parameters and an atom position and returns a probability distribution over displacements; sampling produces a draw, the mean is zero, the second moment is the propagated covariance. Multiple parametric Gaussians at different scopes that describe the same physical signal (thermal motion) compose by <a href="../../posts/mmcif/03-evaluation-model.html#the-continuous-additive-stack">additive covariance</a>, not as a residual relationship – this is the half of the composition rule that the ECHT precedent <span class="citation" data-cites="pearce2021echt"><a href="references.html#ref-pearce2021echt" role="doc-biblioref">6</a></span> vindicates.</li>
 <li>A <strong>basis descriptor</strong> (normal modes, PCA) takes coefficients plus a stored basis and returns a deterministic displacement field.</li>
 <li>A <strong>neural decoder</strong> takes a latent vector and returns a deterministic displacement field (or a coordinate set, depending on the network’s output convention).</li>
 <li>An <strong>external reference</strong> takes a lookup key (frame index, particle id) and returns a coordinate set from an out-of-band artifact.</li>
@@ -318,7 +295,6 @@ delta_table:
 </section>
 </section>
 </div>
-
 
 
 
@@ -709,83 +685,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
           }
         });
       }
-  const findCites = (el) => {
-    const parentEl = el.parentElement;
-    if (parentEl) {
-      const cites = parentEl.dataset.cites;
-      if (cites) {
-        return {
-          el,
-          cites: cites.split(' ')
-        };
-      } else {
-        return findCites(el.parentElement)
-      }
-    } else {
-      return undefined;
-    }
-  };
-  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-  for (var i=0; i<bibliorefs.length; i++) {
-    const ref = bibliorefs[i];
-    const citeInfo = findCites(ref);
-    if (citeInfo) {
-      tippyHover(citeInfo.el, function() {
-        var popup = window.document.createElement('div');
-        citeInfo.cites.forEach(function(cite) {
-          var citeDiv = window.document.createElement('div');
-          citeDiv.classList.add('hanging-indent');
-          citeDiv.classList.add('csl-entry');
-          var biblioDiv = window.document.getElementById('ref-' + cite);
-          if (biblioDiv) {
-            citeDiv.innerHTML = biblioDiv.innerHTML;
-          }
-          popup.appendChild(citeDiv);
-        });
-        return popup.innerHTML;
-      });
-    }
-  }
 });
 </script>
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" data-entry-spacing="0" role="list">
-<div id="ref-wankowicz2025entropy" class="csl-entry" role="listitem">
-<div class="csl-left-margin">1. </div><div class="csl-right-inline">Wankowicz, S. A., Fraser, J. S. Advances in uncovering the mechanisms of macromolecular conformational entropy. <em>Nature Chemical Biology</em> (2025). doi: <a href="https://doi.org/10.1038/s41589-025-01879-3">10.1038/s41589-025-01879-3</a></div>
-</div>
-<div id="ref-lane2023frontier" class="csl-entry" role="listitem">
-<div class="csl-left-margin">2. </div><div class="csl-right-inline">Lane, T. J. Protein structure prediction has reached the single-structure frontier. <em>Nature Methods</em> (2023). doi: <a href="https://doi.org/10.1038/s41592-022-01760-4">10.1038/s41592-022-01760-4</a></div>
-</div>
-<div id="ref-ploscariu2021ensemble" class="csl-entry" role="listitem">
-<div class="csl-left-margin">3. </div><div class="csl-right-inline">Ploscariu, N., Burnley, T., Gros, P., Pearce, N. M. Improving sampling of crystallographic disorder in ensemble refinement. <em>Acta Crystallographica Section D: Structural Biology</em> <strong>77</strong>:1357–1364 (2021). doi: <a href="https://doi.org/10.1107/S2059798321010044">10.1107/S2059798321010044</a></div>
-</div>
-<div id="ref-wankowicz2024encoding" class="csl-entry" role="listitem">
-<div class="csl-left-margin">4. </div><div class="csl-right-inline">Wankowicz, S. A., Fraser, J. S. Comprehensive encoding of conformational and compositional protein structural ensembles through the <span class="nocase">mmCIF</span> data structure. <em>IUCrJ</em> (2024). doi: <a href="https://doi.org/10.1107/S2052252524005098">10.1107/S2052252524005098</a></div>
-</div>
-<div id="ref-rosenberg2024altlocs" class="csl-entry" role="listitem">
-<div class="csl-left-margin">5. </div><div class="csl-right-inline">Rosenberg, A. A., Marx, A., Bronstein, A. M. A dataset of alternately located segments in protein crystal structures. <em>Scientific Data</em> (2024). doi: <a href="https://doi.org/10.1038/s41597-024-03595-4">10.1038/s41597-024-03595-4</a></div>
-</div>
-<div id="ref-kuzmanic2014xray" class="csl-entry" role="listitem">
-<div class="csl-left-margin">6. </div><div class="csl-right-inline">Kuzmanic, A., Pannu, N. S., Zagrovic, B. X-ray refinement significantly underestimates the level of microscopic heterogeneity in biomolecular crystals. <em>Nature Communications</em> (2014). doi: <a href="https://doi.org/10.1038/ncomms4220">10.1038/ncomms4220</a></div>
-</div>
-<div id="ref-wankowicz2022ligand" class="csl-entry" role="listitem">
-<div class="csl-left-margin">7. </div><div class="csl-right-inline">Wankowicz, S. A., Oliveira, S. H. de, Hogan, D. W., Bedem, H. van den, Fraser, J. S. Ligand binding remodels protein side-chain conformational heterogeneity. <em>eLife</em> (2022). doi: <a href="https://doi.org/10.7554/eLife.74114">10.7554/eLife.74114</a></div>
-</div>
-<div id="ref-bozovic2020pdz" class="csl-entry" role="listitem">
-<div class="csl-left-margin">8. </div><div class="csl-right-inline">Bozovic, O., Zanobini, C., Gulzar, A., Jankovic, B., Buhrke, D., Post, M., Wolf, S., Stock, G., Hamm, P. Real-time observation of ligand-induced allosteric transitions in a <span>PDZ</span> domain. <em>Proceedings of the National Academy of Sciences</em> (2020). doi: <a href="https://doi.org/10.1073/pnas.2012999117">10.1073/pnas.2012999117</a></div>
-</div>
-<div id="ref-chung2024dps" class="csl-entry" role="listitem">
-<div class="csl-left-margin">9. </div><div class="csl-right-inline">Chung, H., Kim, J., McCann, M. T., Klasky, M. L., Ye, J. C. Diffusion posterior sampling for general noisy inverse problems. <em>arXiv</em> (2024). doi: <a href="https://doi.org/10.48550/arXiv.2209.14687">10.48550/arXiv.2209.14687</a></div>
-</div>
-<div id="ref-levy2025inverse" class="csl-entry" role="listitem">
-<div class="csl-left-margin">10. </div><div class="csl-right-inline">Levy, A., Chan, E. R., Fridovich-Keil, S., Poitevin, F., Zhong, E. D., Wetzstein, G. Solving inverse problems in protein space using diffusion-based priors. <em>arXiv</em> (2025). doi: <a href="https://doi.org/10.48550/arXiv.2406.04239">10.48550/arXiv.2406.04239</a></div>
-</div>
-<div id="ref-raghu2025cryoboltz" class="csl-entry" role="listitem">
-<div class="csl-left-margin">11. </div><div class="csl-right-inline">Raghu, R., Levy, A., Wetzstein, G., Zhong, E. D. Multiscale guidance of protein structure prediction with heterogeneous cryo-<span>EM</span> data. <em>arXiv</em> (2025). doi: <a href="https://doi.org/10.48550/arXiv.2506.04490">10.48550/arXiv.2506.04490</a></div>
-</div>
-<div id="ref-pearce2021echt" class="csl-entry" role="listitem">
-<div class="csl-left-margin">12. </div><div class="csl-right-inline">Pearce, N. M., Gros, P. A method for intuitively extracting macromolecular dynamics from structural disorder. <em>Nature Communications</em> <strong>12</strong>:5493 (2021). doi: <a href="https://doi.org/10.1038/s41467-021-25814-x">10.1038/s41467-021-25814-x</a></div>
-</div>
-</div></section></div></div> <!-- /content -->
+</div> <!-- /content -->
 
 
 

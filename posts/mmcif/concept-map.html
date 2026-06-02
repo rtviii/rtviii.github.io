@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>q_mmcif – артём</title>
+<title>Duino concept map (prototype) – артём</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,18 +23,18 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<link href=".././img/BTNBlink.webp" rel="icon">
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-html/quarto.js"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<link href="../.././img/BTNBlink.webp" rel="icon">
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -50,38 +50,102 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script src="../scripts.js"></script>
+<script src="../../scripts.js"></script>
 <script src="https://unpkg.com/@popperjs/core@2"></script>
 <script src="https://unpkg.com/tippy.js@6"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Serif:wght@400;500;600&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+<meta name="quarto:status" content="draft">
 
 
-<link rel="stylesheet" href="../styles/custom.css">
-<link rel="stylesheet" href="../styles/scrollbar-fix.css">
-<link rel="stylesheet" href="../styles/listing.css">
+<link rel="stylesheet" href="../../styles/custom.css">
+<link rel="stylesheet" href="../../styles/scrollbar-fix.css">
+<link rel="stylesheet" href="../../styles/listing.css">
+<link rel="stylesheet" href="../../styles/homepage.css">
 </head>
 
-<body class="fullcontent">
+<body><div id="quarto-draft-alert" class="alert alert-warning"><i class="bi bi-pencil-square"></i>Draft</div>
 
 <div id="quarto-search-results"></div>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<div id="quarto-content" class="quarto-container page-layout-custom">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
 <!-- main -->
-<main class="content" id="quarto-document-content">
+
+<header id="title-block-header">
+<h1 class="title display-7">Duino concept map (prototype)</h1>
+
+</header>
+
+
+<div class="grid homepage-container">
+<div class="g-col-12 g-col-md-3 left-column">
+<p><a href="../.."><img src="../../img/signature.png" class="signature img-fluid"></a></p>
+<div class="post-nav">
+<div class="post-glossary">
+<ul>
+<li><a href="../../posts/mmcif/index.html">Overview</a></li>
+<li>Concept map</li>
+</ul>
+<p><span class="post-nav-group">Core</span></p>
+<ul>
+<li><a href="../../posts/mmcif/02-architecture.html">Layout — Track A</a></li>
+<li><a href="../../posts/mmcif/forward-operators.html">Forward operators — Track B</a></li>
+<li><a href="../../posts/mmcif/03-evaluation-model.html">Evaluation model</a></li>
+</ul>
+<p><span class="post-nav-group">Prerequisite</span></p>
+<ul>
+<li><a href="../../posts/mmcif/primer.html">Primer</a></li>
+<li><a href="../../posts/glossary/index.html">Glossary</a></li>
+<li><a href="../../posts/mmcif/references.html">References</a></li>
+</ul>
+<p><span class="post-nav-group">Secondary</span></p>
+<ul>
+<li><a href="../../posts/mmcif/01-problems.html">Problems with mmCIF</a></li>
+<li><a href="../../posts/mmcif/04-annotations-and-engine.html">Annotations &amp; the artifact engine</a></li>
+<li><a href="../../posts/mmcif/04b-technology-survey.html">Technology survey</a></li>
+<li><a href="../../posts/mmcif/05-open-questions.html">Open questions</a></li>
+<li><a href="../../posts/mmcif/08-ml-native.html">ML-native access patterns</a></li>
+<li><a href="../../posts/mmcif/06-black-box-data.html">Appendix: black-box data</a></li>
+<li><a href="../../posts/mmcif/07-modularity-examples.html">Appendix: modularity examples</a></li>
+</ul>
+</div>
+<div class="post-sections">
+
+</div>
+</div>
+</div>
+<section id="duino-concept-map-prototype" class="level1 g-col-12 g-col-md-9 right-column">
+<h1>Duino concept map (prototype)</h1>
+<p><span class="post-subtitle">A first pass at the orientation map. Three things to react to: (1) the layout / what is foregrounded, (2) whether the labels render as clickable links in your preview, (3) where this should live — top of the core page, the series homepage, or a hover/tooltip on every page.</span></p>
+<!-- Reusable Duino concept-map figure. Included by index.qmd (overview)
+     and concept-map.qmd. The static render data/concept-map.svg (used by
+     the per-page hover) is generated from this same block. -->
+<img src="concept-map_files/mediabag/b438be477d70a92cd45204e628bd79b35beaf487.svg" class="img-fluid">
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Notes for iteration:</p>
+<ul>
+<li>Regime axis (R1/R2/R3) and Materialization mode axis (A/B/C) are <strong>independent</strong> — a discrete ensemble can be stored as enumeration or deltas; a continuous landscape is usually Mode C. The map shows them as parallel columns rather than a grid to keep it legible; we can show the cross-product later if useful.</li>
+<li>Links currently point at the present chapter files (<code>02-architecture.qmd#...</code>). If we collapse the core into a single document, these become <code>#sec-...</code> anchors and stop being cross-file.</li>
+<li>Whether the labels are actually clickable in the rendered page depends on the SVG backend the <code>diagram</code> filter uses (dvisvgm keeps <code>\href</code>; pdf2svg drops it). If they don’t survive, the fallback is to render this one figure as inline SVG/HTML where links are guaranteed.</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+</div>
 
 
 
 
-
-
-
-</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -188,6 +252,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         if (link.dataset.originalHref !== undefined) {
           link.href = link.dataset.originalHref;
         }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
       }
     }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
@@ -463,43 +532,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
           }
         });
       }
-  const findCites = (el) => {
-    const parentEl = el.parentElement;
-    if (parentEl) {
-      const cites = parentEl.dataset.cites;
-      if (cites) {
-        return {
-          el,
-          cites: cites.split(' ')
-        };
-      } else {
-        return findCites(el.parentElement)
-      }
-    } else {
-      return undefined;
-    }
-  };
-  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-  for (var i=0; i<bibliorefs.length; i++) {
-    const ref = bibliorefs[i];
-    const citeInfo = findCites(ref);
-    if (citeInfo) {
-      tippyHover(citeInfo.el, function() {
-        var popup = window.document.createElement('div');
-        citeInfo.cites.forEach(function(cite) {
-          var citeDiv = window.document.createElement('div');
-          citeDiv.classList.add('hanging-indent');
-          citeDiv.classList.add('csl-entry');
-          var biblioDiv = window.document.getElementById('ref-' + cite);
-          if (biblioDiv) {
-            citeDiv.innerHTML = biblioDiv.innerHTML;
-          }
-          popup.appendChild(citeDiv);
-        });
-        return popup.innerHTML;
-      });
-    }
-  }
 });
 </script>
 </div> <!-- /content -->

@@ -20,27 +20,7 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-  margin-bottom: 0em;
-}
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+</style>
 
 
 <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -136,14 +116,28 @@ window.Quarto = {
 <div class="post-glossary">
 <ul>
 <li><a href="../../posts/mmcif/index.html">Overview</a></li>
-<li><a href="../../posts/mmcif/01-problems.html">1. Problems with mmCIF</a></li>
-<li><a href="../../posts/mmcif/02-architecture.html">2. Layout</a></li>
-<li><a href="../../posts/mmcif/03-evaluation-model.html">3. Evaluation model</a></li>
-<li><a href="../../posts/mmcif/04-annotations-and-engine.html">4. Annotations and the artifact engine</a></li>
-<li><a href="../../posts/mmcif/04b-technology-survey.html">5. Technology survey</a></li>
-<li><a href="../../posts/mmcif/05-open-questions.html">6. Open questions</a></li>
-<li><a href="../../posts/mmcif/08-ml-native.html">7. ML-native access patterns</a></li>
-<li><a href="../../posts/mmcif/06-black-box-data.html">Appendix: black-box data and model artifacts</a></li>
+<li>Concept map</li>
+</ul>
+<p><span class="post-nav-group">Core</span></p>
+<ul>
+<li><a href="../../posts/mmcif/02-architecture.html">Layout — Track A</a></li>
+<li><a href="../../posts/mmcif/forward-operators.html">Forward operators — Track B</a></li>
+<li><a href="../../posts/mmcif/03-evaluation-model.html">Evaluation model</a></li>
+</ul>
+<p><span class="post-nav-group">Prerequisite</span></p>
+<ul>
+<li><a href="../../posts/mmcif/primer.html">Primer</a></li>
+<li><a href="../../posts/glossary/index.html">Glossary</a></li>
+<li><a href="../../posts/mmcif/references.html">References</a></li>
+</ul>
+<p><span class="post-nav-group">Secondary</span></p>
+<ul>
+<li><a href="../../posts/mmcif/01-problems.html">Problems with mmCIF</a></li>
+<li><a href="../../posts/mmcif/04-annotations-and-engine.html">Annotations &amp; the artifact engine</a></li>
+<li><a href="../../posts/mmcif/04b-technology-survey.html">Technology survey</a></li>
+<li><a href="../../posts/mmcif/05-open-questions.html">Open questions</a></li>
+<li><a href="../../posts/mmcif/08-ml-native.html">ML-native access patterns</a></li>
+<li><a href="../../posts/mmcif/06-black-box-data.html">Appendix: black-box data</a></li>
 <li><a href="../../posts/mmcif/07-modularity-examples.html">Appendix: modularity examples</a></li>
 </ul>
 </div>
@@ -159,11 +153,11 @@ window.Quarto = {
 <h2 data-anchor-id="format-and-storage-foundations">Format and storage foundations</h2>
 <p>Structural biology data is fundamentally multidimensional: atoms have properties (element, charge, name), atoms belong to residues and chains (hierarchy), atoms have coordinates that vary across conformational states (ensemble dimension), and various scalar/vector/tensor fields can be associated with atoms, residues, or the entire system at any level of this hierarchy. A text file of atom records serializes this but sacrifices random access, compression, and dimensional structure.</p>
 <p>Technologies from adjacent fields that offer better primitives:</p>
-<p><strong>Zarr v3</strong> – chunked N-dimensional arrays on any storage backend. Simple (just arrays + groups + JSON metadata), cloud-native, implementations in Python/Rust/JS/C++. <a href="https://github.com/zarr-developers/zarr-python">github.com/zarr-developers/zarr-python</a>, <a href="https://github.com/LDeakin/zarrs">github.com/zarrs/zarrs</a> (Rust).</p>
-<p><strong>OME-Zarr (NGFF)</strong> – bioimaging conventions on Zarr: multiscale pyramids (same data at multiple resolution levels, enabling zoom-dependent loading), axes labels, coordinate transforms, labels/ROIs. Used by CZ CryoET Data Portal. Community-driven RFC process. <a href="https://ngff.openmicroscopy.org/0.5/">ngff.openmicroscopy.org</a>, <a href="https://github.com/ome/ome-zarr-py">github.com/ome/ome-zarr-py</a>.</p>
-<p><strong>copick</strong> – storage-agnostic cryo-ET dataset API built on Zarr/OME-Zarr. Adds overlay filesystem (read-only data + writable annotations), typed annotation objects (picks, segmentations, meshes) with provenance, plugin CLI. <a href="https://github.com/copick/copick">github.com/copick/copick</a>.</p>
-<p><strong>TileDB</strong> – array database with native sparse arrays, built-in query engine, time-travel/versioning. TileDB-SOMA data model (for single-cell genomics) solved a structurally analogous problem: (cells x genes) with metadata on both axes, at scale. <a href="https://github.com/TileDB-Inc/TileDB">github.com/TileDB-Inc/TileDB</a>, <a href="https://github.com/single-cell-data/TileDB-SOMA">github.com/single-cell-data/TileDB-SOMA</a>.</p>
-<p><strong>Apache Arrow / DataFusion</strong> – columnar in-memory format + query engine (Rust). Predicate pushdown (filters pushed to storage layer), zero-copy cross-language interop. A zarr-datafusion crate already exists: <a href="https://github.com/jayendra13/zarr-datafusion">github.com/jayendra13/zarr-datafusion</a>. <a href="https://datafusion.apache.org/">datafusion.apache.org</a>.</p>
+<p><strong>Zarr v3</strong> <span class="citation" data-cites="zarr"><a href="references.html#ref-zarr" role="doc-biblioref">33</a></span> – chunked N-dimensional arrays on any storage backend. Simple (just arrays + groups + JSON metadata), cloud-native, implementations in Python/Rust/JS/C++. <a href="https://github.com/zarr-developers/zarr-python">github.com/zarr-developers/zarr-python</a>, <a href="https://github.com/LDeakin/zarrs">github.com/zarrs/zarrs</a> (Rust).</p>
+<p><strong>OME-Zarr (NGFF)</strong> <span class="citation" data-cites="omezarr"><a href="references.html#ref-omezarr" role="doc-biblioref">34</a></span> – bioimaging conventions on Zarr: multiscale pyramids (same data at multiple resolution levels, enabling zoom-dependent loading), axes labels, coordinate transforms, labels/ROIs. Used by CZ CryoET Data Portal. Community-driven RFC process. <a href="https://ngff.openmicroscopy.org/0.5/">ngff.openmicroscopy.org</a>, <a href="https://github.com/ome/ome-zarr-py">github.com/ome/ome-zarr-py</a>.</p>
+<p><strong>copick</strong> <span class="citation" data-cites="copick"><a href="references.html#ref-copick" role="doc-biblioref">35</a></span> – storage-agnostic cryo-ET dataset API built on Zarr/OME-Zarr. Adds overlay filesystem (read-only data + writable annotations), typed annotation objects (picks, segmentations, meshes) with provenance, plugin CLI. <a href="https://github.com/copick/copick">github.com/copick/copick</a>.</p>
+<p><strong>TileDB</strong> <span class="citation" data-cites="tiledb"><a href="references.html#ref-tiledb" role="doc-biblioref">36</a></span> – array database with native sparse arrays, built-in query engine, time-travel/versioning. TileDB-SOMA data model (for single-cell genomics) solved a structurally analogous problem: (cells x genes) with metadata on both axes, at scale. <a href="https://github.com/TileDB-Inc/TileDB">github.com/TileDB-Inc/TileDB</a>, <a href="https://github.com/single-cell-data/TileDB-SOMA">github.com/single-cell-data/TileDB-SOMA</a>.</p>
+<p><strong>Apache Arrow / DataFusion</strong> <span class="citation" data-cites="datafusion"><a href="references.html#ref-datafusion" role="doc-biblioref">37</a></span> – columnar in-memory format + query engine (Rust). Predicate pushdown (filters pushed to storage layer), zero-copy cross-language interop. A zarr-datafusion crate already exists: <a href="https://github.com/jayendra13/zarr-datafusion">github.com/jayendra13/zarr-datafusion</a>. <a href="https://datafusion.apache.org/">datafusion.apache.org</a>.</p>
 <p><strong>Multiscale pyramids for molecular data.</strong> OME-Zarr stores the same image at progressively lower resolutions (full -&gt; 2x downsampled -&gt; 4x -&gt; …) for efficient visualization. The analog for molecular structures: all-atom -&gt; backbone-only -&gt; domain centroids -&gt; subunit centroids, with explicit mapping operators between levels. This is the coarse-graining hierarchy that IHM already represents in a limited way, and it maps directly onto the groupings layer described in <a href="../../posts/mmcif/02-architecture.html#groupings">Layout § Groupings</a>.</p>
 <p>Tradeoffs (needs benchmarking on real structural biology workloads):</p>
 <table class="caption-top table">
@@ -232,15 +226,14 @@ window.Quarto = {
 <p>The problem in one sentence: we need a data model that can represent everything from a two-rotamer sidechain flip to a continuous distribution over ribosome conformations, with correlations between components, thermodynamic annotations, and multi-scale descriptions – without enumerating a full coordinate set for each distinguishable configuration of large systems.</p>
 <p>The Layout chapter proposes <a href="../../posts/mmcif/02-architecture.html#heterogeneity">three heterogeneity regimes</a> with different natural representations. This section surveys the existing tools and formalisms against that taxonomy.</p>
 <p><strong>Existing tools by regime.</strong></p>
-<p>Heterogeneity Regime 1 (discrete ensemble): mmCIF alt_id is a degenerate case – two conformers per residue, no correlations, no thermodynamics. IHM multi-state adds named discrete states with ordering and population, but states remain independent and uncorrelated. Wankowicz &amp; Fraser <span class="citation" data-cites="wankowicz2024encoding"><a href="#ref-wankowicz2024encoding" role="doc-biblioref">1</a></span> push this as far as it goes within mmCIF – their proposed categories handle correlated multi-conformer models and ensemble validation within the text-CIF framework. Understanding exactly where their proposal hits the wall is essential for calibrating what requires a new format vs.&nbsp;what can be encoded in extended mmCIF.</p>
-<p>Heterogeneity Regime 2 (trajectory): H5MD (<a href="https://github.com/h5md/h5md">github.com/h5md/h5md</a>) handles this well for MD. MDTraj and MDAnalysis both read and write it. The main gap is the absence of cloud-native access: HDF5 doesn’t support chunk-level HTTP range requests, so trajectory analysis in the cloud currently requires downloading the full file. A Zarr-based trajectory convention that mirrors H5MD semantics but runs on object storage is the obvious gap to fill, and it is a format convention question, not a data model question.</p>
-<p>Heterogeneity Regime 3 (continuous landscape): cryoDRGN (<a href="https://github.com/ml-struct-bio/cryodrgn">github.com/ml-struct-bio/cryodrgn</a>) learns a continuous heterogeneity manifold from cryo-EM particle images and decodes conformations at arbitrary latent coordinates. There is no standard serialization for the latent-plus-decoder representation – each cryoDRGN run produces its own checkpoint format. The right abstraction for storage is: an <span class="math inline">\((N_{\mathrm{particle}}, d)\)</span> latent coordinate array plus a decoder reference, with named landmarks as optional cluster assignments. Normal mode analysis produces a simpler version of the same thing: a <span class="math inline">\((k, N_{\mathrm{atom}}, 3)\)</span> mode basis plus scalar mode coefficients. Both are Materialization Mode C. Markov State Models (PyEMMA, deeptime) sit at the border between Heterogeneity Regime 2 and Heterogeneity Regime 3: they discretize a continuous trajectory into metastable states and produce a transition matrix over those states, which can be stored as a sparse <span class="math inline">\((N_{\mathrm{state}}, N_{\mathrm{state}})\)</span> matrix with equilibrium populations – a Heterogeneity Regime 1 coordinate set plus a kinetic annotation in the shape of a Heterogeneity Regime 3 descriptor.</p>
+<p>Heterogeneity Regime 1 (discrete ensemble): mmCIF alt_id is a degenerate case – two conformers per residue, no correlations, no thermodynamics. IHM multi-state adds named discrete states with ordering and population, but states remain independent and uncorrelated. Wankowicz &amp; Fraser <span class="citation" data-cites="wankowicz2024encoding"><a href="references.html#ref-wankowicz2024encoding" role="doc-biblioref">1</a></span> push this as far as it goes within mmCIF – their proposed categories handle correlated multi-conformer models and ensemble validation within the text-CIF framework. Understanding exactly where their proposal hits the wall is essential for calibrating what requires a new format vs.&nbsp;what can be encoded in extended mmCIF.</p>
+<p>Heterogeneity Regime 2 (trajectory): H5MD <span class="citation" data-cites="h5md"><a href="references.html#ref-h5md" role="doc-biblioref">40</a></span> handles this well for MD. MDTraj and MDAnalysis both read and write it. The main gap is the absence of cloud-native access: HDF5 doesn’t support chunk-level HTTP range requests, so trajectory analysis in the cloud currently requires downloading the full file. A Zarr-based trajectory convention that mirrors H5MD semantics but runs on object storage is the obvious gap to fill, and it is a format convention question, not a data model question.</p>
+<p>Heterogeneity Regime 3 (continuous landscape): cryoDRGN <span class="citation" data-cites="zhong2021cryodrgn"><a href="references.html#ref-zhong2021cryodrgn" role="doc-biblioref">31</a></span> learns a continuous heterogeneity manifold from cryo-EM particle images and decodes conformations at arbitrary latent coordinates. There is no standard serialization for the latent-plus-decoder representation – each cryoDRGN run produces its own checkpoint format. The right abstraction for storage is: an <span class="math inline">\((N_{\mathrm{particle}}, d)\)</span> latent coordinate array plus a decoder reference, with named landmarks as optional cluster assignments. Normal mode analysis produces a simpler version of the same thing: a <span class="math inline">\((k, N_{\mathrm{atom}}, 3)\)</span> mode basis plus scalar mode coefficients. Both are Materialization Mode C. Markov State Models (PyEMMA, deeptime) sit at the border between Heterogeneity Regime 2 and Heterogeneity Regime 3: they discretize a continuous trajectory into metastable states and produce a transition matrix over those states, which can be stored as a sparse <span class="math inline">\((N_{\mathrm{state}}, N_{\mathrm{state}})\)</span> matrix with equilibrium populations – a Heterogeneity Regime 1 coordinate set plus a kinetic annotation in the shape of a Heterogeneity Regime 3 descriptor.</p>
 <p><strong>Correlation and coupling.</strong> There is a third representation worth noting for cases that sit between regimes: a sparse pairwise correlation array or graphical model specifying which residue pairs are conformationally coupled, without committing to a full joint distribution. This is useful as a compact annotation – a summary of an MD ensemble or an NMR-derived coupling network – without requiring that the full joint distribution be stored.</p>
 <p><strong>Where we are.</strong> The existing literature covers Heterogeneity Regime 1 well (qFit, multi-conformer crystallography, IHM discrete states), Heterogeneity Regime 2 adequately (H5MD, MDTraj), and Heterogeneity Regime 3 experimentally but without standard serialization (cryoDRGN, manifold embedding methods). The gaps that need new work: a cloud-native trajectory convention (Heterogeneity Regime 2 on Zarr) and a standard serialization for latent-plus-decoder representations (Heterogeneity Regime 3).</p>
 </section>
 </section>
 </div>
-
 
 
 
@@ -631,50 +624,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
           }
         });
       }
-  const findCites = (el) => {
-    const parentEl = el.parentElement;
-    if (parentEl) {
-      const cites = parentEl.dataset.cites;
-      if (cites) {
-        return {
-          el,
-          cites: cites.split(' ')
-        };
-      } else {
-        return findCites(el.parentElement)
-      }
-    } else {
-      return undefined;
-    }
-  };
-  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-  for (var i=0; i<bibliorefs.length; i++) {
-    const ref = bibliorefs[i];
-    const citeInfo = findCites(ref);
-    if (citeInfo) {
-      tippyHover(citeInfo.el, function() {
-        var popup = window.document.createElement('div');
-        citeInfo.cites.forEach(function(cite) {
-          var citeDiv = window.document.createElement('div');
-          citeDiv.classList.add('hanging-indent');
-          citeDiv.classList.add('csl-entry');
-          var biblioDiv = window.document.getElementById('ref-' + cite);
-          if (biblioDiv) {
-            citeDiv.innerHTML = biblioDiv.innerHTML;
-          }
-          popup.appendChild(citeDiv);
-        });
-        return popup.innerHTML;
-      });
-    }
-  }
 });
 </script>
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" data-entry-spacing="0" role="list">
-<div id="ref-wankowicz2024encoding" class="csl-entry" role="listitem">
-<div class="csl-left-margin">1. </div><div class="csl-right-inline">Wankowicz, S. A., Fraser, J. S. Comprehensive encoding of conformational and compositional protein structural ensembles through the <span class="nocase">mmCIF</span> data structure. <em>IUCrJ</em> (2024). doi: <a href="https://doi.org/10.1107/S2052252524005098">10.1107/S2052252524005098</a></div>
-</div>
-</div></section></div></div> <!-- /content -->
+</div> <!-- /content -->
 
 
 

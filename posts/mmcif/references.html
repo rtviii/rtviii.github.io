@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>“Black-box” data and model-side artifacts – артём</title>
+<title>References – артём</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,7 +20,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -75,7 +95,7 @@ ul.task-list li input[type="checkbox"] {
 <!-- main -->
 
 <header id="title-block-header">
-<h1 class="title display-7">“Black-box” data and model-side artifacts</h1>
+<h1 class="title display-7">References</h1>
 
 </header>
 
@@ -117,46 +137,137 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 </div>
-<section id="section" class="level1 g-col-12 g-col-md-9 right-column">
-<h1>“Black-box” data and model-side artifacts</h1>
-<p>A deeper design critique of white-box formats comes from a recent Chemical Science perspective <span class="citation" data-cites="naef2026blackbox"><a href="references.html#ref-naef2026blackbox" role="doc-biblioref">42</a></span>. Its central argument is that ML models in biology have traditionally relied on data produced as a byproduct of scientific inquiry – repositories like the PDB aggregate and standardize this data, but they are not purpose-generated for ML, leading to poor standardization, limited scale, and systematic biases – and that the more critical question now is not “the next AlphaFold” but “the next PDB,” meaning new experimental data sources intentionally optimized for machine consumption rather than human intuition. The format implications are sharp: data generated to be consumed by models rather than inspected by scientists has no natural representation in mmCIF, whose entire design presupposes that a human will eventually open the file, assign meaning to the chain IDs, and judge whether the electron density fits – a constraint that should be optional, not structural.</p>
-<p>The same argument runs in the reverse direction. If models are first-class consumers of structural data, their <em>outputs</em> – weights, latents, predicted distributions, posterior samples – are first-class deposition artifacts in their own right, and the format has to carry them with the same legibility and provenance discipline it carries experimentally derived data. The categories below are the ones currently homeless: stored implicitly inside per-paper checkpoint dumps, scattered across model-specific repositories with no link back to the structure they were trained against or applied to, and reconstructed from scratch every time a downstream consumer wants to use them. All four fit the same <code>(selector, body, provenance)</code> overlay machinery from <a href="../../posts/mmcif/04-annotations-and-engine.html#query-language-and-annotations">chapter 4</a>; the appendix is a sketch of what each one looks like in that machinery.</p>
-<section id="weights-and-decoders" class="level2">
-<h2 data-anchor-id="weights-and-decoders">Weights and decoders</h2>
-<p>Materialization Mode C (<a href="../../posts/mmcif/02-architecture.html#materialization">Layout § Materialization</a>) is already the slot for stored generative operators – a normal-mode basis, a PCA basis, a cryoDRGN decoder. The structure file does not contain the weights; it carries a stable pointer to the artifact (URI plus content hash), the contract the artifact obeys (input shape, latent dimensionality, output is a per-atom displacement field over a specified Hierarchy scope), and the descriptor that consumes its outputs (Regime 3 latent coordinates per sample). This is the cleanest example of “black-box data” fitting the architecture, because the structure stores the <em>contract</em>, not the implementation.</p>
-<p>The data-management consequence is that the structure node and the model checkpoint co-evolve and have to be versioned together. When the decoder is retrained, the latent coordinates stored alongside the structure are no longer interpretable – they index a different latent space. The format needs the linkage to be explicit enough that a stale latent set is detectable rather than silently misread. The wwPDB to ModelArchive split is a workable precedent: experimental structures and computational models live in linked but distinct archives, with cross-references that carry version. Generalizing this so that <em>any</em> generative artifact (decoder, basis, predicted-ensemble checkpoint) can be cross-referenced from a structure or map deposition is mostly a question of disciplined naming and content addressing, not new format machinery.</p>
-</section>
-<section id="latents-and-per-sample-embeddings" class="level2">
-<h2 data-anchor-id="latents-and-per-sample-embeddings">Latents and per-sample embeddings</h2>
-<p>A larger and currently unhomed category. Three concrete shapes recur:</p>
-<ul>
-<li><p><strong>cryoDRGN per-particle latent coordinates.</strong> Shape <code>(N_particle, d)</code> with <code>d</code> typically 8 to 32. Scoped to the assembly, materialized as a Regime 3 descriptor whose coordinates are decoded by the operator above. Already representable under the existing architecture; the missing piece is a standard layout convention so that two cryoDRGN runs of the same dataset produce comparably-named latents.</p></li>
-<li><p><strong>AF2-family embeddings.</strong> The <code>single</code> representation <code>(N_res, c_s)</code> and the <code>pair</code> representation <code>(N_res, N_res, c_z)</code> from the evoformer. These are the most expensive intermediate objects in the AF2 pipeline and are essentially never shared – every downstream model that wants them recomputes them, or trains around their absence. Cached as annotation overlays with provenance <code>(model identifier, weights hash, MSA hash, evoformer block index)</code>, they slot into the same machinery as a precomputed pair-feature tensor from the <a href="../../posts/mmcif/08-ml-native.html#precomputed-features-as-cached-passes">ML-native chapter</a>; the difference is provenance, not shape.</p></li>
-<li><p><strong>Sequence-model embeddings</strong> (ESM2, ProtT5, ProGen). Shape <code>(N_res, d)</code>. Strictly speaking these are not derived from the structure – they are derived from the sequence, which the structure also carries – but they are commonly co-located with structures because every structure-conditioned model uses them and recomputing them per training step is wasteful. Same overlay shape, different selector (residue-scoped, sequence-derived).</p></li>
-</ul>
-<p>All three sit in the <code>(selector, body, provenance)</code> shape from chapter 4. The novel piece is making the provenance rich enough that two depositions of the same structure with different sequence-model embeddings, or different evoformer weights, are legibly distinct rather than silently superseding each other.</p>
-</section>
-<section id="model-outputs" class="level2">
-<h2 data-anchor-id="model-outputs">Model outputs</h2>
-<p>pLDDT, PAE, predicted distograms, predicted ensembles, posterior sample sets. These split along a useful axis: scalar/vector/tensor <em>annotations</em> on a single structure, versus <em>full ensembles</em> that produce another structure or set of structures.</p>
-<p>The annotation case – per-residue pLDDT, residue-pair PAE, predicted distance distributions, model confidences – is the easy one. They are already overlays in the AlphaFold DB and ModelArchive in everything but name; lifting them into the format’s annotation machinery is mostly a relabelling exercise. Provenance is the producing model and weights hash; the body is the array; the selector is whatever Hierarchy/Groupings scope the array is keyed to.</p>
-<p>The full-ensemble case is more interesting because the predicted ensemble is itself a Heterogeneity descriptor in the sense of <a href="../../posts/mmcif/02-architecture.html#heterogeneity">chapter 2</a>. Diffusion-based structure samplers (<span class="citation" data-cites="chung2024dps"><a href="references.html#ref-chung2024dps" role="doc-biblioref">10</a></span>, <span class="citation" data-cites="levy2025inverse"><a href="references.html#ref-levy2025inverse" role="doc-biblioref">9</a></span>), cryo-EM-guided samplers like cryoBoltz (<span class="citation" data-cites="raghu2025cryoboltz"><a href="references.html#ref-raghu2025cryoboltz" role="doc-biblioref">8</a></span>), and other generative methods produce posterior sample sets whose shape is exactly Regime 1 (a discrete bundle of conformers) or Regime 3 (samples from a continuous decoder). These do not need a new slot; they slot into the existing heterogeneity layer with provenance <code>(model identifier, weights hash, sampling temperature, conditioning data)</code>. The architectural payoff is that the same machinery distinguishes “experimental ensemble” from “predicted ensemble” via <em>provenance</em> rather than via separate categories. A consumer that does not care about the source treats them identically; a consumer that does (e.g.&nbsp;a refinement engine that should not refit against predicted ensembles) reads the provenance and filters.</p>
-</section>
-<section id="training-metadata" class="level2">
-<h2 data-anchor-id="training-metadata">Training metadata</h2>
-<p>What it takes to trust a model artifact:</p>
-<ul>
-<li>Training data version – ideally a content hash of the deposition set used, with a canonical reference to a versioned snapshot of the PDB or successor archive.</li>
-<li>Hyperparameters – the configuration the artifact was produced under, in whatever serialization the producing code uses, with enough discipline that two artifacts produced under the same config are bitwise comparable.</li>
-<li>Eval metrics – held-out test set performance numbers, with the test set itself content-hashed.</li>
-<li>Model lineage – parent checkpoints, fine-tuning history, base model identifier.</li>
-</ul>
-<p>Most of this is structured key-value data and free text, no different in shape from any other provenance the format already needs. It is worth calling out as a separate sub-category because it is what makes the difference between weights one can ship and weights one can reason about.</p>
-</section>
-<section id="everything-routes-through-the-same-overlay-machinery" class="level2">
-<h2 data-anchor-id="everything-routes-through-the-same-overlay-machinery">Everything routes through the same overlay machinery</h2>
-<p>All four categories above use exactly the same <code>(selector, body, provenance)</code> machinery the format already needs for human-curated annotations. There is no new architectural layer here. What the “next PDB” framing in the opening section asks for, taken concretely, is a discipline – overlays rich enough, provenance disciplined enough, and naming stable enough – that model-generated and experiment-generated annotations sit in the same namespace and remain mutually legible. The architecture from chapters 2–4 is already the thing that makes this possible; the work that remains is conventions on top of it.</p>
-</section>
+<section id="references" class="level1 g-col-12 g-col-md-9 right-column">
+<h1>References</h1>
+<p>Every work cited across the series, numbered globally. In-text citations in the chapters link here by number.</p>
+<div id="refs" class="references csl-bib-body" data-entry-spacing="0" role="list">
+<div id="ref-wankowicz2024encoding" class="csl-entry" role="listitem">
+<div class="csl-left-margin">1. </div><div class="csl-right-inline">Wankowicz, S. A., Fraser, J. S. Comprehensive encoding of conformational and compositional protein structural ensembles through the <span class="nocase">mmCIF</span> data structure. <em>IUCrJ</em> (2024). doi: <a href="https://doi.org/10.1107/S2052252524005098">10.1107/S2052252524005098</a></div>
+</div>
+<div id="ref-rosenberg2024altlocs" class="csl-entry" role="listitem">
+<div class="csl-left-margin">2. </div><div class="csl-right-inline">Rosenberg, A. A., Marx, A., Bronstein, A. M. A dataset of alternately located segments in protein crystal structures. <em>Scientific Data</em> (2024). doi: <a href="https://doi.org/10.1038/s41597-024-03595-4">10.1038/s41597-024-03595-4</a></div>
+</div>
+<div id="ref-kuzmanic2014xray" class="csl-entry" role="listitem">
+<div class="csl-left-margin">3. </div><div class="csl-right-inline">Kuzmanic, A., Pannu, N. S., Zagrovic, B. X-ray refinement significantly underestimates the level of microscopic heterogeneity in biomolecular crystals. <em>Nature Communications</em> (2014). doi: <a href="https://doi.org/10.1038/ncomms4220">10.1038/ncomms4220</a></div>
+</div>
+<div id="ref-wankowicz2022ligand" class="csl-entry" role="listitem">
+<div class="csl-left-margin">4. </div><div class="csl-right-inline">Wankowicz, S. A., Oliveira, S. H. de, Hogan, D. W., Bedem, H. van den, Fraser, J. S. Ligand binding remodels protein side-chain conformational heterogeneity. <em>eLife</em> (2022). doi: <a href="https://doi.org/10.7554/eLife.74114">10.7554/eLife.74114</a></div>
+</div>
+<div id="ref-ploscariu2021ensemble" class="csl-entry" role="listitem">
+<div class="csl-left-margin">5. </div><div class="csl-right-inline">Ploscariu, N., Burnley, T., Gros, P., Pearce, N. M. Improving sampling of crystallographic disorder in ensemble refinement. <em>Acta Crystallographica Section D: Structural Biology</em> <strong>77</strong>:1357–1364 (2021). doi: <a href="https://doi.org/10.1107/S2059798321010044">10.1107/S2059798321010044</a></div>
+</div>
+<div id="ref-pearce2021echt" class="csl-entry" role="listitem">
+<div class="csl-left-margin">6. </div><div class="csl-right-inline">Pearce, N. M., Gros, P. A method for intuitively extracting macromolecular dynamics from structural disorder. <em>Nature Communications</em> <strong>12</strong>:5493 (2021). doi: <a href="https://doi.org/10.1038/s41467-021-25814-x">10.1038/s41467-021-25814-x</a></div>
+</div>
+<div id="ref-lane2023frontier" class="csl-entry" role="listitem">
+<div class="csl-left-margin">7. </div><div class="csl-right-inline">Lane, T. J. Protein structure prediction has reached the single-structure frontier. <em>Nature Methods</em> (2023). doi: <a href="https://doi.org/10.1038/s41592-022-01760-4">10.1038/s41592-022-01760-4</a></div>
+</div>
+<div id="ref-raghu2025cryoboltz" class="csl-entry" role="listitem">
+<div class="csl-left-margin">8. </div><div class="csl-right-inline">Raghu, R., Levy, A., Wetzstein, G., Zhong, E. D. Multiscale guidance of protein structure prediction with heterogeneous cryo-<span>EM</span> data. <em>arXiv</em> (2025). doi: <a href="https://doi.org/10.48550/arXiv.2506.04490">10.48550/arXiv.2506.04490</a></div>
+</div>
+<div id="ref-levy2025inverse" class="csl-entry" role="listitem">
+<div class="csl-left-margin">9. </div><div class="csl-right-inline">Levy, A., Chan, E. R., Fridovich-Keil, S., Poitevin, F., Zhong, E. D., Wetzstein, G. Solving inverse problems in protein space using diffusion-based priors. <em>arXiv</em> (2025). doi: <a href="https://doi.org/10.48550/arXiv.2406.04239">10.48550/arXiv.2406.04239</a></div>
+</div>
+<div id="ref-chung2024dps" class="csl-entry" role="listitem">
+<div class="csl-left-margin">10. </div><div class="csl-right-inline">Chung, H., Kim, J., McCann, M. T., Klasky, M. L., Ye, J. C. Diffusion posterior sampling for general noisy inverse problems. <em>arXiv</em> (2024). doi: <a href="https://doi.org/10.48550/arXiv.2209.14687">10.48550/arXiv.2209.14687</a></div>
+</div>
+<div id="ref-flowers2025qfit" class="csl-entry" role="listitem">
+<div class="csl-left-margin">11. </div><div class="csl-right-inline">Flowers, J., Echols, N., Correy, G. J., Jaishankar, P., Togo, T., Renslo, A. R., Bedem, H. van den, Fraser, J. S., Wankowicz, S. A. Expanding automated multiconformer ligand modeling to macrocycles and fragments. <em>eLife</em> (2025). doi: <a href="https://doi.org/10.7554/eLife.103797">10.7554/eLife.103797</a></div>
+</div>
+<div id="ref-wankowicz2025entropy" class="csl-entry" role="listitem">
+<div class="csl-left-margin">12. </div><div class="csl-right-inline">Wankowicz, S. A., Fraser, J. S. Advances in uncovering the mechanisms of macromolecular conformational entropy. <em>Nature Chemical Biology</em> (2025). doi: <a href="https://doi.org/10.1038/s41589-025-01879-3">10.1038/s41589-025-01879-3</a></div>
+</div>
+<div id="ref-bozovic2020pdz" class="csl-entry" role="listitem">
+<div class="csl-left-margin">13. </div><div class="csl-right-inline">Bozovic, O., Zanobini, C., Gulzar, A., Jankovic, B., Buhrke, D., Post, M., Wolf, S., Stock, G., Hamm, P. Real-time observation of ligand-induced allosteric transitions in a <span>PDZ</span> domain. <em>Proceedings of the National Academy of Sciences</em> (2020). doi: <a href="https://doi.org/10.1073/pnas.2012999117">10.1073/pnas.2012999117</a></div>
+</div>
+<div id="ref-winn2001tls" class="csl-entry" role="listitem">
+<div class="csl-left-margin">14. </div><div class="csl-right-inline">Winn, M. D., Isupov, M. N., Murshudov, G. N. Use of <span>TLS</span> parameters to model anisotropic displacements in macromolecular refinement. <em>Acta Crystallographica Section D: Biological Crystallography</em> <strong>57</strong>:122–133 (2001). doi: <a href="https://doi.org/10.1107/S0907444900014736">10.1107/S0907444900014736</a></div>
+</div>
+<div id="ref-painter2006tlsmd" class="csl-entry" role="listitem">
+<div class="csl-left-margin">15. </div><div class="csl-right-inline">Painter, J., Merritt, E. A. Optimal description of a protein structure in terms of multiple groups undergoing <span>TLS</span> motion. <em>Acta Crystallographica Section D: Biological Crystallography</em> <strong>62</strong>:439–450 (2006). doi: <a href="https://doi.org/10.1107/S0907444906005270">10.1107/S0907444906005270</a></div>
+</div>
+<div id="ref-urzhumtsev2013adp" class="csl-entry" role="listitem">
+<div class="csl-left-margin">16. </div><div class="csl-right-inline">Urzhumtsev, A., Afonine, P. V., Adams, P. D. <span>TLS</span> from fundamentals to practice. <em>Crystallography Reviews</em> <strong>19</strong>:230–270 (2013). doi: <a href="https://doi.org/10.1080/0889311X.2013.835806">10.1080/0889311X.2013.835806</a></div>
+</div>
+<div id="ref-wankowicz2026possibility" class="csl-entry" role="listitem">
+<div class="csl-left-margin">17. </div><div class="csl-right-inline">Wankowicz, S. A., Bonomi, M. From possibility to precision in macromolecular ensemble prediction. <em>Nature Methods</em> (2026). doi: <a href="https://doi.org/10.1038/s41592-026-03084-z">10.1038/s41592-026-03084-z</a></div>
+</div>
+<div id="ref-wankowicz2024automated" class="csl-entry" role="listitem">
+<div class="csl-left-margin">18. </div><div class="csl-right-inline">Wankowicz, S. A., Ravikumar, A., Sharma, S., Riley, B. T., Raju, A., Hogan, D. W., Bedem, H. van den, Keedy, D. A., Fraser, J. S. Uncovering protein ensembles: Automated multiconformer model building for <span>X</span>-ray crystallography and cryo-<span>EM</span>. <em>eLife</em> (2024). doi: <a href="https://doi.org/10.7554/eLife.90606.3">10.7554/eLife.90606.3</a></div>
+</div>
+<div id="ref-riley2021qfit" class="csl-entry" role="listitem">
+<div class="csl-left-margin">19. </div><div class="csl-right-inline">Riley, B. T., Wankowicz, S. A., Oliveira, S. H. P. de, Zundert, G. C. P. van, Hogan, D. W., Fraser, J. S., Keedy, D. A., Bedem, H. van den. <span class="nocase">qFit</span> 3: Protein and ligand multiconformer modeling for <span>X</span>-ray crystallographic and single-particle cryo-<span>EM</span> density maps. <em>Protein Science</em> <strong>30</strong>:270–285 (2021). doi: <a href="https://doi.org/10.1002/pro.4001">10.1002/pro.4001</a></div>
+</div>
+<div id="ref-singhal2025fk" class="csl-entry" role="listitem">
+<div class="csl-left-margin">20. </div><div class="csl-right-inline">Singhal, R., Horvitz, Z., Teehan, R., Ren, M., Yu, Z., McKeown, K., Ranganath, R. A general framework for inference-time scaling and steering of diffusion models. <em>arXiv</em> (2025). doi: <a href="https://doi.org/10.48550/arXiv.2501.06848">10.48550/arXiv.2501.06848</a></div>
+</div>
+<div id="ref-ingraham2023illuminating" class="csl-entry" role="listitem">
+<div class="csl-left-margin">21. </div><div class="csl-right-inline">Ingraham, J. B., Baranov, M., Costello, Z., Barber, K. W., Wang, W., Ismail, A., Frappier, V., Lord, D. M., Ng-Thow-Hing, C., Van Vlack, E. R., others. Illuminating protein space with a programmable generative model. <em>Nature</em> <strong>623</strong>:1070–1078 (2023). doi: <a href="https://doi.org/10.1038/s41586-023-06728-8">10.1038/s41586-023-06728-8</a></div>
+</div>
+<div id="ref-venkatakrishnan2013plug" class="csl-entry" role="listitem">
+<div class="csl-left-margin">22. </div><div class="csl-right-inline">Venkatakrishnan, S. V., Bouman, C. A., Wohlberg, B. Plug-and-play priors for model based reconstruction. <em>2013 IEEE Global Conference on Signal and Information Processing</em>:945–948 (2013). doi: <a href="https://doi.org/10.1109/GlobalSIP.2013.6737048">10.1109/GlobalSIP.2013.6737048</a></div>
+</div>
+<div id="ref-vandenbedem2015integrative" class="csl-entry" role="listitem">
+<div class="csl-left-margin">23. </div><div class="csl-right-inline">Bedem, H. van den, Fraser, J. S. Integrative, dynamic structural biology at atomic resolution—it’s about time. <em>Nature Methods</em> <strong>12</strong>:307–318 (2015). doi: <a href="https://doi.org/10.1038/nmeth.3324">10.1038/nmeth.3324</a></div>
+</div>
+<div id="ref-hilser2007statistical" class="csl-entry" role="listitem">
+<div class="csl-left-margin">24. </div><div class="csl-right-inline">Hilser, V. J., Garcı́a-Moreno E., B., Oas, T. G., Kapp, G., Whitten, S. T. A statistical thermodynamic model of the protein ensemble. <em>Chemical Reviews</em> <strong>106</strong>:1545–1558 (2006). doi: <a href="https://doi.org/10.1021/cr040423+">10.1021/cr040423+</a></div>
+</div>
+<div id="ref-wojdyr2022gemmi" class="csl-entry" role="listitem">
+<div class="csl-left-margin">25. </div><div class="csl-right-inline">Wojdyr, M. <span>GEMMI</span>: A library for structural biology. <em>Journal of Open Source Software</em> <strong>7</strong>:4200 (2022). doi: <a href="https://doi.org/10.21105/joss.04200">10.21105/joss.04200</a></div>
+</div>
+<div id="ref-emsley2010coot" class="csl-entry" role="listitem">
+<div class="csl-left-margin">26. </div><div class="csl-right-inline">Emsley, P., Lohkamp, B., Scott, W. G., Cowtan, K. Features and development of <span>Coot</span>. <em>Acta Crystallographica Section D</em> <strong>66</strong>:486–501 (2010). doi: <a href="https://doi.org/10.1107/S0907444910007493">10.1107/S0907444910007493</a></div>
+</div>
+<div id="ref-williams2018molprobity" class="csl-entry" role="listitem">
+<div class="csl-left-margin">27. </div><div class="csl-right-inline">Williams, C. J., Headd, J. J., Moriarty, N. W., Prisant, M. G., Videau, L. L., Deis, L. N., Verma, V., Keedy, D. A., Hintze, B. J., Chen, V. B., Jain, S., Lewis, S. M., Arendall, W. B., Snoeyink, J., Adams, P. D., Lovell, S. C., Richardson, J. S., Richardson, D. C. <span>MolProbity</span>: More and better reference data for improved all-atom structure validation. <em>Protein Science</em> <strong>27</strong>:293–315 (2018). doi: <a href="https://doi.org/10.1002/pro.3330">10.1002/pro.3330</a></div>
+</div>
+<div id="ref-liebschner2019phenix" class="csl-entry" role="listitem">
+<div class="csl-left-margin">28. </div><div class="csl-right-inline">Liebschner, D., Afonine, P. V., Baker, M. L., Bunkóczi, G., Chen, V. B., Croll, T. I., others. Macromolecular structure determination using <span>X</span>-rays, neutrons and electrons: Recent developments in <span>Phenix</span>. <em>Acta Crystallographica Section D</em> <strong>75</strong>:861–877 (2019). doi: <a href="https://doi.org/10.1107/S2059798319011471">10.1107/S2059798319011471</a></div>
+</div>
+<div id="ref-joosten2014pdbredo" class="csl-entry" role="listitem">
+<div class="csl-left-margin">29. </div><div class="csl-right-inline">Joosten, R. P., Long, F., Murshudov, G. N., Perrakis, A. The <span>PDB_REDO</span> server for macromolecular structure model optimization. <em>IUCrJ</em> <strong>1</strong>:213–220 (2014). doi: <a href="https://doi.org/10.1107/S2052252514009324">10.1107/S2052252514009324</a></div>
+</div>
+<div id="ref-pettersen2021chimerax" class="csl-entry" role="listitem">
+<div class="csl-left-margin">30. </div><div class="csl-right-inline">Pettersen, E. F., Goddard, T. D., Huang, C. C., Meng, E. C., Couch, G. S., Croll, T. I., Morris, J. H., Ferrin, T. E. <span>UCSF ChimeraX</span>: Structure visualization for researchers, educators, and developers. <em>Protein Science</em> <strong>30</strong>:70–82 (2021). doi: <a href="https://doi.org/10.1002/pro.3943">10.1002/pro.3943</a></div>
+</div>
+<div id="ref-zhong2021cryodrgn" class="csl-entry" role="listitem">
+<div class="csl-left-margin">31. </div><div class="csl-right-inline">Zhong, E. D., Bepler, T., Berger, B., Davis, J. H. <span>CryoDRGN</span>: Reconstruction of heterogeneous cryo-<span>EM</span> structures using neural networks. <em>Nature Methods</em> <strong>18</strong>:176–185 (2021). doi: <a href="https://doi.org/10.1038/s41592-020-01049-4">10.1038/s41592-020-01049-4</a></div>
+</div>
+<div id="ref-sehnal2021molstar" class="csl-entry" role="listitem">
+<div class="csl-left-margin">32. </div><div class="csl-right-inline">Sehnal, D., Bittrich, S., Deshpande, M., Svobodová, R., Berka, K., Bazgier, V., Velankar, S., Burley, S. K., Koča, J., Rose, A. S. <span>Mol*</span> viewer: Modern web app for 3<span>D</span> visualization and analysis of large biomolecular structures. <em>Nucleic Acids Research</em> <strong>49</strong>:W431–W437 (2021). doi: <a href="https://doi.org/10.1093/nar/gkab314">10.1093/nar/gkab314</a></div>
+</div>
+<div id="ref-zarr" class="csl-entry" role="listitem">
+<div class="csl-left-margin">33. </div><div class="csl-right-inline">Zarr Developers. <span>Zarr</span>: Chunked, compressed, <span>N</span>-dimensional arrays. <a href="https://github.com/zarr-developers/zarr-python">https://github.com/zarr-developers/zarr-python</a></div>
+</div>
+<div id="ref-omezarr" class="csl-entry" role="listitem">
+<div class="csl-left-margin">34. </div><div class="csl-right-inline">Open Microscopy Environment. <span>OME-Zarr</span> / <span>NGFF</span>: Next-generation file format for bioimaging. <a href="https://ngff.openmicroscopy.org/">https://ngff.openmicroscopy.org/</a></div>
+</div>
+<div id="ref-copick" class="csl-entry" role="listitem">
+<div class="csl-left-margin">35. </div><div class="csl-right-inline">copick contributors. Copick: A storage-agnostic <span>API</span> for cryo-<span>ET</span> datasets and annotations. <a href="https://github.com/copick/copick">https://github.com/copick/copick</a></div>
+</div>
+<div id="ref-tiledb" class="csl-entry" role="listitem">
+<div class="csl-left-margin">36. </div><div class="csl-right-inline">TileDB, Inc. <span>TileDB</span>: The universal storage engine for multi-dimensional arrays. <a href="https://github.com/TileDB-Inc/TileDB">https://github.com/TileDB-Inc/TileDB</a></div>
+</div>
+<div id="ref-datafusion" class="csl-entry" role="listitem">
+<div class="csl-left-margin">37. </div><div class="csl-right-inline">Apache Software Foundation. <span>Apache Arrow DataFusion</span>: An extensible query engine. <a href="https://datafusion.apache.org/">https://datafusion.apache.org/</a></div>
+</div>
+<div id="ref-llvm" class="csl-entry" role="listitem">
+<div class="csl-left-margin">38. </div><div class="csl-right-inline">The LLVM Project. The <span>LLVM</span> compiler infrastructure. <a href="https://llvm.org/">https://llvm.org/</a></div>
+</div>
+<div id="ref-onnx" class="csl-entry" role="listitem">
+<div class="csl-left-margin">39. </div><div class="csl-right-inline">The Linux Foundation. <span>ONNX</span>: Open neural network exchange. <a href="https://onnx.ai/">https://onnx.ai/</a></div>
+</div>
+<div id="ref-h5md" class="csl-entry" role="listitem">
+<div class="csl-left-margin">40. </div><div class="csl-right-inline">H5MD developers. <span>H5MD</span>: An <span>HDF5</span>-based file format for molecular simulation data. <a href="https://github.com/h5md/h5md">https://github.com/h5md/h5md</a></div>
+</div>
+<div id="ref-ihmcif" class="csl-entry" role="listitem">
+<div class="csl-left-margin">41. </div><div class="csl-right-inline">IHM working group. <span>IHMCIF</span>: A data dictionary for integrative/hybrid methods structures. <a href="https://github.com/ihmwg/IHMCIF">https://github.com/ihmwg/IHMCIF</a></div>
+</div>
+<div id="ref-naef2026blackbox" class="csl-entry" role="listitem">
+<div class="csl-left-margin">42. </div><div class="csl-right-inline">Naef, L., Bronstein, M. M. Black-box data: A new paradigm for biomedicine in the <span>AI</span> era. <em>Chemical Science</em> (2026). doi: <a href="https://doi.org/10.1039/d6sc01189f">10.1039/d6sc01189f</a></div>
+</div>
+</div>
 </section>
 </div>
 

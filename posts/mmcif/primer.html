@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.54">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Primer — ensembles, statistical mechanics, and Bayesian inference – артём</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<link href="../.././img/BTNBlink.webp" rel="icon">
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="../../scripts.js"></script>
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/tippy.js@6"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Serif:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles/custom.css">
+<link rel="stylesheet" href="../../styles/scrollbar-fix.css">
+<link rel="stylesheet" href="../../styles/listing.css">
+<link rel="stylesheet" href="../../styles/homepage.css">
+</head>
+
+<body>
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-layout-custom">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+<!-- main -->
+
+<header id="title-block-header">
+<h1 class="title display-7">Primer — ensembles, statistical mechanics, and Bayesian inference</h1>
+
+</header>
+
+
+<div class="grid homepage-container">
+<div class="g-col-12 g-col-md-3 left-column">
+<p><a href="../.."><img src="../../img/signature.png" class="signature img-fluid"></a></p>
+<div class="post-nav">
+<div class="post-glossary">
+<ul>
+<li><a href="../../posts/mmcif/index.html">Overview</a></li>
+<li>Concept map</li>
+</ul>
+<p><span class="post-nav-group">Core</span></p>
+<ul>
+<li><a href="../../posts/mmcif/02-architecture.html">Layout — Track A</a></li>
+<li><a href="../../posts/mmcif/forward-operators.html">Forward operators — Track B</a></li>
+<li><a href="../../posts/mmcif/03-evaluation-model.html">Evaluation model</a></li>
+</ul>
+<p><span class="post-nav-group">Prerequisite</span></p>
+<ul>
+<li><a href="../../posts/mmcif/primer.html">Primer</a></li>
+<li><a href="../../posts/glossary/index.html">Glossary</a></li>
+<li><a href="../../posts/mmcif/references.html">References</a></li>
+</ul>
+<p><span class="post-nav-group">Secondary</span></p>
+<ul>
+<li><a href="../../posts/mmcif/01-problems.html">Problems with mmCIF</a></li>
+<li><a href="../../posts/mmcif/04-annotations-and-engine.html">Annotations &amp; the artifact engine</a></li>
+<li><a href="../../posts/mmcif/04b-technology-survey.html">Technology survey</a></li>
+<li><a href="../../posts/mmcif/05-open-questions.html">Open questions</a></li>
+<li><a href="../../posts/mmcif/08-ml-native.html">ML-native access patterns</a></li>
+<li><a href="../../posts/mmcif/06-black-box-data.html">Appendix: black-box data</a></li>
+<li><a href="../../posts/mmcif/07-modularity-examples.html">Appendix: modularity examples</a></li>
+</ul>
+</div>
+<div class="post-sections">
+
+</div>
+</div>
+</div>
+<section id="section" class="level1 g-col-12 g-col-md-9 right-column">
+<h1>Primer — ensembles, statistical mechanics, and Bayesian inference</h1>
+<p><span class="post-subtitle">Prerequisite background for the Core: the conformational-ensemble and Bayesian-inverse-problem picture the format-design chapters take as given.</span></p>
+<p><em>Background, not format. Skip it if you are fluent in Boltzmann ensembles, marginals vs joints, and posterior sampling; the Core chapters (<a href="../../posts/mmcif/02-architecture.html">Layout</a>, <a href="../../posts/mmcif/forward-operators.html">Forward operators</a>, <a href="../../posts/mmcif/03-evaluation-model.html">Evaluation model</a>) link back here where they lean on a specific idea.</em></p>
+<section id="category-error" class="level2">
+<h2 data-anchor-id="category-error">1. The category error in “a protein structure”</h2>
+<p>The orthodox single-structure picture treats a protein as a fixed object that has a definite arrangement of atoms in space, and treats the deposition of “the structure” in the PDB as a record of that arrangement. This is operationally useful and has powered fifty years of structural biology. It is also a category error, and the field has been increasingly explicit about saying so <span class="citation" data-cites="wankowicz2026possibility hilser2007statistical vandenbedem2015integrative lane2023frontier"><a href="references.html#ref-wankowicz2026possibility" role="doc-biblioref">17</a>,<a href="references.html#ref-hilser2007statistical" role="doc-biblioref">24</a>,<a href="references.html#ref-vandenbedem2015integrative" role="doc-biblioref">23</a>,<a href="references.html#ref-lane2023frontier" role="doc-biblioref">7</a></span>.</p>
+<p>A protein in solution at finite temperature is never sitting in one configuration. It is constantly hopping between many — bond vibrations, side-chain rotamer flips, loop reorganizations, domain motions, large-scale conformational rearrangements. The list of accessible atomic configurations is the <em>state space</em> of the molecule. Each configuration has an energy, and statistical mechanics gives the probability of finding the molecule in configuration <span class="math inline">\(i\)</span> at temperature <span class="math inline">\(T\)</span>:</p>
+<p><span class="math display">\[p_i \;=\; \frac{e^{-E_i / k_B T}}{Z}, \qquad Z \;=\; \sum_j e^{-E_j / k_B T},\]</span></p>
+<p>where <span class="math inline">\(k_B\)</span> is Boltzmann’s constant and <span class="math inline">\(Z\)</span> is the partition function — the normalizing constant that makes the probabilities sum to one. The factor <span class="math inline">\(e^{-E_i / k_B T}\)</span> is the <em>Boltzmann weight</em> of microstate <span class="math inline">\(i\)</span>. Low-energy configurations are populated more heavily; high-energy ones less. The full set <span class="math inline">\(\{(x_i, p_i)\}\)</span> is what statistical mechanics calls the <a href="../../posts/glossary/index.html#gloss-boltzmann-ensemble"><strong>Boltzmann-weighted ensemble</strong></a>. This is the underlying physical object. Every macroscopic quantity you can measure — binding affinity, melting temperature, NMR chemical shift, electron density, scattering intensity — is an ensemble average over this distribution:</p>
+<p><span class="math display">\[\langle O \rangle \;=\; \sum_i p_i \, O_i \;=\; \frac{1}{Z}\sum_i O_i\, e^{-E_i / k_B T}.\]</span></p>
+<p>The name “partition function” is an artifact of translation from the German <em>Zustandssumme</em> (“sum over states”) and trips up almost everyone the first time. Nothing is being partitioned in the set-theoretic sense; what gets partitioned is the total probability mass of one, distributed across all microstates in proportion to their Boltzmann weights. Operationally, <span class="math inline">\(Z\)</span> is the normalizer that turns unnormalized weights into proper probabilities. Conceptually, <span class="math inline">\(Z\)</span> is the bridge to thermodynamics — the Helmholtz free energy is <span class="math inline">\(F = -k_B T \ln Z\)</span>, and every macroscopic thermodynamic quantity is derivable from <span class="math inline">\(Z\)</span> or its derivatives.</p>
+<p>A consequence of this construction that matters operationally for the format question: <em>every microstate contributes a term to <span class="math inline">\(Z\)</span></em>. Dropping a state from the sum miscomputes the populations of every state, not just the one you missed, because <span class="math inline">\(Z\)</span> sits in everyone’s denominator. Rare conformations — the 1%-populated catalytic intermediate, the 0.1%-populated drug-bound state, the transient allosteric switch — still influence <span class="math inline">\(Z\)</span> and therefore the populations of the common states. This is the structural-biology content of the claim <span class="citation" data-cites="wankowicz2026possibility"><a href="references.html#ref-wankowicz2026possibility" role="doc-biblioref">17</a></span> that “every microstate influences the partition function.” It is not a mathematical observation; it is an operational one. Functionally important conformations are often rare, every term in <span class="math inline">\(Z\)</span> matters, and an ensemble representation that misses rare states miscalibrates the populations of the common states too.</p>
+<p>What gets deposited in the PDB today is, with rare exceptions, a single configuration: the mode (or some refinement-weighted average) of this distribution. The category error is treating that single configuration as if it were the molecule itself, rather than as one slice through a distribution.</p>
+</section>
+<section id="forward-models" class="level2">
+<h2 data-anchor-id="forward-models">2. Every experiment is a forward model</h2>
+<p>A second concept does most of the work in the modern picture. <a href="../../posts/glossary/index.html#gloss-forward-model"><strong>Forward models</strong></a> — also called forward operators, measurement operators, or projection functions, depending on which subfield you’re reading — are functions that take a candidate state of the system and predict what you would observe if that state were true. The name marks the direction: forward goes from cause to effect; inverse goes from observation back to cause. Forward problems are usually easy, a single function evaluation. Inverse problems are hard because the mapping is many-to-one and noisy.</p>
+<p>The pattern is pan-disciplinary. In weather forecasting the forward model integrates atmospheric dynamics from today’s state to tomorrow’s; data assimilation is the inverse problem. In medical CT the forward model is the Radon transform from tissue density to detector counts; reconstruction is the inverse. In astronomy the forward model maps galaxy parameters to telescope images; parameter estimation is the inverse. In computer graphics the forward model is rendering; “inverse rendering” (structure-from-motion, neural radiance fields) is the inverse. The unifying property is <em>computability</em>: given a hypothesis, you can produce a prediction with a finite amount of work.</p>
+<p>Every experimental technique in structural biology has its own forward model on the ensemble. A non-exhaustive tour:</p>
+<ul>
+<li><strong>Nuclear Overhauser Effect (NOE)</strong> in NMR has <span class="math inline">\(f_\text{NOE}(\{(x_i, p_i)\}) = \langle 1/r_{ab}^6 \rangle\)</span> over the ensemble for specified proton pairs <span class="math inline">\((a, b)\)</span>. The sixth-power dependence makes it heavily biased toward short-distance configurations: a 1% population at 2.5 Å contributes vastly more signal than the 99% population at 5 Å, which is the source of the famous “rare close conformer dominates the apparent distance” pathology.</li>
+<li><strong>Förster Resonance Energy Transfer (FRET)</strong> has the same <span class="math inline">\(1/r^6\)</span> structure with dye-pair distances instead of proton-pair distances, in the 1–10 nm range.</li>
+<li><strong>Small-angle X-ray scattering (SAXS)</strong> has <span class="math inline">\(f_\text{SAXS}(q) = \langle |F(q)|^2 \rangle\)</span>, the orientationally-averaged squared form factor of the ensemble.</li>
+<li><strong>X-ray crystallography</strong> has <span class="math inline">\(f_\text{xray}(\text{ensemble}) = \langle \rho(x) \rangle\)</span>, the ensemble-averaged electron density modulated by the crystal lattice and convolved with a crystallographic point-spread function.</li>
+<li><strong>Single-particle cryo-EM</strong> has <span class="math inline">\(f_\text{cryoEM}(\text{ensemble}) = \mathcal{B}(\Gamma(\text{ensemble}))\)</span>, where <span class="math inline">\(\Gamma\)</span> places Gaussian electron-density contributions per atom and <span class="math inline">\(\mathcal{B}\)</span> convolves with the microscope’s contrast transfer function and B-factor blur (literally equation 11 in <span class="citation" data-cites="levy2025inverse"><a href="references.html#ref-levy2025inverse" role="doc-biblioref">9</a></span>).</li>
+<li><strong>Cross-linking mass spectrometry (XL-MS)</strong> has, for each crosslinker chemistry, a predicate over the ensemble: which residue pairs are close enough often enough to crosslink.</li>
+<li><strong>Hydrogen-deuterium exchange mass spectrometry (HDX-MS)</strong> has per-peptide protection factors derived from ensemble-averaged solvent accessibility.</li>
+</ul>
+<p>The unifying structure is that each forward model is a <em>projection</em> of the full atomic ensemble onto a lower-dimensional observable space. The relational-algebra term for this is exactly a projection function — take a rich table (the joint distribution over all atomic configurations), pick a subset of columns (the observable for this technique), get a slim summary (the measurement). Many original tables can produce the same projection — which is precisely the inverse problem, and precisely why combining multiple projections (multiple techniques) is what carries new information.</p>
+<p>A second piece, often left implicit, is the <em>noise model</em>: a probability distribution <span class="math inline">\(p(y_\text{observed} \mid y_\text{predicted})\)</span> that says how the noisy observation relates to the noise-free prediction the forward operator produces. Gaussian for symmetric continuous errors, Poisson for photon counts, log-normal for multiplicative errors (NOE, SAXS), Student-<span class="math inline">\(t\)</span> for outlier-robust fits, heteroskedastic Gaussian for position-dependent variances. The forward operator plus the noise model together produce the <em>likelihood</em> <span class="math inline">\(p(y \mid \text{ensemble}) = p(y \mid f(\text{ensemble}))\)</span>, which is the bridge from physics to inference.</p>
+</section>
+<section id="marginals-and-joints" class="level2">
+<h2 data-anchor-id="marginals-and-joints">3. Joints, marginals, and the cost of mmCIF’s encoding</h2>
+<p>Statistics has a precise vocabulary for what mmCIF’s altloc + B-factor encoding throws away, and using it makes the limitations concrete. A <em>joint distribution</em> <span class="math inline">\(P(X, Y)\)</span> describes the probabilities of two (or more) variables taking values together. The <em>marginal</em> of <span class="math inline">\(X\)</span> is <span class="math inline">\(P(X) = \sum_y P(X, Y = y)\)</span> — the distribution of <span class="math inline">\(X\)</span> alone, with <span class="math inline">\(Y\)</span> summed out. The name comes from old probability tables where row-sums and column-sums sat in the margins. Marginalizing throws away the correlation between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>; many different joints share the same marginals.</p>
+<p>The minimal example is two coin flips. Call them <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>, both fair (50% heads). Case A: independent flips. The joint is</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th><span class="math inline">\(Y = H\)</span></th>
+<th><span class="math inline">\(Y = T\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(X = H\)</span></td>
+<td>0.25</td>
+<td>0.25</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(X = T\)</span></td>
+<td>0.25</td>
+<td>0.25</td>
+</tr>
+</tbody>
+</table>
+<p>with marginals <span class="math inline">\(P(X) = P(Y) = (0.5, 0.5)\)</span>. Case B: perfectly correlated flips (<span class="math inline">\(Y\)</span> copies <span class="math inline">\(X\)</span>).</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th><span class="math inline">\(Y = H\)</span></th>
+<th><span class="math inline">\(Y = T\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(X = H\)</span></td>
+<td>0.5</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(X = T\)</span></td>
+<td>0</td>
+<td>0.5</td>
+</tr>
+</tbody>
+</table>
+<p>with marginals still <span class="math inline">\(P(X) = P(Y) = (0.5, 0.5)\)</span>. Identical marginals; opposite joints. The difference shows up in the conditional <span class="math inline">\(P(Y \mid X = H)\)</span>: 0.5 in Case A (independence), 1.0 in Case B (perfect correlation). Or as a single number, the correlation coefficient: 0 in Case A, 1 in Case B.</p>
+<p>Now plug into structural biology. Replace the coins with the altloc state of residue 23 (Case “<span class="math inline">\(A\)</span>” or “<span class="math inline">\(B\)</span>”) and the altloc state of residue 24. mmCIF stores the per-residue occupancies — that is exactly the marginal distribution of each residue. It has no slot to record the joint distribution. So the same mmCIF file describes both:</p>
+<ul>
+<li>The “loop snaps between two coherent global states” scenario — joint mass on <span class="math inline">\((A, A)\)</span> and <span class="math inline">\((B, B)\)</span> only, none on <span class="math inline">\((A, B)\)</span> or <span class="math inline">\((B, A)\)</span>. The two residues move in lockstep.</li>
+<li>The “two residues flip independently” scenario — joint mass uniformly on all four combinations. The two residues are uncoupled.</li>
+</ul>
+<p>These are physically different proteins with different free-energy landscapes, different allosteric properties, and different functional implications. The mmCIF marginals cannot distinguish them. This is the format-level meaning of “every microstate influences <span class="math inline">\(Z\)</span>”: the partition function lives over global microstates (full joint configurations), and the biology lives in the correlations between local degrees of freedom. Strip the correlations and you’ve thrown away the part that distinguishes one functional state from another.</p>
+<p>The same problem shows up in three other forms throughout the format. <em>Altlocs</em> record per-residue marginals and cannot encode coupling. <em>B-factors</em> mix several physically distinct contributions — true thermal motion, lattice disorder, refinement error, radiation damage, unmodeled conformational heterogeneity — into one scalar per atom, with no honest interpretation as a thermodynamic variance. <em>Multimodal NMR-style files</em> with multiple deposited models lack any field for the relative population of each model, so the Boltzmann weights <span class="math inline">\(p_i\)</span> — the entire point of an ensemble — are absent.</p>
+<p>The Wankowicz-Bonomi paper <span class="citation" data-cites="wankowicz2026possibility"><a href="references.html#ref-wankowicz2026possibility" role="doc-biblioref">17</a></span> identifies the encoding question as one of four foundational problems. Their framing — that the field needs to move from <em>maximum parsimony</em> representations (the fewest parameters that explain the data, what altlocs and qFit do well) toward <em>maximum entropy</em> representations (the broadest distribution consistent with the data) and ideally toward hierarchical representations that capture both discrete metastable states and the continuous within-basin distributions — is the format-level fix this entire post is trying to take seriously.</p>
+</section>
+<section id="qfit" class="level2">
+<h2 data-anchor-id="qfit">4. qFit as the best you can do inside the current container</h2>
+<p>The current state of the art for crystallographic ensemble extraction is qFit <span class="citation" data-cites="wankowicz2024automated riley2021qfit"><a href="references.html#ref-wankowicz2024automated" role="doc-biblioref">18</a>,<a href="references.html#ref-riley2021qfit" role="doc-biblioref">19</a></span>. Reading what it does precisely is useful both as a concrete example of the marginal-versus-joint problem and as the canonical reference point for any successor format.</p>
+<p>qFit takes as input an electron density map (specifically a composite omit map, in which the model bias has been removed by systematically excluding regions during map computation) and a starting atomic model. For each residue it executes a three-stage algorithm.</p>
+<p><em>Stage 1 — sample.</em> Generate thousands of candidate conformations by systematically rotating around each <span class="math inline">\(\chi\)</span> dihedral angle for side chains, perturbing backbone atoms, and enumerating conformers for ligands. The library is local and exhaustive within the local degrees of freedom of that residue.</p>
+<p><em>Stage 2 — score.</em> For each candidate, compute its predicted electron density (placing Gaussian-form-factor contributions at each atom, with appropriate B-factor smearing) and compare to the observed local density. The fit residual is a squared norm in density space.</p>
+<p><em>Stage 3 — select.</em> Instead of picking a single best-fitting conformer, ask what small weighted combination of conformers (with occupancies <span class="math inline">\(w_k\)</span> summing to one) best explains the local density. Concretely, solve</p>
+<p><span class="math display">\[\min_{w_k}\ \left\lVert \rho_\text{obs} - \sum_k w_k\, \rho_k^\text{pred} \right\rVert^2 \quad \text{s.t.} \quad w_k \ge 0,\ \sum_k w_k \le 1,\ \text{at most } N\ \text{nonzero } w_k.\]</span></p>
+<p>The last constraint — that at most <span class="math inline">\(N\)</span> (typically 4) conformers are selected — is enforced with binary indicator variables, making this a mixed-integer quadratic program (MIQP). qFit solves it via CVXPY, which compiles the problem into the form expected by a backend solver (Gurobi, CPLEX, CBC). The output is at most <span class="math inline">\(N\)</span> conformers with continuous occupancies, written into the mmCIF as altlocs. A Phenix refinement step at the end polishes geometry and refines occupancies.</p>
+<p>Where this places qFit in the parsimony/entropy spectrum: it is the <em>maximum-parsimony</em> algorithm done correctly. The output is the smallest discrete-conformer set that explains the density, with honest occupancy weights. Compared to single-conformer refinement, this captures real structure — rotamer flips that single-conformer models smear into B-factors, loop alternatives that single-conformer models hide between altloc-A and the mean of altloc-A and altloc-B. Compared to a maximum-entropy ensemble, it under-represents continuous small-amplitude motion and anharmonic regimes, which fold into the residual B-factors of the selected conformers rather than into distinct states.</p>
+<p>Where this places qFit in the marginal/joint framing: per-residue marginals only. qFit operates one residue at a time. For residue 23 it produces a list of altlocs with occupancies; for residue 24 it produces a list of altlocs with occupancies; and so on. There is a “neighboring residue” heuristic that assigns altloc labels (<code>A</code>, <code>B</code>, <code>C</code>, <code>D</code>) so that conformers physically compatible with each other across adjacent residues share a label, and the <code>qfit_occupancy.params</code> file participates in this bookkeeping during post-refinement. But this is a labeling convention applied as a post-process; the mmCIF file format underneath still cannot encode joint distributions over residue pairs in any structurally honest way. Two residues with altlocs <code>A</code> and <code>B</code> could be the same physical conformer-pair, or they could be independent.</p>
+<p>qFit is what you build if you take mmCIF as given and squeeze every bit of representational expressivity out of it. The perspective’s argument <span class="citation" data-cites="wankowicz2026possibility"><a href="references.html#ref-wankowicz2026possibility" role="doc-biblioref">17</a></span> — Wankowicz is qFit’s primary maintainer and first author — is that the <em>format</em> needs to change, not just the modeling algorithm. The next-generation representations would let qFit-style outputs and their successors actually express the joint structure that the algorithm can see in the data but cannot record.</p>
+</section>
+<section id="bayesian-substrate" class="level2">
+<h2 data-anchor-id="bayesian-substrate">5. The Bayesian framework that’s now eating the field</h2>
+<p>A second methodological convergence has happened in parallel and is what makes the format question urgent. Three lines of recent work make the architecture concrete.</p>
+<p><span class="citation" data-cites="chung2024dps"><a href="references.html#ref-chung2024dps" role="doc-biblioref">10</a></span> (“Diffusion Posterior Sampling,” DPS) showed how to use a pretrained diffusion model as a <em>prior</em> over data and combine it with a likelihood derived from any forward operator to sample the posterior at inference time. The key trick is Tweedie’s formula: the time-dependent likelihood at noisy intermediate states <span class="math inline">\(p(y \mid x_t)\)</span> is approximated by the likelihood at the <em>denoised estimate</em> <span class="math inline">\(\hat{x}_0 \approx \mathbb{E}[x_0 \mid x_t]\)</span>, which the diffusion model provides at every step. Gradient-based posterior sampling becomes a simple modification of the standard denoising procedure: at each step, take the usual denoise step plus a gradient step on the log-likelihood evaluated at <span class="math inline">\(\hat{x}_0\)</span>. Works for linear and nonlinear forward operators, Gaussian and Poisson noise, image reconstruction problems from super-resolution to phase retrieval.</p>
+<p><span class="citation" data-cites="singhal2025fk"><a href="references.html#ref-singhal2025fk" role="doc-biblioref">20</a></span> (“Feynman-Kac Steering”) generalized the same idea to non-differentiable rewards and discrete-state diffusion models by replacing the gradient step with a Sequential Monte Carlo procedure. Run <span class="math inline">\(K\)</span> parallel denoising trajectories (“particles”); at intermediate steps, score them with potentials that approximate the reward; resample particles based on their potentials, duplicating high-scoring trajectories and pruning low-scoring ones. The target is the <em>tilted distribution</em> <span class="math inline">\(p_\theta(x) \exp(\lambda r(x))\)</span>, which coincides with the posterior when the reward equals the log-likelihood. Strictly more general than DPS at the cost of running multiple parallel trajectories.</p>
+<p><span class="citation" data-cites="levy2025inverse"><a href="references.html#ref-levy2025inverse" role="doc-biblioref">9</a></span> (“Atomic Denoising Prior for 3D reconstruction,” ADP-3D) is the structural-biology application of this pattern. They take Chroma <span class="citation" data-cites="ingraham2023illuminating"><a href="references.html#ref-ingraham2023illuminating" role="doc-biblioref">21</a></span> — a pretrained backbone diffusion model — as the prior, define explicit forward operators for cryo-EM density maps (Gaussian form-factor placement followed by B-factor blurring), pairwise distance restraints (mimicking NMR or paramagnetic-relaxation-enhancement constraints), and substructure constraints. They run plug-and-play MAP estimation using Half-Quadratic Splitting <span class="citation" data-cites="venkatakrishnan2013plug"><a href="references.html#ref-venkatakrishnan2013plug" role="doc-biblioref">22</a></span> to combine the diffusion-prior denoiser with the experimental likelihood. The headline demonstration is exactly the multi-modal scenario: a single pretrained model conditioned on cryo-EM + sequence + partial structure + sparse distance matrix, all in a single log-likelihood at inference time.</p>
+<p>The conceptual unlock that matters for the format question: the diffusion-model prior is technique-agnostic. It does not depend on any specific experimental modality. The likelihood is technique-specific — it’s the forward operator plus the noise model. Bayes’ rule glues them together. <em>Changing the technique means changing only the likelihood term</em>, not the prior or the sampling machinery. That is why this architecture is the meeting point: the diffusion model is the common substrate, and forward operators are the dialect-specific plug-ins.</p>
+<p>Multi-modal extends trivially. If you have independent measurements <span class="math inline">\(y_1, \ldots, y_n\)</span> from <span class="math inline">\(n\)</span> different techniques and you assume conditional independence given the structure (a reasonable approximation when the experiments don’t share systematic biases), the joint log-likelihood is just a sum:</p>
+<p><span class="math display">\[\log p(y_1, \ldots, y_n \mid x) \;=\; \sum_{i=1}^{n} \log p(y_i \mid x),\]</span></p>
+<p>and the gradient of the posterior is the sum of per-modality gradients. Drop this into DPS and you’re sampling from a structure posterior that respects all techniques simultaneously. ADP-3D’s equation 7 is precisely this. The technique-specific code is <em>only</em> the forward operator and noise model implementation; everything else is shared.</p>
+<p>A vocabulary point that trips up newcomers and is worth pinning down. “Diffusion steering” in this literature almost never means <em>training the diffusion model</em>. It means <em>biasing the inference-time sampling</em> of an already-trained diffusion model. The prior is frozen; the steering math runs during sampling. This matters operationally for the format: training pipelines live upstream of the format and are modular. The format only needs to standardize the artifacts that <em>inference-time</em> steering consumes — the operators, observations, and noise models.</p>
+<p>A second vocabulary point. “Reward” (FK Steering), “likelihood” (DPS), “data fitting term” (ADP-3D), “potential” (Feynman-Kac formalism) are all the same kind of object wearing different costumes — a function that scores how compatible a candidate state is with whatever you care about, evaluated at every step of the denoising process. Once you see this, the three papers above are using the same machinery with three different scoring functions and three different ways of incorporating the score into sampling.</p>
+</section>
+</section>
+</div>
+
+
+
+
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/rtviii\.xyz");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

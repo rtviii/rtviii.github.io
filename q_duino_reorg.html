@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>general-thoughts – артём</title>
+<title>q_duino_reorg – артём</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,18 +23,18 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
-<link href="../.././img/BTNBlink.webp" rel="icon">
-<script src="../../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../../site_libs/quarto-html/quarto.js"></script>
-<script src="../../site_libs/quarto-html/popper.min.js"></script>
-<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<link href="././img/BTNBlink.webp" rel="icon">
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -50,72 +50,52 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script src="../../scripts.js"></script>
+<script src="./scripts.js"></script>
 <script src="https://unpkg.com/@popperjs/core@2"></script>
 <script src="https://unpkg.com/tippy.js@6"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Serif:wght@400;500;600&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
 
 
-<link rel="stylesheet" href="../../styles/custom.css">
-<link rel="stylesheet" href="../../styles/scrollbar-fix.css">
-<link rel="stylesheet" href="../../styles/listing.css">
-<link rel="stylesheet" href="../../styles/homepage.css">
+<link rel="stylesheet" href="styles/custom.css">
+<link rel="stylesheet" href="styles/scrollbar-fix.css">
+<link rel="stylesheet" href="styles/listing.css">
 </head>
 
-<body>
+<body class="fullcontent">
 
 <div id="quarto-search-results"></div>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-layout-custom">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
 <!-- margin-sidebar -->
+    
 <!-- main -->
+<main class="content" id="quarto-document-content">
 
 
 
-<nav id="TOC" role="doc-toc">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#atom" id="toc-atom">atom:</a></li>
-  <li><a href="#chainsassemblies" id="toc-chainsassemblies">chains/assemblies</a></li>
-  <li><a href="#figures" id="toc-figures">Figures</a></li>
-  </ul>
-</nav>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 6%">
-</colgroup>
-<tbody>
-<tr class="odd">
-<td>- the annotation infrastructure lends itself well to collaboration directly on the data. the model accumulates heterogenous modalities of annotations on itself, becomes a computational object in itself.</td>
-</tr>
-</tbody>
-</table>
-<p>Let’s try to collect some array, an overview of experimental formats and physical sources of heterogeneity that w</p>
-<hr>
-<p>Sources/types of heterogeneity at every:</p>
-<section id="atom" class="level2">
-<h2 data-anchor-id="atom">atom:</h2>
-<pre><code>- isotropic ADP, one number per atom (the B-factor — a sphere of positional uncertainty), 
-- anisotropic ADP, six numbers per atom (an ellipsoid — a 3×3 symmetric tensor)</code></pre>
-</section>
-<section id="chainsassemblies" class="level2">
-<h2 data-anchor-id="chainsassemblies">chains/assemblies</h2>
-<pre><code>- TLS, 20 numbers per group describing a rigid-body Gaussian motion of the entire group</code></pre>
-<hr>
-<hr>
-</section>
-<section id="figures" class="level1">
-<h1>Figures</h1>
+
+<p>Alright, i think what would really improve the flow of this are the following multiple axes of attack:</p>
+<ul>
+<li><p>toss the idea of .defs entirely in favor of the global glossary (adjacent blogpost, needs cleaning up but should be a part of this one). So, as you say, these definitions are a nice touch in principle if this were a bon fide textbook, but it’s not and most of the defs are chosen by claude when writing the prose. the prose changes way too often for me to keep track of this and so the user may get the wrong set of concepts highlited. It’s just not useful at this stage of prototyping the text. A lot of this should be in the glossary anyway that we will make the main place for concept definitions that’s a separate document to which we link.</p></li>
+<li><p>The infrastructure for displaying something on the right side is useful though, don’t toss it out (see next point).</p></li>
+<li><p>Prose style and organization + side-callouts: better separation between textbook exposition + concept presentation vs elaboration, examples and description. I’m pretty happy with how quickly we are accumulating content here, but full disclosure, these blog pages are often the results of one or multiple long sessions of dicsussing a concept or a bunch of papers with claude during which i often ask clarifying questions and go on tangents that later – when i paste the session to be made into a blogpost or ask claude to summarize – trickle through into the blogpost. At the velocity at which im going through this it’s often hard to keep track, separate and collate what should actually make the cut in the blogpost and what can be deemed superflous exposition or examples (useful or not). So i want to do two things about it:</p>
+<ul>
+<li>let us repurpose the callouts infrastructure from above to basically be able to click on the concept or paragraph or a sentence that is actually the meat of the post and serves our definition of the format and on the right side we can just display an additional subservient blocks of text/paragraphs that clarify or provide context that is secondary to it.</li>
+<li>lets codify this as a rule for reorganizing existing blogposts and creating new ones so main prose is actually just good condensed and informative content, never vague rambling and tangents</li>
+</ul></li>
+<li><p>Blog organization: separation between two tracks: Ensemble representation + forward operator infrastructure. At this point i feel like we have a few big topics going on here and chapters sprawl over them in an overlapping manner. That is fine since we were adding chapter by chapter but i hope you can see a coherent whole emerging in a modular manner: two “Tracks” each that services a different concern, the different heterogneiety regimes and materialization modes in the ifrst track: the bespoke encoding and evaluaton model. These are the core of what we are building and they should be the foremost citizens when we consider the representation and chapter organization of our material. That is to say, i’d like to reorganize the whole blog such that these things are given foregroudn and chpaters like “Problems with mmcif”, “annotations”, “tech survey”, “ml-native access patterns” all go into a separate section that is equally important to our mission but is secondary to the main Duino concepts in their capacity to address the heterogeneity problem with the mmcif. That’s to say, there are fundamentals of what we are presenting (the core of Duino) and then there are nice-to-haves. Let’s separate those organaizationally. We are of course free to link from the core concept chapters to the secondary chapters to call problems out, motivate our choices or offer elabarations, but im just saying let’s not pollute the main text with them.</p></li>
+<li><p>immedieately following the re-organization above i would actually at this point like to have a pictorial/graphical “map” of the duino concepts as latex figure that is a high-level overview of all of the core concepts so the new user can orient themselves in this sea of new concepts and reorganization/suggestions. It would be amazing if its text is also clickalbe and linkable so we direct the person from the figure straight to the relevant chapter or section. Don’t try to over-optimize this at first because i’m not quite sure just how the system looks like in the end anyway, we have not come even close to standardizign the style of the figures across the blogpost and i’m also not quite sure where we should display this “map” – on every page as a tooltip or maybe upfront on the blogpost homepage.. by “map” i mean actual concpets represented pictorially, at least for the duino core. let’s see a prototype of this and then iterate.. when we do this however, it would be great if we could design this in such a way that modular pieces of latex and style can be reused throughout the blogpost for other figures as well so we maintain some continuity of style.</p></li>
+<li><p>my last peeve, which is actually getting to be quite a big sore has nothing to do with our material, but more with the “quarto development workflow”. That is, right now i paste shit from claude there, run preview, read the whole blogpost and then go back to markdown to edit the things i like and dislike/finalize. Then run preview again and notice something else etc etc. This is getting to be quite a huge bottleneck given the velocity at which cluade can spit out decent sound prose and the markdown soruce just isn’t navigable enough for me to do this quickly. So i just want to ask what do you think i can do better? The ideal workflow for me, at least for text, would be if i could edit text directly on the page of the quarto preview render (in the browser page, when it is rendered nicely) and save it so i don’t have to do two passses over it..</p></li>
+</ul>
+<p>Whatever we agree on in this session – please start accumulating it in claude.md and adding conventiosn there so we are on the same page in further sessions.</p>
 
 
-</section>
 
-
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -222,11 +202,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         if (link.dataset.originalHref !== undefined) {
           link.href = link.dataset.originalHref;
         }
-          // target, if specified
-          link.setAttribute("target", "_blank");
-          if (link.getAttribute("rel") === null) {
-            link.setAttribute("rel", "noopener");
-          }
       }
     }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {

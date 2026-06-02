@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>q_mcif_structure – артём</title>
+<title>email_to_steve – артём</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -78,13 +78,39 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<p>Ok what i want to do is start to collate and assemble my mmcif notes into a veritable blog post. The first step is to get some inital structure going here so it’s navigable in the quarto ui preview and i don’t have to jump around the markdown notes because this one seems like it might get a bit long with a bunch of dropdowns and annotations and figures and such..</p>
-<p>Before we do that though – do u have any suggestions on what to cleanup here? i started this blog (and the directory structure) before CC and it’s a bit of a mess in terms of how i structure shit (artifacts, completed blogposts and the ones that are wip). In particular – i think the “listings” directory is not used at all anymore and i just use one file called “listings.md” which i like better so it’s safe to delete. Then i also don’t have a good mechanism for storing wip posts in the repo without quarto rendering them sometimes as pages at reachable urls… i’d like to keep them as drafts in the repo but never publish them at actual deployment.</p>
-<p>Finally, this mmcif monograph will be my first longer post and i’m curious if i can import/separate the monolithic qmd file into sections, each 1-2 pages so we don’t get confused especially with all the embedded shit and such.</p>
-<hr>
-<p>Making a “structure” more of a computational, queryable object, .sqlite db</p>
-<p>Big point: version control and DAG connections, how to reconcile scales heterogeneity</p>
-<p>add a survey of operations across pdbtbx, ccp4, coot, isolde, chimerax separate ml operations section</p>
+<p>Subject: re: common PDB file errors and detection tools</p>
+<p>Steve,</p>
+<p>Your question hits a recurring sore spot. There isn’t a single canonical list of common PDB errors, but the validation tooling that exists is reasonably comprehensive – the problem is that it’s scattered across tools whose outputs don’t aggregate. A few pointers grouped by error type:</p>
+<p><strong>File-syntax breakage (your whitespace/duplicate cases).</strong> gemmi (Marcin Wojdyr) is the strictest modern mmCIF parser and surfaces issues other parsers silently swallow. Often the first place to look when a file half-loads.</p>
+<ul>
+<li>https://github.com/project-gemmi/gemmi</li>
+<li>Wojdyr 2022, JOSS: https://joss.theoj.org/papers/10.21105/joss.04200</li>
+</ul>
+<p><strong>Geometric errors (bonds, angles, clashes, Ramachandran, rotamers).</strong> MolProbity is the Richardson lab’s geometry battery and the most widely cited. Phenix bundles it. Mogul (CCDC) does ligand geometry against the small-molecule crystal database.</p>
+<ul>
+<li>http://molprobity.biochem.duke.edu</li>
+<li>Williams et al.&nbsp;2018, Protein Sci: https://onlinelibrary.wiley.com/doi/10.1002/pro.3330</li>
+<li>https://www.ccdc.cam.ac.uk/solutions/software/mogul</li>
+</ul>
+<p><strong>Composition and connectivity (missing LINK records, ligand identity, Mg vs water).</strong> CheckMyMetal and CheckMyBlob handle metal-site sanity. The wwPDB Validation Report bundles many other checks at deposit time.</p>
+<ul>
+<li>https://czmbase.molbio.uic.edu/cmm</li>
+<li>https://www.checkmyblob.org</li>
+<li>https://www.wwpdb.org/validation/2017/XrayValidationReportHelp</li>
+</ul>
+<p><strong>Systematic re-validation (your “files that survived deposition but are still wrong” case).</strong> PDB-REDO re-refines deposited X-ray structures and publishes the deltas – effectively a standing corpus of “errors caught after the fact”.</p>
+<ul>
+<li>https://pdb-redo.eu</li>
+<li>Joosten et al.&nbsp;2014, IUCrJ: https://journals.iucr.org/m/issues/2014/04/00/me0501</li>
+</ul>
+<p><strong>Comprehensive but old-school.</strong> WHATIF / WHAT_CHECK (Gert Vriend) is the original of the genre and still useful for stereochemistry and packing checks.</p>
+<ul>
+<li>https://swift.cmbi.umcn.nl/whatif</li>
+</ul>
+<p><strong>Inside ChimeraX.</strong> Built-in validation panels plus a Python API. You can wrap any of the above as a tool or write residue-level checks directly. The <code>check</code> command and the <code>clashes</code> / <code>contacts</code> tools are the obvious starting points; for atom-count-per-residue against the CCD, a short Python script using <code>chimerax.atomic</code> is straightforward.</p>
+<p>For the AI-agent angle: the bigger obstacle is corpus, not models. Existing tools produce one-shot reports that don’t ride with the deposition, so there is no archive linking errors back to the structures they appeared in – which is exactly the labelled data a learned validator would need. Some recent work uses AF2 pLDDT as a suspicion signal and learned rotamer libraries are getting better, but it’s research-grade.</p>
+<p>I have a draft blog post on adjacent format-level issues – happy to share once it’s less of a sketch.</p>
+<p>Cheers, Artem</p>
 
 
 

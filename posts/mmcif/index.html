@@ -90,14 +90,28 @@ ul.task-list li input[type="checkbox"] {
 <div class="post-glossary">
 <ul>
 <li><a href="../../posts/mmcif/index.html">Overview</a></li>
-<li><a href="../../posts/mmcif/01-problems.html">1. Problems with mmCIF</a></li>
-<li><a href="../../posts/mmcif/02-architecture.html">2. Layout</a></li>
-<li><a href="../../posts/mmcif/03-evaluation-model.html">3. Evaluation model</a></li>
-<li><a href="../../posts/mmcif/04-annotations-and-engine.html">4. Annotations and the artifact engine</a></li>
-<li><a href="../../posts/mmcif/04b-technology-survey.html">5. Technology survey</a></li>
-<li><a href="../../posts/mmcif/05-open-questions.html">6. Open questions</a></li>
-<li><a href="../../posts/mmcif/08-ml-native.html">7. ML-native access patterns</a></li>
-<li><a href="../../posts/mmcif/06-black-box-data.html">Appendix: black-box data and model artifacts</a></li>
+<li>Concept map</li>
+</ul>
+<p><span class="post-nav-group">Core</span></p>
+<ul>
+<li><a href="../../posts/mmcif/02-architecture.html">Layout — Track A</a></li>
+<li><a href="../../posts/mmcif/forward-operators.html">Forward operators — Track B</a></li>
+<li><a href="../../posts/mmcif/03-evaluation-model.html">Evaluation model</a></li>
+</ul>
+<p><span class="post-nav-group">Prerequisite</span></p>
+<ul>
+<li><a href="../../posts/mmcif/primer.html">Primer</a></li>
+<li><a href="../../posts/glossary/index.html">Glossary</a></li>
+<li><a href="../../posts/mmcif/references.html">References</a></li>
+</ul>
+<p><span class="post-nav-group">Secondary</span></p>
+<ul>
+<li><a href="../../posts/mmcif/01-problems.html">Problems with mmCIF</a></li>
+<li><a href="../../posts/mmcif/04-annotations-and-engine.html">Annotations &amp; the artifact engine</a></li>
+<li><a href="../../posts/mmcif/04b-technology-survey.html">Technology survey</a></li>
+<li><a href="../../posts/mmcif/05-open-questions.html">Open questions</a></li>
+<li><a href="../../posts/mmcif/08-ml-native.html">ML-native access patterns</a></li>
+<li><a href="../../posts/mmcif/06-black-box-data.html">Appendix: black-box data</a></li>
 <li><a href="../../posts/mmcif/07-modularity-examples.html">Appendix: modularity examples</a></li>
 </ul>
 </div>
@@ -109,23 +123,37 @@ ul.task-list li input[type="checkbox"] {
 <section id="section" class="level1 g-col-12 g-col-md-9 right-column">
 <h1>Structural Bio Format</h1>
 <p><span class="post-subtitle">Some notes on mmCIF and what an ML-native successor might look like</span></p>
-<p><em>This is a very early draft that’s still coalescing. The only worthwhile chapters are 2 and 3 for now. Figures are shit, refs are missing, lots of assumptions and koolaid.</em></p>
+<p><em>Early draft, still coalescing. The Core — Layout, Forward operators, Evaluation model — is where the real content lives; the Primer and the Secondary chapters are rougher. Refs are still patchy and there’s plenty of koolaid.</em></p>
 <p>I’m trying to sketch here a kernel of idealized infrastructure for structural bio in 2026 and beyond that is not a meshwork of disparate databases and resources, is not bursting at the seams from the influx of new datatypes and data volume, is not constrained in its evolution by obsolete conventions, accommodates the new computational fabric well.</p>
 <p>This is not a proposal or a concrete plan or an attack on anyone. There are motifs from database, compiler and ML literature here so it’s not exactly obvious where the “format” ends and auxilary software (from parser to the backend to storage to exchange platform) begins for now.</p>
-<p>TODO: add a survey of operations across pdbtbx, ccp4, coot, isolde, chimerax</p>
+<!-- TODO: add a survey of operations across pdbtbx, ccp4, coot, isolde, chimerax -->
+<p>The map below orients the Core; every box links to its chapter.</p>
+<!-- Reusable Duino concept-map figure. Included by index.qmd (overview)
+     and concept-map.qmd. The static render data/concept-map.svg (used by
+     the per-page hover) is generated from this same block. -->
+<img src="index_files/mediabag/b438be477d70a92cd45204e628bd79b35beaf487.svg" class="img-fluid">
 <section id="contents" class="level2">
 <h2 data-anchor-id="contents">Contents</h2>
-<ol type="1">
-<li><a href="../../posts/mmcif/01-problems.html">Problems with mmCIF and the current ecosystem</a> – some scattered complaints about the mmcif format in no particular order of importance.. single-structure assumption, parsing fragility, missing experimental linkage, no ML-native access, pain points.</li>
-<li><a href="../../posts/mmcif/02-architecture.html">Layout</a> – a stab at the alternative “from the ground up” format architecture. Four layers are described: two for the core data structure and two for representing various heterogeneities.</li>
-<li><a href="../../posts/mmcif/03-evaluation-model.html">Evaluation model</a> – realistic mixing scenarios, the two-stack composition principle (discrete-nesting and continuous-additive), independence vs nesting vs provenance, sample-axis classification (aligned/broadcast/mixed), Mode C operator interfaces, cross-backend integration, open design questions.</li>
-<li><a href="../../posts/mmcif/04-annotations-and-engine.html">Annotations and the artifact engine</a> – the engine half: query language, the (selector, body, provenance) annotation overlay, ML-native featurization passes (graphs, equivariant features, pair representations, tokenization), training data shapes for distribution-predicting models.</li>
-<li><a href="../../posts/mmcif/04b-technology-survey.html">Technology survey</a> – the survey half: Zarr/OME-Zarr/copick/TileDB/Arrow/DataFusion as storage primitives, with the three heterogeneity regimes mapped onto existing tools (H5MD, cryoDRGN, qFit, IHM).</li>
+<p>The <strong>Core</strong> is Duino itself — read these in order:</p>
+<ul>
+<li><a href="../../posts/mmcif/02-architecture.html">Layout</a> — Track A, the ensemble representation. Four layers: Hierarchy and Groupings (the invariant core), Heterogeneity (the three regimes R1/R2/R3) and Materialization (the three storage modes A/B/C).</li>
+<li><a href="../../posts/mmcif/forward-operators.html">Forward-operator infrastructure</a> — Track B. The operator records that turn an ensemble into an experimental likelihood, and the registry/storage discipline around them.</li>
+<li><a href="../../posts/mmcif/03-evaluation-model.html">Evaluation model</a> — how scope-local descriptors compose into rendered coordinates: the discrete-nesting and continuous-additive stacks, independence vs nesting vs provenance, sample-axis classification, Mode C operator interfaces, cross-backend integration.</li>
+</ul>
+<p><strong>Prerequisite:</strong></p>
+<ul>
+<li><a href="../../posts/mmcif/primer.html">Primer</a> — Boltzmann ensembles, marginals vs joints, qFit, forward models, and the Bayesian posterior-sampling picture the Core takes as given. Start here if the conformational-ensemble framing is new.</li>
+</ul>
+<p><strong>Secondary</strong> — equally part of the mission, but supporting the Core rather than constituting it:</p>
+<ul>
+<li><a href="../../posts/mmcif/01-problems.html">Problems with mmCIF and the current ecosystem</a> – single-structure assumption, parsing fragility, missing experimental linkage, no ML-native access.</li>
+<li><a href="../../posts/mmcif/04-annotations-and-engine.html">Annotations and the artifact engine</a> – query language, the (selector, body, provenance) annotation overlay, ML-native featurization passes, training-data shapes.</li>
+<li><a href="../../posts/mmcif/04b-technology-survey.html">Technology survey</a> – Zarr/OME-Zarr/copick/TileDB/Arrow/DataFusion as storage primitives, the three heterogeneity regimes mapped onto existing tools (H5MD, cryoDRGN, qFit, IHM).</li>
 <li><a href="../../posts/mmcif/05-open-questions.html">Open questions</a></li>
-<li><a href="../../posts/mmcif/08-ml-native.html">ML-native data: access patterns and precomputed features</a> – random access, neighbor lookup, equivariant feature caches, tokenization, dataloader chunking; the discipline for caching derived data without polluting the core.</li>
+<li><a href="../../posts/mmcif/08-ml-native.html">ML-native data: access patterns and precomputed features</a> – random access, neighbor lookup, equivariant feature caches, tokenization, dataloader chunking.</li>
 <li><a href="../../posts/mmcif/06-black-box-data.html">Appendix: “black-box” data and model-side artifacts</a> – weights, decoders, latents, model outputs, training metadata co-located with the structure.</li>
 <li><a href="../../posts/mmcif/07-modularity-examples.html">Appendix: modularity examples in software ecosystems</a> – LLVM, DataFusion, AnnData, ECS, ONNX, OpenTelemetry, CF Conventions.</li>
-</ol>
+</ul>
 </section>
 </section>
 </div>
@@ -519,43 +547,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
           }
         });
       }
-  const findCites = (el) => {
-    const parentEl = el.parentElement;
-    if (parentEl) {
-      const cites = parentEl.dataset.cites;
-      if (cites) {
-        return {
-          el,
-          cites: cites.split(' ')
-        };
-      } else {
-        return findCites(el.parentElement)
-      }
-    } else {
-      return undefined;
-    }
-  };
-  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-  for (var i=0; i<bibliorefs.length; i++) {
-    const ref = bibliorefs[i];
-    const citeInfo = findCites(ref);
-    if (citeInfo) {
-      tippyHover(citeInfo.el, function() {
-        var popup = window.document.createElement('div');
-        citeInfo.cites.forEach(function(cite) {
-          var citeDiv = window.document.createElement('div');
-          citeDiv.classList.add('hanging-indent');
-          citeDiv.classList.add('csl-entry');
-          var biblioDiv = window.document.getElementById('ref-' + cite);
-          if (biblioDiv) {
-            citeDiv.innerHTML = biblioDiv.innerHTML;
-          }
-          popup.appendChild(citeDiv);
-        });
-        return popup.innerHTML;
-      });
-    }
-  }
 });
 </script>
 </div> <!-- /content -->

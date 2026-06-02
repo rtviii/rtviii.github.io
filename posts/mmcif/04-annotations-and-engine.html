@@ -116,14 +116,28 @@ window.Quarto = {
 <div class="post-glossary">
 <ul>
 <li><a href="../../posts/mmcif/index.html">Overview</a></li>
-<li><a href="../../posts/mmcif/01-problems.html">1. Problems with mmCIF</a></li>
-<li><a href="../../posts/mmcif/02-architecture.html">2. Layout</a></li>
-<li><a href="../../posts/mmcif/03-evaluation-model.html">3. Evaluation model</a></li>
-<li><a href="../../posts/mmcif/04-annotations-and-engine.html">4. Annotations and the artifact engine</a></li>
-<li><a href="../../posts/mmcif/04b-technology-survey.html">5. Technology survey</a></li>
-<li><a href="../../posts/mmcif/05-open-questions.html">6. Open questions</a></li>
-<li><a href="../../posts/mmcif/08-ml-native.html">7. ML-native access patterns</a></li>
-<li><a href="../../posts/mmcif/06-black-box-data.html">Appendix: black-box data and model artifacts</a></li>
+<li>Concept map</li>
+</ul>
+<p><span class="post-nav-group">Core</span></p>
+<ul>
+<li><a href="../../posts/mmcif/02-architecture.html">Layout — Track A</a></li>
+<li><a href="../../posts/mmcif/forward-operators.html">Forward operators — Track B</a></li>
+<li><a href="../../posts/mmcif/03-evaluation-model.html">Evaluation model</a></li>
+</ul>
+<p><span class="post-nav-group">Prerequisite</span></p>
+<ul>
+<li><a href="../../posts/mmcif/primer.html">Primer</a></li>
+<li><a href="../../posts/glossary/index.html">Glossary</a></li>
+<li><a href="../../posts/mmcif/references.html">References</a></li>
+</ul>
+<p><span class="post-nav-group">Secondary</span></p>
+<ul>
+<li><a href="../../posts/mmcif/01-problems.html">Problems with mmCIF</a></li>
+<li><a href="../../posts/mmcif/04-annotations-and-engine.html">Annotations &amp; the artifact engine</a></li>
+<li><a href="../../posts/mmcif/04b-technology-survey.html">Technology survey</a></li>
+<li><a href="../../posts/mmcif/05-open-questions.html">Open questions</a></li>
+<li><a href="../../posts/mmcif/08-ml-native.html">ML-native access patterns</a></li>
+<li><a href="../../posts/mmcif/06-black-box-data.html">Appendix: black-box data</a></li>
 <li><a href="../../posts/mmcif/07-modularity-examples.html">Appendix: modularity examples</a></li>
 </ul>
 </div>
@@ -134,18 +148,12 @@ window.Quarto = {
 </div>
 <section id="section" class="level1 g-col-12 g-col-md-9 right-column">
 <h1>Annotations and the artifact engine</h1>
-<p>The previous chapters described what a deposition contains and how its descriptors compose. This chapter is about the engine that sits on top of that core: the query language that selects molecular subsets across hierarchy, composition, and ensemble dimensions; the annotation overlay where everything not in the irreducible core lives; and the ML-native featurization passes that consume the core to produce graph and equivariant inputs. The pattern recurs throughout: a small, stable core plus a wide, opinionated periphery of computed passes and external artifacts, attached by selectors and provenance rather than copied into the core.</p>
+<p>The previous chapters described what a deposition contains and how its descriptors compose. This chapter is about the engine that sits on top of that core: the query language that selects molecular subsets across hierarchy, composition, and ensemble dimensions; the <a href="../../posts/glossary/index.html#gloss-annotation-overlay"><strong>annotation overlay</strong></a> where everything not in the irreducible core lives; and the ML-native featurization passes that consume the core to produce graph and equivariant inputs. The pattern recurs throughout: a small, stable core plus a wide, opinionated periphery of computed passes and external artifacts, attached by selectors and provenance rather than copied into the core.</p>
 <section id="query-language-and-annotations" class="level2">
 <h2 data-anchor-id="query-language-and-annotations">Query language and annotations</h2>
-<div class="def" data-term="Selector">
-<p>A query expression that names a molecular subset across the four core layers – atoms, residues, chains, domains, named groupings – and across conformational states. Selectors are the address-space of the format: every annotation, every cached pass output, every overlay attaches to a selector rather than to raw atom indices, so the binding survives renumbering.</p>
-</div>
-<p><strong>Query language.</strong> Need: select arbitrary molecular subsets (atoms, residues, chains, domains) at any level of hierarchy, across conformational states, composably. MolQL (<a href="https://github.com/molstar/molstar">github.com/molstar/molstar</a>, embedded in Mol*) is the most expressive existing molecular selection language. VMD/MDAnalysis selections are simpler but widely used. Extension needed for: state selection, cross-state predicates, annotation predicates.</p>
-<p>If storage is columnar/array-based, molecular selections can compile to predicates that a query engine (DataFusion) pushes down to the storage layer. “chain A and resid 50-80 in state 3” becomes: filter on chain_id column, range filter on res_seq column, index into state dimension – only relevant chunks are read. Spatial predicates (“within 5A of ligand”) need a stored spatial index (R-tree) and compile to a UDF call.</p>
-<p><strong>Annotations.</strong> Core model: <strong>(selector, body, provenance)</strong> triple. The selector is a query expression. The body is arbitrary typed data (text, scalar, vector, array, structured object, reference). The provenance records author, method, software, date, confidence.</p>
-<div class="def" data-term="Annotation overlay">
-<p>A separate, additive layer of <code>(selector, body, provenance)</code> triples attached to a structure without modifying its core. Modeled after copick’s overlay filesystem: the base data is read-only, overlays are writable and namespaced by their producer, and multiple annotators coexist without stepping on each other or on the underlying structure.</p>
-</div>
+<p><strong>Query language.</strong> Need: select arbitrary molecular subsets (atoms, residues, chains, domains) at any level of hierarchy, across conformational states, composably. MolQL <span class="citation" data-cites="sehnal2021molstar"><a href="references.html#ref-sehnal2021molstar" role="doc-biblioref">32</a></span> (the selection language embedded in Mol*) is the most expressive existing molecular selection language. VMD/MDAnalysis selections are simpler but widely used. Extension needed for: state selection, cross-state predicates, annotation predicates.</p>
+<p>If storage is columnar/array-based, molecular selections can compile to predicates that a query engine (DataFusion <span class="citation" data-cites="datafusion"><a href="references.html#ref-datafusion" role="doc-biblioref">37</a></span>) pushes down to the storage layer. “chain A and resid 50-80 in state 3” becomes: filter on chain_id column, range filter on res_seq column, index into state dimension – only relevant chunks are read. Spatial predicates (“within 5A of ligand”) need a stored spatial index (R-tree) and compile to a UDF call.</p>
+<p><strong>Annotations.</strong> Core model: <strong>(selector, body, provenance)</strong> triple. The <a href="../../posts/glossary/index.html#gloss-selector"><strong>selector</strong></a> is a query expression. The body is arbitrary typed data (text, scalar, vector, array, structured object, reference). The provenance records author, method, software, date, confidence.</p>
 <p>Oli Clarke’s Coot residue annotation tool (<a href="https://bsky.app/profile/olibclarke.bsky.social/post/3micblpuoxc2u">bsky.app/olibclarke/post/3micblpuoxc2u</a>) demonstrates the impulse: save notes associated with the active residue, persist in mmCIF. The generalization: associate <em>any</em> data with <em>any</em> molecular selection, in a separate layer (copick overlay pattern) so multiple annotators coexist and annotations are decoupled from the model version.</p>
 <p>This subsumes: UniProt features, CATH domains, validation metrics, qFit conformers, ML confidence scores, manual curation notes, force-field parameters – all are (selector, body, provenance) triples with different body types and different provenance.</p>
 <p>Key design question: how to make selectors persistent and portable across structures (use canonical identifiers like UniProt residue numbers rather than PDB-specific numbering).</p>
@@ -553,43 +561,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
           }
         });
       }
-  const findCites = (el) => {
-    const parentEl = el.parentElement;
-    if (parentEl) {
-      const cites = parentEl.dataset.cites;
-      if (cites) {
-        return {
-          el,
-          cites: cites.split(' ')
-        };
-      } else {
-        return findCites(el.parentElement)
-      }
-    } else {
-      return undefined;
-    }
-  };
-  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-  for (var i=0; i<bibliorefs.length; i++) {
-    const ref = bibliorefs[i];
-    const citeInfo = findCites(ref);
-    if (citeInfo) {
-      tippyHover(citeInfo.el, function() {
-        var popup = window.document.createElement('div');
-        citeInfo.cites.forEach(function(cite) {
-          var citeDiv = window.document.createElement('div');
-          citeDiv.classList.add('hanging-indent');
-          citeDiv.classList.add('csl-entry');
-          var biblioDiv = window.document.getElementById('ref-' + cite);
-          if (biblioDiv) {
-            citeDiv.innerHTML = biblioDiv.innerHTML;
-          }
-          popup.appendChild(citeDiv);
-        });
-        return popup.innerHTML;
-      });
-    }
-  }
 });
 </script>
 </div> <!-- /content -->

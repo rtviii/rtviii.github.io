@@ -99,7 +99,9 @@ document.addEventListener("DOMContentLoaded", function () {
     expandTargetIfCollapsed();
     installScrollSpy();
     wireAsideToggles();
+    installSidenotes();
     installDefStack();
+    installConceptMapHover();
   }
 
   // Post pages outside the mmcif series still need the appendix alignment
@@ -713,6 +715,74 @@ function wireAsideToggles() {
         toggle();
       }
     });
+  });
+}
+
+/* -----------------------------------------------------------------------------
+ * .sidenote — secondary / elaboration content kept out of the main column.
+ *
+ * Markdown shape (placed immediately AFTER the "meat" it elaborates):
+ *   Some load-bearing sentence[]{.sn-anchor} that carries the format.
+ *
+ *   ::: {.sidenote}
+ *   The elaboration, example, or aside that used to clutter the main text.
+ *   :::
+ *
+ * Rendered as an in-flow Tufte-style margin note: the block stays in the
+ * document and scrolls with the text (never pinned, never a popover). All
+ * placement is pure CSS — on wide viewports the `.sidenote` floats into the
+ * right gap and stacks via `clear: right`; on narrower viewports it falls back
+ * to an in-flow indented block in the column. Always visible either way.
+ *
+ * The only thing JS does here is drop a small "+" anchor cue at the meat the
+ * note elaborates (an explicit `.sn-anchor` span if present, otherwise the end
+ * of the preceding block) so the reader can tie note to sentence. The marker is
+ * a "+" rather than a number so it is never confused with citation marks.
+ * ---------------------------------------------------------------------------*/
+function installSidenotes() {
+  var article = getArticleRoot();
+  if (!article) return;
+
+  article.querySelectorAll(".sidenote").forEach(function (note) {
+    if (note.dataset.wired === "1") return;
+    note.dataset.wired = "1";
+
+    var marker = document.createElement("sup");
+    marker.className = "sidenote-marker";
+    marker.setAttribute("aria-hidden", "true");
+
+    // Anchor: an explicit .sn-anchor in the previous block, else its end.
+    var prev = note.previousElementSibling;
+    var anchor = (prev && prev.querySelector) ? prev.querySelector(".sn-anchor") : null;
+    if (anchor) anchor.appendChild(marker);
+    else if (prev) prev.appendChild(marker);
+    // If there's no preceding block the note simply renders without a marker.
+  });
+}
+
+/* -----------------------------------------------------------------------------
+ * Concept-map hover. The chapter nav carries a "Concept map" link
+ * (.nav-concept-map); on hover it shows the static render of the Duino concept
+ * map (data/concept-map.svg) in a popover, so the orientation map is reachable
+ * from every page in the series. Clicking the link still opens the full page.
+ * ---------------------------------------------------------------------------*/
+function installConceptMapHover() {
+  if (typeof tippy !== "function") return;
+  var link = document.querySelector(".post-glossary a.nav-concept-map");
+  if (!link) return;
+  tippy(link, {
+    content:
+      '<div class="concept-map-pop">' +
+      '<img src="/posts/mmcif/data/concept-map.svg" alt="Duino concept map" loading="lazy">' +
+      '</div>',
+    allowHTML: true,
+    theme: "light-border",
+    placement: "right",
+    interactive: true,
+    interactiveBorder: 20,
+    maxWidth: 600,
+    appendTo: document.body,
+    delay: [120, 200]
   });
 }
 
