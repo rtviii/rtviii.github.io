@@ -2,6 +2,7 @@
   {
     "listing": "/blog.html",
     "items": [
+      "/posts/mmcif-primer/index.html",
       "/posts/mmcif/index.html",
       "/posts/npet-poisson-recon/index.html"
     ]

@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.54">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Appendix: four graded cases, three ways – артём</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<link href="../.././img/BTNBlink.webp" rel="icon">
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="../../scripts.js"></script>
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/tippy.js@6"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Serif:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+
+
+<link rel="stylesheet" href="../../styles/custom.css">
+<link rel="stylesheet" href="../../styles/scrollbar-fix.css">
+<link rel="stylesheet" href="../../styles/listing.css">
+<link rel="stylesheet" href="../../styles/homepage.css">
+</head>
+
+<body>
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-layout-custom">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+<!-- main -->
+
+<header id="title-block-header">
+<h1 class="title display-7">Appendix: four graded cases, three ways</h1>
+
+</header>
+
+
+<div class="grid homepage-container">
+<div class="g-col-12 g-col-md-3 left-column">
+<p><a href="../.."><img src="../../img/signature.png" class="signature img-fluid"></a></p>
+<div class="post-nav">
+<div class="post-glossary">
+<ul>
+<li><a href="../../posts/mmcif/index.html">Overview</a></li>
+<li>Concept map</li>
+</ul>
+<p><span class="post-nav-group">Core</span></p>
+<ul>
+<li><a href="../../posts/mmcif/02-architecture.html">Layout — Track A</a></li>
+<li><a href="../../posts/mmcif/forward-operators.html">Forward operators — Track B</a></li>
+<li><a href="../../posts/mmcif/03-evaluation-model.html">Evaluation model</a></li>
+</ul>
+<p><span class="post-nav-group">Prerequisite</span></p>
+<ul>
+<li><a href="../../posts/mmcif/primer.html">Primer</a></li>
+<li><a href="../../posts/glossary/index.html">Glossary</a></li>
+<li><a href="../../posts/mmcif/references.html">References</a></li>
+</ul>
+<p><span class="post-nav-group">Secondary</span></p>
+<ul>
+<li><a href="../../posts/mmcif/01-problems.html">Problems with mmCIF</a></li>
+<li><a href="../../posts/mmcif/04-annotations-and-engine.html">Annotations &amp; the artifact engine</a></li>
+<li><a href="../../posts/mmcif/04b-technology-survey.html">Technology survey</a></li>
+<li><a href="../../posts/mmcif/05-open-questions.html">Open questions</a></li>
+<li><a href="../../posts/mmcif/08-ml-native.html">ML-native access patterns</a></li>
+<li><a href="../../posts/mmcif/06-black-box-data.html">Appendix: black-box data</a></li>
+<li><a href="../../posts/mmcif/07-modularity-examples.html">Appendix: modularity examples</a></li>
+</ul>
+</div>
+<div class="post-sections">
+
+</div>
+</div>
+</div>
+<section id="section" class="level1 g-col-12 g-col-md-9 right-column">
+<h1>Appendix: four graded cases, three ways</h1>
+<p>Four cases of growing difficulty — single residue, a two-residue network, a nested compositional/conformational pocket, and a multi-chain metal site. Each is read three ways: what the current format can and cannot do (and what is lost), how the heterogeneity-categories proposal <span class="citation" data-cites="wankowicz2024encoding"><a href="references.html#ref-wankowicz2024encoding" role="doc-biblioref">1</a></span> would handle it, and the residue-range simplification favoured by the refinement side, with its limits. The baseline format these build on is covered separately in the <a href="../../posts/mmcif/mmcif-basics.html">mmCIF basics primer</a>. Cases A–C are invented to isolate one effect each; case D is anchored on a real entry.</p>
+<section id="sec-grade-conventions" class="level2">
+<h2 data-anchor-id="sec-grade-conventions">Conventions used across these examples</h2>
+<p>So the three encodings can be compared line for line, the same column names and state names are used in every case.</p>
+<p><em>Current mmCIF</em> uses the standard <code>atom_site</code> columns, shown as <code>atom comp [chain] seq alt occ</code> — that is, <code>label_atom_id</code>, <code>label_comp_id</code>, an optional <code>auth_asym_id</code>, <code>label_seq_id</code>, <code>label_alt_id</code>, and <code>occupancy</code>.</p>
+<p><em>Stephanie’s proposal</em> adds one per-atom column, <code>_atom_site.pdbx_heterogeneity_id</code> (a state name), and two loops: <code>_pdbx_heterogeneity_hierarchy</code> with <code>.id .parent .details</code> (the state tree), and <code>_pdbx_state_coexistence</code> with <code>.rule .heterogeneity_id .heterogeneity_ids</code> (only <code>NOT</code> rows carry information — <code>AND</code> is the hierarchy and <code>OR</code> is the default).</p>
+<p><em>Martin’s proposal</em> touches <code>atom_site</code> not at all — it reuses <code>label_alt_id</code> — and adds <code>_pdbx_alt_groups</code> with <code>.alt_group_id .auth_asym_id .auth_seq_id_start .auth_seq_id_end .label_alt_id</code> (which atoms are in each state, by residue range), plus <code>_pdbx_heterogeneity_hierarchy</code> with <code>.alt_group_id .coexistence_group_id .parent_alt_groups_id</code> (the nesting, and which mutually-exclusive set each state belongs to).</p>
+<p>State names are shared between the two proposals so the rows line up: <code>base</code> is the always-present root; the rest are named by meaning (<code>apo</code>, <code>bound</code>, <code>lig_a</code>, <code>net_1</code>, <code>sphere_a</code>, …); and a coexistence-group name (<code>protein_state</code>, <code>ligand_pose</code>, <code>coord_sphere</code>, …) labels each set of mutually-exclusive alternatives.</p>
+</section>
+<section id="sec-grade-a" class="level2">
+<h2 data-anchor-id="sec-grade-a">A · One residue, two rotamers</h2>
+<p>An aspartate side chain in two positions, 60/40.</p>
+<div id="fig-grade-a" class="quarto-float quarto-figure quarto-figure-center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-grade-a-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<svg viewbox="0 0 280 96" width="300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Aspartate side chain in two alternate positions, 60 and 40 percent">
+<rect x="20" y="72" width="240" height="7" rx="3" fill="#9ca3af" opacity="0.4"></rect> <line x1="140" y1="72" x2="140" y2="44" stroke="#9ca3af" stroke-width="1.5"></line> <circle cx="126" cy="36" r="11" fill="#2563eb"></circle> <circle cx="160" cy="40" r="8" fill="#d97706"></circle> <text x="140" y="92" text-anchor="middle" font-size="10.5" fill="#4b5563">Asp30 · A 60% / B 40%</text>
+</svg>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-grade-a-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: <strong>The baseline the format already handles.</strong>
+</figcaption>
+</figure>
+</div>
+<p><em>Current mmCIF.</em> Fully handled.</p>
+<pre><code># atom comp seq alt  occ
+OD1  ASP  30  A   0.60
+OD1  ASP  30  B   0.40</code></pre>
+<p>Two altloc rows, occupancies sum to 1.0 within the residue, and the side chain’s two positions are unambiguous because everything that relates them lives in one residue. Nothing is lost.</p>
+<p><em>Stephanie’s proposal.</em> The altloc would move into a <code>pdbx_heterogeneity_id</code> (two states, <code>a</code> and <code>b</code>, both children of <code>base</code>). With a single residue there is no network and no nesting, so no hierarchy or coexistence rows are needed — the new categories are opt-in and only earn their keep when a relationship spans residues.</p>
+<p><em>Martin’s simplification.</em> Nothing to add; the standard altlocs already express this, and no <code>_pdbx_alt_groups</code> row is needed. Its limit here is none, because there is no cross-residue relationship to lose.</p>
+</section>
+<section id="sec-grade-b" class="level2">
+<h2 data-anchor-id="sec-grade-b">B · A correlated network across two residues</h2>
+<p>Asp30 and His88, distant but hydrogen-bonded, flip together: state <code>net_1</code> is both in rotamer 1, state <code>net_2</code> is both in rotamer 2, 50/50.</p>
+<div id="fig-grade-b" class="quarto-float quarto-figure quarto-figure-center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-grade-b-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<svg viewbox="0 0 280 104" width="300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two residues, each in two alternate positions, linked as one network">
+<rect x="20" y="78" width="240" height="7" rx="3" fill="#9ca3af" opacity="0.4"></rect> <line x1="78" y1="78" x2="78" y2="48" stroke="#9ca3af" stroke-width="1.5"></line> <circle cx="64" cy="40" r="9" fill="#2563eb"></circle> <circle cx="92" cy="40" r="9" fill="#d97706"></circle> <text x="78" y="98" text-anchor="middle" font-size="10.5" fill="#4b5563">Asp30</text> <line x1="202" y1="78" x2="202" y2="48" stroke="#9ca3af" stroke-width="1.5"></line> <circle cx="188" cy="40" r="9" fill="#2563eb"></circle> <circle cx="216" cy="40" r="9" fill="#d97706"></circle> <text x="202" y="98" text-anchor="middle" font-size="10.5" fill="#4b5563">His88</text> <path d="M64 30 Q140 8 188 30" fill="none" stroke="#2563eb" stroke-width="1" stroke-dasharray="3 3" opacity="0.7"></path> <path d="M92 31 Q140 16 216 31" fill="none" stroke="#d97706" stroke-width="1" stroke-dasharray="3 3" opacity="0.7"></path>
+</svg>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-grade-b-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: <strong>The dashed links are the fact the format can’t state.</strong>
+</figcaption>
+</figure>
+</div>
+<p><em>Current mmCIF.</em> Can place both residues’ alternates; cannot state they form one network.</p>
+<pre><code># atom comp seq alt  occ
+CG   ASP  30  A   0.50
+CG   ASP  30  B   0.50
+NE2  HIS  88  A   0.50
+NE2  HIS  88  B   0.50</code></pre>
+<p>That Asp30-A goes with His88-A is implied only by the shared letter — convention, not a stated fact. The coupling is realised during refinement (grouped occupancy) and discarded on deposition. What is lost is the explicit network, and the convention is fragile: introduce a third nearby residue with one or three alternates and the letter mapping no longer lines up.</p>
+<p><em>Stephanie’s proposal.</em> Give both residues the same <code>pdbx_heterogeneity_id</code> per state, both children of <code>base</code>, with a <code>NOT</code> row to make them exclusive.</p>
+<pre><code>_pdbx_heterogeneity_hierarchy
+ id     parent  details
+ base   .       core
+ net_1  base    rotamer network, position 1
+ net_2  base    rotamer network, position 2
+
+_pdbx_state_coexistence
+ rule  heterogeneity_id  heterogeneity_ids
+ NOT   net_1             net_2
+
+# atom_site.pdbx_heterogeneity_id: Asp30 and His88 atoms tagged net_1 / net_2</code></pre>
+<p>Co-occurrence is now written down rather than inferred: one state name spans both residues.</p>
+<p><em>Martin’s simplification.</em> Define the network in <code>_pdbx_alt_groups</code> by residue range plus altloc, touching nothing in <code>atom_site</code>.</p>
+<pre><code>_pdbx_alt_groups
+ alt_group_id  auth_asym_id  auth_seq_id_start  auth_seq_id_end  label_alt_id
+ net_1         A             30                 30               A
+ net_1         A             88                 88               A
+ net_2         A             30                 30               B
+ net_2         A             88                 88               B</code></pre>
+<p>It reuses the altloc letters and maps cleanly onto existing occupancy-group refinement. Its limit is granularity: because membership is keyed by residue, it cannot put two atoms of the same residue and altloc into different networks — the backbone-amide-versus-side-chain split needs an atom-level escape hatch.</p>
+</section>
+<section id="sec-grade-c" class="level2">
+<h2 data-anchor-id="sec-grade-c">C · Compositional and conformational, with nesting</h2>
+<p>Apo (70%) versus bound (30%); a gate residue opens only when bound; the bound ligand has two poses (0.20 and 0.10).</p>
+<div id="fig-grade-c" class="quarto-float quarto-figure quarto-figure-center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-grade-c-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<svg viewbox="0 0 280 112" width="300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A gate residue with two alternates and a ligand present at 30 percent in two poses">
+<rect x="20" y="86" width="240" height="7" rx="3" fill="#9ca3af" opacity="0.4"></rect> <line x1="96" y1="86" x2="96" y2="52" stroke="#9ca3af" stroke-width="1.5"></line> <circle cx="82" cy="44" r="6" fill="#2563eb"></circle> <circle cx="108" cy="42" r="10" fill="#d97706"></circle> <text x="96" y="106" text-anchor="middle" font-size="10" fill="#4b5563">Tyr120 open/closed</text> <rect x="170" y="30" width="42" height="24" rx="7" fill="#dc2626" fill-opacity="0.16" stroke="#dc2626" stroke-width="1.4"></rect> <rect x="186" y="40" width="42" height="24" rx="7" fill="none" stroke="#dc2626" stroke-width="1.2" stroke-dasharray="3 3" opacity="0.6"></rect> <text x="200" y="106" text-anchor="middle" font-size="10" fill="#4b5563">ligand A / B (30%)</text>
+</svg>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-grade-c-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: <strong>Nesting and the absent state are the two new demands.</strong>
+</figcaption>
+</figure>
+</div>
+<p><em>Current mmCIF.</em> Places the gate alternates and ligand poses with partial occupancy; cannot express the relationships among them.</p>
+<pre><code># atom comp seq alt  occ
+OH   TYR  120 A   0.30   # gate open  (bound)
+OH   TYR  120 B   0.70   # gate closed (apo)
+.    LIG  301 A   0.20
+.    LIG  301 B   0.10</code></pre>
+<p>Nothing states that the two ligand poses sum to the bound occupancy (nesting), that the closed gate goes with the absent ligand (coupling), or that apo and bound are the two global frames. The absent 70% of the ligand has no row at all, so there is nowhere to attach the coupling. All of it lives in the refinement script and none survives deposition.</p>
+<p><em>Stephanie’s proposal.</em> A hierarchy with nested occupancy and exclusions.</p>
+<pre><code>_pdbx_heterogeneity_hierarchy
+ id     parent  details
+ base   .       core
+ apo    base    apo, gate closed
+ bound  base    holo, gate open
+ lig_a  bound   ligand pose A
+ lig_b  bound   ligand pose B
+
+_pdbx_state_coexistence
+ rule  heterogeneity_id  heterogeneity_ids
+ NOT   apo               bound
+ NOT   lig_a             lig_b
+
+# occupancy:  apo + bound = 1 ;  lig_a + lig_b = occ(bound)</code></pre>
+<p>The absent ligand finally has a home — the named <code>apo</code> node — and the closed gate attaches to it; cardinality is handled by nesting rather than by matching letters.</p>
+<p><em>Martin’s simplification.</em> The same nesting via membership (<code>_pdbx_alt_groups</code>) plus a hierarchy loop carrying a coexistence-group and a parent; the separate coexistence table is empty here.</p>
+<pre><code>_pdbx_alt_groups   # apo / bound / lig_a / lig_b, each by residue range + altloc
+
+_pdbx_heterogeneity_hierarchy
+ alt_group_id  coexistence_group_id  parent_alt_groups_id
+ apo           protein_state         .
+ bound         protein_state         .
+ lig_a         ligand_pose           bound
+ lig_b         ligand_pose           bound</code></pre>
+<p>Because siblings in a coexistence-group exclude each other implicitly and exclusion inherits to descendants, the <code>NOT</code> table collapses to nothing. Its limits: the ligand-absent fact is still only implicit (the <code>apo</code> state is carried by the protein group, not a ligand row), and expressing many nested layers through a flat group-plus-parent table becomes unwieldy.</p>
+</section>
+<section id="sec-grade-d" class="level2">
+<h2 data-anchor-id="sec-grade-d">D · Multi-chain metal coordination with alternates</h2>
+<p>A calcium ion at a two-chain interface, coordinated by acidic residues from both chains, each modelled in four alternates (A–D). PDB entry 5E1N is the real anchor: its calcium-binding loops carry exactly this four-altloc heterogeneity, with the coordination recorded as altloc-specific <code>metalc</code> bonds (REAL; verified from the deposited file — e.g.&nbsp;Thr26 carbonyl O in altlocs A–D coordinating <code>CA 203</code> at 2.33/2.45/2.65/2.10 Å).</p>
+<div id="fig-grade-d" class="quarto-float quarto-figure quarto-figure-center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-grade-d-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<svg viewbox="0 0 280 128" width="300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A calcium ion between two chains, coordinated by residues each in four alternate positions">
+<rect x="18" y="20" width="244" height="7" rx="3" fill="#9ca3af" opacity="0.45"></rect> <text x="20" y="16" font-size="9.5" fill="#9ca3af">chain A</text> <rect x="18" y="104" width="244" height="7" rx="3" fill="#9ca3af" opacity="0.25"></rect> <text x="20" y="124" font-size="9.5" fill="#9ca3af">chain B</text> <circle cx="140" cy="64" r="11" fill="#dc2626"></circle> <text x="140" y="67" text-anchor="middle" font-size="9" fill="#fff">Ca</text> <g stroke="#9ca3af" stroke-width="0.8" opacity="0.6"> <line x1="86" y1="33" x2="132" y2="58"></line><line x1="196" y1="33" x2="149" y2="58"></line><line x1="108" y1="98" x2="133" y2="72"></line> </g> <circle cx="80" cy="33" r="5" fill="#2563eb"></circle><circle cx="90" cy="35" r="4" fill="#d97706"></circle><circle cx="86" cy="27" r="4" fill="#059669"></circle><circle cx="96" cy="29" r="4" fill="#7c3aed"></circle> <text x="84" y="49" text-anchor="middle" font-size="9" fill="#4b5563">Asp20·A–D</text> <circle cx="192" cy="33" r="5" fill="#2563eb"></circle><circle cx="202" cy="35" r="4" fill="#d97706"></circle><circle cx="198" cy="27" r="4" fill="#059669"></circle><circle cx="208" cy="29" r="4" fill="#7c3aed"></circle> <text x="198" y="49" text-anchor="middle" font-size="9" fill="#4b5563">Glu31·A–D</text> <circle cx="104" cy="98" r="5" fill="#2563eb"></circle><circle cx="114" cy="96" r="4" fill="#d97706"></circle><circle cx="110" cy="104" r="4" fill="#059669"></circle><circle cx="120" cy="100" r="4" fill="#7c3aed"></circle> <text x="110" y="118" text-anchor="middle" font-size="9" fill="#4b5563">Asp55(B)·A–D</text>
+</svg>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-grade-d-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: <strong>A coordination sphere that spans chains and includes the metal.</strong>
+</figcaption>
+</figure>
+</div>
+<p><em>Current mmCIF.</em> The coordinating residues carry altlocs A–D across both chains, and <code>struct_conn</code> <code>metalc</code> records are altloc-specific (each bond names <code>ptnr1_label_alt_id</code>), so the per-alternate coordination distances are captured — real, and present in 5E1N.</p>
+<pre><code># atom comp chain seq alt    occ
+OD1  ASP  A     20  A..D   ...    # chain A, four alternates
+OE1  GLU  A     31  A..D   ...    # chain A
+OD1  ASP  B     55  A..D   ...    # chain B
+CA   CA   .     201 .      1.00   # the metal: one position
+# struct_conn metalc: ASP20.A-CA, ASP20.B-CA, ...  (one bond per altloc)</code></pre>
+<p>What it cannot do: state which cross-chain combination (chain-A altA + chain-B altA + a metal position) is one physical coordination sphere; and the metal is usually one full-occupancy atom even though its ligands have four alternates, so the letter convention silently pairs a single metal with four alternative spheres. Lost: the cross-chain network identity and the metal-position coupling — the consistent spheres cannot be enumerated from the file.</p>
+<p><em>Stephanie’s proposal.</em> A heterogeneity state spans chains and the metal, so the coordination set is one named object.</p>
+<pre><code>_pdbx_heterogeneity_hierarchy
+ id        parent  details
+ base      .       core (both chains)
+ sphere_a  base    coordination set A
+ sphere_b  base    coordination set B
+
+_pdbx_state_coexistence
+ rule  heterogeneity_id  heterogeneity_ids
+ NOT   sphere_a          sphere_b
+
+# atom_site.pdbx_heterogeneity_id: chnA Asp20, chnA Glu31, chnB Asp55, and CA
+#                                  -&gt; tagged sphere_a / sphere_b</code></pre>
+<p>If metal binding itself nests (present, then arrangement), the hierarchy carries that too.</p>
+<p><em>Martin’s simplification.</em> <code>_pdbx_alt_groups</code> already carries <code>auth_asym_id</code>, so a network can span chains directly.</p>
+<pre><code>_pdbx_alt_groups
+ alt_group_id  auth_asym_id  auth_seq_id_start  auth_seq_id_end  label_alt_id
+ sphere_a      A             20                 20               A
+ sphere_a      A             31                 31               A
+ sphere_a      B             55                 55               A
+ sphere_a      B             201                201              A    # the metal</code></pre>
+<p>Its limits cluster at exactly this case: the metal must be split into altlocs to join a group (it currently has one position); the coordination bonds remain in <code>struct_conn</code>, so the membership loop and the <code>struct_conn</code> altlocs must be kept consistent by hand; and branchy coordination is where “is a single <code>NOT</code> enough?” is genuinely stress-tested — several geometric exclusions may need several edges.</p>
+</section>
+<section id="reading-the-progression" class="level2">
+<h2 data-anchor-id="reading-the-progression">Reading the progression</h2>
+<p>The threshold is case B. At A the current format is complete and both proposals add nothing. From B onward the missing fact is always the same — which alternates across the structure co-occur — and the two proposals trade off the same way: Stephanie’s puts an explicit <code>pdbx_heterogeneity_id</code> on every atom (most expressive, heaviest for software), Martin’s defines states by residue range in <code>_pdbx_alt_groups</code> and reuses the altloc letters (lightest for software, blind inside a residue and to the metal’s single position). Case D is where both meet the real frontier: multi-chain works in both because the grouping loops carry <code>auth_asym_id</code>, but coordination forces the metal and the bond records into the same consistency problem the letter convention was hiding all along.</p>
+</section>
+</section>
+</div>
+
+
+
+
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/rtviii\.xyz");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

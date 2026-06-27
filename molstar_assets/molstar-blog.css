@@ -1,0 +1,158 @@
+/* molstar-blog.css — viewer container + residue-context card.
+   Kept out of the site's global styles/custom.css; loaded only on pages that
+   embed a viewer. */
+
+/* Viewer container --------------------------------------------------------- */
+.msb-embed { margin: 1.5rem 0; }
+
+.msb-viewer {
+  position: relative;            /* Mol* fills a positioned parent with a height */
+  width: 100%;
+  height: 480px;
+  overflow: hidden;
+  background: transparent;       /* the canvas paints the page colour; no border */
+}
+
+.msb-viewer-caption {
+  margin: 6px 2px 0;
+  font-size: 12.5px;
+  color: #6b7280;
+}
+
+/* Residue context card ----------------------------------------------------- */
+.msb-residue-card {
+  position: fixed;
+  z-index: 9999;
+  min-width: 210px;
+  max-width: 260px;
+  font: 12.5px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  color: #1f2937;
+  background: rgba(255, 255, 255, 0.97);
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.14);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  user-select: none;
+}
+
+.msb-rc-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border-bottom: 1px solid #eef0f2;
+}
+.msb-rc-id {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-weight: 600;
+  color: #059669;
+}
+.msb-rc-chain { color: #6b7280; font-size: 11.5px; }
+.msb-rc-close {
+  margin-left: auto;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  color: #9ca3af;
+  padding: 0 2px;
+}
+.msb-rc-close:hover { color: #374151; }
+
+.msb-rc-body { padding: 8px 10px 10px; }
+
+.msb-rc-alts-label {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #9ca3af;
+  margin-bottom: 4px;
+}
+.msb-rc-single { font-size: 12px; color: #6b7280; }
+
+.msb-rc-alt { display: flex; align-items: center; gap: 7px; margin: 3px 0; }
+.msb-rc-altid {
+  font-family: ui-monospace, Menlo, monospace;
+  font-weight: 600;
+  width: 16px;
+  text-align: center;
+  color: #2563eb;
+}
+.msb-rc-bar {
+  flex: 1;
+  height: 7px;
+  background: #eef0f2;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.msb-rc-bar-fill { display: block; height: 100%; background: #2563eb; }
+.msb-rc-occ {
+  font-family: ui-monospace, Menlo, monospace;
+  color: #4b5563;
+  width: 30px;
+  text-align: right;
+}
+
+.msb-rc-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2px 10px;
+  margin: 8px 0 0;
+  padding-top: 8px;
+  border-top: 1px solid #eef0f2;
+}
+.msb-rc-grid dt { color: #9ca3af; }
+.msb-rc-grid dd {
+  margin: 0;
+  font-family: ui-monospace, Menlo, monospace;
+  color: #374151;
+  text-align: right;
+}
+
+/* mmCIF explorer (side-by-side file <-> structure) ------------------------- */
+.msb-split { display: flex; gap: 14px; align-items: stretch; }
+.msb-split .msb-cif { flex: 0 0 44%; max-width: 44%; }
+.msb-split .msb-viewer-wrap { flex: 1 1 auto; min-width: 0; }
+@media (max-width: 760px) {
+  .msb-split { flex-direction: column; }
+  .msb-split .msb-cif { flex-basis: 260px; max-width: 100%; }
+}
+
+.msb-cif {
+  height: 480px;
+  overflow: auto;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  background: #fff;
+  font: 11.5px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: #374151;
+}
+.msb-cif-head,
+.msb-cif-chain {
+  position: sticky;
+  z-index: 1;
+  white-space: pre;
+  background: #f0f3f6;
+}
+.msb-cif-head { top: 0; color: #9ca3af; padding: 4px 8px; border-bottom: 1px solid #e5e7eb; }
+.msb-cif-chain { top: 25px; padding: 4px 8px; font-weight: 600; color: #111827; }
+.msb-cif-res { padding: 2px 8px 2px 14px; color: #2563eb; }
+.msb-cif-atom { padding: 0 8px 0 22px; white-space: pre; }
+.msb-cif-chain:hover, .msb-cif-res:hover, .msb-cif-atom:hover { background: #eaf3ff; }
+
+.msb-3dlabel {
+  position: fixed;
+  z-index: 9998;
+  transform: translate(-50%, -135%);
+  background: rgba(37, 99, 235, 0.95);
+  color: #fff;
+  font: 600 11px/1.2 ui-monospace, Menlo, monospace;
+  padding: 3px 7px;
+  border-radius: 5px;
+  pointer-events: none;
+  white-space: nowrap;
+  display: none;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.25);
+}

@@ -116,7 +116,6 @@ window.Quarto = {
 <div class="post-glossary">
 <ul>
 <li><a href="../../posts/mmcif/index.html">Overview</a></li>
-<li>Concept map</li>
 </ul>
 <p><span class="post-nav-group">Core</span></p>
 <ul>
@@ -124,21 +123,16 @@ window.Quarto = {
 <li><a href="../../posts/mmcif/forward-operators.html">Forward operators — Track B</a></li>
 <li><a href="../../posts/mmcif/03-evaluation-model.html">Evaluation model</a></li>
 </ul>
-<p><span class="post-nav-group">Prerequisite</span></p>
-<ul>
-<li><a href="../../posts/mmcif/primer.html">Primer</a></li>
-<li><a href="../../posts/glossary/index.html">Glossary</a></li>
-<li><a href="../../posts/mmcif/references.html">References</a></li>
-</ul>
 <p><span class="post-nav-group">Secondary</span></p>
 <ul>
-<li><a href="../../posts/mmcif/01-problems.html">Problems with mmCIF</a></li>
-<li><a href="../../posts/mmcif/04-annotations-and-engine.html">Annotations &amp; the artifact engine</a></li>
-<li><a href="../../posts/mmcif/04b-technology-survey.html">Technology survey</a></li>
-<li><a href="../../posts/mmcif/05-open-questions.html">Open questions</a></li>
-<li><a href="../../posts/mmcif/08-ml-native.html">ML-native access patterns</a></li>
-<li><a href="../../posts/mmcif/06-black-box-data.html">Appendix: black-box data</a></li>
-<li><a href="../../posts/mmcif/07-modularity-examples.html">Appendix: modularity examples</a></li>
+<li><p><a href="../../posts/mmcif/01-problems.html">Problems with mmCIF</a></p></li>
+<li><p><a href="../../posts/mmcif/04-annotations-and-engine.html">Annotations &amp; the artifact engine</a></p></li>
+<li><p><a href="../../posts/mmcif/04b-technology-survey.html">Technology survey</a></p></li>
+<li><p><a href="../../posts/mmcif/05-open-questions.html">Open questions</a></p></li>
+<li><p><a href="../../posts/mmcif/08-ml-native.html">ML-native access patterns</a></p></li>
+<li><p><a href="../../posts/mmcif/06-black-box-data.html">Appendix: black-box data</a></p></li>
+<li><p><a href="../../posts/mmcif/07-modularity-examples.html">Appendix: modularity examples</a></p></li>
+<li><p><a href="../../posts/mmcif/references.html">References</a></p></li>
 </ul>
 </div>
 <div class="post-sections">
@@ -149,7 +143,7 @@ window.Quarto = {
 <section id="section" class="level1 g-col-12 g-col-md-9 right-column">
 <h1>Layout</h1>
 <p>The problem with forcing heterogeneous molecular data into a single abstraction is that the data actually contains several distinct kinds of structure, each with different algebra and different storage requirements. Conflating them will produce a format that handles each badly.</p>
-<p>Let’s split this into two halves roughly: the core layer and the ensembling layer. The <a href="../../posts/glossary/index.html#gloss-core-ensemble"><strong>core layer</strong></a> describes the “what”, the primary physical components of the system and their functional groupings. The <strong>ensembling layers</strong> describe what distinct states characterize these primitive (if any) and how these states differ from each other. The core is stable under heterogeneity; the ensemble layers are the ones that earn the format its keep for modern use cases.</p>
+<p>Let’s split this into two halves roughly: the core layer and the ensembling layer. The <a href="../glossary/index.qmd#gloss-core-ensemble"><strong>core layer</strong></a> describes the “what”, the primary physical components of the system and their functional groupings. The <strong>ensembling layers</strong> describe what distinct states characterize these primitive (if any) and how these states differ from each other. The core is stable under heterogeneity; the ensemble layers are the ones that earn the format its keep for modern use cases.</p>
 <p>For ease of addressing these concepts, let’s name these layers thusly:</p>
 <ul>
 <li><strong>Core: Hierarchy</strong> – the primary physical data (tree): which atom is in which residue, which residue is in which chain, and so on. The vanilla cif mental model.</li>
@@ -216,8 +210,8 @@ mapping/tls_groups_as_refined:
 </section>
 <section id="ensemble-layers" class="level2">
 <h2 data-anchor-id="ensemble-layers">2.2 Ensemble layers</h2>
-<p>The ensemble layers describe how the system varies across the states the data captures, and how those variations are physically laid out in storage. Heterogeneity is the abstract description of variation; <a href="../../posts/glossary/index.html#gloss-materialization-mode"><strong>Materialization</strong></a> is the storage strategy. They are separated because the same abstract description can be stored several ways depending on ensemble size, access pattern, and whether the data came from a method that produces samples, parameters, or a trajectory.</p>
-<p>The bridge between the core and the ensemble layers is <a href="../../posts/glossary/index.html#gloss-scope"><strong>scope</strong></a> – the same grouping primitive from §2.1.2, used here to declare which atoms or hierarchy nodes a heterogeneity descriptor binds to.</p>
+<p>The ensemble layers describe how the system varies across the states the data captures, and how those variations are physically laid out in storage. Heterogeneity is the abstract description of variation; <a href="../glossary/index.qmd#gloss-materialization-mode"><strong>Materialization</strong></a> is the storage strategy. They are separated because the same abstract description can be stored several ways depending on ensemble size, access pattern, and whether the data came from a method that produces samples, parameters, or a trajectory.</p>
+<p>The bridge between the core and the ensemble layers is <a href="../glossary/index.qmd#gloss-scope"><strong>scope</strong></a> – the same grouping primitive from §2.1.2, used here to declare which atoms or hierarchy nodes a heterogeneity descriptor binds to.</p>
 <p>Every heterogeneity descriptor attaches to exactly one scope, and a heterogeneity descriptor is itself a typed grouping (<code>kind: heterogeneity_descriptor.scope</code>) carrying an operator-reference attachment and a composition-rule tag. A B-factor is atom-scoped; a TLS descriptor is scoped to a partition declared in Groupings; a cryoDRGN latent is scoped to the whole assembly. The scope plus the attachments together are what make the descriptor legible to composition (chapter 3) – the mechanism by which “what varies at chain level” and “what varies at residue level” can coexist in the same deposition without stepping on each other.</p>
 <p>Concretely, the scope DAG for a small kinase deposition with one bound inhibitor looks like this:</p>
 <pre><code>nodes (scope, state):
@@ -236,7 +230,7 @@ edges:
 <section id="heterogeneity" class="level3">
 <h3 data-anchor-id="heterogeneity">2.2.1 Heterogeneity</h3>
 <p>The Heterogeneity layer describes how the system varies – both the geometric variation that matters for function and the thermodynamic variation that carries free-energy content single structures discard <span class="citation" data-cites="wankowicz2025entropy lane2023frontier"><a href="references.html#ref-wankowicz2025entropy" role="doc-biblioref">12</a>,<a href="references.html#ref-lane2023frontier" role="doc-biblioref">7</a></span>. This is the hardest layer to design because the right abstraction depends entirely on what kind of variation is being described, and different experimental and computational methods produce fundamentally different kinds of variation. Forcing them all into a single formalism – a list of discrete states, a continuous latent space, a trajectory – will produce something that handles each case awkwardly.</p>
-<p>We distinguish three <a href="../../posts/glossary/index.html#gloss-regime"><strong>heterogeneity regimes</strong></a>, because each has a different natural representation and the transitions between them are meaningful design boundaries. Orthogonal to the regime axis is scope: every heterogeneity descriptor attaches to a level of the Hierarchy tree (§2.1.1) or a grouping in Groupings (§2.1.2). A B-factor is atom-scoped; a TLS group or ECHT hierarchical disorder component <span class="citation" data-cites="ploscariu2021ensemble"><a href="references.html#ref-ploscariu2021ensemble" role="doc-biblioref">5</a></span> is scoped to a Groupings entry; the compositional/conformational nesting proposed by <span class="citation" data-cites="wankowicz2024encoding"><a href="references.html#ref-wankowicz2024encoding" role="doc-biblioref">1</a></span> is entity-instance scope containing residue-range scope. Both axes are features of the format.</p>
+<p>We distinguish three <a href="../glossary/index.qmd#gloss-regime"><strong>heterogeneity regimes</strong></a>, because each has a different natural representation and the transitions between them are meaningful design boundaries. Orthogonal to the regime axis is scope: every heterogeneity descriptor attaches to a level of the Hierarchy tree (§2.1.1) or a grouping in Groupings (§2.1.2). A B-factor is atom-scoped; a TLS group or ECHT hierarchical disorder component <span class="citation" data-cites="ploscariu2021ensemble"><a href="references.html#ref-ploscariu2021ensemble" role="doc-biblioref">5</a></span> is scoped to a Groupings entry; the compositional/conformational nesting proposed by <span class="citation" data-cites="wankowicz2024encoding"><a href="references.html#ref-wankowicz2024encoding" role="doc-biblioref">1</a></span> is entity-instance scope containing residue-range scope. Both axes are features of the format.</p>
 <p>When multiple heterogeneity descriptors coexist, their couplings (where they exist at all) form the <strong>scope DAG</strong>: nodes are (scope, state) pairs, and edges encode whether a child-scope state is legal only under some parent-scope state (hierarchical nesting). Chapter 3 walks through how descriptors at different scopes compose through this DAG to produce full coordinates.</p>
 <img src="02-architecture_files/mediabag/4c4319280b809156ed4452507c6a668ef02f23e7.svg" class="img-fluid">
 <p><strong>Heterogeneity Regime 1: Discrete Ensemble.</strong> A finite, enumerable set of conformers – NMR bundles, qFit sidechain ensembles, multi-conformer crystallographic models, short MD-derived state libraries. The right representation is explicit: a state index plus coordinates or coordinate deltas per state, typically scoped to a residue or residue range. The number of states sits in the tens to low hundreds. No cleverness required.</p>

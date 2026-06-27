@@ -116,7 +116,6 @@ window.Quarto = {
 <div class="post-glossary">
 <ul>
 <li><a href="../../posts/mmcif/index.html">Overview</a></li>
-<li>Concept map</li>
 </ul>
 <p><span class="post-nav-group">Core</span></p>
 <ul>
@@ -124,21 +123,16 @@ window.Quarto = {
 <li><a href="../../posts/mmcif/forward-operators.html">Forward operators — Track B</a></li>
 <li><a href="../../posts/mmcif/03-evaluation-model.html">Evaluation model</a></li>
 </ul>
-<p><span class="post-nav-group">Prerequisite</span></p>
-<ul>
-<li><a href="../../posts/mmcif/primer.html">Primer</a></li>
-<li><a href="../../posts/glossary/index.html">Glossary</a></li>
-<li><a href="../../posts/mmcif/references.html">References</a></li>
-</ul>
 <p><span class="post-nav-group">Secondary</span></p>
 <ul>
-<li><a href="../../posts/mmcif/01-problems.html">Problems with mmCIF</a></li>
-<li><a href="../../posts/mmcif/04-annotations-and-engine.html">Annotations &amp; the artifact engine</a></li>
-<li><a href="../../posts/mmcif/04b-technology-survey.html">Technology survey</a></li>
-<li><a href="../../posts/mmcif/05-open-questions.html">Open questions</a></li>
-<li><a href="../../posts/mmcif/08-ml-native.html">ML-native access patterns</a></li>
-<li><a href="../../posts/mmcif/06-black-box-data.html">Appendix: black-box data</a></li>
-<li><a href="../../posts/mmcif/07-modularity-examples.html">Appendix: modularity examples</a></li>
+<li><p><a href="../../posts/mmcif/01-problems.html">Problems with mmCIF</a></p></li>
+<li><p><a href="../../posts/mmcif/04-annotations-and-engine.html">Annotations &amp; the artifact engine</a></p></li>
+<li><p><a href="../../posts/mmcif/04b-technology-survey.html">Technology survey</a></p></li>
+<li><p><a href="../../posts/mmcif/05-open-questions.html">Open questions</a></p></li>
+<li><p><a href="../../posts/mmcif/08-ml-native.html">ML-native access patterns</a></p></li>
+<li><p><a href="../../posts/mmcif/06-black-box-data.html">Appendix: black-box data</a></p></li>
+<li><p><a href="../../posts/mmcif/07-modularity-examples.html">Appendix: modularity examples</a></p></li>
+<li><p><a href="../../posts/mmcif/references.html">References</a></p></li>
 </ul>
 </div>
 <div class="post-sections">
@@ -184,7 +178,7 @@ window.Quarto = {
 <li><p><strong>Spatial neighbor query</strong> – “give me all atoms within 5 angstroms of atom <span class="math inline">\(i\)</span>.” Independent of the file format in principle, but in practice every model rebuilds a k-d tree per structure per training step because the index is not stored. Reducing this to <span class="math inline">\(O(k)\)</span> lookups requires a stored spatial index (R-tree, cell list, or sorted-Hilbert-curve order) co-located with the coordinates and updated atomically with them when the structure mutates.</p></li>
 <li><p><strong>Cross-state slice</strong> – “for descriptor <span class="math inline">\(d\)</span> at scope <span class="math inline">\(s\)</span>, give me its values across every state in the ensemble, without materializing the other descriptors.” This is the access pattern an analysis like “how does the TLS rotation correlate with altloc occupancy” wants. The architecture already gives this for free: each descriptor is independently scoped, each is independently materialized, and an ensemble is a chunked array along the state axis. Forcing every descriptor through full enumeration (<a href="../../posts/mmcif/02-architecture.html#materialization">Materialization Mode A</a>) defeats it; respecting <a href="../../posts/mmcif/02-architecture.html#materialization">Mode B and Mode C</a> preserves it.</p></li>
 <li><p><strong>Cross-structure batch read</strong> – “give me CA coordinates for these 100k structures, in chunk-aligned shards I can stream into a dataloader.” Largely a packaging concern, not a per-structure format concern, but it is <em>enabled</em> or <em>prevented</em> by the per-structure layout. If the per-structure file has a stable canonical CA-coordinate array at a known path inside the Zarr group, batched reads compose; if CA coordinates are derivable only by parsing and filtering atoms, they don’t.</p></li>
-<li><p><a href="../../posts/glossary/index.html#gloss-differentiable-read"><strong>Differentiable read</strong></a> – “give me coordinates as a tensor, on the right device, with autograd already wired up.” Strictly a Python concern, not a format concern, but the format choice affects how messy the bridge is. A Zarr array maps cleanly to a <code>torch.Tensor</code> via <code>torch.from_numpy(zarr_array[...])</code>; a parsed mmCIF requires a copy and a layout transformation per structure. The format does not need to be aware of autograd – it just needs to deliver coordinates without forcing a non-tensor representation between disk and tensor.</p></li>
+<li><p><a href="../glossary/index.qmd#gloss-differentiable-read"><strong>Differentiable read</strong></a> – “give me coordinates as a tensor, on the right device, with autograd already wired up.” Strictly a Python concern, not a format concern, but the format choice affects how messy the bridge is. A Zarr array maps cleanly to a <code>torch.Tensor</code> via <code>torch.from_numpy(zarr_array[...])</code>; a parsed mmCIF requires a copy and a layout transformation per structure. The format does not need to be aware of autograd – it just needs to deliver coordinates without forcing a non-tensor representation between disk and tensor.</p></li>
 </ol>
 <p>The first three fall out of chapters 2–4 directly, without any new format machinery, provided the storage substrate is chunked. The fourth is a packaging convention – analogous to how OME-Zarr standardizes the multiscale path structure so any consumer knows where to look. The fifth is downstream tooling.</p>
 </section>

@@ -87,7 +87,6 @@ ul.task-list li input[type="checkbox"] {
 <div class="post-glossary">
 <ul>
 <li><a href="../../posts/mmcif/index.html">Overview</a></li>
-<li>Concept map</li>
 </ul>
 <p><span class="post-nav-group">Core</span></p>
 <ul>
@@ -95,21 +94,16 @@ ul.task-list li input[type="checkbox"] {
 <li><a href="../../posts/mmcif/forward-operators.html">Forward operators — Track B</a></li>
 <li><a href="../../posts/mmcif/03-evaluation-model.html">Evaluation model</a></li>
 </ul>
-<p><span class="post-nav-group">Prerequisite</span></p>
-<ul>
-<li><a href="../../posts/mmcif/primer.html">Primer</a></li>
-<li><a href="../../posts/glossary/index.html">Glossary</a></li>
-<li><a href="../../posts/mmcif/references.html">References</a></li>
-</ul>
 <p><span class="post-nav-group">Secondary</span></p>
 <ul>
-<li><a href="../../posts/mmcif/01-problems.html">Problems with mmCIF</a></li>
-<li><a href="../../posts/mmcif/04-annotations-and-engine.html">Annotations &amp; the artifact engine</a></li>
-<li><a href="../../posts/mmcif/04b-technology-survey.html">Technology survey</a></li>
-<li><a href="../../posts/mmcif/05-open-questions.html">Open questions</a></li>
-<li><a href="../../posts/mmcif/08-ml-native.html">ML-native access patterns</a></li>
-<li><a href="../../posts/mmcif/06-black-box-data.html">Appendix: black-box data</a></li>
-<li><a href="../../posts/mmcif/07-modularity-examples.html">Appendix: modularity examples</a></li>
+<li><p><a href="../../posts/mmcif/01-problems.html">Problems with mmCIF</a></p></li>
+<li><p><a href="../../posts/mmcif/04-annotations-and-engine.html">Annotations &amp; the artifact engine</a></p></li>
+<li><p><a href="../../posts/mmcif/04b-technology-survey.html">Technology survey</a></p></li>
+<li><p><a href="../../posts/mmcif/05-open-questions.html">Open questions</a></p></li>
+<li><p><a href="../../posts/mmcif/08-ml-native.html">ML-native access patterns</a></p></li>
+<li><p><a href="../../posts/mmcif/06-black-box-data.html">Appendix: black-box data</a></p></li>
+<li><p><a href="../../posts/mmcif/07-modularity-examples.html">Appendix: modularity examples</a></p></li>
+<li><p><a href="../../posts/mmcif/references.html">References</a></p></li>
 </ul>
 </div>
 <div class="post-sections">
@@ -120,11 +114,11 @@ ul.task-list li input[type="checkbox"] {
 <section id="section" class="level1 g-col-12 g-col-md-9 right-column">
 <h1>Forward-operator infrastructure</h1>
 <p><span class="post-subtitle">Track B: the standardized bridge from an ensemble to an experimental likelihood.</span></p>
-<p><em>Track A — the ensemble representation — is the <a href="../../posts/mmcif/02-architecture.html">Layout</a> and <a href="../../posts/mmcif/03-evaluation-model.html">Evaluation model</a> chapters. This chapter is Track B: the forward-operator records that turn an ensemble into a likelihood any inference engine can consume. The conceptual background — forward models, noise models, Bayesian posterior sampling — lives in the <a href="../../posts/mmcif/primer.html">Primer</a>.</em></p>
+<p><em>Track A — the ensemble representation — is the <a href="../../posts/mmcif/02-architecture.html">Layout</a> and <a href="../../posts/mmcif/03-evaluation-model.html">Evaluation model</a> chapters. This chapter is Track B: the forward-operator records that turn an ensemble into a likelihood any inference engine can consume. The conceptual background — forward models, noise models, Bayesian posterior sampling — lives in the <a href="primer.qmd">Primer</a>.</em></p>
 <section id="two-tracks" class="level2">
 <h2 data-anchor-id="two-tracks">1. What the format actually needs to encode</h2>
-<p>The synthesis of the <a href="../../posts/mmcif/primer.html#category-error">statistical-mechanical</a> and <a href="../../posts/mmcif/primer.html#bayesian-substrate">Bayesian-inference</a> pictures in the <a href="../../posts/mmcif/primer.html">Primer</a> is that the format has to do two distinct things, which it is useful to keep cleanly separate even though they compose in deployment.</p>
-<p>These are related but not the same thing. You could in principle have <a href="../../posts/glossary/index.html#gloss-track-a"><strong>Track A</strong></a> without <a href="../../posts/glossary/index.html#gloss-track-b"><strong>Track B</strong></a> (rich ensembles deposited without their operator-and-observation provenance) or Track B without Track A (single-conformer models with rich operator records, which is essentially what mmCIF + EMDB + BMRB cross-references provide today, but in a unified shape). The architectural argument is that both are needed: Track A provides the ensemble representation that diffusion priors can learn from and that ensemble-aware downstream tools can consume; Track B provides the standardized likelihood substrate that lets any prior be conditioned on any subset of experimental modalities at inference time.</p>
+<p>The synthesis of the <a href="primer.qmd#category-error">statistical-mechanical</a> and <a href="primer.qmd#bayesian-substrate">Bayesian-inference</a> pictures in the <a href="primer.qmd">Primer</a> is that the format has to do two distinct things, which it is useful to keep cleanly separate even though they compose in deployment.</p>
+<p>These are related but not the same thing. You could in principle have <a href="../glossary/index.qmd#gloss-track-a"><strong>Track A</strong></a> without <a href="../glossary/index.qmd#gloss-track-b"><strong>Track B</strong></a> (rich ensembles deposited without their operator-and-observation provenance) or Track B without Track A (single-conformer models with rich operator records, which is essentially what mmCIF + EMDB + BMRB cross-references provide today, but in a unified shape). The architectural argument is that both are needed: Track A provides the ensemble representation that diffusion priors can learn from and that ensemble-aware downstream tools can consume; Track B provides the standardized likelihood substrate that lets any prior be conditioned on any subset of experimental modalities at inference time.</p>
 <p>The interaction between them that makes the architecture worth its complexity is <em>differentiability</em>. Track A’s R3 (continuous latent + stored decoder) and Track B’s forward operators are both naturally implemented as PyTorch-or-JAX-compatible differentiable functions. If the format commits to differentiability across both tracks, the multi-modal posterior-sampling pipeline of <span class="citation" data-cites="levy2025inverse"><a href="references.html#ref-levy2025inverse" role="doc-biblioref">9</a></span> becomes a direct composition: gradients flow from observed data through forward operators into the ensemble’s coordinate output, and back through the diffusion-prior decoder. Without differentiability you can still do everything via FK Steering’s particle-filter approach, but it’s substantially more expensive in compute. With differentiability, the two tracks compose into one PyTorch-graph-shaped object that runs end-to-end.</p>
 <p>A schematic for the Track B record shape:</p>
 <pre><code>forward_operator_record:
