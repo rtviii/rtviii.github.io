@@ -1,0 +1,131 @@
+---
+title: "Primer — ensembles, statistical mechanics, and Bayesian inference"
+order: 0
+---
+
+{{< include /_includes/_post_head.qmd >}}
+
+{{< include _glossary.qmd >}}
+
+{{< include /_includes/_post_mid.qmd >}}
+
+# {{< meta title >}}
+
+[Prerequisite background for the Core: the conformational-ensemble and Bayesian-inverse-problem picture the format-design chapters take as given.]{.post-subtitle}
+
+_Background, not format. Skip it if you are fluent in Boltzmann ensembles, marginals vs joints, and posterior sampling; the Core chapters ([Layout](02-architecture.qmd), [Forward operators](forward-operators.qmd), [Evaluation model](03-evaluation-model.qmd)) link back here where they lean on a specific idea._
+
+## 1. The category error in "a protein structure" {#category-error}
+
+The orthodox single-structure picture treats a protein as a fixed object that has a definite arrangement of atoms in space, and treats the deposition of "the structure" in the PDB as a record of that arrangement. This is operationally useful and has powered fifty years of structural biology. It is also a category error, and the field has been increasingly explicit about saying so [@wankowicz2026possibility; @hilser2007statistical; @vandenbedem2015integrative; @lane2023frontier].
+
+A protein in solution at finite temperature is never sitting in one configuration. It is constantly hopping between many — bond vibrations, side-chain rotamer flips, loop reorganizations, domain motions, large-scale conformational rearrangements. The list of accessible atomic configurations is the *state space* of the molecule. Each configuration has an energy, and statistical mechanics gives the probability of finding the molecule in configuration $i$ at temperature $T$:
+
+$$p_i \;=\; \frac{e^{-E_i / k_B T}}{Z}, \qquad Z \;=\; \sum_j e^{-E_j / k_B T},$$
+
+where $k_B$ is Boltzmann's constant and $Z$ is the partition function — the normalizing constant that makes the probabilities sum to one. The factor $e^{-E_i / k_B T}$ is the *Boltzmann weight* of microstate $i$. Low-energy configurations are populated more heavily; high-energy ones less. The full set $\{(x_i, p_i)\}$ is what statistical mechanics calls the [**Boltzmann-weighted ensemble**](../glossary/index.qmd#gloss-boltzmann-ensemble). This is the underlying physical object. Every macroscopic quantity you can measure — binding affinity, melting temperature, NMR chemical shift, electron density, scattering intensity — is an ensemble average over this distribution:
+
+$$\langle O \rangle \;=\; \sum_i p_i \, O_i \;=\; \frac{1}{Z}\sum_i O_i\, e^{-E_i / k_B T}.$$
+
+The name "partition function" is an artifact of translation from the German *Zustandssumme* ("sum over states") and trips up almost everyone the first time. Nothing is being partitioned in the set-theoretic sense; what gets partitioned is the total probability mass of one, distributed across all microstates in proportion to their Boltzmann weights. Operationally, $Z$ is the normalizer that turns unnormalized weights into proper probabilities. Conceptually, $Z$ is the bridge to thermodynamics — the Helmholtz free energy is $F = -k_B T \ln Z$, and every macroscopic thermodynamic quantity is derivable from $Z$ or its derivatives.
+
+A consequence of this construction that matters operationally for the format question: *every microstate contributes a term to $Z$*. Dropping a state from the sum miscomputes the populations of every state, not just the one you missed, because $Z$ sits in everyone's denominator. Rare conformations — the 1%-populated catalytic intermediate, the 0.1%-populated drug-bound state, the transient allosteric switch — still influence $Z$ and therefore the populations of the common states. This is the structural-biology content of the claim [@wankowicz2026possibility] that "every microstate influences the partition function." It is not a mathematical observation; it is an operational one. Functionally important conformations are often rare, every term in $Z$ matters, and an ensemble representation that misses rare states miscalibrates the populations of the common states too.
+
+What gets deposited in the PDB today is, with rare exceptions, a single configuration: the mode (or some refinement-weighted average) of this distribution. The category error is treating that single configuration as if it were the molecule itself, rather than as one slice through a distribution.
+
+## 2. Every experiment is a forward model {#forward-models}
+
+A second concept does most of the work in the modern picture. [**Forward models**](../glossary/index.qmd#gloss-forward-model) — also called forward operators, measurement operators, or projection functions, depending on which subfield you're reading — are functions that take a candidate state of the system and predict what you would observe if that state were true. The name marks the direction: forward goes from cause to effect; inverse goes from observation back to cause. Forward problems are usually easy, a single function evaluation. Inverse problems are hard because the mapping is many-to-one and noisy.
+
+The pattern is pan-disciplinary. In weather forecasting the forward model integrates atmospheric dynamics from today's state to tomorrow's; data assimilation is the inverse problem. In medical CT the forward model is the Radon transform from tissue density to detector counts; reconstruction is the inverse. In astronomy the forward model maps galaxy parameters to telescope images; parameter estimation is the inverse. In computer graphics the forward model is rendering; "inverse rendering" (structure-from-motion, neural radiance fields) is the inverse. The unifying property is *computability*: given a hypothesis, you can produce a prediction with a finite amount of work.
+
+Every experimental technique in structural biology has its own forward model on the ensemble. A non-exhaustive tour:
+
+- **Nuclear Overhauser Effect (NOE)** in NMR has $f_\text{NOE}(\{(x_i, p_i)\}) = \langle 1/r_{ab}^6 \rangle$ over the ensemble for specified proton pairs $(a, b)$. The sixth-power dependence makes it heavily biased toward short-distance configurations: a 1% population at 2.5 Å contributes vastly more signal than the 99% population at 5 Å, which is the source of the famous "rare close conformer dominates the apparent distance" pathology.
+- **Förster Resonance Energy Transfer (FRET)** has the same $1/r^6$ structure with dye-pair distances instead of proton-pair distances, in the 1–10 nm range.
+- **Small-angle X-ray scattering (SAXS)** has $f_\text{SAXS}(q) = \langle |F(q)|^2 \rangle$, the orientationally-averaged squared form factor of the ensemble.
+- **X-ray crystallography** has $f_\text{xray}(\text{ensemble}) = \langle \rho(x) \rangle$, the ensemble-averaged electron density modulated by the crystal lattice and convolved with a crystallographic point-spread function.
+- **Single-particle cryo-EM** has $f_\text{cryoEM}(\text{ensemble}) = \mathcal{B}(\Gamma(\text{ensemble}))$, where $\Gamma$ places Gaussian electron-density contributions per atom and $\mathcal{B}$ convolves with the microscope's contrast transfer function and B-factor blur (literally equation 11 in @levy2025inverse).
+- **Cross-linking mass spectrometry (XL-MS)** has, for each crosslinker chemistry, a predicate over the ensemble: which residue pairs are close enough often enough to crosslink.
+- **Hydrogen-deuterium exchange mass spectrometry (HDX-MS)** has per-peptide protection factors derived from ensemble-averaged solvent accessibility.
+
+The unifying structure is that each forward model is a *projection* of the full atomic ensemble onto a lower-dimensional observable space. The relational-algebra term for this is exactly a projection function — take a rich table (the joint distribution over all atomic configurations), pick a subset of columns (the observable for this technique), get a slim summary (the measurement). Many original tables can produce the same projection — which is precisely the inverse problem, and precisely why combining multiple projections (multiple techniques) is what carries new information.
+
+A second piece, often left implicit, is the *noise model*: a probability distribution $p(y_\text{observed} \mid y_\text{predicted})$ that says how the noisy observation relates to the noise-free prediction the forward operator produces. Gaussian for symmetric continuous errors, Poisson for photon counts, log-normal for multiplicative errors (NOE, SAXS), Student-$t$ for outlier-robust fits, heteroskedastic Gaussian for position-dependent variances. The forward operator plus the noise model together produce the *likelihood* $p(y \mid \text{ensemble}) = p(y \mid f(\text{ensemble}))$, which is the bridge from physics to inference.
+
+## 3. Joints, marginals, and the cost of mmCIF's encoding {#marginals-and-joints}
+
+Statistics has a precise vocabulary for what mmCIF's altloc + B-factor encoding throws away, and using it makes the limitations concrete. A *joint distribution* $P(X, Y)$ describes the probabilities of two (or more) variables taking values together. The *marginal* of $X$ is $P(X) = \sum_y P(X, Y = y)$ — the distribution of $X$ alone, with $Y$ summed out. The name comes from old probability tables where row-sums and column-sums sat in the margins. Marginalizing throws away the correlation between $X$ and $Y$; many different joints share the same marginals.
+
+The minimal example is two coin flips. Call them $X$ and $Y$, both fair (50% heads). Case A: independent flips. The joint is
+
+|       | $Y = H$ | $Y = T$ |
+|-------|---------|---------|
+| $X = H$ | 0.25    | 0.25    |
+| $X = T$ | 0.25    | 0.25    |
+
+with marginals $P(X) = P(Y) = (0.5, 0.5)$. Case B: perfectly correlated flips ($Y$ copies $X$).
+
+|       | $Y = H$ | $Y = T$ |
+|-------|---------|---------|
+| $X = H$ | 0.5     | 0       |
+| $X = T$ | 0       | 0.5     |
+
+with marginals still $P(X) = P(Y) = (0.5, 0.5)$. Identical marginals; opposite joints. The difference shows up in the conditional $P(Y \mid X = H)$: 0.5 in Case A (independence), 1.0 in Case B (perfect correlation). Or as a single number, the correlation coefficient: 0 in Case A, 1 in Case B.
+
+Now plug into structural biology. Replace the coins with the altloc state of residue 23 (Case "$A$" or "$B$") and the altloc state of residue 24. mmCIF stores the per-residue occupancies — that is exactly the marginal distribution of each residue. It has no slot to record the joint distribution. So the same mmCIF file describes both:
+
+- The "loop snaps between two coherent global states" scenario — joint mass on $(A, A)$ and $(B, B)$ only, none on $(A, B)$ or $(B, A)$. The two residues move in lockstep.
+- The "two residues flip independently" scenario — joint mass uniformly on all four combinations. The two residues are uncoupled.
+
+These are physically different proteins with different free-energy landscapes, different allosteric properties, and different functional implications. The mmCIF marginals cannot distinguish them. This is the format-level meaning of "every microstate influences $Z$": the partition function lives over global microstates (full joint configurations), and the biology lives in the correlations between local degrees of freedom. Strip the correlations and you've thrown away the part that distinguishes one functional state from another.
+
+The same problem shows up in three other forms throughout the format. *Altlocs* record per-residue marginals and cannot encode coupling. *B-factors* mix several physically distinct contributions — true thermal motion, lattice disorder, refinement error, radiation damage, unmodeled conformational heterogeneity — into one scalar per atom, with no honest interpretation as a thermodynamic variance. *Multimodal NMR-style files* with multiple deposited models lack any field for the relative population of each model, so the Boltzmann weights $p_i$ — the entire point of an ensemble — are absent.
+
+The Wankowicz-Bonomi paper [@wankowicz2026possibility] identifies the encoding question as one of four foundational problems. Their framing — that the field needs to move from *maximum parsimony* representations (the fewest parameters that explain the data, what altlocs and qFit do well) toward *maximum entropy* representations (the broadest distribution consistent with the data) and ideally toward hierarchical representations that capture both discrete metastable states and the continuous within-basin distributions — is the format-level fix this entire post is trying to take seriously.
+
+## 4. qFit as the best you can do inside the current container {#qfit}
+
+The current state of the art for crystallographic ensemble extraction is qFit [@wankowicz2024automated; @riley2021qfit]. Reading what it does precisely is useful both as a concrete example of the marginal-versus-joint problem and as the canonical reference point for any successor format.
+
+qFit takes as input an electron density map (specifically a composite omit map, in which the model bias has been removed by systematically excluding regions during map computation) and a starting atomic model. For each residue it executes a three-stage algorithm.
+
+*Stage 1 — sample.* Generate thousands of candidate conformations by systematically rotating around each $\chi$ dihedral angle for side chains, perturbing backbone atoms, and enumerating conformers for ligands. The library is local and exhaustive within the local degrees of freedom of that residue.
+
+*Stage 2 — score.* For each candidate, compute its predicted electron density (placing Gaussian-form-factor contributions at each atom, with appropriate B-factor smearing) and compare to the observed local density. The fit residual is a squared norm in density space.
+
+*Stage 3 — select.* Instead of picking a single best-fitting conformer, ask what small weighted combination of conformers (with occupancies $w_k$ summing to one) best explains the local density. Concretely, solve
+
+$$\min_{w_k}\ \left\lVert \rho_\text{obs} - \sum_k w_k\, \rho_k^\text{pred} \right\rVert^2 \quad \text{s.t.} \quad w_k \ge 0,\ \sum_k w_k \le 1,\ \text{at most } N\ \text{nonzero } w_k.$$
+
+The last constraint — that at most $N$ (typically 4) conformers are selected — is enforced with binary indicator variables, making this a mixed-integer quadratic program (MIQP). qFit solves it via CVXPY, which compiles the problem into the form expected by a backend solver (Gurobi, CPLEX, CBC). The output is at most $N$ conformers with continuous occupancies, written into the mmCIF as altlocs. A Phenix refinement step at the end polishes geometry and refines occupancies.
+
+Where this places qFit in the parsimony/entropy spectrum: it is the *maximum-parsimony* algorithm done correctly. The output is the smallest discrete-conformer set that explains the density, with honest occupancy weights. Compared to single-conformer refinement, this captures real structure — rotamer flips that single-conformer models smear into B-factors, loop alternatives that single-conformer models hide between altloc-A and the mean of altloc-A and altloc-B. Compared to a maximum-entropy ensemble, it under-represents continuous small-amplitude motion and anharmonic regimes, which fold into the residual B-factors of the selected conformers rather than into distinct states.
+
+Where this places qFit in the marginal/joint framing: per-residue marginals only. qFit operates one residue at a time. For residue 23 it produces a list of altlocs with occupancies; for residue 24 it produces a list of altlocs with occupancies; and so on. There is a "neighboring residue" heuristic that assigns altloc labels (`A`, `B`, `C`, `D`) so that conformers physically compatible with each other across adjacent residues share a label, and the `qfit_occupancy.params` file participates in this bookkeeping during post-refinement. But this is a labeling convention applied as a post-process; the mmCIF file format underneath still cannot encode joint distributions over residue pairs in any structurally honest way. Two residues with altlocs `A` and `B` could be the same physical conformer-pair, or they could be independent.
+
+qFit is what you build if you take mmCIF as given and squeeze every bit of representational expressivity out of it. The perspective's argument [@wankowicz2026possibility] — Wankowicz is qFit's primary maintainer and first author — is that the *format* needs to change, not just the modeling algorithm. The next-generation representations would let qFit-style outputs and their successors actually express the joint structure that the algorithm can see in the data but cannot record.
+
+## 5. The Bayesian framework that's now eating the field {#bayesian-substrate}
+
+A second methodological convergence has happened in parallel and is what makes the format question urgent. Three lines of recent work make the architecture concrete.
+
+@chung2024dps ("Diffusion Posterior Sampling," DPS) showed how to use a pretrained diffusion model as a *prior* over data and combine it with a likelihood derived from any forward operator to sample the posterior at inference time. The key trick is Tweedie's formula: the time-dependent likelihood at noisy intermediate states $p(y \mid x_t)$ is approximated by the likelihood at the *denoised estimate* $\hat{x}_0 \approx \mathbb{E}[x_0 \mid x_t]$, which the diffusion model provides at every step. Gradient-based posterior sampling becomes a simple modification of the standard denoising procedure: at each step, take the usual denoise step plus a gradient step on the log-likelihood evaluated at $\hat{x}_0$. Works for linear and nonlinear forward operators, Gaussian and Poisson noise, image reconstruction problems from super-resolution to phase retrieval.
+
+@singhal2025fk ("Feynman-Kac Steering") generalized the same idea to non-differentiable rewards and discrete-state diffusion models by replacing the gradient step with a Sequential Monte Carlo procedure. Run $K$ parallel denoising trajectories ("particles"); at intermediate steps, score them with potentials that approximate the reward; resample particles based on their potentials, duplicating high-scoring trajectories and pruning low-scoring ones. The target is the *tilted distribution* $p_\theta(x) \exp(\lambda r(x))$, which coincides with the posterior when the reward equals the log-likelihood. Strictly more general than DPS at the cost of running multiple parallel trajectories.
+
+@levy2025inverse ("Atomic Denoising Prior for 3D reconstruction," ADP-3D) is the structural-biology application of this pattern. They take Chroma [@ingraham2023illuminating] — a pretrained backbone diffusion model — as the prior, define explicit forward operators for cryo-EM density maps (Gaussian form-factor placement followed by B-factor blurring), pairwise distance restraints (mimicking NMR or paramagnetic-relaxation-enhancement constraints), and substructure constraints. They run plug-and-play MAP estimation using Half-Quadratic Splitting [@venkatakrishnan2013plug] to combine the diffusion-prior denoiser with the experimental likelihood. The headline demonstration is exactly the multi-modal scenario: a single pretrained model conditioned on cryo-EM + sequence + partial structure + sparse distance matrix, all in a single log-likelihood at inference time.
+
+The conceptual unlock that matters for the format question: the diffusion-model prior is technique-agnostic. It does not depend on any specific experimental modality. The likelihood is technique-specific — it's the forward operator plus the noise model. Bayes' rule glues them together. *Changing the technique means changing only the likelihood term*, not the prior or the sampling machinery. That is why this architecture is the meeting point: the diffusion model is the common substrate, and forward operators are the dialect-specific plug-ins.
+
+Multi-modal extends trivially. If you have independent measurements $y_1, \ldots, y_n$ from $n$ different techniques and you assume conditional independence given the structure (a reasonable approximation when the experiments don't share systematic biases), the joint log-likelihood is just a sum:
+
+$$\log p(y_1, \ldots, y_n \mid x) \;=\; \sum_{i=1}^{n} \log p(y_i \mid x),$$
+
+and the gradient of the posterior is the sum of per-modality gradients. Drop this into DPS and you're sampling from a structure posterior that respects all techniques simultaneously. ADP-3D's equation 7 is precisely this. The technique-specific code is *only* the forward operator and noise model implementation; everything else is shared.
+
+A vocabulary point that trips up newcomers and is worth pinning down. "Diffusion steering" in this literature almost never means *training the diffusion model*. It means *biasing the inference-time sampling* of an already-trained diffusion model. The prior is frozen; the steering math runs during sampling. This matters operationally for the format: training pipelines live upstream of the format and are modular. The format only needs to standardize the artifacts that *inference-time* steering consumes — the operators, observations, and noise models.
+
+A second vocabulary point. "Reward" (FK Steering), "likelihood" (DPS), "data fitting term" (ADP-3D), "potential" (Feynman-Kac formalism) are all the same kind of object wearing different costumes — a function that scores how compatible a candidate state is with whatever you care about, evaluated at every step of the denoising process. Once you see this, the three papers above are using the same machinery with three different scoring functions and three different ways of incorporating the score into sampling.
+
+{{< include /_includes/_layout_end.qmd >}}

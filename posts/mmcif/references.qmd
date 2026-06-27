@@ -24,6 +24,9 @@ nocite: |
   @omezarr @copick @tiledb
   @datafusion @llvm @onnx
   @h5md @ihmcif @naef2026blackbox
+  @chrispens2026sampleworks @passaro2025boltz @protenix2025advancing
+  @corley2025rf3 @kim2026crystalboltz @li2026embedopt
+  @fadini2026rocket
 ---
 
 {{< include /_includes/_post_head.qmd >}}

@@ -6,6 +6,7 @@ project:
     - resources
     - img/
     - posts/mmcif/data/concept-map.svg
+    - molstar_assets/
 
 website:
   title: "артём"

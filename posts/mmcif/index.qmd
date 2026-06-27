@@ -1,6 +1,6 @@
 ---
-title: "Structural Bio Format"
-subtitle: "Some notes on mmCIF and what an ML-native successor might look like"
+title: "Some notes on what an ML-native structural format might look like"
+subtitle: ""
 date: "2026-04-15"
 date-modified: last-modified
 categories: [structural-biology, data-formats, mmcif]
@@ -16,29 +16,29 @@ categories: [structural-biology, data-formats, mmcif]
 
 [{{< meta subtitle >}}]{.post-subtitle}
 
-_Early draft, still coalescing. The Core — Layout, Forward operators, Evaluation model — is where the real content lives; the Primer and the Secondary chapters are rougher. Refs are still patchy and there's plenty of koolaid._
+_**Early draft**. The Core — Layout, Forward operators, Evaluation model — is where the real content lives; the Secondary chapters are rougher. Refs are still patchy and there's plenty of koolaid._
 
-I'm trying to sketch here a kernel of idealized infrastructure for structural bio in 2026 and beyond that is not a meshwork of disparate databases and resources, is not bursting at the seams from the influx of new datatypes and data volume, is not constrained in its evolution by obsolete conventions, accommodates the new computational fabric well.
+Thoughts about how to improve representation of structural and conformational heterogeneity, encoding and programmatic accessability, storage, retrieval and annotation of structural macromolecular data.
 
-This is not a proposal or a concrete plan or an attack on anyone. There are motifs from database, compiler and ML literature here so it's not exactly obvious where the "format" ends and auxilary software (from parser to the backend to storage to exchange platform) begins for now.
+This is not a proposal or a concrete plan. There are motifs from database, compiler and ML literature here so it's not exactly obvious where the "format" ends and auxilary software (from parser to the backend to storage to exchange platform) begins for now. 
 
-<!-- TODO: add a survey of operations across pdbtbx, ccp4, coot, isolde, chimerax -->
+There are three main parts to this for now:
 
-The map below orients the Core; every box links to its chapter.
+- the format itself. The text/bytes on disk. Programs look at this and write this. People just look at this, rarely.
 
-{{< include _concept-map.qmd >}}
+- the evaluation model. The set of software that inteprets and materializes the format into structures and ensebmles. What people actually care about and use.
+
+- the forward operator registry. "Things experimentalists do" across structural biology, written as functions: feed one an ensemble and it predicts what the instrument would measure — the spots an X-ray crystal scatters, the density a cryo-EM run records, the NOE peaks NMR sees. The experimental fields' actual pipelines (refinement, reconstruction) are these operators run backwards to fit primary data. This is barely in the idea phase here, but is simultaneously the highest leverage and the most under-standardized on the intersection of ML modeling and heterogeneity implicit and underused the in primary data right now, the flywheel that's materializing between them.Sampleworks [@chrispens2026sampleworks] is one concrete example.
+
 
 ## Contents
 
-The **Core** is Duino itself — read these in order:
+The **Core**.
 
 - [Layout](02-architecture.qmd) — Track A, the ensemble representation. Four layers: Hierarchy and Groupings (the invariant core), Heterogeneity (the three regimes R1/R2/R3) and Materialization (the three storage modes A/B/C).
-- [Forward-operator infrastructure](forward-operators.qmd) — Track B. The operator records that turn an ensemble into an experimental likelihood, and the registry/storage discipline around them.
 - [Evaluation model](03-evaluation-model.qmd) — how scope-local descriptors compose into rendered coordinates: the discrete-nesting and continuous-additive stacks, independence vs nesting vs provenance, sample-axis classification, Mode C operator interfaces, cross-backend integration.
 
-**Prerequisite:**
-
-- [Primer](primer.qmd) — Boltzmann ensembles, marginals vs joints, qFit, forward models, and the Bayesian posterior-sampling picture the Core takes as given. Start here if the conformational-ensemble framing is new.
+- [Forward-operator infrastructure](forward-operators.qmd) — Track B. The operator records that turn an ensemble into an experimental likelihood, and the registry/storage discipline around them.
 
 **Secondary** — equally part of the mission, but supporting the Core rather than constituting it:
 
