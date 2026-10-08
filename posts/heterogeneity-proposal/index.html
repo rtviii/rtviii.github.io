@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2026-06-08">
 
-<title>blog – артём</title>
+<title>Proposal: encoding heterogeneity in mmCIF – артём</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,20 +24,18 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<link href="././img/BTNBlink.webp" rel="icon">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<link href="../.././img/BTNBlink.webp" rel="icon">
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -52,36 +51,7 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-blog-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-project','listing-website','listing-format','listing-language','listing-draft-mode','listing-title','listing-date','listing-categories','listing-path','listing-outputHref','listing-date-modified','listing-author','listing-description','listing-filename','listing-file-modified','listing-reading-time','listing-word-count','listing-page-layout','listing-title-block-style','listing-css','listing-bibliography','listing-csl','listing-link-citations','listing-suppress-bibliography','listing-citations-hover','listing-crossrefs-hover','listing-toc','listing-toc-depth','listing-toc-location','listing-page-navigation','listing-execute','listing-filters','listing-diagram','listing-subtitle','listing-latex-auto-install',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-date-modified-sort'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] },{ data: ['listing-word-count-sort'] }],
-      
-      searchColumns: ["listing-project","listing-website","listing-format","listing-language","listing-draft-mode","listing-title","listing-date","listing-categories","listing-path","listing-outputHref","listing-date-modified","listing-author","listing-description","listing-filename","listing-file-modified","listing-reading-time","listing-word-count","listing-page-layout","listing-title-block-style","listing-css","listing-bibliography","listing-csl","listing-link-citations","listing-suppress-bibliography","listing-citations-hover","listing-crossrefs-hover","listing-toc","listing-toc-depth","listing-toc-location","listing-page-navigation","listing-execute","listing-filters","listing-diagram","listing-subtitle","listing-latex-auto-install"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-blog-listing'] = new List('listing-blog-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-<script src="./scripts.js"></script>
+<script src="../../scripts.js"></script>
 <script src="https://unpkg.com/@popperjs/core@2"></script>
 <script src="https://unpkg.com/tippy.js@6"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -89,121 +59,59 @@ ul.task-list li input[type="checkbox"] {
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Serif:wght@400;500;600&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<link rel="stylesheet" href="styles/custom.css">
-<link rel="stylesheet" href="styles/scrollbar-fix.css">
-<link rel="stylesheet" href="styles/listing.css">
-<link rel="stylesheet" href="styles/homepage.css">
-<link rel="alternate" type="application/rss+xml" title="артём" href="blog.xml" data-external="1"></head>
+<link rel="stylesheet" href="../../styles/custom.css">
+<link rel="stylesheet" href="../../styles/scrollbar-fix.css">
+<link rel="stylesheet" href="../../styles/listing.css">
+</head>
 
 <body class="fullcontent">
 
 <div id="quarto-search-results"></div>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-layout-custom">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
 <!-- margin-sidebar -->
+    
 <!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Proposal: encoding heterogeneity in mmCIF</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">mmCIF</div>
+    <div class="quarto-category">structural biology</div>
+    <div class="quarto-category">crystallography</div>
+  </div>
+  </div>
 
 
 
+<div class="quarto-title-meta">
 
-<div class="grid homepage-container">
-<div class="g-col-12 g-col-md-3 left-column">
-<p><a href="."><img src="./img/signature.png" class="signature img-fluid"></a></p>
-<ul>
-<li><a href="./papers/kushner_cv.pdf">CV</a></li>
-<li><a href="./papers/papers.html">Papers</a></li>
-<li><a href="./blog.html">Blog</a></li>
-<li><a href="./listings.html">Lists</a></li>
-</ul>
-<div class="social-links">
-<p><a href="https://github.com/rtviii"><i class="bi bi-github"></i></a> <a href="https://scholar.google.com/citations?user=hrPyOIsAAAAJ&amp;hl=en"><i class="ai ai-google-scholar"></i></a> <a href="https://twitter.com/rtkushner"><i class="bi bi-twitter"></i></a></p>
-</div>
-</div>
-<div class="g-col-12 g-col-md-9 right-column">
-<div id="listing-blog-listing" class="quarto-listing quarto-listing-container-custom">
-<div class="rt-blog-list">
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">June 8, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
 
-  <a class="rt-blog-row" href="./posts/heterogeneity-proposal/index.html">
-    <span class="rt-blog-date">
-      
-        Jun 8, 2026
-      
-    </span>
-    <span class="rt-blog-meta">
-      <span class="rt-blog-title">Proposal: encoding heterogeneity in mmCIF</span>
-      
-    </span>
-  </a>
 
-  <a class="rt-blog-row" href="./posts/mmcif/index.html">
-    <span class="rt-blog-date">
-      
-        Apr 15, 2026
-      
-    </span>
-    <span class="rt-blog-meta">
-      <span class="rt-blog-title">Some notes on what an ML-native structural format might look like</span>
-      
-    </span>
-  </a>
+</header>
 
-  <a class="rt-blog-row" href="./posts/npet-poisson-recon/index.html">
-    <span class="rt-blog-date">
-      
-        Aug 4, 2024
-      
-    </span>
-    <span class="rt-blog-meta">
-      <span class="rt-blog-title">3D tessellation of biomolecular cavities</span>
-      
-        <span class="rt-blog-subtitle">Protocol for analyzing the ribosome exit tunnel</span>
-      
-    </span>
-  </a>
 
-</div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div>
-</div>
-</div>
+<p>The proposal lives at <a href="https://mmcif-browser-2.vercel.app/proposal">mmcif-browser-2.vercel.app/proposal</a>.</p>
+<p>It is part of the mmCIF browser write-up on the Prism Science blog: <a href="https://prismscience.org/research/mmcif-browser">prismscience.org/research/mmcif-browser</a>.</p>
 
 
 
-
-
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.54">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-07-07">
+
+<title>Biological symmetries – артём</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<link href="../.././img/BTNBlink.webp" rel="icon">
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="../../scripts.js"></script>
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/tippy.js@6"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Serif:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+<meta name="quarto:status" content="draft">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles/custom.css">
+<link rel="stylesheet" href="../../styles/scrollbar-fix.css">
+<link rel="stylesheet" href="../../styles/listing.css">
+</head>
+
+<body class="fullcontent"><div id="quarto-draft-alert" class="alert alert-warning"><i class="bi bi-pencil-square"></i>Draft</div>
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Biological symmetries</h1>
+<p class="subtitle lead">From C to I — the symmetry groups a protein shell is allowed to have</p>
+  <div class="quarto-categories">
+    <div class="quarto-category">structural biology</div>
+    <div class="quarto-category">symmetry</div>
+    <div class="quarto-category">viruses</div>
+    <div class="quarto-category">group theory</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">July 7, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<script defer="" src="data/symmetry.js"></script>
+<script defer="" src="data/capsids.js"></script>
+<p>A virus has almost no genome. It cannot afford to encode a large, bespoke shell, so it encodes one small protein and builds the shell by repeating that protein many times. Repetition with every copy in an identical environment <em>is</em> symmetry, and this forces a short, closed list of shapes a capsid is allowed to take. This post builds that list up from scratch, one interactive at a time, from the single-axis groups (<strong>C</strong>) to the icosahedral group (<strong>I</strong>) that most spherical viruses land on, and then to the one place the list stops being finite. Each figure is a live widget: drag to rotate, toggle the axes, sweep the parameters.</p>
+<section id="a-symmetry-is-an-operation-that-changes-nothing" class="level2">
+<h2 class="anchored" data-anchor-id="a-symmetry-is-an-operation-that-changes-nothing">1. A symmetry is an operation that changes nothing</h2>
+<p>A symmetry of a shape is an operation you can apply that leaves it looking identical. Rotate a square by 90 degrees and you cannot tell it moved; by 45 and you can. The object of interest is not any single rotation but the whole set of operations that leave the shape fixed. Drag the square below, or step it by 90; the coloured corners give away <em>which</em> operation happened even when the outline does not.</p>
+<div data-sym="square" data-cap="A 90-degree turn maps the square onto itself; a 45-degree turn does not. The outline is identical either way, so the operation lives in how the labelled corners permute, not in the silhouette.">
+
+</div>
+</section>
+<section id="those-operations-form-a-group" class="level2">
+<h2 class="anchored" data-anchor-id="those-operations-form-a-group">2. Those operations form a group</h2>
+<p>Collect every operation that fixes a shape. The collection always has three properties: <strong>closure</strong> (one valid operation followed by another is again one of them), an <strong>identity</strong> (doing nothing), and <strong>inverses</strong> (every operation is undone by another in the set). A set closed under an associative composition, with identity and inverses, is a <strong>group</strong>. The only operation that matters is composition, “do this one, then that one,” and it is what the widget below lets you play with on a five-fold pinwheel: pick two rotations and watch their composition land on a third one that is already in the set.</p>
+<div data-sym="compose" data-cap="Rotations of a 5-blade pinwheel. Composing two of them adds their indices modulo 5, so the result is always another rotation in the set (closure); index 0 is the identity; the inverse of r-to-the-i is r-to-the-(5 minus i). That is the whole group.">
+
+</div>
+<p>The chiral (rotation-only) point groups in three dimensions are a finite, complete list, and they get short labels: <strong>C</strong><sub>n</sub>, <strong>D</strong><sub>n</sub>, <strong>T</strong>, <strong>O</strong>, <strong>I</strong>. The rest of the post is those five, in order.</p>
+</section>
+<section id="cn-one-axis" class="level2">
+<h2 class="anchored" data-anchor-id="cn-one-axis">3. C<sub>n</sub> — one axis</h2>
+<p>The simplest group has a single rotation axis. <strong>C</strong><sub>n</sub> is generated by one rotation through 1/n of a turn: a starfish is C<sub>5</sub>, a three-blade fan is C<sub>3</sub>. Its order (the number of operations) is just n.&nbsp;Sweep n below, press <em>apply rotation</em> to step by one 1/n turn, and note the assembly falls back onto itself.</p>
+<div data-sym="cyclic" data-n="5" data-cap="C-n: n identical subunits related by a single rotation axis. Order n. C-2 dimers are the most common assembly symmetry in the cell; higher C-n rings show up in pores and enzymes.">
+
+</div>
+</section>
+<section id="dn-an-axis-and-a-belt-of-two-folds" class="level2">
+<h2 class="anchored" data-anchor-id="dn-an-axis-and-a-belt-of-two-folds">4. D<sub>n</sub> — an axis and a belt of two-folds</h2>
+<p>Add to the n-fold axis a set of n two-fold axes perpendicular to it and you get the <strong>dihedral</strong> group <strong>D</strong><sub>n</sub>: two C<sub>n</sub> rings stacked face to face, related by the perpendicular flips. Its order is 2n. The chaperonin GroEL is the textbook case, two seven-membered rings back to back, D<sub>7</sub>. Toggle the principal axis and the belt of two-folds separately.</p>
+<div data-sym="dihedral" data-n="4" data-cap="D-n: an n-fold principal axis (orange) plus n two-fold axes (violet) perpendicular to it, relating a top ring to a bottom ring. Order 2n. GroEL is D-7.">
+
+</div>
+</section>
+<section id="t-o-i-the-polyhedral-groups" class="level2">
+<h2 class="anchored" data-anchor-id="t-o-i-the-polyhedral-groups">5. T, O, I — the polyhedral groups</h2>
+<p>Beyond the single-axis families there are exactly three groups built from <em>multiple</em> high-fold axes, the rotation groups of the Platonic solids: <strong>tetrahedral</strong> T (order 12), <strong>octahedral</strong> O (order 24), and <strong>icosahedral</strong> I (order 60). There is nothing between or beyond them; you cannot assemble a chiral point group that mixes, say, five-fold and four-fold axes outside these specific arrangements. Switch between the three solids, toggle each axis family on and off, and read the order and the axis inventory update live.</p>
+<div data-sym="solid" data-shape="ico" data-switch="" data-cap="The three polyhedral rotation groups. Each coloured family is one type of axis (by fold); the readout counts axes per family and the rotations they contribute. T = 12, O = 24, I = 60 — and the list ends there.">
+
+</div>
+</section>
+<section id="inside-i-three-axis-families-sixty-operations" class="level2">
+<h2 class="anchored" data-anchor-id="inside-i-three-axis-families-sixty-operations">6. Inside I: three axis families, sixty operations</h2>
+<p>The 60 rotations of <strong>I</strong> sort into three axis types, one at each kind of special point on an icosahedron.</p>
+<ul>
+<li><strong>five-fold (C<sub>5</sub>)</strong> through each vertex: 6 axes (12 vertices), 4 non-trivial rotations each -&gt; 24</li>
+<li><strong>three-fold (C<sub>3</sub>)</strong> through each face centre: 10 axes (20 faces), 2 each -&gt; 20</li>
+<li><strong>two-fold (C<sub>2</sub>)</strong> through each edge midpoint: 15 axes (30 edges), 1 each -&gt; 15</li>
+</ul>
+<p>That is 24 + 20 + 15 = 59 non-identity rotations, plus the identity = <strong>60</strong>, the order of I. Each axis runs through the centre and exits at an identical point on the far side, so “6 vertices” means 6 axes through 12 vertices, and so on. Toggle the families below; turn on <em>capsomers</em> to drop the 60-subunit shell onto the five-fold vertices, which is exactly where this is heading.</p>
+<div data-sym="solid" data-shape="ico" data-capsid="" data-cap="The icosahedral group I. Vertices carry C-5 axes (orange), faces C-3 (teal), edges C-2 (violet). Turn on capsomers to see the minimal shell: 12 pentamers of 5 subunits each, one pentamer per five-fold vertex = 60 identical copies.">
+
+</div>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Why the mirror-image group I<sub>h</sub> does not apply
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The group with 120 elements, <strong>I</strong><sub>h</sub>, pairs each rotation with a mirror/inversion partner. That is the symmetry of a geometric soccer ball or a C<sub>60</sub> buckyball. Protein subunits are built from L-amino acids and cannot be superimposed on their mirror images, so a capsid can only ever use the proper-rotation group <strong>I</strong> (60 elements), never I<sub>h</sub>. Chirality is what keeps biology in the rotation-only column.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="is-the-set-bounded-yes-until-you-allow-a-screw" class="level2">
+<h2 class="anchored" data-anchor-id="is-the-set-bounded-yes-until-you-allow-a-screw">7. Is the set bounded? Yes, until you allow a screw</h2>
+<p>For closed shells the answer is clean, and it is the elegant part. Because subunits are chiral, every group containing a reflection is forbidden. What survives is exactly the finite chiral point groups, a complete classified list:</p>
+<p><span class="math display">\[
+\mathrm{C}_n,\quad \mathrm{D}_n,\quad \mathrm{T},\quad \mathrm{O},\quad \mathrm{I}.
+\]</span></p>
+<p>There is nothing else. Geometry genuinely bounds biology here: ferritin is an octahedral 24-mer (O), GroEL is D<sub>7</sub>, and the large majority of spherical viruses are icosahedral (I) <span class="citation" data-cites="crick1956structure">(<a href="#ref-crick1956structure" role="doc-biblioref">Crick and Watson 1956</a>)</span>.</p>
+<p>The finiteness breaks in exactly one way. A <strong>screw axis</strong> — rotate a little, translate a little, repeat — is not a finite point group. You can step along it indefinitely, so it is an <em>infinite</em> group. Rod-shaped viruses such as tobacco mosaic virus and cytoskeletal filaments such as actin and microtubules live here. Bounded and finite for closed shells; unbounded the moment a translation enters. Many bacteriophages are both at once: an icosahedral head on a helical tail.</p>
+<div data-sym="helical" data-cap="A screw axis: one operation is rotate-by-delta-phi then rise-by-delta-z, and it repeats without end. No largest rotation, no finite order — the escape hatch from the closed list above. Toggle the screw to freeze it.">
+
+</div>
+</section>
+<section id="why-i-wins-and-where-capsomers-come-from" class="level2">
+<h2 class="anchored" data-anchor-id="why-i-wins-and-where-capsomers-come-from">8. Why I wins, and where capsomers come from</h2>
+<p>Among the finite chiral groups <strong>I</strong> has the largest order, 60. One asymmetric protein subunit, copied by all 60 rotations, builds a closed shell of 60 identical subunits — each in a geometrically identical environment — enclosing near-maximal volume for a single gene’s worth of protein. No other point group gives 60 identical positions on a closed, roughly spherical surface, which is why evolution keeps rediscovering it <span class="citation" data-cites="zandi2004origin">(<a href="#ref-zandi2004origin" role="doc-biblioref">Zandi et al. 2004</a>)</span>. The logic is a chain: tiny genome -&gt; few small proteins -&gt; heavy reuse -&gt; reuse demands identical environments -&gt; identical environments mean symmetry -&gt; the richest closed-sphere symmetry is icosahedral -&gt; the copies cluster into <strong>capsomers</strong>.</p>
+<div class="msb-embed" data-msb-pdb="1lp3" data-msb-mode="deposited" data-msb-color="off">
+<div class="msb-viewer" style="height:360px">
+
+</div>
+<p class="msb-viewer-caption">
+The whole input: one asymmetric unit of adeno-associated virus 2 (PDB <a href="https://www.rcsb.org/structure/1LP3">1LP3</a>) — a single VP3 capsid protein, one gene’s worth of protein. The 60 rotations of I copy exactly this subunit into the full T = 1 shell (section 10). Drag to rotate.
+</p>
+</div>
+<p>Capsomers are the visible surface clusters, and they sit on the axes: <strong>pentamers</strong> on the C<sub>5</sub> vertices (always exactly 12 of them) and <strong>hexamers</strong> on the faces near the local six-fold positions. The minimal shell is 60 subunits, all pentamers, 12 capsomers: the T = 1 capsid you toggled on above.</p>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+On “local six-fold”
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The six-fold character of a hexamer is <em>quasi</em>-symmetry, not a true six-fold axis of the whole capsid. The global group stays I — there is no genuine six-fold rotation that fixes an icosahedral shell. The hexamer only looks six-fold locally.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="the-t-number-and-quasi-equivalence" class="level2">
+<h2 class="anchored" data-anchor-id="the-t-number-and-quasi-equivalence">9. The T-number and quasi-equivalence</h2>
+<p>Sixty subunits makes a small shell. Bigger viruses need more copies, but you cannot place more than 60 in <em>strictly</em> identical environments, because 60 is the order of the group. Quasi-equivalence <span class="citation" data-cites="caspar1962physical johnson1997quasi">(<a href="#ref-caspar1962physical" role="doc-biblioref">Caspar and Klug 1962</a>; <a href="#ref-johnson1997quasi" role="doc-biblioref">Johnson and Speir 1997</a>)</span> is the escape: subunits can occupy <em>nearly</em> identical environments if allowed to flex a little. The shell then holds 60T subunits, where the triangulation number is</p>
+<p><span class="math display">\[
+T = h^2 + hk + k^2, \qquad h,k \in \mathbb{Z}_{\ge 0},
+\]</span></p>
+<p>giving the allowed values T = 1, 3, 4, 7, 13, 21, …</p>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+What h, k and T count
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>h</strong> and <strong>k</strong> are the two integer steps you take on a triangular lattice of subunits to get from one five-fold centre to the next; the triangle they span is one of the 20 icosahedral faces. <strong>T</strong> is the number of smaller triangles that face is divided into, hence the number of subunits per face is 3T and the whole shell has 60T. There are always <strong>12</strong> pentamers (the 12 five-fold vertices) and <strong>10(T − 1)</strong> hexamers, for <strong>12 + 10(T − 1)</strong> capsomers total. When h and k differ and neither is zero the construction is chiral — T = 7 comes in laevo and dextro hands.</p>
+</div>
+</div>
+</div>
+<p>Set h and k on the lattice below, or jump to a preset, and read the counts. The shaded triangle is one icosahedral face; orange dots are five-fold (pentamer) positions, teal are six-fold (hexamer). <em>Flip hand</em> mirrors (h,k) to show the laevo/dextro pair.</p>
+<div data-sym="ck" data-cap="The Caspar-Klug construction. Pick a lattice vector (h,k); T = h-squared + h-k + k-squared. Every shell has 12 pentamers and 10(T-1) hexamers. T=1 (60 subunits, satellite viruses), T=3 (180, many plant and animal viruses), T=7 (420, many phages and herpesviruses, chiral).">
+
+</div>
+<p>The lattice above is one face of the shell. Wrap twenty copies onto an icosahedron and you have the capsid. In the viewer below each capsomer is placed by mapping the same (h,k) lattice onto the twenty faces and projecting to the sphere: 12 orange pentamers pinned to the five-fold vertices, teal hexamers filling everywhere else. Sweep T and watch the hexamer field grow between the fixed 12; <em>flip hand</em> swaps the laevo/dextro pair for chiral T.</p>
+<div data-sym="capsid" data-cap="The shell in 3D as a true Goldberg polyhedron: one master face's (h,k) lattice replicated by all 60 icosahedral rotations, tiled as the exact dual of the capsomer convex hull. The 12 pentamers never move; hexamers grow as 10(T-1). T=1 is a bare dodecahedron of 12 pentamers; by T=13 the hexamers dominate. Drag to rotate.">
+
+</div>
+<p>You always need both pentamers and hexamers, and a sphere can never close with pentagons alone: by Euler’s theorem, wrapping a hexagonal sheet onto a ball requires exactly 12 pentagons — the same reason a soccer ball has exactly 12 black patches.</p>
+</section>
+<section id="the-structures-themselves" class="level2">
+<h2 class="anchored" data-anchor-id="the-structures-themselves">10. The structures themselves</h2>
+<p>The schematic viewers above are the geometry; these are the molecules. Each is a real deposited structure loaded as its biological assembly and coloured per symmetry copy, so the individual subunits — the capsomers — read directly. They stream in as you scroll (the 3D engine is a few megabytes), and each maps onto one of the groups built up above. Drag to rotate.</p>
+<p>First the payoff of sections 6 and 8: the single VP3 subunit shown earlier, copied by all 60 rotations of <strong>I</strong> into a closed shell <span class="citation" data-cites="xie2002atomic">(<a href="#ref-xie2002atomic" role="doc-biblioref">Xie et al. 2002</a>)</span>.</p>
+<div class="msb-embed" data-msb-pdb="1lp3" data-msb-mode="assembly">
+<div class="msb-viewer">
+
+</div>
+<p class="msb-viewer-caption">
+Adeno-associated virus 2 (PDB <a href="https://www.rcsb.org/structure/1LP3">1LP3</a>), biological assembly — the T = 1 icosahedral capsid. 60 copies of the one subunit from section 8, each a different colour. This is the group <b>I</b> made physical: the schematic T = 1 capsid of section 9, now atoms.
+</p>
+</div>
+<p>Then the other finite groups from the bounded list — an axis with a belt of two-folds (<strong>D</strong><sub>n</sub>) and a Platonic cage (<strong>O</strong>).</p>
+<div class="msb-embed" data-msb-pdb="1grl" data-msb-mode="assembly">
+<div class="msb-viewer" style="height:420px">
+
+</div>
+<p class="msb-viewer-caption">
+The chaperonin GroEL (PDB <a href="https://www.rcsb.org/structure/1GRL">1GRL</a>): two seven-membered rings stacked back to back — dihedral <b>D</b><sub>7</sub>, 14 subunits. One colour per subunit; the seven-fold axis runs vertically between the rings.
+</p>
+</div>
+<div class="msb-embed" data-msb-pdb="1fha" data-msb-mode="assembly">
+<div class="msb-viewer" style="height:420px">
+
+</div>
+<p class="msb-viewer-caption">
+Ferritin (PDB <a href="https://www.rcsb.org/structure/1FHA">1FHA</a>): a 24-subunit iron-storage cage with octahedral symmetry <b>O</b>. The 24 copies, coloured individually, tile a closed shell on the cube/octahedron axes rather than the icosahedral ones.
+</p>
+</div>
+<p>And the escape hatch of section 7 — an open helix rather than a closed shell, the one case where the symmetry group is infinite.</p>
+<div class="msb-embed" data-msb-pdb="2tmv" data-msb-mode="assembly">
+<div class="msb-viewer" style="height:420px">
+
+</div>
+<p class="msb-viewer-caption">
+Tobacco mosaic virus (PDB <a href="https://www.rcsb.org/structure/2TMV">2TMV</a>): a helical rod, not a point group. The deposited assembly is a 49-subunit segment of an unbounded screw — rotate-and-rise, repeated without end, the infinite group from section 7.
+</p>
+</div>
+<hr>
+<p><em>Draft. The schematic widgets and the real Mol</em> structures in section 10 are both live. The icosahedron, its three axis families, and the 3D capsid are all computed from true icosahedral coordinates. The capsid is a genuine Goldberg polyhedron — capsomers replicated by the 60 rotations of I, tiled as the exact dual of their convex hull — verified exact and seamless (12 pentamers, 10(T − 1) hexamers, 20T shared tile corners) for every class up to T = 75, chiral ones included. The 2D Caspar-Klug panel is a schematic of the construction.*</p>
+
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-caspar1962physical" class="csl-entry" role="listitem">
+Caspar, D. L. D., and A. Klug. 1962. <span>“Physical Principles in the Construction of Regular Viruses.”</span> <em>Cold Spring Harbor Symposia on Quantitative Biology</em> 27: 1–24. <a href="https://doi.org/10.1101/SQB.1962.027.001.005">https://doi.org/10.1101/SQB.1962.027.001.005</a>.
+</div>
+<div id="ref-crick1956structure" class="csl-entry" role="listitem">
+Crick, F. H. C., and J. D. Watson. 1956. <span>“Structure of Small Viruses.”</span> <em>Nature</em> 177 (4506): 473–75. <a href="https://doi.org/10.1038/177473a0">https://doi.org/10.1038/177473a0</a>.
+</div>
+<div id="ref-johnson1997quasi" class="csl-entry" role="listitem">
+Johnson, John E., and Jeffrey A. Speir. 1997. <span>“Quasi-Equivalent Viruses: A Paradigm for Protein Assemblies.”</span> <em>Journal of Molecular Biology</em> 269 (5): 665–75. <a href="https://doi.org/10.1006/jmbi.1997.1068">https://doi.org/10.1006/jmbi.1997.1068</a>.
+</div>
+<div id="ref-xie2002atomic" class="csl-entry" role="listitem">
+Xie, Qing, Wuwei Bu, Sanjay Bhatia, Joan Hare, Thayumanasamy Somasundaram, Arnaud Azzi, and Michael S. Chapman. 2002. <span>“The Atomic Structure of Adeno-Associated Virus (AAV-2), a Vector for Human Gene Therapy.”</span> <em>Proceedings of the National Academy of Sciences</em> 99 (16): 10405–10. <a href="https://doi.org/10.1073/pnas.152298199">https://doi.org/10.1073/pnas.152298199</a>.
+</div>
+<div id="ref-zandi2004origin" class="csl-entry" role="listitem">
+Zandi, Roya, David Reguera, Robijn F. Bruinsma, William M. Gelbart, and Joseph Rudnick. 2004. <span>“Origin of Icosahedral Symmetry in Viruses.”</span> <em>Proceedings of the National Academy of Sciences</em> 101 (44): 15556–60. <a href="https://doi.org/10.1073/pnas.0405844101">https://doi.org/10.1073/pnas.0405844101</a>.
+</div>
+</div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/rtviii\.xyz");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
