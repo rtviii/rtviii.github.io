@@ -1,0 +1,9 @@
+---
+title: "Proposal: encoding heterogeneity in mmCIF"
+date: 2026-06-08
+categories: [mmCIF, structural biology, crystallography]
+---
+
+The proposal lives at [mmcif-browser-2.vercel.app/proposal](https://mmcif-browser-2.vercel.app/proposal).
+
+It is part of the mmCIF browser write-up on the Prism Science blog: [prismscience.org/research/mmcif-browser](https://prismscience.org/research/mmcif-browser).
