@@ -95,6 +95,46 @@ html:has(.page-layout-custom) body,
 }
 
 /* ===========================================================================
+ * Landing page only (identified by .main-photo, which only index.qmd uses).
+ *
+ * Goal: a static canvas with no scroll jitter. Two causes of the slight scroll:
+ *   1. .homepage-container's 2rem vertical margin collapses through the
+ *      overflow:visible body (plumbing above), so the body sits 2rem down and
+ *      body{min-height:100vh} (scrollbar-fix.css) makes the document 100vh+2rem.
+ *      Quarto also adds #quarto-content > * {padding-top:14px}. Fix: swap the
+ *      margin for padding (padding does not collapse); the #quarto-content
+ *      selector is there to outrank Quarto's id-level padding rule.
+ *   2. The photo is full column width (~500px tall) and the text under it
+ *      overshoots short viewports. Fix: cap the photo width by viewport height
+ *      at its 3:2 aspect (1000x666) so photo + text fit one screen. 22rem is
+ *      the budget for everything that is not the photo (container padding,
+ *      credit, text, paragraph margins); raise it if the text ever clips.
+ *      The 20rem floor keeps the photo from collapsing on very short windows,
+ *      where scrolling is then legitimate.
+ * ========================================================================*/
+html:has(.main-photo) {
+  overscroll-behavior: none;
+}
+
+html:has(.main-photo) #quarto-content > .homepage-container {
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+@media (min-width: 769px) {
+  html:has(.main-photo) .right-column {
+    --photo-w: min(100%, max(20rem, calc((100vh - 22rem) * 1.5)));
+  }
+
+  html:has(.main-photo) .main-photo,
+  html:has(.main-photo) .photo-credit {
+    width: var(--photo-w);
+  }
+}
+
+/* ===========================================================================
  * Left rail.
  *
  * One canonical rule block. position:sticky needs three things to work:
