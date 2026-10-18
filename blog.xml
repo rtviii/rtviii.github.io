@@ -10,7 +10,7 @@
 <atom:link href="https://rtviii.xyz/blog.xml" rel="self" type="application/rss+xml"/>
 <description></description>
 <generator>quarto-1.5.54</generator>
-<lastBuildDate>Mon, 08 Jun 2026 07:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sun, 07 Jun 2026 22:00:00 GMT</lastBuildDate>
 <item>
   <title>Proposal: encoding heterogeneity in mmCIF</title>
   <link>https://rtviii.xyz/posts/heterogeneity-proposal/</link>
@@ -29,7 +29,7 @@
   <category>structural biology</category>
   <category>crystallography</category>
   <guid>https://rtviii.xyz/posts/heterogeneity-proposal/</guid>
-  <pubDate>Mon, 08 Jun 2026 07:00:00 GMT</pubDate>
+  <pubDate>Sun, 07 Jun 2026 22:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Some notes on what an ML-native structural format might look like</title>
@@ -39,7 +39,7 @@
   <category>data-formats</category>
   <category>mmcif</category>
   <guid>https://rtviii.xyz/posts/mmcif/</guid>
-  <pubDate>Wed, 15 Apr 2026 07:00:00 GMT</pubDate>
+  <pubDate>Tue, 14 Apr 2026 22:00:00 GMT</pubDate>
 </item>
 <item>
   <title>3D tessellation of biomolecular cavities</title>
@@ -49,7 +49,7 @@
   <description><![CDATA[ undefined ]]></description>
   <category>cryo-EM</category>
   <guid>https://rtviii.xyz/posts/npet-poisson-recon/</guid>
-  <pubDate>Sun, 04 Aug 2024 07:00:00 GMT</pubDate>
+  <pubDate>Sat, 03 Aug 2024 22:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>
