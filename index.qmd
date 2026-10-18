@@ -8,11 +8,11 @@ css: [styles/homepage.css]
 ![](/img/sifnos_HCB.jpg){.main-photo}
 [Sifnos, Greece (1961) | Henri Cartier-Bresson]{.photo-credit}
 
-Howdy, I'm a research technician at IMP, Vienna with [Sven Klumpe](https://www.imp.ac.at/groups/sven-klumpe) and at UBC, Vancouver with [Khanh Dao Duc](https://kdaoduc.com/about/).
+Howdy. I'm a research technician at IMP, Vienna with [Sven Klumpe](https://www.imp.ac.at/groups/sven-klumpe), formerly at UBC, Vancouver with [Khanh Dao Duc](https://kdaoduc.com/about/).
 
-My general interests are in biology, software and mathematics. I have done work in structural biology infrastructure (atomic models, CryoET), ML applications to cryoEM, some shape analysis. I built and maintain [ribosome.xyz](https://ribosome.xyz/) and [tubulin.xyz](https://tubulin.xyz/).
+I have done work in structural biology infrastructure (atomic models, CryoET), ML applications to cryoEM, shape analysis, built and maintain [ribosome.xyz](https://ribosome.xyz/) and [tubulin.xyz](https://tubulin.xyz/).
 
-Outside of academia, I've had a few backend roles. I enjoy running, hiking, canoeing, music, history, economics. I planted around 250,000 trees in the north-west of Canada between 2016 and 2018. My favorite books are by Proust, Eco and McCarthy. I live in Vienna now.
+I planted ~250,000 trees in the north-west of Canada between 2016 and 2018. My favourite book is probably All the Pretty Horses and if I could live anywhere it'd be Vancouver Island. I live in Vienna now.
 
 [rtkushner@gmail.com](mailto:rtkushner@gmail.com).
 
